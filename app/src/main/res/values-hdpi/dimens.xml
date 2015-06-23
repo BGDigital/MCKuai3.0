@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- 标题栏高度 -->
+    <dimen name="titlebar_height">42.7dp</dimen>
+    <dimen name="titlebar_button_height">21.3dp</dimen>
+    <dimen name="button_left_width">57.3dp</dimen>
+    <dimen name="padding_right_button_left">25dp</dimen>
+    <!-- 最边上的控件和边框的边距以及控间间的间距 -->
+    <dimen name="com_margin">10dp</dimen>
+    <dimen name="com_padding">4dp</dimen>
+    <!-- 字体 -->
+    <dimen name="font_dimen_title">18sp</dimen>
+    <!-- item相关高度 -->
+    <dimen name="item_divider_height">8dp</dimen>
+    <dimen name="group_divider_height">20dp</dimen>
+    <!-- 二级菜单的高度 -->
+    <dimen name="menu_height_lv2">30.7dp</dimen>
+    <!-- 图文间距 -->
+    <dimen name="margin_top">5dp</dimen>
+    <dimen name="bottom_button_height">48dp</dimen>
+</resources>

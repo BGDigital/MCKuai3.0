@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 字体 -->
+    <color name="font_primary">#4D4D4D</color>
+    <color name="secondary">#B4B4B4</color>
+    <color name="font_forum_unselected">#1A923B</color>
+    <color name="font_radio_hint_normal">#B6A8A5</color>
+    <color name="font_radio_hint_checked">#24922F</color>
+    <color name="font_white">#FFFFFF</color>
+
+    <!-- 边框 -->
+    <color name="frame_darkgray">#EBEBEB</color>
+    <color name="frame_green">#04FF04</color>
+
+    <!-- 背景 -->
+    <color name="background_Grey">#F0F0F0</color>
+    <color name="background_green">#38CA44</color>
+    <color name="background_yellow">#FFCC00</color>
+    <color name="background_biue">#00CCFF</color>
+    <color name="background_dark_green">#33CC8F</color>
+
+    <!--通用色彩 -->
+    <color name="white">#FFFFFF</color>
+    <color name="green">#38CA44</color>
+    <color name="red">#FF0000</color>
+
+    <!-- 通知 -->
+    <color name="notification_background">#38CA44</color>
+    <color name="notification_textColor">#FFFFFF</color>
+    <color name="notification_icon_background">#000000</color>
+    <color name="new_message">#FF0000</color>
+
+    <!-- 进度提示 -->
+    <color name="load_accent">#7c4dff</color>
+    <color name="load_success">#3CCD88</color>
+    <color name="load_error">#f44336</color>
+
+
+</resources>
