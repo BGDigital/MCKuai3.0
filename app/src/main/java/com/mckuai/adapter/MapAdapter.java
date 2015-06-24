@@ -23,10 +23,13 @@ import cn.aigestudio.downloader.interfaces.DLTaskListener;
  * Created by Zzz on 2015/6/24.
  */
 public class MapAdapter extends BaseAdapter{
+
+
     private Context mContext;
     private View view;
     private LayoutInflater mInflater;
     private ArrayList<MapBean> mMapBeans = new ArrayList<MapBean>();
+
     private DLManager manager;
 
     public MapAdapter(Context context, ArrayList<MapBean> mapBeans){
