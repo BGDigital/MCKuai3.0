@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/tit"
+        layout="@layout/map_title" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/item_divider_height">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/fm_w"
+            android:layout_height="@dimen/fm_h"
+            android:background="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/image"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/image"
+            android:text="地图名字"
+            android:textSize="@dimen/font_dimen_title" />
+
+        <TextView
+            android:id="@+id/tv_nm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/image"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/image"
+            android:text="作者名"
+            android:textColor="@color/secondary" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_nm"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/image"
+            android:gravity="center_vertical"
+            android:text="类别"
+            android:textColor="@color/secondary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_nm"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="@dimen/titlebar_height"
+            android:layout_toRightOf="@+id/tv_category"
+            android:gravity="center_vertical"
+            android:text="时间"
+            android:textColor="@color/secondary" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/sv_v"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:id="@+id/sv_h"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="介绍" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_tx"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

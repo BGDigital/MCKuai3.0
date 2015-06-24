@@ -36,13 +36,8 @@
         android:text="@string/revert"
         />
     </LinearLayout>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/mpt_ls"
-        android:layout_below="@+id/pt_ly"></ListView>
-
     <Button
+        android:id="@+id/bt_go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -50,5 +45,14 @@
         android:text="@string/go"
         android:textColor="@color/font_white"
         android:background="@color/background_green"
-    />
+        />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mpt_ls"
+        android:layout_below="@+id/pt_ly"
+        android:layout_above="@id/bt_go"
+    ></ListView>
+
+
 </RelativeLayout>
