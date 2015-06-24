@@ -44,6 +44,10 @@ public class MasterLayout extends FrameLayout implements OnClickListener {
 
     private AlphaAnimation fade_in, fade_out;
 
+    public int getFlg_frmwrk_mode() {
+        return flg_frmwrk_mode;
+    }
+
     int flg_frmwrk_mode = 0;
     boolean first_click = false;
 

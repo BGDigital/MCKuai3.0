@@ -13,23 +13,41 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.mckuai.adapter.MapAdapter;
+import com.mckuai.bean.MapBean;
 import com.mckuai.imc.ClassificationActivity;
 import com.mckuai.imc.MapActivity;
 import com.mckuai.imc.R;
+
+import java.util.ArrayList;
 
 public class MapFragment extends BaseFragment implements View.OnClickListener {
     private View view;
     private Button rb_map, rb_classification, rb_mymap;
     private EditText map_ed;
     private ListView map_ls;
-
+    private ArrayList<MapBean> mapList;
+private MapAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_map, container, false);
+        return view;
+    }
 
-        return inflater.inflate(R.layout.fragment_map, container, false);
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (null == mapList){
+            mapList = new ArrayList<>(10);
+            MapBean map = new MapBean();
+            mapList.add(map);
+        }
+        adapter = new MapAdapter(getActivity(),mapList);
+        initView();
+        map_ls.setAdapter(adapter);
     }
 
     protected void initView() {
