@@ -1,13 +1,11 @@
 package com.mckuai.imc;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TabHost;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mckuai.adapter.FragmentAdapter;
@@ -18,24 +16,37 @@ import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ServerFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener,View.OnClickListener {
     private static MainActivity instance;
 
     private ViewPager vp;
-    private FragmentTabHost mTabHost;
+    private ImageView img1;
+    private ImageView img2;
+    private ImageView img3;
+    private ImageView img4;
+    private TextView tv1;
+    private TextView tv2;
+    private TextView tv3;
+    private TextView tv4;
+    private LinearLayout ll1;
+    private LinearLayout ll2;
+    private LinearLayout ll3;
+    private LinearLayout ll4;
 
-    private LayoutInflater mInflater;
-    private String mFragmentTitle[];
+    private int lastPosition = 0;
+
+
+
+    private ArrayList<BaseFragment> mList;
+    private boolean isFragmentChanged=false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mFragmentTitle = getResources().getStringArray(R.array.main_fragment);
-        mInflater = LayoutInflater.from(this);
+
         initView();
         initPage();
     }
@@ -45,42 +56,40 @@ public class MainActivity extends BaseActivity {
         super.onResume();
     }
 
+
     private void initView(){
         vp = (ViewPager) findViewById(R.id.pager);
-        //vp.setOnPageChangeListener(this);
-        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.pager);
-        mTabHost.getTabWidget().setDividerDrawable(null);
-        //mTabHost.setOnTabChangedListener(this);
-        Class fragmentArray[] = {android.support.v4.app.Fragment.class,android.support.v4.app.Fragment.class,android.support.v4.app.Fragment.class,android.support.v4.app.Fragment.class};
-        for (int i = 0;i < 4 ;i++){
-            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(mFragmentTitle[i]).setIndicator(getTabItemView(i));
-            mTabHost.addTab(tabSpec,fragmentArray[i],null);
-        }
+        img1 = (ImageView)findViewById(R.id.btn_1);
+        img2 = (ImageView)findViewById(R.id.btn_2);
+        img3 = (ImageView)findViewById(R.id.btn_3);
+        img4 = (ImageView)findViewById(R.id.btn_4);
+        tv1 = (TextView)findViewById(R.id.tv_1);
+        tv2 = (TextView)findViewById(R.id.tv_2);
+        tv3 = (TextView)findViewById(R.id.tv_3);
+        tv4 = (TextView)findViewById(R.id.tv_4);
+        ll1 = (LinearLayout)findViewById(R.id.rb1);
+        ll2 = (LinearLayout)findViewById(R.id.rb2);
+        ll3 = (LinearLayout)findViewById(R.id.rb3);
+        ll4 = (LinearLayout)findViewById(R.id.rb4);
+
+        ll1.setOnClickListener(this);
+        ll2.setOnClickListener(this);
+        ll3.setOnClickListener(this);
+        ll4.setOnClickListener(this);
+
+        changeCheckedButton(0);
     }
 
     private void initPage(){
-        List<BaseFragment> list = new ArrayList<>(4);
-        list.add(new GameEditerFragment());
-        list.add(new MapFragment());
-        list.add(new ServerFragment());
-        list.add(new ForumFragment());
-        vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(),list));
+        mList = new ArrayList<>(4);
+        mList.add(new GameEditerFragment());
+        mList.add(new MapFragment());
+        mList.add(new ServerFragment());
+        mList.add(new ForumFragment());
+        vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
+        vp.setOnPageChangeListener(this);
     }
 
-    private View getTabItemView(int i)
-    {
-        View view = mInflater.inflate(R.layout.item_table, null);
-        ImageView mImageView = (ImageView) view.findViewById(R.id.tab_imageview);
-        TextView mTextView = (TextView) view.findViewById(R.id.tab_textview);
-        //mImageView.setBackgroundResource(mFragmentTitle[i]);
-        mTextView.setText(mFragmentTitle[i]);
-        // if (2 == i)
-        // {
-        // newMessageView = (View) view.findViewById(R.id.newmessage);
-        // }
-        return view;
-    }
 
 
     @Override
@@ -109,5 +118,95 @@ public class MainActivity extends BaseActivity {
             });
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        isFragmentChanged = true;
+        changeCheckedButton(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private void changeCheckedButton(int position){
+        setUnChecked();
+        setChecked(position);
+    }
+
+    private void setUnChecked(){
+        switch (lastPosition){
+            case  1:
+                tv2.setEnabled(true);
+                img2.setEnabled(true);
+                ll2.setEnabled(true);
+                break;
+            case 2:
+                tv3.setEnabled(true);
+                img3.setEnabled(true);
+                ll3.setEnabled(true);
+                break;
+            case 3:
+                tv4.setEnabled(true);
+                img4.setEnabled(true);
+                ll4.setEnabled(true);
+                break;
+            default:
+                tv1.setEnabled(true);
+                img1.setEnabled(true);
+                ll1.setEnabled(true);
+                break;
+        }
+    }
+    private void setChecked(int position){
+        lastPosition = position;
+        switch (position){
+            case 1:
+                tv2.setEnabled(false);
+                img2.setEnabled(false);
+                ll2.setEnabled(false);
+                break;
+            case 2:
+                tv3.setEnabled(false);
+                img3.setEnabled(false);
+                ll3.setEnabled(false);
+                break;
+            case 3:
+                tv4.setEnabled(false);
+                img4.setEnabled(false);
+                ll4.setEnabled(false);
+                break;
+            default:
+                tv1.setEnabled(false);
+                img1.setEnabled(false);
+                ll1.setEnabled(false);
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.rb1:
+                vp.setCurrentItem(0,false);
+                break;
+            case R.id.rb2:
+                vp.setCurrentItem(1,false);
+                break;
+            case R.id.rb3:
+                vp.setCurrentItem(2,false);
+                break;
+            case R.id.rb4:
+                vp.setCurrentItem(3,false);
+                break;
+
+        }
     }
 }

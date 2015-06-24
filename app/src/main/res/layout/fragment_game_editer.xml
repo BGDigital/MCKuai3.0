@@ -1,9 +1,227 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.mckuai.fragment.GameEditerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/iv_map"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@color/background_yellow"
+        />
+    <TextView
+        android:id="@+id/tv_changeProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondary"
+        android:padding="10dp"
+        android:text="修改游戏配置"
+        android:layout_below="@id/iv_map"
+        />
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/btn_startGame"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/tv_changeProfile"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        />
+
+
+
+    <Button
+        android:id="@+id/btn_selectMap"
+        android:layout_width="wrap_content"
+        android:textColor="@color/font_white"
+        android:background="@color/background_green"
+        android:text="选择地图"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_mapName"
+        android:singleLine="true"
+        android:layout_alignBottom="@id/iv_map"
+        android:layout_margin="10dp"
+        android:text="地图名称"
+        android:textColor="@color/font_white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_below="@+id/tv_changeProfile">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/rl_gameMode"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_gameMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_error"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/secondary"
+                android:text="点击切换"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_gameMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/font_white"
+                android:layout_centerHorizontal="true"
+                android:text="创造"
+                android:layout_below="@id/iv_gameMode"/>
+            <TextView
+                android:id="@+id/tv_curMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/font_white"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_gameMode"
+                android:text="当前模式"
+                />
+        </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_gameTime"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/iv_gameTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_error"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/secondary"
+                    android:text="点击切换"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_gameTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/font_white"
+                    android:layout_centerHorizontal="true"
+                    android:text="夜晚"
+                    android:layout_below="@id/iv_gameTime"/>
+                <TextView
+                    android:id="@+id/tv_curTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/font_white"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/tv_gameTime"
+                    android:text="当前天气"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+            <RelativeLayout
+                android:id="@+id/rl_thirdView"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/iv_thirdView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_error"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/secondary"
+                    android:text="点击切换"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_thirdView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/font_white"
+                    android:layout_centerHorizontal="true"
+                    android:text="第三人称视角"
+                    android:layout_below="@id/iv_thirdView"/>
+                <TextView
+                    android:id="@+id/tv_curView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/font_white"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/tv_thirdView"
+                    android:text="未开启"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_gamePackage"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/iv_gamePackage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_error"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/secondary"
+                    android:text="点击切换"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_gamePackage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/font_white"
+                    android:layout_centerHorizontal="true"
+                    android:text="背包物品"
+                    android:layout_below="@id/iv_gamePackage"/>
+                <TextView
+                    android:id="@+id/tv_curItemCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/font_white"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/tv_gamePackage"
+                    android:text="12种"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.mckuai.fragment;
 
 
 import android.app.Fragment;
+import android.graphics.Point;
 import android.view.Gravity;
 import android.view.View;
 
@@ -11,21 +12,22 @@ import com.gitonway.lee.niftynotification.lib.Effects;
 import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
 import com.mckuai.imc.R;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BaseFragment extends android.support.v4.app.Fragment {
+    private LoadToast mToast;
+
     protected  boolean isLoading = false;    //正在加载数据
     protected  boolean isCacheEnabled = true;         //启用缓存
     protected  String mTitle;
 
+    private Point mPoint;
     private com.gitonway.lee.niftynotification.lib.Configuration msgCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration warningCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration errorCfg;
-
-    public BaseFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * 显示通知
@@ -131,5 +133,38 @@ public class BaseFragment extends android.support.v4.app.Fragment {
                     });
         }
         mAlertDialogBuilder.show();
+    }
+
+    protected void popupLoadingToast(String msg){
+        if (null == mToast){
+            if (null == mPoint){
+                mPoint = new Point();
+                getActivity().getWindowManager().getDefaultDisplay().getSize(mPoint);
+            }
+            mToast = new LoadToast(getActivity());
+            mToast.setTranslationY((int) (mPoint.y * 0.4));
+            mToast.setTextColor(getResources().getColor(R.color.font_white)).setBackgroundColor(
+                    getResources().getColor(R.color.background_green));
+        }
+        mToast.setText(msg);
+        mToast.show();
+    }
+
+    protected  void cancleLodingToast(boolean isSuccess){
+        if (null != mToast){
+            if (isSuccess){
+                mToast.success();
+            }
+            else mToast.error();
+            mToast = null;
+        }
+    }
+
+    public String getmTitle() {
+        return mTitle;
+    }
+
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 }
