@@ -1,62 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<include layout="@layout/map_title"
-    android:id="@+id/map_title"></include>
-    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/item_divider_height"
-        >
-        <RadioGroup
-            android:id="@+id/rg_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/menu_height_lv2"
-            android:background="@color/background_Grey"
-            android:orientation="horizontal" >
-            <RadioButton
-                android:id="@+id/rb_"
+        android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/rb_map"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/menu_height_lv2"
+                android:layout_height="@dimen/bt_h"
                 android:layout_weight="1"
-                android:button="@null"
+                android:background="@color/background_yellow"
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/ranking"
-                android:background="@color/background_yellow"
-                android:textColor="@color/font_white"
-                />
-            <RadioButton
+                android:textColor="@color/font_white" />
+
+            <Button
                 android:id="@+id/rb_classification"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/menu_height_lv2"
+                android:layout_height="@dimen/bt_h"
                 android:layout_weight="1"
-                android:button="@null"
+                android:background="@color/background_biue"
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/classification"
-                android:background="@color/background_biue"
                 android:textColor="@color/font_white"
-                />
-            <RadioButton
+                android:layout_marginLeft="10dp"/>
+
+            <Button
                 android:id="@+id/rb_mymap"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/menu_height_lv2"
+                android:layout_height="@dimen/bt_h"
                 android:layout_weight="1"
-                android:button="@null"
+                android:background="@color/background_dark_green"
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/mymap"
-                android:background="@color/background_dark_green"
                 android:textColor="@color/font_white"
-                />
-        </RadioGroup>
+                android:layout_marginLeft="10dp"/>
 
-    </RelativeLayout>
+
+    </LinearLayout>
+
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/map_ls"
-        ></ListView>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 </LinearLayout>

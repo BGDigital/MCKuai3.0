@@ -20,4 +20,20 @@
     <!-- 图文间距 -->
     <dimen name="margin_top">5dp</dimen>
     <dimen name="bottom_button_height">48dp</dimen>
+    <!-- 封面 -->
+    <dimen name="fm_w">116dp</dimen>
+    <dimen name="fm_h">66dp</dimen>
+    <!-- 下载控件 -->
+    <dimen name="xz_wh">48dp</dimen>
+    <!-- button高 -->
+    <dimen name="bt_h">46dp</dimen>
+    <!-- 分类button -->
+    <dimen name="btn_hw">55dp</dimen>
+    <!-- 二级封面 -->
+    <dimen name="fmer_w">213dp</dimen>
+    <dimen name="fmer_we">145dp</dimen>
+    <dimen name="fmer_h">120dp</dimen>
+    <!-- 二级控件 -->
+    <dimen name="bter_w">343dp</dimen>
+    <dimen name="bter_h">39dp</dimen>
 </resources>
