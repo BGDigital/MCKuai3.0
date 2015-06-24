@@ -17,9 +17,12 @@ import java.util.ArrayList;
  * Created by Zzz on 2015/6/24.
  */
 public class MapAdapter extends BaseAdapter{
+
+
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<MapBean> mMapBeans = new ArrayList<MapBean>();
+
     public MapAdapter(Context context, ArrayList<MapBean> mapBeans){
         mMapBeans = mapBeans;
         this.mContext = context;
