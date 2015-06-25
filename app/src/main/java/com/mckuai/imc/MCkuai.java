@@ -40,6 +40,7 @@ public class MCkuai  extends Application{
     }
 
     public static MCkuai getInstance() {
+
         return instance;
     }
 
