@@ -46,8 +46,12 @@ public class MCkuai  extends Application{
         return  getCacheRoot() + File.separator + getString(R.string.jsoncache_dir) + File.separator + getString(R.string.jsoncache_file);
     }
 
-    public String getImageCacheRoot() {
+    public String getImageCacheDir() {
         return getCacheRoot() + File.separator + getString(R.string.imagecache_dir);
+    }
+
+    public String getMapDownloadDir(){
+        return  getFilesDir() + File.separator + "maps";
     }
 
     public boolean isFirstBoot()

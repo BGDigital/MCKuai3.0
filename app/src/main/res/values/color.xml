@@ -7,6 +7,8 @@
     <color name="font_radio_hint_normal">#B6A8A5</color>
     <color name="font_radio_hint_checked">#24922F</color>
     <color name="font_white">#FFFFFF</color>
+    <color name="font_black">#020202</color>
+    <color name="font_gameedit_hint">#818181</color>
 
     <!-- 边框 -->
     <color name="frame_darkgray">#EBEBEB</color>
@@ -18,6 +20,7 @@
     <color name="background_yellow">#FFCC00</color>
     <color name="background_biue">#00CCFF</color>
     <color name="background_dark_green">#33CC8F</color>
+    <color name="background_white">#FFFFFF</color>
 
     <!--通用色彩 -->
     <color name="white">#FFFFFF</color>
@@ -34,6 +37,12 @@
     <color name="load_accent">#7c4dff</color>
     <color name="load_success">#3CCD88</color>
     <color name="load_error">#f44336</color>
+
+    <!--我的背包-->
+    <color name="base">#F0F0F0</color>
+    <color name="highlight">#F0F0F0</color>
+    <color name="error">#F0F0F0</color>
+
 
 
 </resources>

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,10 +21,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static MainActivity instance;
 
     private ViewPager vp;
-    private ImageView img1;
-    private ImageView img2;
-    private ImageView img3;
-    private ImageView img4;
+    private TextView img1;
+    private TextView img2;
+    private TextView img3;
+    private TextView img4;
     private TextView tv1;
     private TextView tv2;
     private TextView tv3;
@@ -59,10 +58,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void initView(){
         vp = (ViewPager) findViewById(R.id.pager);
-        img1 = (ImageView)findViewById(R.id.btn_1);
-        img2 = (ImageView)findViewById(R.id.btn_2);
-        img3 = (ImageView)findViewById(R.id.btn_3);
-        img4 = (ImageView)findViewById(R.id.btn_4);
+        img1 = (TextView)findViewById(R.id.btn_1);
+        img2 = (TextView)findViewById(R.id.btn_2);
+        img3 = (TextView)findViewById(R.id.btn_3);
+        img4 = (TextView)findViewById(R.id.btn_4);
         tv1 = (TextView)findViewById(R.id.tv_1);
         tv2 = (TextView)findViewById(R.id.tv_2);
         tv3 = (TextView)findViewById(R.id.tv_3);

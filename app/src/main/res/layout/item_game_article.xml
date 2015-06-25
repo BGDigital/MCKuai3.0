@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:layout_width="111dp" android:layout_height="111dp"
+    android:layout_margin="2dp"
+    android:background="@drawable/article_background_layerlist">
+    <ImageView
+        android:id="@+id/iv_articleItem"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background ="@drawable/icon_mode_creat"
+        android:layout_centerInParent="true"/>
+    <TextView
+        android:id="@+id/tv_articleName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/font_black"
+        android:gravity="center_horizontal"
+        android:text="火把"
+
+        />
+    <ImageView
+        android:id="@+id/iv_selected"
+        android:background="@drawable/icon_itemselected"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:visibility="invisible"
+        >
+
+    </ImageView>
+</RelativeLayout>

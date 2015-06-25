@@ -17,12 +17,14 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <ImageView
+            <TextView
                 android:id="@+id/btn_1"
-                android:layout_width="wrap_content"
-                android:src="@drawable/notification_template_icon_bg"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/btn_navigation_icon_width"
+                android:layout_height="@dimen/btn_navigation_icon_width"
+                android:gravity="center"
+                android:enabled="false"
+                android:background="@drawable/btn_tool_selector"
+                android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/tv_1"
                 android:layout_gravity="center_horizontal"
@@ -39,12 +41,12 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <ImageView
+            <TextView
                 android:id="@+id/btn_2"
-                android:layout_width="wrap_content"
-                android:src="@drawable/notification_template_icon_bg"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/btn_navigation_icon_width"
+                android:layout_height="@dimen/btn_navigation_icon_width"
+                android:background="@drawable/btn_map_selector"
+                android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/tv_2"
                 android:text="地图"
@@ -60,12 +62,12 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <ImageView
+            <TextView
                 android:id="@+id/btn_3"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/btn_navigation_icon_width"
+                android:layout_height="@dimen/btn_navigation_icon_width"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/notification_template_icon_bg"
-                android:layout_height="wrap_content" />
+                android:background="@drawable/btn_cooper_selector" />
             <TextView
                 android:id="@+id/tv_3"
                 android:text="联机"
@@ -82,19 +84,19 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:layout_height="wrap_content">
-            <ImageView
+            <TextView
                 android:id="@+id/btn_4"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:src="@drawable/notification_template_icon_bg"
-                android:layout_height="wrap_content" />
+                android:layout_width="@dimen/btn_navigation_icon_width"
+                android:layout_height="@dimen/btn_navigation_icon_width"
+                android:background="@drawable/btn_forum_selector"/>
             <TextView
                 android:id="@+id/tv_4"
                 android:text="社区"
                 android:textColor="@drawable/item_tab_font_selector"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 

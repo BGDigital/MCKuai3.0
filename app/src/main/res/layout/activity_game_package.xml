@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_Grey"
+    tools:context="com.mckuai.imc.GamePackageActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_search"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:layout_height="35dp">
+
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/edt_search"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/btn_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_addItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="一键新增"
+            android:textColor="@color/font_white"
+            android:background="@color/background_green"
+            />
+    </LinearLayout>
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:padding="10dp"
+        android:id="@+id/recy_itemList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/rl_search"
+        android:layout_above="@id/ll_bottom"
+        >
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+</RelativeLayout>
