@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<include layout="@layout/map_title"></include>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/map_title"></include>
+
     <EditText
         android:id="@+id/map_ed"
         android:layout_width="match_parent"
@@ -11,110 +14,121 @@
         android:imeOptions="actionSearch"
         android:singleLine="true"
         android:visibility="gone" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/com_margin"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="@dimen/com_margin">
+
         <LinearLayout
             android:id="@+id/cf_l1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/com_margin"
             android:orientation="horizontal">
-        <Button
-            android:layout_width="@dimen/btn_hw"
-            android:layout_height="@dimen/btn_hw"
-            android:background="@color/background_green"
-           />
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_right_button_left"
                 android:text="@string/survival"
-                android:textSize="@dimen/font_dimen_title"/>
+                android:textSize="@dimen/font_dimen_title" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/cf_l2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/padding_right_button_left"
-            android:orientation="horizontal"
-            android:layout_alignParentRight="true">
+            android:orientation="horizontal">
+
             <Button
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_green"
-                />
+                android:background="@color/background_green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_right_button_left"
                 android:text="@string/decipt"
-                android:textSize="@dimen/font_dimen_title"/>
+                android:textSize="@dimen/font_dimen_title" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/cf_l3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/cf_l1"
             android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="@dimen/padding_right_button_left"
-            android:layout_below="@id/cf_l1"
             android:orientation="horizontal">
+
             <Button
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_green"
-                />
+                android:background="@color/background_green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_right_button_left"
                 android:text="@string/parkour"
-                android:textSize="@dimen/font_dimen_title"/>
+                android:textSize="@dimen/font_dimen_title" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/cf_l4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/cf_l2"
             android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="@dimen/padding_right_button_left"
-            android:layout_below="@id/cf_l2"
-            android:orientation="horizontal"
-            android:layout_alignParentRight="true">
+            android:orientation="horizontal">
+
             <Button
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_green"
-                />
+                android:background="@color/background_green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_right_button_left"
                 android:text="@string/architecture"
-                android:textSize="@dimen/font_dimen_title"/>
+                android:textSize="@dimen/font_dimen_title" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/cf_l5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/cf_l3"
             android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="@dimen/padding_right_button_left"
-            android:layout_below="@id/cf_l3"
             android:orientation="horizontal">
+
             <Button
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_green"
-                />
+                android:background="@color/background_green" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_right_button_left"
                 android:text="@string/pvp"
-                android:textSize="@dimen/font_dimen_title"/>
+                android:textSize="@dimen/font_dimen_title" />
 
         </LinearLayout>
     </RelativeLayout>

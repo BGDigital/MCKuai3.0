@@ -23,7 +23,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/item_earch"
+        android:background="@drawable/item_share"
         android:paddingLeft="@dimen/padding_right_button_left"
         android:paddingRight="@dimen/com_margin"
         android:visibility="visible" />

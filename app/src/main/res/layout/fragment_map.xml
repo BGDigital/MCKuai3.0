@@ -5,45 +5,46 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/l1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/item_divider_height"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/item_divider_height">
 
-            <Button
-                android:id="@+id/rb_map"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/bt_h"
-                android:layout_weight="1"
-                android:background="@color/background_yellow"
-                android:checked="true"
-                android:gravity="center"
-                android:text="@string/ranking"
-                android:textColor="@color/font_white" />
+        <Button
+            android:id="@+id/rb_map"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bt_h"
+            android:layout_weight="1"
+            android:background="@color/background_yellow"
+            android:drawableLeft="@drawable/map_ranking"
+            android:gravity="center"
+            android:text="@string/ranking"
+            android:textColor="@color/font_white" />
 
-            <Button
-                android:id="@+id/rb_classification"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/bt_h"
-                android:layout_weight="1"
-                android:background="@color/background_biue"
-                android:checked="true"
-                android:gravity="center"
-                android:text="@string/classification"
-                android:textColor="@color/font_white"
-                android:layout_marginLeft="10dp"/>
+        <Button
+            android:id="@+id/rb_classification"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bt_h"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@color/background_biue"
+            android:drawableLeft="@drawable/map_classification"
+            android:gravity="center"
+            android:text="@string/classification"
+            android:textColor="@color/font_white" />
 
-            <Button
-                android:id="@+id/rb_mymap"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/bt_h"
-                android:layout_weight="1"
-                android:background="@color/background_dark_green"
-                android:checked="true"
-                android:gravity="center"
-                android:text="@string/mymap"
-                android:textColor="@color/font_white"
-                android:layout_marginLeft="10dp"/>
+        <Button
+            android:id="@+id/rb_mymap"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bt_h"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@color/background_dark_green"
+            android:drawableLeft="@drawable/map_mymap"
+            android:gravity="center"
+            android:text="@string/mymap"
+            android:textColor="@color/font_white" />
 
 
     </LinearLayout>
@@ -51,5 +52,152 @@
     <ListView
         android:id="@+id/map_ls"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:visibility="visible"></ListView>
+
+    <RelativeLayout
+        android:id="@+id/mp_r1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/com_margin"
+        android:visibility="gone"
+        >
+
+        <LinearLayout
+            android:id="@+id/cf_l1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/com_margin"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_right_button_left"
+                android:text="@string/survival"
+                android:textSize="@dimen/font_dimen_title" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cf_l2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/padding_right_button_left"
+            android:layout_marginTop="21dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_right_button_left"
+                android:text="@string/decipt"
+                android:textSize="@dimen/font_dimen_title" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cf_l3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cf_l1"
+            android:layout_marginLeft="@dimen/com_margin"
+            android:layout_marginTop="@dimen/padding_right_button_left"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_right_button_left"
+                android:text="@string/parkour"
+                android:textSize="@dimen/font_dimen_title" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cf_l4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/cf_l2"
+            android:layout_marginRight="@dimen/padding_right_button_left"
+            android:layout_marginTop="@dimen/padding_right_button_left"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_right_button_left"
+                android:text="@string/architecture"
+                android:textSize="@dimen/font_dimen_title" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cf_l5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cf_l3"
+            android:layout_marginLeft="@dimen/com_margin"
+            android:layout_marginTop="@dimen/padding_right_button_left"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_right_button_left"
+                android:text="@string/pvp"
+                android:textSize="@dimen/font_dimen_title" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/cf_l6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/cf_l4"
+            android:layout_marginRight="@dimen/padding_right_button_left"
+            android:layout_marginTop="@dimen/padding_right_button_left"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="@dimen/btn_hw"
+                android:layout_height="@dimen/btn_hw"
+                android:background="@color/background_green" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_right_button_left"
+                android:text="@string/total"
+                android:textSize="@dimen/font_dimen_title" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

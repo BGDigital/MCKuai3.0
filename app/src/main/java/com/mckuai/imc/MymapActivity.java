@@ -63,10 +63,13 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
                 }
                 break;
             case R.id.go_map:
+
             break;
             case R.id.leave_map:
+
                 break;
             case R.id.delete_map:
+
                 break;
             default:
                 break;

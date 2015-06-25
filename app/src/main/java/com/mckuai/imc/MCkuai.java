@@ -30,6 +30,7 @@ public class MCkuai  extends Application{
         super.onCreate();
         instance = this;
         mCache = new JsonCache(this);
+        mClient = new AsyncHttpClient();
     }
 
     @Override

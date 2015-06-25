@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/tit"
-        layout="@layout/map_title" />
+        layout="@layout/map_tit" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/md_r1"
@@ -62,21 +62,27 @@
             android:layout_toRightOf="@+id/tv_category"
             android:gravity="center_vertical"
             android:text="时间"
-            android:textColor="@color/secondary" />
+            android:textColor="@color/secondary"
+            android:id="@+id/tx_times"/>
     </RelativeLayout>
-
-    <RelativeLayout
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/md_r2"
+        android:background="@color/background_green"
+        android:text="下载"
+        android:textColor="@color/font_white" />
+    <RelativeLayout
+        android:id="@+id/md_r2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/md_r1">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/sv_v"/>
+
         <ScrollView
             android:id="@+id/sv_v"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
             android:scrollbars="vertical">
 
@@ -100,16 +106,23 @@
                 </ScrollView>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="介绍" />
+                    android:gravity="center_vertical"
+                    android:text="介绍"
+                    android:textColor="@color/background_green"
+                    android:textSize="@dimen/font_dimen_title" />
 
                 <TextView
                     android:id="@+id/tv_tx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/font_dimen_title"
+                    android:text=""/>
             </LinearLayout>
 
         </ScrollView>
     </RelativeLayout>
+
+
 </RelativeLayout>

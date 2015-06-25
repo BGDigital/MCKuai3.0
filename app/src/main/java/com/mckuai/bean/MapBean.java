@@ -1,37 +1,28 @@
 package com.mckuai.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
- * Created by Zzz on 2015/6/24.
+ * Created by Zzz on 2015/6/25.
  */
-public class MapBean implements Serializable{
-    private String name;//地图名
-    private String style;//地图类型
-    private String time;//更新时间
-    private int size;//地图大小
-    public String getName(){
-        return name;
+public class MapBean implements Serializable {
+    ArrayList<Map> data = new ArrayList<>(10);
+    PageInfo pageBean = new PageInfo();
+
+    public ArrayList<Map> getData() {
+        return data;
     }
-    public void setName(String name){
-       this.name=name;
+
+    public void setData(ArrayList<Map> data) {
+        this.data = data;
     }
-    public String getStyle(){
-        return style;
+
+    public PageInfo getPageBean() {
+        return pageBean;
     }
-    public void setStyle(String style){
-        this.style=style;
-    }
-    public String getTimt(){
-        return time;
-    }
-    public void setTime(String time){
-        this.time=time;
-    }
-    public int getSize(){
-       return size;
-    }
-    public void setSize(int size){
-        this.size=size;
+
+    public void setPageBean(PageInfo pageBean) {
+        this.pageBean = pageBean;
     }
 }
