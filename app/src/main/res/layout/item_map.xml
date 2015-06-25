@@ -44,13 +44,13 @@
         android:text="类别"
         android:textColor="@color/font_radio_hint_checked"/>
 
-    <com.thbs.progressbutton.MasterLayout
+    <com.mckuai.widget.MasterLayout
         android:id="@+id/MasterLayout01"
         android:layout_width="@dimen/xz_wh"
         android:layout_height="@dimen/xz_wh"
         android:layout_alignParentRight="true"
         android:clickable="true" >
-    </com.thbs.progressbutton.MasterLayout>
+    </com.mckuai.widget.MasterLayout>
     <TextView
         android:id="@+id/tv_size"
         android:layout_width="0dp"
