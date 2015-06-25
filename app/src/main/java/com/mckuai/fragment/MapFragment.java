@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -21,7 +19,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.adapter.MapAdapter;
-import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.MapActivity;
@@ -32,51 +29,76 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class MapFragment extends BaseFragment implements View.OnClickListener {
     private View view;
     private Context mContent;
     private Button rb_map, rb_classification, rb_mymap;
     private EditText map_ed;
     private TextView tv_title;
-//    private ImageView btn_left;
-//    private ImageButton btn_right;
     private ListView map_ls;
     private RelativeLayout mp_r1;
-    // private ArrayList<Map> mapList;
     private MapBean mapList;
     private LinearLayout l1, cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
     private MapAdapter adapter;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
+    private MCkuai application;
     private String mapType = null;
     private String orderFiled = null;
+
+    private static  final  String TAG = "MapFragment";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_map, container, false);
+            if (null == view){
+                view = inflater.inflate(R.layout.fragment_map, container, false);
+            }
+        application = MCkuai.getInstance();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if (null == mapList) {
-//            mapList = new MapBean();
-//            Map map = new Map();
-//            mapList.getData().add(map);
-//        }
+        Log.w(TAG, "onResume");
+        if (null == map_ls){
+            initView();
+        }
+         showData();
+    }
 
-        initView();
-        loadData();
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            showData();
+        }
     }
 
     private void showData() {
-        adapter = new MapAdapter(getActivity(), mapList.getData());
-        map_ls.setAdapter(adapter);
+        if (isLoading || application.fragmentIndex != 1){
+            Log.w(TAG,"当前页面不是可显示页面,返回");
+            return;
+        }
+        if (null == mapList || null == mapList.getData() || 0 == mapList.getPageBean().getPage()){
+            isLoading = true;
+            loadData();
+            return;
+        }
+        if (null  == adapter){
+            adapter = new MapAdapter(getActivity(), mapList.getData());
+            map_ls.setAdapter(adapter);
+        }
+        else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     protected void initView() {
@@ -86,7 +108,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
         map_ls = (ListView) view.findViewById(R.id.map_ls);
         tv_title = (TextView) view.findViewById(R.id.tv_title);
-        client = MCkuai.getInstance().mClient;
+        client = application.mClient;
         l1 = (LinearLayout) view.findViewById(R.id.l1);
         mp_r1 = (RelativeLayout) view.findViewById(R.id.mp_r1);
         cf_l1 = (LinearLayout) view.findViewById(R.id.cf_l1);
@@ -117,9 +139,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
                 getActivity().startActivity(intent);
                 break;
             case R.id.rb_classification:
-                map_ls.setVisibility(View.GONE);
-                l1.setVisibility(View.GONE);
-                mp_r1.setVisibility(View.VISIBLE);
+                showTypeLayout();
 //                tv_title.setText("��ͼ����");
                 break;
             case R.id.rb_mymap:
@@ -160,6 +180,18 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+    private void showTypeLayout(){
+        map_ls.setVisibility(View.GONE);
+        l1.setVisibility(View.GONE);
+        mp_r1.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTypeLayout(){
+        map_ls.setVisibility(View.VISIBLE);
+        l1.setVisibility(View.VISIBLE);
+        mp_r1.setVisibility(View.GONE);
+    }
+
     protected void loadData() {
         final RequestParams params = new RequestParams();
         final String url = getString(R.string.interface_domainName) + getString(R.string.interface_map);
@@ -185,6 +217,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                isLoading = false;
                 if (response != null && response.has("state")) {
                     try {
                         if (response.getString("state").equals("ok")) {
@@ -203,24 +236,28 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
                     if (!mapList.getData().isEmpty()) {
+                        cancleLodingToast(true);
                         showData();
+                        return;
                     } else {
                         showNotification(0, "no data!!", R.id.l1);
                     }
                 } else {
                     showNotification(0, "load data error!!", R.id.l1);
                 }
-
+                cancleLodingToast(false);
             }
 
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 cancleLodingToast(false);
+                isLoading = false;
             }
         });
     }
 
     protected void survival() {
+        hideTypeLayout();
         mapType = "生存";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
@@ -228,6 +265,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
     }
 
     protected void decipt() {
+        hideTypeLayout();
         mapType = "解密";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
@@ -235,6 +273,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
     }
 
     protected void parkour() {
+        hideTypeLayout();
         mapType = "跑酷";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
@@ -242,6 +281,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
     }
 
     protected void architecture() {
+        hideTypeLayout();
         mapType = "建筑";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
@@ -249,6 +289,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
     }
 
     protected void pvp() {
+        hideTypeLayout();
         mapType = "pvp竞技";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);

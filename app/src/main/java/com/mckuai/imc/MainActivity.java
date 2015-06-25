@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private LinearLayout ll4;
 
     private int lastPosition = 0;
+    private MCkuai application;
 
 
 
@@ -45,14 +46,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        application = MCkuai.getInstance();
         initView();
         initPage();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
 
@@ -87,6 +83,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mList.add(new ForumFragment());
         vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
         vp.setOnPageChangeListener(this);
+
     }
 
 
@@ -127,6 +124,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onPageSelected(int position) {
         isFragmentChanged = true;
+        application.fragmentIndex = position;
         changeCheckedButton(position);
     }
 
@@ -194,15 +192,19 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rb1:
+                application.fragmentIndex = 0;
                 vp.setCurrentItem(0,false);
                 break;
             case R.id.rb2:
+                application.fragmentIndex = 1;
                 vp.setCurrentItem(1,false);
                 break;
             case R.id.rb3:
+                application.fragmentIndex = 2;
                 vp.setCurrentItem(2,false);
                 break;
             case R.id.rb4:
+                application.fragmentIndex = 3;
                 vp.setCurrentItem(3,false);
                 break;
 

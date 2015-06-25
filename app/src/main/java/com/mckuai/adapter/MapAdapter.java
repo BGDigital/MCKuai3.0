@@ -59,7 +59,7 @@ public class MapAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         Map map = (Map) getItem(position);
-        if (null != map) {
+        if (null == map) {
             return null;
         }
         if (null == convertView) {

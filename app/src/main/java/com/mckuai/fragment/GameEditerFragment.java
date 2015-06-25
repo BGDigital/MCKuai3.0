@@ -49,19 +49,15 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == tv_gameMode){
             initView();
         }
+
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.w(TAG, "isVisibleToUser=" + isVisibleToUser);
+        Log.w(TAG, "setUserVisibleHint:" + isVisibleToUser);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.w(TAG, "hidden=" + hidden);
-    }
 
     private void initView(){
         tv_gameMode = (TextView)view.findViewById(R.id.tv_gameMode) ;

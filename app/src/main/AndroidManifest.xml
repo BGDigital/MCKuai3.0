@@ -27,6 +27,7 @@
         android:smallScreens="true" />
 
     <application
+        android:name=".MCkuai"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -44,6 +45,25 @@
             android:name=".GamePackageActivity"
             android:label="@string/title_activity_game_package" >
         </activity>
+        <activity android:name=".ClassificationActivity"
+            android:label="@string/classification">
+
+        </activity>
+        <activity android:name=".map_details"
+            android:label="@string/delete_map">
+
+        </activity>
+        <activity android:name=".MymapActivity"
+            android:label="@string/mymap">
+
+        </activity>
+         <activity android:name=".RankingActivity"
+             android:label="@string/title_activity_ranking">
+
+         </activity>
+
+        <activity android:name=".MapActivity"
+            android:label="@string/title_activity_map"></activity>
     </application>
 
 </manifest>

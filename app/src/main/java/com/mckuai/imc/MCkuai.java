@@ -8,6 +8,14 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.bean.MCUser;
 import com.mckuai.until.JsonCache;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import java.io.File;
 
@@ -23,6 +31,12 @@ public class MCkuai  extends Application{
     public MCUser mUser;
     public AsyncHttpClient mClient;
     public JsonCache mCache;
+    public int fragmentIndex = 0;
+
+    private static final int MEM_CACHE_SIZE = 8 * 1024 * 1024;// 内存缓存大小
+    private static final int CONNECT_TIME = 15 * 1000;// 连接时间
+    private static final int TIME_OUT = 30 * 1000;// 超时时间
+    private static final int IMAGE_POOL_SIZE = 3;// 线程池数量
 
 
     @Override
@@ -31,6 +45,7 @@ public class MCkuai  extends Application{
         instance = this;
         mCache = new JsonCache(this);
         mClient = new AsyncHttpClient();
+        initImageLoader();
     }
 
     @Override
@@ -39,10 +54,28 @@ public class MCkuai  extends Application{
         super.onTerminate();
     }
 
-    public static MCkuai getInstance() {
+    private void initImageLoader(){
 
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .memoryCacheExtraOptions(750, 480)
+                .threadPoolSize(IMAGE_POOL_SIZE)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                        // 对于同一url只缓存一个图
+                .memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE)).memoryCacheSize(MEM_CACHE_SIZE)
+                .discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.FIFO)
+                .discCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
+                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
+                .imageDownloader(new BaseImageDownloader(getApplicationContext(), CONNECT_TIME, TIME_OUT))
+                .writeDebugLogs().build();
+        ImageLoader.getInstance().init(configuration);
+    }
+
+    public static MCkuai getInstance() {
         return instance;
     }
+
+
 
     public String getJsonFile(){
         return  getCacheRoot() + File.separator + getString(R.string.jsoncache_dir) + File.separator + getString(R.string.jsoncache_file);

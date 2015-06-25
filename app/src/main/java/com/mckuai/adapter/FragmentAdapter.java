@@ -2,13 +2,13 @@ package com.mckuai.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mckuai.fragment.BaseFragment;
 
 import java.util.List;
 
-public class FragmentAdapter extends FragmentStatePagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
 	
 	List<BaseFragment> list;
 
@@ -20,6 +20,8 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 		super(fm);
 		this.list=list;
 	}
+
+
 	@Override
 	public Fragment getItem(int arg0) {
 		return (Fragment)list.get(arg0);
@@ -29,4 +31,5 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 	public int getCount() {
 		return list.size();
 	}
+
 }
