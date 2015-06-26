@@ -32,6 +32,7 @@ public class MapAdapter extends BaseAdapter {
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
 
+
     private DLManager manager;
 
     public MapAdapter(Context context, ArrayList<Map> mapBeans) {
