@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.bean.Map;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -81,7 +82,7 @@ public class MapAdapter extends BaseAdapter {
                             if (null == manager) {
                                 manager = DLManager.getInstance(mContext);
                             }
-                            manager.dlStart("http://softdown.mckuai.com:8081/mckuai.apk", "/mnt/sdcard/Download/", new DLTaskListener() {
+                            manager.dlStart("http://softdown.mckuai.com:8081/mckuai.apk",  MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);

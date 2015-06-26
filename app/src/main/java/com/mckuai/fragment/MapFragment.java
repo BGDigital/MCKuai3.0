@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -19,17 +20,20 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.adapter.MapAdapter;
+import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.MapActivity;
+import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
+import com.mckuai.imc.RankingActivity;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MapFragment extends BaseFragment implements View.OnClickListener {
+public class MapFragment extends BaseFragment implements View.OnClickListener,AdapterView.OnItemClickListener {
     private View view;
     private Context mContent;
     private Button rb_map, rb_classification, rb_mymap;
@@ -107,6 +111,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
         map_ls = (ListView) view.findViewById(R.id.map_ls);
+        map_ls.setOnItemClickListener(this);
         tv_title = (TextView) view.findViewById(R.id.tv_title);
         client = application.mClient;
         l1 = (LinearLayout) view.findViewById(R.id.l1);
@@ -135,7 +140,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
-                intent = new Intent(getActivity(), MapActivity.class);
+                intent = new Intent(getActivity(), RankingActivity.class);
                 getActivity().startActivity(intent);
                 break;
             case R.id.rb_classification:
@@ -301,5 +306,15 @@ public class MapFragment extends BaseFragment implements View.OnClickListener {
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
         loadData();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
+        Map mapList = (Map) adapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getString(R.string.Details), mapList);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
     }
 }

@@ -40,8 +40,12 @@
     <!-- 接口 -->
     <!-- 接口域名，使用域名+接口的方式来请求数据 -->
     <string name="interface_domainName">http://221.237.152.39:8081/</string>
+    <!-- 地图详情 -->
+    <string name="interface_details">map.do?act=one</string>
     <!-- 地图 -->
     <string name="interface_map">map.do?act=list</string>
     <string name="title_activity_ranking">RankingActivity</string>
     <string name="title_activity_game_package">GamePackageActivity</string>
+    <!-- 详情 -->
+    <string name="Details">details</string>
 </resources>

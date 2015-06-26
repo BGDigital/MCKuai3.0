@@ -86,7 +86,7 @@ public class MCkuai  extends Application{
     }
 
     public String getMapDownloadDir(){
-        return  getFilesDir() + File.separator + "maps";
+        return  getFilesDir() + File.separator + "maps" + File.separator;
     }
 
     public boolean isFirstBoot()

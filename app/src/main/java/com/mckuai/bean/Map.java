@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Map implements Serializable {
     private String downNum; //下载数
-    private String dres;//描述冒险的地图
+    private String dres;//地图详情
     private int gameId;//
     private String icon;//封面图片
     private int id;//地图id

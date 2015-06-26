@@ -57,8 +57,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/tv_nm"
+            android:singleLine="true"
             android:layout_below="@+id/tv_name"
-            android:layout_marginLeft="@dimen/titlebar_height"
+            android:layout_marginLeft="30dp"
             android:layout_toRightOf="@+id/tv_category"
             android:gravity="center_vertical"
             android:text="时间"
@@ -66,10 +67,10 @@
             android:id="@+id/tx_times"/>
     </RelativeLayout>
     <Button
+        android:id="@+id/dl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/md_r2"
         android:background="@color/background_green"
         android:text="下载"
         android:textColor="@color/font_white" />
@@ -77,6 +78,7 @@
         android:id="@+id/md_r2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/dl"
         android:layout_below="@+id/md_r1">
 
         <ScrollView
@@ -91,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ScrollView
+                <HorizontalScrollView
                     android:id="@+id/sv_h"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,11 +101,13 @@
                     android:scrollbars="horizontal">
 
                     <LinearLayout
+                        android:orientation="horizontal"
+                        android:id="@+id/sv_lh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                     </LinearLayout>
-                </ScrollView>
+                </HorizontalScrollView>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -122,6 +126,7 @@
             </LinearLayout>
 
         </ScrollView>
+
     </RelativeLayout>
 
 

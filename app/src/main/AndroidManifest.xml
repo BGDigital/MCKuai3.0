@@ -49,7 +49,7 @@
             android:label="@string/classification">
 
         </activity>
-        <activity android:name=".map_details"
+        <activity android:name=".Map_detailsActivity"
             android:label="@string/delete_map">
 
         </activity>
@@ -62,8 +62,6 @@
 
          </activity>
 
-        <activity android:name=".MapActivity"
-            android:label="@string/title_activity_map"></activity>
     </application>
 
 </manifest>
