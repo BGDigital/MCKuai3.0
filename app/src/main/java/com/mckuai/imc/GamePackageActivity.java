@@ -2,11 +2,13 @@ package com.mckuai.imc;
 
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.adapter.ArticAdapter;
 import com.mckuai.bean.ArticItem;
+import com.mckuai.until.GameEditer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,11 +18,13 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
     private UltimateRecyclerView itemListView;
     private ArticAdapter adapter;
+    private GameEditer editer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_package);
+        editer = new GameEditer();
     }
 
     @Override
@@ -61,8 +65,15 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
                 HashMap<Integer,Integer> items = adapter.getSelectedItem();
                 if (null != items){
                     showNotification(1,"当前共选了"+items.size()+"个物品",R.id.rl_search);
+//                    editer.addItem("count", "" + items.size());
+//                    Log.w("getItem:",editer.getItem("count"));
+                       ArrayList<GameEditer.Item> itemArrayList = editer.getAllItem();
+                    if (null != itemArrayList){
+                        Log.w("getAllItem","item count:"+itemArrayList.size());
+                    }
                 }
                 break;
         }
     }
+
 }
