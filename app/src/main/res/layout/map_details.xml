@@ -11,14 +11,15 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/md_r1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/details_height"
         android:layout_below="@id/tit"
-        android:padding="@dimen/item_divider_height">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="@dimen/fm_w"
             android:layout_height="@dimen/fm_h"
+            android:gravity="center_vertical"
             android:background="@mipmap/ic_launcher" />
 
         <TextView
@@ -69,7 +70,7 @@
     <Button
         android:id="@+id/dl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/details_ht_h"
         android:layout_alignParentBottom="true"
         android:background="@color/background_green"
         android:text="下载"
@@ -79,7 +80,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/dl"
-        android:layout_below="@+id/md_r1">
+        android:layout_below="@+id/md_r1"
+        android:layout_marginTop="@dimen/details_divider">
 
         <ScrollView
             android:id="@+id/sv_v"

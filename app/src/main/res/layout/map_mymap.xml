@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<include layout="@layout/map_title"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/map_title" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/item_divider_height"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="@dimen/item_divider_height">
 
         <Button
             android:id="@+id/go_map"
@@ -15,9 +18,10 @@
             android:layout_height="@dimen/bt_h"
             android:layout_weight="1"
             android:background="@color/background_yellow"
-            android:drawableLeft="@drawable/mymap_go"
             android:checked="true"
+            android:drawableLeft="@drawable/mymap_go"
             android:gravity="center"
+            android:paddingLeft="12dp"
             android:text="@string/go_map"
             android:textColor="@color/font_white" />
 
@@ -25,30 +29,43 @@
             android:id="@+id/leave_map"
             android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@color/background_biue"
-            android:drawableLeft="@drawable/mymap_leave"
             android:checked="true"
+            android:drawableLeft="@drawable/mymap_leave"
             android:gravity="center"
+            android:paddingLeft="12dp"
             android:text="@string/leave_map"
-            android:textColor="@color/font_white"
-            android:layout_marginLeft="10dp"/>
+            android:textColor="@color/font_white" />
 
         <Button
             android:id="@+id/delete_map"
             android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@color/background_dark_green"
-            android:drawableLeft="@drawable/mymap_delete"
             android:checked="true"
+            android:drawableLeft="@drawable/mymap_delete"
             android:gravity="center"
+            android:paddingLeft="12dp"
             android:text="@string/delete_map"
-            android:textColor="@color/font_white"
-            android:layout_marginLeft="10dp"/>
+            android:textColor="@color/font_white" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/map_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="搜索"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/map_mymap_lv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:dividerHeight="12dp"></ListView>
 </LinearLayout>

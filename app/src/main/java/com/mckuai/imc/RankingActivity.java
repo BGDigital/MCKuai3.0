@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -29,8 +30,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class RankingActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class RankingActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
     private ListView ranking_lv;
+    private String searchContext;//输入内容
     private ImageView btn_left;
     private ImageButton btn_right;
     private TextView tv_title;
@@ -84,12 +86,15 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
 
     protected void initview() {
         ranking_lv = (ListView) findViewById(R.id.ranking_lv);
+        ranking_lv.setOnItemClickListener(this);
         map_ed = (EditText) findViewById(R.id.map_ed);
         r_l1 = (LinearLayout) findViewById(R.id.r_l1);
         btn_left = (ImageView) findViewById(R.id.btn_left);
+        btn_left.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("地图排行");
         btn_right = (ImageButton) findViewById(R.id.btn_right);
+        btn_right.setOnClickListener(this);
         client = application.mClient;
 
     }
@@ -161,11 +166,37 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, Map_detailsActivity.class);
+        Intent intent = new Intent(RankingActivity.this, Map_detailsActivity.class);
         Map mapList = (Map) adapter.getItem(position);
         Bundle bundle = new Bundle();
         bundle.putSerializable(getString(R.string.Details), mapList);
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_left:
+                finish();
+                break;
+            case R.id.btn_right:
+                map_ed.setVisibility(View.VISIBLE);
+                if (0 < map_ed.getText().length()) {
+                    searchContext = map_ed.getText().toString().trim();//trim() 表示空格
+                    search();
+                } else {
+                    Toast.makeText(this, "不能为空", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void search() {
+
+    }
 }
+

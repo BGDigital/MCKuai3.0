@@ -23,7 +23,6 @@ import com.mckuai.adapter.MapAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.imc.MapActivity;
 import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;

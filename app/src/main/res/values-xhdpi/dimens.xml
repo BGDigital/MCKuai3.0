@@ -20,18 +20,21 @@
     <!-- item相关高度 -->
     <dimen name="item_divider_height">11dp</dimen>
     <dimen name="group_divider_height">26dp</dimen>
+    <dimen name="item_padleft">9dp</dimen>
+    <dimen name="item_height">89dp</dimen>
     <!-- 二级菜单的高度 -->
     <dimen name="menu_height_lv2">53dp</dimen>
     <!-- 图文间距 -->
     <dimen name="margin_top">5dp</dimen>
     <dimen name="bottom_button_height">48dp</dimen>
     <!-- 封面 -->
-    <dimen name="fm_w">116dp</dimen>
-    <dimen name="fm_h">66dp</dimen>
+    <dimen name="fm_w">115dp</dimen>
+    <dimen name="fm_h">65dp</dimen>
     <!-- 下载控件 -->
     <dimen name="xz_wh">48dp</dimen>
-    <!-- button高 -->
+    <!-- button高宽 -->
     <dimen name="bt_h">46dp</dimen>
+    <dimen name="bt_w">109dp</dimen>
     <!-- 分类button -->
     <dimen name="btn_hw">55dp</dimen>
     <!-- 二级封面 -->
@@ -41,7 +44,13 @@
     <!-- 二级控件 -->
     <dimen name="bter_w">343dp</dimen>
     <dimen name="bter_h">39dp</dimen>
-
+<!-- liatview 间隔 -->
+    <dimen name="lv_dividerHeight">6dp</dimen>
+    <!-- 详情页 -->
+    <dimen name="details_height">85dp</dimen>
+    .<dimen name="details_ht_h">39dp</dimen>
+    <dimen name="details_ht_w">342dp</dimen>
+    <dimen name="details_divider">9dp</dimen>
     <!--工具页面-->
     <dimen name="btn_playgame_width">80dp</dimen>
     <dimen name="btn_navigation_icon_width">24dp</dimen>

@@ -69,8 +69,8 @@ public class RankingAdapter extends BaseAdapter {
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.rk_tv = (TextView) convertView.findViewById(R.id.rk_tv);
-            holder.rk_tv.setText(++position +"");
             holder.MasterLayout01 = (MasterLayout) convertView.findViewById(R.id.MasterLayout01);
+            holder.rk_tv.setText(++position +"");
             if (position == 1) {
                 holder.rk_tv.setBackgroundResource(R.drawable.map_one);
             } else {

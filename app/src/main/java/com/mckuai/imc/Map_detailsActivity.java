@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -93,7 +94,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         tv_tx.setText(map.getDres() +"\n"+ map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres());
 //      pictures 详细图片
 for (int i = 0;i< 5;i++) {
-    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,LinearLayout.LayoutParams.WRAP_CONTENT);
+    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(212,169);
     ImageView imv = new ImageView(this);
     /*imv.setOnTouchListener(new View.OnTouchListener() {
         @Override
@@ -102,7 +103,7 @@ for (int i = 0;i< 5;i++) {
             return false;
         }
     });*/
-    params.setMargins(8, 0, 0, 0);
+    params.setMargins(4, 0, 0, 0);
     imv.setLayoutParams(params);
     mLoader.displayImage("http://e.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a1caaa23097cad1c8a6865dd7.jpg", imv);
     sv_lh.addView(imv);
@@ -165,7 +166,6 @@ for (int i = 0;i< 5;i++) {
                 break;
             case R.id.btn_right:
 
-                break;
             case R.id.dl:
 
                 break;

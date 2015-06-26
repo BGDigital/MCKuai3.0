@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/item_divider_height">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height"
+    android:paddingLeft="@dimen/item_padleft"
+    android:paddingRight="20dp"
+    android:paddingTop="12dp">
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="@dimen/fm_w"
         android:layout_height="@dimen/fm_h"
-        android:background="@mipmap/ic_launcher"
-        />
+        android:background="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/image"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/image"
-        android:layout_alignTop="@id/image"
         android:text="地图名字" />
-
 
 
     <TextView
@@ -30,36 +30,36 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/image"
         android:text="更新时间："
-        android:textColor="@color/secondary"/>
+        android:textColor="@color/secondary" />
 
     <TextView
         android:id="@+id/tv_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_name"
         android:layout_above="@id/tv_time"
+        android:layout_below="@+id/tv_name"
         android:layout_marginLeft="10dp"
-        android:gravity="center_vertical"
         android:layout_toRightOf="@id/image"
+        android:gravity="center_vertical"
         android:text="类别"
-        android:textColor="@color/font_radio_hint_checked"/>
+        android:textColor="@color/font_radio_hint_checked" />
 
     <com.mckuai.widget.MasterLayout
         android:id="@+id/MasterLayout01"
         android:layout_width="@dimen/xz_wh"
         android:layout_height="@dimen/xz_wh"
         android:layout_alignParentRight="true"
-        android:clickable="true" >
-    </com.mckuai.widget.MasterLayout>
+        android:clickable="true"></com.mckuai.widget.MasterLayout>
+
     <TextView
         android:id="@+id/tv_size"
         android:layout_width="0dp"
-        android:layout_alignLeft="@id/MasterLayout01"
-        android:layout_alignRight="@id/MasterLayout01"
-        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/image"
+        android:layout_alignLeft="@id/MasterLayout01"
         android:layout_alignParentRight="true"
+        android:layout_alignRight="@id/MasterLayout01"
+        android:gravity="center_horizontal"
         android:text="seze"
-        android:textColor="@color/secondary"/>
+        android:textColor="@color/secondary" />
 </RelativeLayout>
