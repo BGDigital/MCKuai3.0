@@ -29,7 +29,7 @@ public class GameEditer {
         options = new Options();
         options.createIfMissing(true);
 //        String name = MCkuai.getInstance().getMapDownloadDir()+"test.db";
-        String name = "/storage/sdcard0/games/com.mojang/bak/World/";
+        String name = "/storage/sdcard0/games/com.mojang/bak/";
         Log.w("initDB","file:"+name);
         file = new File(name);
         if (!file.exists()){
@@ -56,7 +56,7 @@ public class GameEditer {
         }
     }
 
-    private void closeDB(){
+    public void closeDB(){
         if (isOpen){
             try{
                 db.close();
@@ -74,21 +74,30 @@ public class GameEditer {
             openDB();
         }
         db.put(key.getBytes(),value.getBytes());
-        closeDB();
+        //closeDB();
     }
 
-    public String getItem(String key){
+    public String getString(String key){
         if (!isOpen){
             openDB();
         }
         byte b[] =db.get(key.getBytes());
-        closeDB();
+        //closeDB();
         if (null != b){
             return new String(b);
         }
         else{
             return null;
         }
+    }
+
+    public int getInt(String key){
+        if (!isOpen){
+            openDB();
+        }
+        byte[] bytes = db.get(key.getBytes());
+        int value = 0;
+        return  value;
     }
 
    public  class  Item{
