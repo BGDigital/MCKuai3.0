@@ -42,4 +42,5 @@ dependencies {
     compile 'com.github.ganfra:material-spinner:1.1.0'
     compile 'org.iq80.leveldb:leveldb:0.7'
     compile 'org.iq80.leveldb:leveldb-api:0.7'
+    compile 'com.flowpowered:flow-nbt:1.0.0'
 }
