@@ -11,6 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mckuai.bean.Map;
+import com.mckuai.until.MCMapManager;
+
+import java.util.ArrayList;
+
 /**
  * Created by Zzz on 2015/6/24.
  */
@@ -22,11 +27,22 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     private TextView tv_title;
     private EditText map_ed;
     private Button go_map, leave_map, delete_map;
+    private MCMapManager mapManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_mymap);
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        if (null == mapManager){
+            mapManager = new MCMapManager();
+        }
+        ArrayList<String> curmap = mapManager.getCurrentMaps();
+        ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
+        super.onResume();
     }
 
     private void initView() {

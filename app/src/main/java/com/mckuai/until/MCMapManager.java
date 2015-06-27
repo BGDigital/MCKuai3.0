@@ -128,10 +128,6 @@ public class MCMapManager {
     }
 
     public MCMapManager(){
-        //curMaps = new ArrayList<>();
-        //index = new ArrayList<>();
-        //downloadMaps = new ArrayList<>();
-        //newDownloadMaps = new ArrayList<>();
         gson = new Gson();
         application = MCkuai.getInstance();
         saveDir = application.getMapDownloadDir();
@@ -253,6 +249,8 @@ public class MCMapManager {
             String data = gson.toJson(map);
             db.put(map.getResId().getBytes(),data.getBytes());
         }
+
+        newDownloadMaps.clear();
 
     }
 

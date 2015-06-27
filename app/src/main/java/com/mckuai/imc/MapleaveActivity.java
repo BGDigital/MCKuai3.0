@@ -1,14 +1,15 @@
 package com.mckuai.imc;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mckuai.until.MCMapManager;
+
+import java.util.ArrayList;
 
 
 public class MapleaveActivity extends BaseActivity implements View.OnClickListener {
@@ -17,11 +18,14 @@ public class MapleaveActivity extends BaseActivity implements View.OnClickListen
     private TextView tv_title;
     private Button bt_go;
 
+    private MCMapManager mapManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_leave);
         initview();
+        mapManager = new MCMapManager();
     }
 
     protected void initview() {
@@ -30,11 +34,17 @@ public class MapleaveActivity extends BaseActivity implements View.OnClickListen
         btn_right = (ImageButton) findViewById(R.id.btn_right);
         btn_right.setVisibility(View.GONE);
         tv_title = (TextView) findViewById(R.id.tv_title);
-        tv_title.setText("�ҵĵ�ͼ");
+        tv_title.setText("我的地图");
         bt_go = (Button) findViewById(R.id.bt_go);
         btn_left.setOnClickListener(this);
         pt_im.setOnClickListener(this);
         bt_go.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ArrayList<String> curMaps = mapManager.getCurrentMaps();
     }
 
     @Override
@@ -52,5 +62,11 @@ public class MapleaveActivity extends BaseActivity implements View.OnClickListen
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mapManager.closeDB();
+        super.onDestroy();
     }
 }
