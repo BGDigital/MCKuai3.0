@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<include layout="@layout/map_title"
+    android:id="@+id/position_title"></include>
+    <TextView
+        android:id="@+id/tv_mpt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/export_map_export"
+        android:layout_below="@+id/position_title"
+        android:padding="@dimen/item_divider_height"/>
+
+    <Button
+        android:id="@+id/bt_go"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/leave"
+        android:textColor="@color/font_white"
+        android:background="@color/background_green"
+        />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mpt_ls"
+        android:layout_below="@+id/tv_mpt"
+        android:layout_above="@id/bt_go"
+    ></ListView>
+
+
+</RelativeLayout>
