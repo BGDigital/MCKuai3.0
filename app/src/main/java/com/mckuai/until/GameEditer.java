@@ -2,14 +2,14 @@ package com.mckuai.until;
 
 import android.util.Log;
 
-import com.mckuai.imc.MCkuai;
-
-import org.iq80.leveldb.*;
-import static org.iq80.leveldb.impl.Iq80DBFactory.*;
+import org.iq80.leveldb.DB;
+import org.iq80.leveldb.DBIterator;
 import org.iq80.leveldb.Options;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
+
+import static org.iq80.leveldb.impl.Iq80DBFactory.factory;
 
 /**
  * Created by kyly on 2015/6/26.
@@ -28,8 +28,7 @@ public class GameEditer {
     private void initDB(){
         options = new Options();
         options.createIfMissing(true);
-//        String name = MCkuai.getInstance().getMapDownloadDir()+"test.db";
-        String name = "/storage/sdcard0/games/com.mojang/bak/";
+        String name = "/storage/sdcard0/games/com.mojang/";
         Log.w("initDB","file:"+name);
         file = new File(name);
         if (!file.exists()){
@@ -95,7 +94,9 @@ public class GameEditer {
         if (!isOpen){
             openDB();
         }
+        byte[] mykey = key.getBytes();
         byte[] bytes = db.get(key.getBytes());
+        closeDB();
         int value = 0;
         return  value;
     }

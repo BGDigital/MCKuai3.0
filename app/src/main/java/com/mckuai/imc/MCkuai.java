@@ -89,6 +89,25 @@ public class MCkuai  extends Application{
         return  getFilesDir() + File.separator + "maps" + File.separator;
     }
 
+    public String getGameProfileDir(){
+        String dir = getSDPath();
+        if (null != dir){
+            dir += "/games/com.mojang/minecraftWorlds/";
+        }
+        return  dir;
+    }
+
+    private String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+        if   (sdCardExist)
+        {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir.toString();
+    }
+
     public boolean isFirstBoot()
     {
         SharedPreferences preferences = this.getSharedPreferences(getString(R.string.preferences_file), 0);

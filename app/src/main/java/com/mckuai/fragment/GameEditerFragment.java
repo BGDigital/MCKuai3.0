@@ -1,5 +1,8 @@
 package com.mckuai.fragment;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +14,9 @@ import android.widget.TextView;
 
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.R;
+import com.mckuai.until.MCGameEditer;
+
+import java.util.List;
 
 public class GameEditerFragment extends BaseFragment implements View.OnClickListener {
     private static  final  String TAG = "GameEditerFragment";
@@ -28,17 +34,33 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ImageView iv_gameTime;
     private ImageView iv_thirdView;
     private ImageView iv_packageItem;
+    private MCGameEditer gameEditer;
+
+    private int mode;
+    private int time;
+    private int viewtype;
+
+    private boolean isShowGameRunning = false;
+
 
     public GameEditerFragment(){
         setmTitle("工具");
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        gameEditer = new MCGameEditer();
+        getProfileInfo();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.w(TAG, "onCreateView");
-        view = inflater.inflate(R.layout.fragment_game_editer, container, false);
+        if (null == view) {
+            view = inflater.inflate(R.layout.fragment_game_editer, container, false);
+        }
         return view;
     }
 
@@ -49,7 +71,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == tv_gameMode){
             initView();
         }
-
+        mode = gameEditer.getGameMode();
+        showGameMode();
+        detectionGameRunning();
     }
 
     @Override
@@ -79,15 +103,39 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.btn_selectMap).setOnClickListener(this);
     }
 
+    private void getProfileInfo(){
+        if (gameEditer.hasProfile()){
+            mode = gameEditer.getGameMode();
+        }
+    }
+
     private void switchGameMode(){
-        if (tv_gameMode.getText().equals("创造")){
+        int temp;
+        if (0 == mode){
+            temp = 1;
+        }
+        else {
+            temp = 0;
+        }
+        if (gameEditer.setGameMode(temp)){
+            mode = temp;
+            showGameMode();
+        }
+        else {
+            showNotification(2, "保存游戏模式失败!", R.id.fl_root);
+        }
+    }
+
+    private void showGameMode(){
+        if (mode == 0){
             tv_gameMode.setText("生存");
             iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
         }
-        else{
+        else {
             tv_gameMode.setText("创造");
             iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
         }
+
     }
 
     private void switchGameTime(){
@@ -118,8 +166,41 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void startGame(){
-        showNotification(0,"启动游戏",R.id.fl_root);
+        Intent intent = new Intent();
+        ComponentName name = new ComponentName("com.mojang.minecraftpe","com.mojang.minecraftpe.MainActivity");
+        intent.setComponent(name);
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivity(intent);
     }
+
+    private void detectionGameRunning(){
+        if (!isShowGameRunning){
+            ActivityManager activityManager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> run = activityManager.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo info:run){
+                if (info.processName.equalsIgnoreCase("com.mojang.minecraftpe")){
+                    showAlert("警告", "检测到我的世界正在运行,此时的修改不会生效,是否结束游戏?", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    }, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            killGame();
+                        }
+                    });
+                    break;
+                }
+            }
+        }
+        isShowGameRunning = true;
+    }
+
+    private void killGame(){
+        ActivityManager activityManager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager.killBackgroundProcesses("com.mojang.minecraftpe");
+    }
+
 
     private void selectMap(){
         showNotification(0,"选择地图",R.id.fl_root);
