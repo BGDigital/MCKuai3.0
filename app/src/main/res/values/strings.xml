@@ -25,6 +25,7 @@
     <string name="architecture">建筑</string>
     <string name="pvp">pvp竞技</string>
     <string name="total">全部</string>
+    <string name="export_map_export">选择要导出的地图</string>
 
     <!--缓存-->
     <string name="cache_root">cache</string>
@@ -48,4 +49,6 @@
     <string name="title_activity_game_package">GamePackageActivity</string>
     <!-- 详情 -->
     <string name="Details">details</string>
+    <string name="title_activity_export_map">Export_mapActivity</string>
+    <string name="title_activity_mapleave">MapleaveActivity</string>
 </resources>

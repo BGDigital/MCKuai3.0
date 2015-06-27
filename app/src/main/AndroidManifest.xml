@@ -45,23 +45,30 @@
             android:name=".GamePackageActivity"
             android:label="@string/title_activity_game_package" >
         </activity>
-        <activity android:name=".ClassificationActivity"
-            android:label="@string/classification">
-
+        <activity
+            android:name=".ClassificationActivity"
+            android:label="@string/classification" >
         </activity>
-        <activity android:name=".Map_detailsActivity"
-            android:label="@string/delete_map">
-
+        <activity
+            android:name=".Map_detailsActivity"
+            android:label="@string/delete_map" >
         </activity>
-        <activity android:name=".MymapActivity"
-            android:label="@string/mymap">
-
+        <activity
+            android:name=".MymapActivity"
+            android:label="@string/mymap" >
         </activity>
-         <activity android:name=".RankingActivity"
-             android:label="@string/title_activity_ranking">
-
-         </activity>
-
+        <activity
+            android:name=".RankingActivity"
+            android:label="@string/title_activity_ranking" >
+        </activity>
+        <activity
+            android:name=".Export_mapActivity"
+            android:label="@string/title_activity_export_map" >
+        </activity>
+        <activity
+            android:name=".MapleaveActivity"
+            android:label="@string/title_activity_mapleave" >
+        </activity>
     </application>
 
 </manifest>

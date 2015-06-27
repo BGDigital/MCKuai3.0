@@ -12,7 +12,8 @@
         android:id="@+id/pt_document"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="BauduMaps"
         android:gravity="center_horizontal"
-        android:padding="@dimen/item_divider_height"/>
+        android:padding="@dimen/item_divider_height"
+        android:textSize="20dp"/>
 </LinearLayout>
