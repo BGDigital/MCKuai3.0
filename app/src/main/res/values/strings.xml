@@ -43,8 +43,18 @@
     <string name="interface_domainName">http://221.237.152.39:8081/</string>
     <!-- 地图详情 -->
     <string name="interface_details">map.do?act=one</string>
-    <!-- 地图 -->
+    <!-- 地图列表-->
     <string name="interface_map">map.do?act=list</string>
+    <!-- 服务器列表-->
+    <string name="interface_serverlist">server.do?act=list</string>
+    <!-- 服务器详情-->
+    <string name="interface_serverDetails">server.do?act=one</string>
+    <!-- 搜索服务器或地图-->
+    <string name="interface_search">map.do?act=search</string>
+
+
+
+
     <string name="title_activity_ranking">RankingActivity</string>
     <string name="title_activity_game_package">GamePackageActivity</string>
     <!-- 详情 -->
