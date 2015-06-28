@@ -107,17 +107,17 @@ public class MCMapManager {
         return  curMaps;
     }
 
-    public void importMap(String mapFile){
-        File src = new File(mapFile);
+    public void importMap(String mapFileName){
+        File src = new File(mapFileName);
         File dst = new File(application.getGameProfileDir());
         if (src.exists()){
             ZipUtil.unpack(src,dst);
         }
     }
 
-    public void exportMap(String mapName,String dstFile){
+    public void exportMap(String mapName,String dstFileDir){
         File src = new File(mapName);
-        File dst = new File(dstFile);
+        File dst = new File(dstFileDir+mapName +".zip");
 
         if (src.exists()){
             if (dst.exists()){
@@ -132,6 +132,10 @@ public class MCMapManager {
         application = MCkuai.getInstance();
         saveDir = application.getMapDownloadDir();
         initDB();
+    }
+
+    public boolean isReady(){
+        return openDB();
     }
 
 
