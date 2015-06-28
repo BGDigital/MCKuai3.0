@@ -12,6 +12,10 @@
     <dimen name="com_padding">4dp</dimen>
     <!-- 字体 -->
     <dimen name="font_dimen_title">18sp</dimen>
+    <dimen name="font_dimen_big">16sp</dimen>
+    <dimen name="font_dimen_primary">14sp</dimen>
+    <dimen name="font_dimen_small">12sp</dimen>
+    <dimen name="font_dimen_hint">10sp</dimen>
     <!-- item相关高度 -->
     <dimen name="item_divider_height">8dp</dimen>
     <dimen name="group_divider_height">20dp</dimen>
@@ -20,4 +24,12 @@
     <!-- 图文间距 -->
     <dimen name="margin_top">5dp</dimen>
     <dimen name="bottom_button_height">48dp</dimen>
+    <!-- 社区 -->
+    <dimen name="forumlist_height">62.7dp</dimen>
+    <dimen name="forumview_height">42.7dp</dimen>
+    <dimen name="forumview_cover_radius">21.4dp</dimen>
+    <dimen name="item_normalpost_height">70dp</dimen>
+
+    <!-- 帖子详情 -->
+    <dimen name="button_post_margin">23.3dp</dimen>
 </resources>

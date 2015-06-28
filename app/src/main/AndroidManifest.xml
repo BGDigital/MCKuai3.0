@@ -19,7 +19,6 @@
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
-
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
@@ -69,6 +68,10 @@
         <activity
             android:name=".MapleaveActivity"
             android:label="@string/title_activity_mapleave" >
+        </activity>
+        <activity
+            android:name=".ServerDetailsActivity"
+            android:label="@string/title_activity_server_details" >
         </activity>
     </application>
 

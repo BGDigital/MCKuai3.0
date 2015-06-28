@@ -8,6 +8,9 @@
     <color name="font_radio_hint_checked">#24922F</color>
     <color name="font_white">#FFFFFF</color>
     <color name="font_black">#020202</color>
+    <color name="background_forum_selected">#22A53D</color>
+    <color name="font_red">#FF0000</color>
+    <color name="font_secondary">#B4B4B4</color>
     <color name="font_gameedit_hint">#818181</color>
 
     <!-- 边框 -->
@@ -21,6 +24,7 @@
     <color name="background_biue">#00CCFF</color>
     <color name="background_dark_green">#33CC8F</color>
     <color name="background_white">#FFFFFF</color>
+    <color name="background_litegray">#C9C9C9</color>
 
     <!--通用色彩 -->
     <color name="white">#FFFFFF</color>
@@ -42,6 +46,8 @@
     <color name="base">#F0F0F0</color>
     <color name="highlight">#F0F0F0</color>
     <color name="error">#F0F0F0</color>
+
+    <color name="forum_unselected">#1A923B</color>
 
 
 

@@ -1,0 +1,115 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_white" >
+
+        <RelativeLayout
+            android:id="@+id/rl_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" >
+
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_white" />
+
+            <ImageButton
+                android:id="@+id/btn_replyPost"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/com_margin"
+                android:layout_marginRight="@dimen/com_margin"
+                android:background="@drawable/btn_post_reply" />
+
+            <ImageButton
+                android:id="@+id/btn_sharePost"
+                android:layout_width="44dp"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@id/btn_replyPost"
+                android:layout_alignTop="@id/btn_replyPost"
+                android:layout_marginRight="@dimen/button_post_margin"
+                android:layout_toLeftOf="@id/btn_replyPost"
+                android:background="@drawable/btn_post_share" />
+
+            <ImageButton
+                android:id="@+id/btn_rewardPost"
+                android:layout_width="44dp"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@id/btn_replyPost"
+                android:layout_alignTop="@id/btn_replyPost"
+                android:layout_marginRight="@dimen/button_post_margin"
+                android:layout_toLeftOf="@id/btn_sharePost"
+                android:background="@drawable/btn_post_reward_selector" />
+
+            <ImageButton
+                android:id="@+id/btn_collectPost"
+                android:layout_width="44dp"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@id/btn_replyPost"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@id/btn_replyPost"
+                android:layout_marginLeft="@dimen/com_margin"
+                android:background="@drawable/btn_post_collect_selector" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_reply"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_white"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:id="@+id/ll_piclayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/btn_addPic"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_margin="@dimen/com_margin"
+                    android:background="@drawable/btn_addpic" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_lengthHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/ll_piclayer"
+                android:gravity="center"
+                android:text="还需要输入15个字"
+                android:textColor="@color/font_red"
+                android:textSize="@dimen/font_dimen_hint"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/edt_reply_Content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_above="@id/tv_lengthHint"
+                android:layout_alignParentTop="true"
+                android:background="@color/background_white"
+                android:gravity="top"
+                android:hint="评论..."
+                android:padding="@dimen/com_margin" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

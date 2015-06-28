@@ -1,0 +1,172 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <LinearLayout
+        android:id="@+id/ll_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true" >
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_actionbar"
+        android:background="@color/background_white" >
+
+        <LinearLayout
+            android:id="@+id/ll_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/com_margin"
+            android:paddingRight="@dimen/com_margin"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/com_margin"
+                android:paddingTop="@dimen/com_margin"
+                android:text="@string/select_forum"
+                android:textColor="@color/background_litegray" />
+
+            <GridView
+                android:id="@+id/gv_forums"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="90dp"
+                android:gravity="center"
+                android:horizontalSpacing="@dimen/com_margin"
+                android:numColumns="auto_fit"
+                android:paddingBottom="@dimen/com_margin"
+                android:paddingTop="@dimen/com_margin"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="8dp" >
+            </GridView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/com_margin"
+                android:text="@string/select_post_type"
+                android:textColor="@color/font_secondary" />
+
+            <GridView
+                android:id="@+id/gv_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="80dp"
+                android:gravity="center"
+                android:horizontalSpacing="@dimen/com_margin"
+                android:numColumns="auto_fit"
+                android:paddingBottom="@dimen/com_margin"
+                android:paddingTop="@dimen/com_margin"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="8dp" >
+            </GridView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_checkedType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/com_margin" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="版块:"
+                android:textColor="@color/font_secondary" />
+
+            <TextView
+                android:id="@+id/tv_forum_Checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/com_margin"
+                android:layout_marginRight="@dimen/com_margin"
+                android:background="@color/background_green"
+                android:text="22222"
+                android:textColor="@color/font_white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/com_margin"
+                android:layout_marginRight="@dimen/com_margin"
+                android:text="类型:"
+                android:textColor="@color/font_secondary" />
+
+            <TextView
+                android:id="@+id/tv_type_Checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/background_green"
+                android:text="1111"
+                android:textColor="@color/font_white" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/imgbtn_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/com_margin"
+            android:background="@drawable/btn_addpic" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_middle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_pics"
+        android:layout_below="@id/ll_top"
+        android:background="@color/background_white"
+        android:minHeight="250dp"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/com_margin"
+        android:paddingRight="@dimen/com_margin" >
+
+        <EditText
+            android:id="@+id/edt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_title"
+            android:paddingBottom="@dimen/com_margin"
+            android:paddingLeft="@dimen/com_margin"
+            android:paddingTop="@dimen/com_margin"
+            android:singleLine="true"
+            android:textSize="@dimen/font_dimen_big" />
+
+        <EditText
+            android:id="@+id/edt_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/hint_content"
+            android:minLines="5"
+            android:paddingBottom="@dimen/com_margin"
+            android:paddingTop="@dimen/com_margin" >
+
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
+
+</RelativeLayout>

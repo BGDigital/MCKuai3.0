@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_name"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_background_publish_froum"
+    android:button="@null"
+    android:checked="false"
+    android:clickable="true"
+    android:gravity="center"
+    android:singleLine="true"
+    android:text="版块名称"
+    android:textColor="@color/font_white" >
+
+</RadioButton>

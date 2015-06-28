@@ -61,4 +61,13 @@
     <string name="Details">details</string>
     <string name="title_activity_export_map">Export_mapActivity</string>
     <string name="title_activity_mapleave">MapleaveActivity</string>
+    <string name="title_activity_server_list">ServerListActivity</string>
+    <string name="title_activity_server_details">ServerDetailsActivity</string>
+
+    <!-- 发帖 -->
+    <string name="select_forum">版块</string>
+    <string name="select_post_type">类型</string>
+    <string name="hint_title">标题</string>
+    <string name="hint_content">内容</string>
+    <string name="publishpost">发帖</string>
 </resources>
