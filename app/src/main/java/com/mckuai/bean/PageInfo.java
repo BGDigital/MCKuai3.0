@@ -42,4 +42,13 @@ public class PageInfo implements Serializable{
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
+
+    public boolean EOF(){
+        if(allCount % pageSize == 0){
+            return (allCount / page) == page;
+        }
+        else{
+            return (allCount / page) == (page+1);
+        }
+    }
 }
