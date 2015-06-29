@@ -1,5 +1,7 @@
 package com.mckuai.imc;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.until.MCMapManager;
 
@@ -21,6 +24,7 @@ import java.util.ArrayList;
  */
 public class MymapActivity extends BaseActivity implements OnClickListener {
     private String searchContext;//输入内容
+    private Context mContent;
     private ListView map_mymap_lv;
     private ImageView btn_left;
     private ImageButton btn_right;
@@ -28,6 +32,8 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     private EditText map_ed;
     private Button go_map, leave_map, delete_map;
     private MCMapManager mapManager;
+    private ExportAdapter adapter;
+    private ArrayList<Map> mMapBeans;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +43,23 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onResume() {
-        if (null == mapManager){
+        super.onResume();
+        if (null == mapManager) {
             mapManager = new MCMapManager();
+            initView();
         }
         ArrayList<String> curmap = mapManager.getCurrentMaps();
         ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
-        super.onResume();
+        showData();
+    }
+
+    protected void showData() {
+        if (mapManager.getDownloadMaps() == null) {
+            showNotification(1, "请下载地图", R.id.maproot);
+        } else {
+            adapter = new ExportAdapter(mContent, mMapBeans);
+            map_mymap_lv.setAdapter(adapter);
+        }
     }
 
     private void initView() {
@@ -64,6 +81,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.btn_left:
                 finish();
@@ -79,18 +97,22 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
                 }
                 break;
             case R.id.go_map:
-
-            break;
+                intent = new Intent(this, MapimportActivity.class);
+                startActivity(intent);
+                break;
             case R.id.leave_map:
-
+                intent = new Intent(this, Export_mapActivity.class);
+                startActivity(intent);
                 break;
             case R.id.delete_map:
-
+                intent = new Intent(this, MapdeleteActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
         }
     }
+
     private void search() {
 
     }

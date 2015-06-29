@@ -46,10 +46,6 @@
             android:label="@string/title_activity_game_package" >
         </activity>
         <activity
-            android:name=".ClassificationActivity"
-            android:label="@string/classification" >
-        </activity>
-        <activity
             android:name=".Map_detailsActivity"
             android:label="@string/delete_map" >
         </activity>
@@ -72,6 +68,18 @@
         <activity
             android:name=".ServerDetailsActivity"
             android:label="@string/title_activity_server_details" >
+        </activity>
+        <activity
+            android:name=".MapdeleteActivity"
+            android:label="@string/title_activity_mapdetele" >
+        </activity>
+        <activity
+            android:name=".MapimportActivity"
+            android:label="@string/title_activity_mapimport" >
+        </activity>
+        <activity
+            android:name=".MapexportActivity"
+            android:label="@string/title_activity_mapexport" >
         </activity>
     </application>
 

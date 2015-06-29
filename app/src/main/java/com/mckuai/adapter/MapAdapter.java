@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
@@ -25,7 +26,7 @@ import cn.aigestudio.downloader.interfaces.DLTaskListener;
  */
 public class MapAdapter extends BaseAdapter {
 
-
+    private Map maps;
     private Context mContext;
     private View view;
     private LayoutInflater mInflater;
@@ -78,12 +79,17 @@ public class MapAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     btn.animation();
+                    Map clickedMap = (Map) v.getTag();
+                    if (null == clickedMap) {
+                        Toast.makeText(mContext, "点击出错", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     switch (btn.getFlg_frmwrk_mode()) {
                         case 1:
                             if (null == manager) {
                                 manager = DLManager.getInstance(mContext);
                             }
-                            manager.dlStart("http://softdown.mckuai.com:8081/mckuai.apk",  MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
+                            manager.dlStart(clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);
@@ -130,6 +136,7 @@ public class MapAdapter extends BaseAdapter {
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
         holder.tv_category.setText(map.getResCategroyTwo());
+        holder.MasterLayout01.setTag(map);
         return convertView;
     }
 
