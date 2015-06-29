@@ -24,12 +24,10 @@ import java.util.ArrayList;
 
 
 public class Export_mapActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    private String searchContext;//输入内容
     private Context mContent;
     private ImageView btn_left, pt_im;
     private ImageButton btn_right;
     private TextView tv_title;
-    private EditText map_ed;
     private ListView mpt_ls;
     private Button bt_go;
     private AsyncHttpClient client;
@@ -86,7 +84,6 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
         tv_title = (TextView) findViewById(R.id.tv_title);
         bt_go = (Button) findViewById(R.id.bt_go);
         tv_title.setText("我的地图");
-        map_ed = (EditText) findViewById(R.id.map_ed);
         mpt_ls = (ListView) findViewById(R.id.mpt_ls);
         mpt_ls.setOnItemSelectedListener(this);
         btn_left.setOnClickListener(this);
