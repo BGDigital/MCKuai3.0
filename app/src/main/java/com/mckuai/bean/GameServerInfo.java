@@ -13,20 +13,22 @@ public class GameServerInfo {
     private int isNian;
     private int isOpen;
     private int isShowIp;
-    private int onlineNum;
-    private int peopleNum;
+    private int onlineNum;              //在线人数
+    private int peopleNum;              //容纳人数
     private int resCategroyId;
     private int serverPort;
     private int updateVersion;
     private int userId;
-    private String resIp;
+    private int position;
+    private String resIp;                   //服务器地址
     private String resIp2;
     private String resIp3;
-    private String resVersion;
-    private String serverTag;
-    private String updateTime;
-    private String viewName;
+    private String resVersion;          //支持游戏的版本号
+    private String serverTag;           //标签
+    private String updateTime;       //更新时间
+    private String viewName;         //显示名称，既地图名
     private String whiteList;
+    private String dres;                //介绍
 
     public int getGameId() {
         return gameId;
@@ -210,5 +212,21 @@ public class GameServerInfo {
 
     public void setWhiteList(String whiteList) {
         this.whiteList = whiteList;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public String getDres() {
+        return dres;
+    }
+
+    public void setDres(String dres) {
+        this.dres = dres;
     }
 }
