@@ -2,7 +2,8 @@ package com.mckuai.until;
 
 import android.util.Log;
 
-import com.mckuai.bean.ServerInfo;
+import com.mckuai.bean.GameServerInfo;
+import com.mckuai.imc.MCkuai;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,31 +22,47 @@ public class ServerEditer {
     private static  final  String TAG = "ServerEditer";
 
     private boolean saveAllFlag = false;//是否需要删除文件后再重写所有数据
-    private String fileName = "/storage/sdcard0/games/com.mojang/minecraftpe/external_servers.txt";
-
-    public ArrayList<ServerInfo> getServers() {
-        return servers;
-    }
-
-    public void setServers(ArrayList<ServerInfo> servers) {
-        this.servers = servers;
-    }
-
-    private ArrayList<ServerInfo> servers = new ArrayList<>();
+    private String fileName;
+//    private String fileName = "/storage/sdcard0/games/com.mojang/minecraftpe/external_servers.txt";
+    private ArrayList<GameServerInfo> servers;
 
     public ServerEditer(){
         loadServerFromDisk();
+        fileName =MCkuai.getInstance().getGameProfileDir()+"minecraftpe/external_servers.txt";
     }
 
-    private void addServer(ServerInfo server){
+    public ArrayList<GameServerInfo> getServers() {
 
+        return servers;
     }
 
-    private void deleteServer(ServerInfo server){
+    /**
+     * 添加服务器
+     * 此函数仅将服务器添加到内存中，如果要保存，需调用save()函数
+     * @param server    要添加的服务器
+     */
+    public void addServer(GameServerInfo server){
+        if (null != servers){
+            for (GameServerInfo info:servers){
+                if (info.getViewName().equalsIgnoreCase(server.getViewName()) && info.getServerPort() == server.getServerPort() && info.getResIp().equalsIgnoreCase(server.getResIp())){
+                    //已存在此服务器，不添加
+                    return;
+                }
+            }
+
+            saveAllFlag = true;
+            servers.add(server);
+        }
+    }
+
+    private void deleteServer(GameServerInfo server){
 
     }
 
     public void save(){
+        if (!saveAllFlag){
+            return;
+        }
         File file = new File(fileName);
         //删除原有文件
         if (file.exists()){
@@ -87,39 +104,61 @@ public class ServerEditer {
         if (!file.exists()){
             return;
         }
-        file = null;
+
         //文件存在,开始一行一行的读取
+        InputStreamReader inputStreamReader = null;
+        BufferedReader reader = null;
         try {
-            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
-            BufferedReader reader = new BufferedReader(inputStreamReader);
+            inputStreamReader = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
+            reader = new BufferedReader(inputStreamReader);
             String data = null;
+            GameServerInfo info;
             do {
                 data = reader.readLine().toString();
                 if (null != data){
-                    parseData(data);
+                    info = parseData(data);
+                    if (null != info){
+                        if (null == servers){
+                            servers = new ArrayList<>();
+                        }
+                        servers.add(info);
+                    }
                 }
-                else break;
             }
             while (null != data);
+            reader.close();
+            inputStreamReader.close();
         }
-        catch (Exception e){
-            Log.e(TAG,"read file false:"+e.getLocalizedMessage());
+        catch (Exception e) {
+            Log.e(TAG, "read file false:" + e.getLocalizedMessage());
+            try {
+                if (null != inputStreamReader) {
+                    inputStreamReader.close();
+                }
+                if (null != reader) {
+                    reader.close();
+                }
+            }
+            catch (Exception e1){
+
+            }
         }
     }
 
 
 
-    private void parseData(String data){
+    private GameServerInfo parseData(String data){
         if (null != data && 3 == getSplitCount(data)){
             String[] array = data.split(":");
-
-            ServerInfo info = new ServerInfo();
-            info.setPosition(array[0]);
-            info.setName(array[1]);
-            info.setAddress(array[2]);
-            info.setPort(array[3]);
-            servers.add(info);
+            GameServerInfo info = new GameServerInfo();
+            info.setPosition(Integer.parseInt(array[0]));
+            info.setViewName(array[1]);
+            info.setResIp(array[2]);
+            info.setServerPort(Integer.parseInt(array[3]));
+            info.setServerPort(Integer.parseInt(array[4]));
+            return  info;
         }
+        return  null;
     }
 
     private int getSplitCount(String data){
@@ -135,11 +174,11 @@ public class ServerEditer {
     private String getServersString(){
         if (!servers.isEmpty()){
             String data = "";
-            for (ServerInfo server:servers){
+            for (GameServerInfo server:servers){
                 data  += (server.getPosition()+":");
-                data  += (server.getName()+":");
-                data  += (server.getAddress()+":");
-                data  += (server.getPort() + "\r\n");
+                data  += (server.getViewName()+":");
+                data  += (server.getResIp()+":");
+                data  += (server.getServerPort() + "\r\n");
             }
             return  data;
         }
