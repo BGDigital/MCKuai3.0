@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.bean.GameServerInfo;
 import com.mckuai.bean.PageInfo;
-import com.mckuai.bean.ServerInfo;
 import com.mckuai.imc.R;
 
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ public class ForumFragment extends BaseFragment {
 
     private View view;
     private PageInfo page;
-    private ArrayList<ServerInfo> serverList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
