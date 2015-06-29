@@ -29,6 +29,8 @@ public class GameServerInfo {
     private String viewName;         //显示名称，既地图名
     private String whiteList;
     private String dres;                //介绍
+    private String icon;                //地图封面
+    private String pictures;           //截图
 
     public int getGameId() {
         return gameId;
@@ -228,5 +230,21 @@ public class GameServerInfo {
 
     public void setDres(String dres) {
         this.dres = dres;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(String pictures) {
+        this.pictures = pictures;
     }
 }

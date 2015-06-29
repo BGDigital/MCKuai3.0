@@ -1,6 +1,8 @@
 package com.mckuai.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.mckuai.adapter.ServerAdapter;
 import com.mckuai.bean.GameServerInfo;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
@@ -42,6 +45,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private ArrayList<GameServerInfo> serverInfos;
     private PageInfo page;
     private Gson gson;
+    private ServerAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,23 +69,40 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
     private void initView(){
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
+        rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        serverListView.setLayoutManager(manager);
+
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
     }
 
     private void showData(){
+        if (isLoading){
+            return;
+        }
 
+        if (null == serverInfos){
+            loadData();
+            return;
+        }
+
+        if (null == adapter){
+            adapter = new ServerAdapter();
+            serverListView.setAdapter(adapter);
+        }
+        adapter.setData(serverInfos);
     }
 
     private void showServerType(){
-
+        rl_serverTypeLayout.setVisibility(View.VISIBLE);
     }
 
     private void hideServerType(){
-
+        rl_serverTypeLayout.setVisibility(View.GONE);
     }
 
-    private void LoadData(){
+    private void loadData(){
         if (isLoading){
             return;
         }
@@ -120,7 +141,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                cancleLodingToast(false);
+                //cancleLodingToast(false);
                 isLoading = false;
                 ParseResponse parse = new ParseResponse();
                 ResponseParseResult result = parse.parse(response);
@@ -183,7 +204,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.ll_serverRank:
                 isOrderByDownload = !isOrderByDownload;
-                LoadData();
+                loadData();
                 break;
         }
     }
