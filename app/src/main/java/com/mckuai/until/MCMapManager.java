@@ -12,6 +12,7 @@ import org.iq80.leveldb.Options;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -112,21 +113,35 @@ public class MCMapManager {
 
     public void importMap(String mapFileName){
         File src = new File(mapFileName);
-        File dst = new File(application.getGameProfileDir());
+        File dst = new File(application.getGameProfileDir()+"minecraftWorlds/");
+        if (!dst.exists()){
+            Log.e(TAG,"目标目录不存在，可能是游戏未安装");
+            return;
+        }
+
         if (src.exists()){
             ZipUtil.unpack(src,dst);
         }
     }
 
+    /**
+     * 导出地图
+     *
+     * @param mapName 要导出的地图名称
+     * @param dstFileDir 导出到的目录
+     */
     public void exportMap(String mapName,String dstFileDir){
-        File src = new File(mapName);
+        File src = new File(MCkuai.getInstance().getGameProfileDir()+"minecraftWorlds/");
         File dst = new File(dstFileDir+mapName +".zip");
 
-        if (src.exists()){
+        if (src.exists() && src.isDirectory()){
             if (dst.exists()){
                 dst.delete();
             }
             ZipUtil.pack(src,dst);
+        }
+        else {
+            Log.e(TAG,"导出地图失败，指定的地图不存在！");
         }
     }
 
