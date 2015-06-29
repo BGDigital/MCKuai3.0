@@ -54,6 +54,13 @@ public class MCkuai  extends Application{
         super.onTerminate();
     }
 
+    public AsyncHttpClient getHttpClient(){
+        if (null == mClient){
+            mClient = new AsyncHttpClient();
+        }
+        return mClient;
+    }
+
     private void initImageLoader(){
 
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
@@ -92,7 +99,7 @@ public class MCkuai  extends Application{
     public String getGameProfileDir(){
         String dir = getSDPath();
         if (null != dir){
-            dir += "/games/com.mojang/minecraftWorlds/";
+            dir += "/games/com.mojang/";
         }
         return  dir;
     }
