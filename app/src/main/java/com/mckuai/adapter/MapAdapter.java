@@ -1,6 +1,7 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 
 import cn.aigestudio.downloader.bizs.DLManager;
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * Created by Zzz on 2015/6/24.
@@ -81,7 +84,7 @@ public class MapAdapter extends BaseAdapter {
                     btn.animation();
                     Map clickedMap = (Map) v.getTag();
                     if (null == clickedMap) {
-                        Toast.makeText(mContext, "点击出错", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "点击出错", LENGTH_SHORT).show();
                         return;
                     }
                     switch (btn.getFlg_frmwrk_mode()) {
@@ -89,14 +92,20 @@ public class MapAdapter extends BaseAdapter {
                             if (null == manager) {
                                 manager = DLManager.getInstance(mContext);
                             }
-                            manager.dlStart(clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
+
+                            manager.dlStart("http://"+clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);
+                                    Log.e("111111","onStart");
+                                    //Toast.makeText(mContext, "Start", LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public boolean onConnect(int type, String msg) {
+
+                                    //Toast.makeText(mContext, "Connect", LENGTH_SHORT).show();
+                                    Log.e("111111", "onConnect");
                                     return super.onConnect(type, msg);
                                 }
 
@@ -108,12 +117,15 @@ public class MapAdapter extends BaseAdapter {
 
                                 @Override
                                 public void onFinish(File file) {
+                                    Log.e("111",""+ file.getPath() +file.getName());
                                     super.onFinish(file);
                                 }
 
                                 @Override
                                 public void onError(String error) {
+                                    Log.e("111111", "onError");
                                     super.onError(error);
+                                    //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
                                 }
                             });
                             break;
