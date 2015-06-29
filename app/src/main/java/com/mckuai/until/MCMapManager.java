@@ -80,6 +80,9 @@ public class MCMapManager {
         }
 
         byte data[]= db.get(mapDownloaded.getBytes());
+        if (null == data){
+            return  null;
+        }
         String maps = new String(data);
 
         Type listType = new TypeToken<ArrayList<String>>(){}.getType();
