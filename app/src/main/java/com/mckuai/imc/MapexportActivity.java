@@ -25,15 +25,14 @@ import java.util.ArrayList;
 
 
 public class MapexportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    private String searchContext;//输入内容
     private ImageView btn_left, pt_im;
     private ImageButton btn_right;
     private TextView tv_title;
-    private EditText map_ed;
     private ListView map_lv_leave;
     private Button bt_go;
     private MapExportAdapter adapter;
-    private MCMapManager mapManager;;
+    private MCMapManager mapManager;
+    private Map map;
     private ArrayList<String> curMaps;
     private Context mContent;
     private ArrayList<Map> mMapBeans;
@@ -53,16 +52,19 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
             initview();
         }
         ArrayList<String> curmap = mapManager.getCurrentMaps();
+        ArrayList<String> getData = new ArrayList<>();
         showData();
     }
+
     @Override
     protected void onDestroy() {
 
-        if(null!=mapManager){
+        if (null != mapManager) {
             mapManager.closeDB();
         }
         super.onDestroy();
     }
+
     protected void showData() {
         adapter = new MapExportAdapter(mContent, mMapBeans);
         map_lv_leave.setAdapter(adapter);
@@ -113,7 +115,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+        Map map = (Map) adapter.getItem(position);
     }
 
     @Override

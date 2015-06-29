@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -35,6 +36,7 @@ public class MapAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
+    private static MCMapManager mapManager;
 
 
     private DLManager manager;
@@ -79,63 +81,10 @@ public class MapAdapter extends BaseAdapter {
             holder.MasterLayout01 = (MasterLayout) convertView.findViewById(R.id.MasterLayout01);
             final MasterLayout btn = holder.MasterLayout01;
             btn.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    btn.animation();
-                    Map clickedMap = (Map) v.getTag();
-                    if (null == clickedMap) {
-                        Toast.makeText(mContext, "点击出错", LENGTH_SHORT).show();
-                        return;
-                    }
-                    switch (btn.getFlg_frmwrk_mode()) {
-                        case 1:
-                            if (null == manager) {
-                                manager = DLManager.getInstance(mContext);
-                            }
 
-                            manager.dlStart("http://"+clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
-                                @Override
-                                public void onStart(String fileName, String url) {
-                                    super.onStart(fileName, url);
-                                    Log.e("111111","onStart");
-                                    //Toast.makeText(mContext, "Start", LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public boolean onConnect(int type, String msg) {
-
-                                    //Toast.makeText(mContext, "Connect", LENGTH_SHORT).show();
-                                    Log.e("111111", "onConnect");
-                                    return super.onConnect(type, msg);
-                                }
-
-                                @Override
-                                public void onProgress(int progress) {
-                                    super.onProgress(progress);
-                                    btn.cusview.setupprogress(progress);
-                                }
-
-                                @Override
-                                public void onFinish(File file) {
-                                    Log.e("111",""+ file.getPath() +file.getName());
-                                    super.onFinish(file);
-                                }
-
-                                @Override
-                                public void onError(String error) {
-                                    Log.e("111111", "onError");
-                                    super.onError(error);
-                                    //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
-                                }
-                            });
-                            break;
-                        case 2:
-
-                            break;
-                        case 3:
-
-                            break;
-                    }
                 }
             });
             convertView.setTag(holder);
@@ -160,4 +109,98 @@ public class MapAdapter extends BaseAdapter {
         public TextView tv_size;
         public MasterLayout MasterLayout01;
     }
+
+    class ClickLinstener implements View.OnClickListener {
+        private Map map;
+        private MasterLayout MasterLayout01;
+
+        public ClickLinstener(Map map, MasterLayout MasterLayout01) {
+            this.map = map;
+            this.MasterLayout01 = MasterLayout01;
+        }
+
+        @Override
+        public void onClick(View v) {
+            final MasterLayout btn = MasterLayout01;
+            btn.animation();
+            Map clickedMap = (Map) v.getTag();
+            if (mapManager == null) {
+                mapManager = new MCMapManager();
+            }
+
+            if (null == clickedMap) {
+                Toast.makeText(mContext, "点击出错", LENGTH_SHORT).show();
+                return;
+            }
+            switch (btn.getFlg_frmwrk_mode()) {
+                case 1:
+                    if (null == manager) {
+                        manager = DLManager.getInstance(mContext);
+                    }
+
+                    manager.dlStart("http://" + clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new McDLTaskListener(clickedMap ,btn) {
+
+
+                    });
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+            }
+        }
+    }
+
+    class McDLTaskListener extends cn.aigestudio.downloader.interfaces.DLTaskListener {
+        private Map clickedMap;
+
+        private MasterLayout MasterLayout01;
+
+        public McDLTaskListener(Map clickedMap, MasterLayout MasterLayout01) {
+            this.clickedMap = clickedMap;
+            this.MasterLayout01 = MasterLayout01;
+
+        }
+
+        final MasterLayout btn = MasterLayout01;
+
+        @Override
+        public void onStart(String fileName, String url) {
+            super.onStart(fileName, url);
+            Log.e("111111", "onStart");
+            //Toast.makeText(mContext, "Start", LENGTH_SHORT).show();
+        }
+
+        @Override
+        public boolean onConnect(int type, String msg) {
+
+            //Toast.makeText(mContext, "Connect", LENGTH_SHORT).show();
+            Log.e("111111", "onConnect");
+            return super.onConnect(type, msg);
+        }
+
+        @Override
+        public void onProgress(int progress) {
+            super.onProgress(progress);
+            btn.cusview.setupprogress(progress);
+        }
+
+        @Override
+        public void onFinish(File file) {
+            Log.e("111", "" + file.getPath() + file.getName());
+            super.onFinish(file);
+            mapManager.addDownloadMap(clickedMap);
+        }
+
+        @Override
+        public void onError(String error) {
+            Log.e("111111", "onError");
+            super.onError(error);
+            //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
+        }
+
+    }
 }
+

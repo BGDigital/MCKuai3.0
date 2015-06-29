@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import cn.aigestudio.downloader.bizs.DLManager;
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
+import static android.widget.Toast.LENGTH_SHORT;
+
 /**
  * Created by Zzz on 2015/6/25.
  */
@@ -97,6 +99,7 @@ public class RankingAdapter extends BaseAdapter {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);
+                                    Toast.makeText(mContext, "Start", LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -118,6 +121,7 @@ public class RankingAdapter extends BaseAdapter {
                                 @Override
                                 public void onError(String error) {
                                     super.onError(error);
+                                    Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
                                 }
                             });
                             break;

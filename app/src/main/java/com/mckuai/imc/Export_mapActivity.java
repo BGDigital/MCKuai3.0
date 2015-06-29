@@ -42,6 +42,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private MCMapManager mapManager;
     private ArrayList<Map> mMapBeans;
     private String data;
+    private Map map;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,8 +66,8 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
 
-        if(null!=mapManager){
-           mapManager.closeDB();
+        if (null != mapManager) {
+            mapManager.closeDB();
         }
         super.onDestroy();
     }
@@ -112,7 +113,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-     Map map = (Map)adapter.getItem(position);
+        Map map = (Map) adapter.getItem(position);
 
     }
 
