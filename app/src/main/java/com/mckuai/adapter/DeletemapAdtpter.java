@@ -16,21 +16,20 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.util.ArrayList;
 
 /**
- * Created by Administrator on 2015/6/27.
+ * Created by Administrator on 2015/6/28.
  */
-public class ExportAdapter extends BaseAdapter {
+public class DeletemapAdtpter extends BaseAdapter {
     private Context mContext;
     private View view;
     private LayoutInflater mInflater;
-    private ArrayList<Map> mMapBeans ;
+    private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
 
-    public ExportAdapter(Context context, ArrayList<Map> mapBeans) {
+    public DeletemapAdtpter(Context context, ArrayList<Map> mapBeans) {
         mMapBeans = mapBeans;
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
-
     @Override
     public int getCount() {
         return mMapBeans.size();

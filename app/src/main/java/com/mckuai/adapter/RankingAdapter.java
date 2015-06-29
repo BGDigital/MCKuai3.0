@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mckuai.bean.Map;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -28,7 +30,7 @@ public class RankingAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
-
+    private Map maps;
     private DLManager manager;
 
     public RankingAdapter(Context context, ArrayList<Map> mapBeans) {
@@ -70,7 +72,7 @@ public class RankingAdapter extends BaseAdapter {
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.rk_tv = (TextView) convertView.findViewById(R.id.rk_tv);
             holder.MasterLayout01 = (MasterLayout) convertView.findViewById(R.id.MasterLayout01);
-            holder.rk_tv.setText(++position +"");
+            holder.rk_tv.setText(++position + "");
             if (position == 1) {
                 holder.rk_tv.setBackgroundResource(R.drawable.map_one);
             } else {
@@ -81,12 +83,17 @@ public class RankingAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     btn.animation();
+                    Map clickedMap = (Map) v.getTag();
+                    if (null == clickedMap) {
+                        Toast.makeText(mContext, "点击出错", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     switch (btn.getFlg_frmwrk_mode()) {
                         case 1:
                             if (null == manager) {
                                 manager = DLManager.getInstance(mContext);
                             }
-                            manager.dlStart("http://softdown.mckuai.com:8081/mckuai.apk", "/mnt/sdcard/Download/", new DLTaskListener() {
+                            manager.dlStart(clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);
@@ -133,6 +140,7 @@ public class RankingAdapter extends BaseAdapter {
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
         holder.tv_category.setText(map.getResCategroyTwo());
+        holder.MasterLayout01.setTag(map);
         return convertView;
     }
 

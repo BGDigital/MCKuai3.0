@@ -133,6 +133,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
         cf_l3.setOnClickListener(this);
         cf_l4.setOnClickListener(this);
         cf_l5.setOnClickListener(this);
+        cf_l6.setOnClickListener(this);
     }
 
     public void onClick(View v) {
@@ -186,7 +187,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
 
     private void showTypeLayout(){
         map_ls.setVisibility(View.GONE);
-        l1.setVisibility(View.GONE);
         mp_r1.setVisibility(View.VISIBLE);
     }
 

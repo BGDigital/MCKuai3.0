@@ -12,13 +12,22 @@
         android:layout_height="@dimen/fm_h"
         android:background="@mipmap/ic_launcher" />
 
+    <com.mckuai.widget.MasterLayout
+        android:id="@+id/MasterLayout01"
+        android:layout_width="@dimen/xz_wh"
+        android:layout_height="@dimen/xz_wh"
+        android:layout_alignParentRight="true"
+        android:clickable="true"></com.mckuai.widget.MasterLayout>
+
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/image"
         android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@id/MasterLayout01"
         android:layout_toRightOf="@id/image"
+        android:lines="1"
         android:text="地图名字" />
 
 
@@ -44,12 +53,6 @@
         android:text="类别"
         android:textColor="@color/font_radio_hint_checked" />
 
-    <com.mckuai.widget.MasterLayout
-        android:id="@+id/MasterLayout01"
-        android:layout_width="@dimen/xz_wh"
-        android:layout_height="@dimen/xz_wh"
-        android:layout_alignParentRight="true"
-        android:clickable="true"></com.mckuai.widget.MasterLayout>
 
     <TextView
         android:id="@+id/tv_size"
