@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.R;
+import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
+import com.mckuai.until.MCMapManager;
 
 import java.util.List;
 
@@ -23,7 +25,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private View view;
     private ImageView iv_map;
-    //private Button btn_selectMap;
     private TextView tv_mapName;
     private TextView tv_gameMode;
     private TextView tv_gameTime;
@@ -41,6 +42,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private int viewtype;
 
     private boolean isShowGameRunning = false;
+    private boolean isGameInstalled = false;
+    private boolean isGameRunning = false;
 
 
     public GameEditerFragment(){
@@ -50,7 +53,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        gameEditer = new MCGameEditer();
+        //gameEditer = new MCGameEditer();
         getProfileInfo();
     }
 
@@ -72,8 +75,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             initView();
         }
         mode = gameEditer.getGameMode();
+        detectionGameInfo();
+        showCurentMap();
         showGameMode();
-        detectionGameRunning();
     }
 
     @Override
@@ -138,6 +142,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     }
 
+    private void showCurentMap(){
+        MCMapManager mcMapManager = new MCMapManager();
+        String mapName = mcMapManager.getCurrentMap();
+        tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图":mapName);
+    }
+
     private void switchGameTime(){
         if (tv_gameTime.getText().equals("白天")){
             tv_gameTime.setText("黑夜");
@@ -166,41 +176,47 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void startGame(){
+        if (!isGameInstalled){
+          showNotification(2,"警告：你还未安装游戏！",R.id.rl_root);
+            return;
+        }
+
+        if (isGameRunning){
+            showNotification(3,"游戏已经在运行，无需再次启动！",R.id.rl_root);
+            return;
+        }
+
         Intent intent = new Intent();
         ComponentName name = new ComponentName("com.mojang.minecraftpe","com.mojang.minecraftpe.MainActivity");
         intent.setComponent(name);
         intent.setAction(Intent.ACTION_VIEW);
         startActivity(intent);
+
     }
 
-    private void detectionGameRunning(){
-        if (!isShowGameRunning){
-            ActivityManager activityManager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> run = activityManager.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo info:run){
-                if (info.processName.equalsIgnoreCase("com.mojang.minecraftpe")){
-                    showAlert("警告", "检测到我的世界正在运行,此时的修改不会生效,是否结束游戏?", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        }
-                    }, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            killGame();
-                        }
-                    });
-                    break;
-                }
+    private void detectionGameInfo(){
+        isGameInstalled = GameUntil.detectionIsGameInstalled(getActivity());
+        if (isGameInstalled){
+            isGameRunning = GameUntil.detectionIsGameRunning(getActivity());
+            if (isGameRunning){
+                showAlert("警告", "检测到我的世界正在运行,此时的修改不会生效,是否结束游戏?", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        GameUntil.killGameTask(getActivity());
+                    }
+                });
             }
         }
-        isShowGameRunning = true;
-    }
+        else {
+            showMessage("警告","你还未安装游戏，不能修改游戏内容！");
+            return;
+        }
 
-    private void killGame(){
-        ActivityManager activityManager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-        activityManager.killBackgroundProcesses("com.mojang.minecraftpe");
     }
-
 
     private void selectMap(){
         showNotification(0,"选择地图",R.id.fl_root);

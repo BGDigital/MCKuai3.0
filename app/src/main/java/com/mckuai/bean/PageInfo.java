@@ -1,5 +1,7 @@
 package com.mckuai.bean;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 /**
@@ -44,11 +46,13 @@ public class PageInfo implements Serializable{
     }
 
     public boolean EOF(){
+        int c = allCount / pageSize;
         if(allCount % pageSize == 0){
-            return (allCount / page) == page;
+            return c == page;
         }
         else{
-            return (allCount / page) == (page+1);
+            c++;
+            return c == page;
         }
     }
 }

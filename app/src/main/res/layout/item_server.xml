@@ -9,12 +9,15 @@
         android:layout_height="90dp"
         android:scaleType="fitXY"
         />
-    <ImageView
-        android:id="@+id/iv_showDetails"
+    <Button
+        android:id="@+id/btn_addServer"
         android:layout_centerVertical="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/btn_circle_green_shape"
         android:layout_alignParentRight="true"
+        android:text="进入"
+        android:textColor="@color/green"
         />
 
     <TextView
@@ -37,7 +40,7 @@
         android:textColor="@color/font_primary"
         android:layout_alignTop="@id/iv_serverCover"
         android:layout_toRightOf="@id/iv_serverCover"
-        android:layout_toLeftOf="@id/iv_showDetails"
+        android:layout_toLeftOf="@id/btn_addServer"
         android:text="服务器"
         />
 
@@ -83,6 +86,7 @@
         android:text="服主：用户名"
         android:layout_alignTop="@id/tv_serverType"
         android:layout_alignBottom="@id/tv_serverType"
+        android:layout_toLeftOf="@+id/btn_addServer"
         android:layout_toRightOf="@id/tv_serverType"
         android:singleLine="true"
         android:gravity="center_vertical"

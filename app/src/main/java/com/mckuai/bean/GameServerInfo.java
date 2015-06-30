@@ -31,6 +31,8 @@ public class GameServerInfo {
     private String dres;                //介绍
     private String icon;                //地图封面
     private String pictures;           //截图
+    private String isOnline;            //是否在线，为no时是不在线
+    private String userName;        //服主
 
     public int getGameId() {
         return gameId;
@@ -246,5 +248,21 @@ public class GameServerInfo {
 
     public void setPictures(String pictures) {
         this.pictures = pictures;
+    }
+
+    public boolean getIsOnline() {
+        return null == isOnline ? false: !isOnline.equalsIgnoreCase("no");
+    }
+
+    public void setIsOnline(String isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

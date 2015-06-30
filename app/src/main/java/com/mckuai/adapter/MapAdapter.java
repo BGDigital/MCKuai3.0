@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -36,8 +35,7 @@ public class MapAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
-    private static MCMapManager mapManager;
-    private static final  String TAG = "MapAdapter";
+
 
     private DLManager manager;
 
@@ -46,17 +44,16 @@ public class MapAdapter extends BaseAdapter {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
         mLoader = ImageLoader.getInstance();
-
     }
 
     @Override
     public int getCount() {
-        return null == mMapBeans ? 0 : mMapBeans.size();
+        return mMapBeans.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null == mMapBeans ? null : mMapBeans.get(position);
+        return mMapBeans.get(position);
     }
 
     @Override
@@ -203,4 +200,3 @@ public class MapAdapter extends BaseAdapter {
         }
     }
 }
-

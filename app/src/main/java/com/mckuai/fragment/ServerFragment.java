@@ -1,6 +1,8 @@
 package com.mckuai.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +15,8 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
+import com.marshalchen.ultimaterecyclerview.SwipeableRecyclerViewTouchListener;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.adapter.ServerAdapter;
 import com.mckuai.bean.GameServerInfo;
@@ -28,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.LogRecord;
 
 public class ServerFragment extends BaseFragment implements View.OnClickListener {
 
@@ -46,6 +51,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private PageInfo page;
     private Gson gson;
     private ServerAdapter adapter;
+    private boolean isLoadmoreAlowed = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +77,29 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
         rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+       // serverListView.setHasFixedSize(true);
         serverListView.setLayoutManager(manager);
+
+        adapter = new ServerAdapter();
+        serverListView.setAdapter(adapter);
+
+
+        serverListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void loadMore(int i, int i1) {
+                loadData();
+            }
+        });
+
+        serverListView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (null != page) {
+                    page.setPage(0);
+                }
+                loadData();
+            }
+        });
 
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
@@ -87,11 +115,28 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             return;
         }
 
-        if (null == adapter){
-            adapter = new ServerAdapter();
-            serverListView.setAdapter(adapter);
+        if (0 == adapter.getItemCount()){
+            adapter.setData(serverInfos);
         }
-        adapter.setData(serverInfos);
+        else {
+            adapter.notifyDataSetChanged();
+        }
+        if (page.EOF() ){
+            if (isLoadmoreAlowed){
+                Log.w(TAG,"disableLoadmore");
+                serverListView.disableLoadmore();
+                isLoadmoreAlowed = false;
+            }
+        }
+        else {
+            if (!isLoadmoreAlowed){
+                Log.w(TAG,"enableLoadmore") ;
+                serverListView.enableLoadmore();
+                isLoadmoreAlowed = true;
+            }
+
+        }
+
     }
 
     private void showServerType(){
@@ -103,10 +148,11 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void loadData(){
-        if (isLoading){
+        if (isLoading || (null != page && page.EOF())){
             return;
         }
         else {
+            Log.e(TAG,"loading...");
             isLoading = true;
         }
         if (null == client){
@@ -140,7 +186,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
+                //super.onSuccess(statusCode, headers, response);
                 //cancleLodingToast(false);
                 isLoading = false;
                 ParseResponse parse = new ParseResponse();
@@ -189,21 +235,24 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if (isLoading){
+            showNotification(1,"正在获取数据，请稍候！",R.id.rl_serverList_Root);
+            return;
+        }
         switch (v.getId()){
             case R.id.ll_serverType:
-                if (isLoading)
-                    showNotification(1,"正在获取数据，请稍候！",R.id.rl_serverList_Root);
-                else {
                     if (null == serverType){
                         showServerType();
                     }
                     else {
                         serverType = null;
                     }
-                }
                 break;
             case R.id.ll_serverRank:
                 isOrderByDownload = !isOrderByDownload;
+                if (null != page){
+                page.setPage(0);
+                 }
                 loadData();
                 break;
         }

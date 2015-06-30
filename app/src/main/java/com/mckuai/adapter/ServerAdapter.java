@@ -62,6 +62,14 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
             holder.version.setText(serverInfo.getResVersion()+"");
             holder.type.setText(serverInfo.getServerTag());
             holder.userCount.setText("人数："+serverInfo.getOnlineNum() +"/"+serverInfo.getPeopleNum());
+            holder.owner.setText("服主：" + serverInfo.getUserName());
+            if (serverInfo.getIsOnline()){
+                holder.state.setText("在线");
+            }
+            else {
+                holder.state.setText("离线");
+            }
+
         }
     }
 

@@ -33,6 +33,7 @@ public class MCMapManager {
     private MCkuai application;
 
     private ArrayList<String> curMaps;
+    private ArrayList<String> curMapsDir;
     private ArrayList<String> index;
     private ArrayList<Map> downloadMaps;
     private ArrayList<Map> newDownloadMaps;
@@ -97,23 +98,63 @@ public class MCMapManager {
     }
 
     public ArrayList<String> getCurrentMaps(){
+        if (!isOpen){
+            openDB();
+        }
+
+        if (!isOpen){
+            Log.e("getCurrentMaps","open db false!");
+            return null;
+        }
+
         if (null != curMaps){
             return  curMaps;
         }
 
 
-        File[] files = new File(application.getGameProfileDir()).listFiles();
+        File[] files = new File(application.getGameProfileDir()+"minecraftWorlds/").listFiles();
         if (null == files || 0 == files.length){
             return  null;
         }
 
-        curMaps = new ArrayList<String>();
+        curMaps = new ArrayList<>();
+        curMapsDir = new ArrayList<>();
         for (File file:files){
             if (file.isDirectory()){
-                curMaps.add(file.getName());
+                curMapsDir.add(file.getPath());
+                curMaps.add(getMapName(file.getPath()));
             }
         }
         return  curMaps;
+    }
+
+    public String getCurrentMapdir(){
+        if (!isOpen){
+            openDB();
+        }
+
+        if (!isOpen){
+            Log.e("getCurrentMap","open db false!");
+            return  null;
+        }
+
+        byte name[] = db.get("curentGameMap".getBytes());
+        if (null != name){
+            return  new String(name);
+        }
+        else {
+            ArrayList<String> maps = getCurrentMaps();
+            if (null != maps && !maps.isEmpty() )  {
+                return  maps.get(0);
+            }
+        }
+        return  null;
+
+    }
+
+    public String getMapName(String mapdir){
+        MCGameEditer editer = new MCGameEditer(mapdir);
+        return  editer.getMapName() ;
     }
 
     public void importMap(String mapFileName){

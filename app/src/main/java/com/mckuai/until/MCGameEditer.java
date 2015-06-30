@@ -23,9 +23,11 @@ public class MCGameEditer {
     private int offset_GameTime = 0;
     private int offset_ThirdView = 0;
 
-    private final  String fileName = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/level.dat";
+//    private final  String fileName = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/level.dat";
+    private String fileName;
 
-    public MCGameEditer(){
+    public MCGameEditer(String mapDir){
+        fileName = mapDir+"/level.dat";
         loadData();
     }
 
@@ -52,12 +54,30 @@ public class MCGameEditer {
         }
 
         if (0 < offset_GameMode){
-            if (setByteBlock(offset_GameMode,toByteArray(mode,4))){
+            if (setByteBlock(offset_GameMode, toByteArray(mode, 4))){
                 if (saveData()){
                     return  true;
                 }
             }
         }
+        return  false;
+    }
+
+    public String getMapName(){
+        int offset = getValueOffset("LevelName");
+        if (0 < offset){
+            byte bytelength[] = {0,0};
+            if (getByteBlock(offset, bytelength)){
+                byte mapname[] = new byte[toInt(bytelength)];
+                if (getByteBlock(offset + 2, mapname)){
+                    return new String(mapname);
+                }
+            }
+        }
+        return  null;
+    }
+
+    public boolean setMapName(String name){
         return  false;
     }
 
@@ -93,6 +113,24 @@ public class MCGameEditer {
     private boolean getByteBlock(int offset,byte dst[]){
         if (null != dst && offset + dst.length < levelData.length){
             for (int i = 0 ;i < dst.length;i++){
+                dst[i] = levelData[offset + i];
+            }
+            return  true;
+        }
+        return  false;
+    }
+
+
+    /**
+     * 从指定位置起读取给定个数的byte
+     * @param offset 起始位置
+     * @param dst 接收读取到的byte[]
+     * @param length 要读取的长度
+     * @return 如果读取成功则返回true,否则返回false;
+     */
+    private boolean getByteBlock(int offset,byte dst[],int length){
+        if (null != dst && offset +length < levelData.length){
+            for (int i = 0 ;i < length;i++){
                 dst[i] = levelData[offset + i];
             }
             return  true;

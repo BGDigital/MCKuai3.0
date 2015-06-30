@@ -4,6 +4,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <include
+        android:id="@+id/layout_titlebar"
+        layout="@layout/title_bar" >
+
+    </include>
+
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
@@ -104,7 +110,7 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/layout_titlebar"
         android:layout_above="@+id/bottom"
         />
 

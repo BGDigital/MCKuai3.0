@@ -1,10 +1,13 @@
 package com.mckuai.imc;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mckuai.adapter.FragmentAdapter;
@@ -13,6 +16,8 @@ import com.mckuai.fragment.ForumFragment;
 import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ServerFragment;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -36,6 +41,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private int lastPosition = 0;
     private MCkuai application;
+
+    private TextView tv_titlebar_title;
+    private ImageButton btn_titlebar_left;
+    private ImageButton btn_titlebar_right;
+    private Spinner sp_titlebar_spinner;
 
 
 
@@ -66,6 +76,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         ll2 = (LinearLayout)findViewById(R.id.rb2);
         ll3 = (LinearLayout)findViewById(R.id.rb3);
         ll4 = (LinearLayout)findViewById(R.id.rb4);
+
+        tv_titlebar_title = (TextView)findViewById(R.id.tv_titlebar_title);
+        btn_titlebar_left = (ImageButton)findViewById(R.id.btn_titlebar_left);
+        btn_titlebar_right = (ImageButton)findViewById(R.id.btn_titlebar_share);
+        sp_titlebar_spinner = (Spinner)findViewById(R.id.sp_titlebar_type);
 
         ll1.setOnClickListener(this);
         ll2.setOnClickListener(this);
@@ -149,6 +164,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 tv3.setEnabled(true);
                 img3.setEnabled(true);
                 ll3.setEnabled(true);
+                sp_titlebar_spinner.setVisibility(View.GONE);
                 break;
             case 3:
                 tv4.setEnabled(true);
@@ -166,21 +182,26 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         lastPosition = position;
         switch (position){
             case 1:
+                 tv_titlebar_title.setText("地图");
                 tv2.setEnabled(false);
                 img2.setEnabled(false);
                 ll2.setEnabled(false);
                 break;
             case 2:
+                tv_titlebar_title.setText("联机");
+                sp_titlebar_spinner.setVisibility(View.VISIBLE);
                 tv3.setEnabled(false);
                 img3.setEnabled(false);
                 ll3.setEnabled(false);
                 break;
             case 3:
+                tv_titlebar_title.setText("社区");
                 tv4.setEnabled(false);
                 img4.setEnabled(false);
                 ll4.setEnabled(false);
                 break;
             default:
+                tv_titlebar_title.setText("工具");
                 tv1.setEnabled(false);
                 img1.setEnabled(false);
                 ll1.setEnabled(false);
