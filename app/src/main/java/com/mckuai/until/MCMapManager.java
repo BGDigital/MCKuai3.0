@@ -168,6 +168,7 @@ public class MCMapManager {
         else{
             Log.w("initDB","get file");
         }
+        getIndex();
     }
 
     private boolean openDB(){
