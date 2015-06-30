@@ -25,6 +25,7 @@
     <color name="background_dark_green">#33CC8F</color>
     <color name="background_white">#FFFFFF</color>
     <color name="background_litegray">#C9C9C9</color>
+    <color name="background_orange">#F5C41E</color>
 
     <!--通用色彩 -->
     <color name="white">#FFFFFF</color>

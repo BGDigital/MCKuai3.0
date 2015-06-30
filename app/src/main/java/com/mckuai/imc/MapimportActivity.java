@@ -29,13 +29,11 @@ import java.util.ArrayList;
 
 
 public class MapimportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    private String searchContext;//输入内容
     private ImageView btn_left, pt_im;
     private ImageButton btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
     private Button bt_go;
-    private MCkuai application;
     private MapImportAdapter adapter;
     private MCMapManager mapManager;
     private ArrayList<String> curMaps;
@@ -123,6 +121,9 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+    public void exportMap(String mapName,String dstFileDir){
 
     }
 }

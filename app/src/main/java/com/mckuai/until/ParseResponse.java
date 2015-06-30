@@ -32,7 +32,7 @@ public class ParseResponse {
         }
 
         try {
-            if (response.getString("").equalsIgnoreCase("ok")){
+            if (response.getString("state").equalsIgnoreCase("ok")){
                 result.data = response.getString("dataObject");
                 result.isSuccess = true;
             }
