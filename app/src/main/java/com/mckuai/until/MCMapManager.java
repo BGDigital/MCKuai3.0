@@ -80,14 +80,19 @@ public class MCMapManager {
             }
         }
 
-        byte data[]= db.get(mapDownloaded.getBytes());
-        if (null == data){
-            return  null;
-        }
-        String maps = new String(data);
+        for (String resid:index){
+            byte data[]= db.get(resid.getBytes());
+            if (null == data){
+                return  null;
+            }
+            String maps = new String(data);
 
-        Type listType = new TypeToken<ArrayList<String>>(){}.getType();
-        downloadMaps = gson.fromJson(maps,listType);
+           // Type listType = new TypeToken<ArrayList<String>>(){}.getType();
+            Map map = gson.fromJson(maps,Map.class);
+            downloadMaps.add(map);
+            //downloadMaps = gson.fromJson(maps,listType);
+        }
+
         return  downloadMaps;
     }
 

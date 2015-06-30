@@ -37,7 +37,7 @@ public class MapAdapter extends BaseAdapter {
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
     private static MCMapManager mapManager;
-
+    private static final  String TAG = "MapAdapter";
 
     private DLManager manager;
 
@@ -46,16 +46,17 @@ public class MapAdapter extends BaseAdapter {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
         mLoader = ImageLoader.getInstance();
+
     }
 
     @Override
     public int getCount() {
-        return mMapBeans.size();
+        return null == mMapBeans ? 0 : mMapBeans.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mMapBeans.get(position);
+        return null == mMapBeans ? null : mMapBeans.get(position);
     }
 
     @Override
@@ -109,7 +110,7 @@ public class MapAdapter extends BaseAdapter {
         private MasterLayout MasterLayout01;
 
         public ClickLinstener(Map map, MasterLayout MasterLayout01) {
-             this.map = map;
+            this.map = map;
             this.MasterLayout01 = MasterLayout01;
         }
 
@@ -131,8 +132,11 @@ public class MapAdapter extends BaseAdapter {
                     if (null == manager) {
                         manager = DLManager.getInstance(mContext);
                     }
-
-                    manager.dlStart("http://" + clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new McDLTaskListener(clickedMap, btn) {
+                    String downloadDir = MCkuai.getInstance().getMapDownloadDir();
+                    String url = "http://"+clickedMap.getSavePath();
+                    Log.e(TAG,"downloaddir:"+downloadDir);
+                    Log.e(TAG,"url:"+url);
+                    manager.dlStart(url,downloadDir, new McDLTaskListener(clickedMap, btn) {
 
 
                     });
@@ -193,12 +197,10 @@ public class MapAdapter extends BaseAdapter {
 
         @Override
         public void onError(String error) {
-            Log.e("111111", "onError");
+            Log.e("1111112222222222222222222222222222222222222222222222222222222222222", "onError");
             super.onError(error);
             //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
         }
-
     }
-
 }
 
