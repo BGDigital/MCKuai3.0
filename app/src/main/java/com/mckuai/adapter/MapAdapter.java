@@ -80,13 +80,7 @@ public class MapAdapter extends BaseAdapter {
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.MasterLayout01 = (MasterLayout) convertView.findViewById(R.id.MasterLayout01);
             final MasterLayout btn = holder.MasterLayout01;
-            btn.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+            btn.setOnClickListener(new ClickLinstener(map, btn));
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -115,7 +109,7 @@ public class MapAdapter extends BaseAdapter {
         private MasterLayout MasterLayout01;
 
         public ClickLinstener(Map map, MasterLayout MasterLayout01) {
-            this.map = map;
+             this.map = map;
             this.MasterLayout01 = MasterLayout01;
         }
 
@@ -129,8 +123,8 @@ public class MapAdapter extends BaseAdapter {
             }
 
             if (null == clickedMap) {
-                Toast.makeText(mContext, "点击出错", LENGTH_SHORT).show();
-                return;
+//                Toast.makeText(mContext, "点击出错", LENGTH_SHORT).show();
+//                return;
             }
             switch (btn.getFlg_frmwrk_mode()) {
                 case 1:
@@ -138,14 +132,16 @@ public class MapAdapter extends BaseAdapter {
                         manager = DLManager.getInstance(mContext);
                     }
 
-                    manager.dlStart("http://" + clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new McDLTaskListener(clickedMap ,btn) {
+                    manager.dlStart("http://" + clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new McDLTaskListener(clickedMap, btn) {
 
 
                     });
                     break;
+                //Download stopped
                 case 2:
 
                     break;
+                //Download complete
                 case 3:
 
                     break;
@@ -153,18 +149,18 @@ public class MapAdapter extends BaseAdapter {
         }
     }
 
-    class McDLTaskListener extends cn.aigestudio.downloader.interfaces.DLTaskListener {
+    class McDLTaskListener extends DLTaskListener {
         private Map clickedMap;
-
         private MasterLayout MasterLayout01;
 
         public McDLTaskListener(Map clickedMap, MasterLayout MasterLayout01) {
+            super();
             this.clickedMap = clickedMap;
             this.MasterLayout01 = MasterLayout01;
 
         }
 
-        final MasterLayout btn = MasterLayout01;
+//        final MasterLayout btn = MasterLayout01;
 
         @Override
         public void onStart(String fileName, String url) {
@@ -184,7 +180,7 @@ public class MapAdapter extends BaseAdapter {
         @Override
         public void onProgress(int progress) {
             super.onProgress(progress);
-            btn.cusview.setupprogress(progress);
+            MasterLayout01.cusview.setupprogress(progress);
         }
 
         @Override
@@ -192,6 +188,7 @@ public class MapAdapter extends BaseAdapter {
             Log.e("111", "" + file.getPath() + file.getName());
             super.onFinish(file);
             mapManager.addDownloadMap(clickedMap);
+            mapManager.closeDB();
         }
 
         @Override
@@ -202,5 +199,6 @@ public class MapAdapter extends BaseAdapter {
         }
 
     }
+
 }
 

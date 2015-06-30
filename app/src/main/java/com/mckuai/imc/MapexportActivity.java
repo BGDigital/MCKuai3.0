@@ -122,6 +122,12 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    public void exportMap(String mapName, String dstFileDir) {
+        String str = map.getSavePath();
+        String tmp = str.substring(str.lastIndexOf("/") + 1, str.length());
+
+    }
     public void importMap(String mapFile){
 
     }

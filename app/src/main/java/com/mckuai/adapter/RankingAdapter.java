@@ -1,6 +1,7 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,11 +100,12 @@ public class RankingAdapter extends BaseAdapter {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);
-                                    Toast.makeText(mContext, "Start", LENGTH_SHORT).show();
+                                    Log.e("111111", "onStart");
                                 }
 
                                 @Override
                                 public boolean onConnect(int type, String msg) {
+                                    Log.e("111111", "onConnect");
                                     return super.onConnect(type, msg);
                                 }
 
@@ -121,7 +123,7 @@ public class RankingAdapter extends BaseAdapter {
                                 @Override
                                 public void onError(String error) {
                                     super.onError(error);
-                                    Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
+
                                 }
                             });
                             break;

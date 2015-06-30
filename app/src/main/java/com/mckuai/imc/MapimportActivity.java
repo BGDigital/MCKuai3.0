@@ -39,6 +39,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<String> curMaps;
     private Context mContent;
     private ArrayList<Map> mMapBeans;
+    private Map map;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,8 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void showData() {
-
+//        adapter = MapImportAdapter(mContent,);
+//        mpt_ls.setAdapter(adapter);
     }
 
     protected ArrayList<String> getData(String dar) {
@@ -121,9 +123,6 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-    public void exportMap(String mapName,String dstFileDir){
 
     }
 }

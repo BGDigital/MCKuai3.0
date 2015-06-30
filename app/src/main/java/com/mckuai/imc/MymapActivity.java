@@ -35,6 +35,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     private ExportAdapter adapter;
     private ArrayList<Map> mMapBeans;
 
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_mymap);
@@ -48,6 +49,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
             mapManager = new MCMapManager();
             initView();
         }
+
         ArrayList<String> curmap = mapManager.getCurrentMaps();
         ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
         showData();
