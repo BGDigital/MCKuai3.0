@@ -95,7 +95,7 @@ public class MCkuai  extends Application{
     public String getMapDownloadDir(){
         String path = getSDPath();
         if (null != path){
-            return path + "Download/MCPEMaps/";
+            return path + "/Download/MCPEMaps/";
         }
         else
         return  getFilesDir()+ File.separator + "MCPEMaps" + File.separator;

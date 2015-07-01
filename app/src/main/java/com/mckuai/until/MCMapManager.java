@@ -57,6 +57,7 @@ public class MCMapManager {
 
         for (String resId:index){
             if (resId.equalsIgnoreCase(map.getResId())){
+                Log.w("addDownloadMap","地图已存在!");
                 return;
             }
         }
@@ -90,6 +91,9 @@ public class MCMapManager {
 
            // Type listType = new TypeToken<ArrayList<String>>(){}.getType();
             Map map = gson.fromJson(maps,Map.class);
+            if (null == downloadMaps){
+                downloadMaps = new ArrayList<>(5);
+            }
             downloadMaps.add(map);
             //downloadMaps = gson.fromJson(maps,listType);
         }
@@ -303,7 +307,7 @@ public class MCMapManager {
 
         String data = "";
         for (String curmap:index){
-            data = curmap + "";
+            data = curmap + ",";
         }
         data = data.substring(0,data.length() - 1);
 
