@@ -52,15 +52,16 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         }
 
 //        ArrayList<String> curmap = mapManager.getCurrentMaps();
-        downloadMap = mapManager.getDownloadMaps();
+
         showData();
     }
 
     protected void showData() {
-        if (mapManager.getDownloadMaps() == null) {
+        downloadMap = mapManager.getDownloadMaps();
+        if (downloadMap == null) {
             showNotification(1, "请下载地图", R.id.maproot);
         } else {
-            adapter = new ExportAdapter(mContent, mMapBeans);
+            adapter = new MymapAdapter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);
         }
     }

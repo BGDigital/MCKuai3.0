@@ -41,6 +41,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private ArrayList<Map> mMapBeans;
     private String data;
     private Map map;
+    ArrayList<Map> downloadMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
             mapManager = new MCMapManager();
             initview();
         }
-        ArrayList<String> curmap = mapManager.getCurrentMapDirList();
-        ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
+
         showData();
     }
 
@@ -71,10 +71,11 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     }
 
     private void showData() {
-        if (mapManager.getDownloadMaps() == null) {
+        downloadMap = mapManager.getDownloadMaps();
+        if (downloadMap == null) {
             showNotification(1, "请下载地图", R.id.maproot);
         } else {
-            adapter = new ExportAdapter(mContent, mMapBeans);
+            adapter = new ExportAdapter(this, downloadMap);
             mpt_ls.setAdapter(adapter);
         }
     }

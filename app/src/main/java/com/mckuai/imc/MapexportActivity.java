@@ -36,6 +36,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     private ArrayList<String> curMaps;
     private Context mContent;
     private ArrayList<Map> mMapBeans;
+    ArrayList<Map> downloadMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,6 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
             mapManager = new MCMapManager();
             initview();
         }
-        ArrayList<String> curmap = mapManager.getCurrentMapDirList();
-        ArrayList<String> getData = new ArrayList<>();
         showData();
     }
 
@@ -66,7 +65,8 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     }
 
     protected void showData() {
-        adapter = new MapExportAdapter(mContent, mMapBeans);
+        downloadMap = new MCMapManager().getDownloadMaps();
+        adapter = new MapExportAdapter(this, downloadMap);
         map_lv_leave.setAdapter(adapter);
     }
 

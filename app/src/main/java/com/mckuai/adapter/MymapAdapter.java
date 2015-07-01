@@ -78,6 +78,7 @@ public class MymapAdapter extends BaseAdapter {
                     dir += map.getFileName();
                     mcMapManager.importMap(dir);
                     GameUntil.startGame(mContext);
+
                 }
             });
             convertView.setTag(holder);

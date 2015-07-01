@@ -22,7 +22,7 @@ public class ExportAdapter extends BaseAdapter {
     private Context mContext;
     private View view;
     private LayoutInflater mInflater;
-    private ArrayList<Map> mMapBeans ;
+    private ArrayList<Map> mMapBeans;
     private ImageLoader mLoader;
 
     public ExportAdapter(Context context, ArrayList<Map> mapBeans) {
