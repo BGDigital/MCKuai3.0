@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mckuai.adapter.ExportAdapter;
+import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.until.MCMapManager;
 
@@ -32,8 +33,8 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     private EditText map_ed;
     private Button go_map, leave_map, delete_map;
     private MCMapManager mapManager;
-    private ExportAdapter adapter;
-    private ArrayList<Map> mMapBeans;
+    private MymapAdapter adapter;
+    ArrayList<Map> downloadMap;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,8 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
             initView();
         }
 
-        ArrayList<String> curmap = mapManager.getCurrentMaps();
-        ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
+//        ArrayList<String> curmap = mapManager.getCurrentMaps();
+        downloadMap = mapManager.getDownloadMaps();
         showData();
     }
 
@@ -59,7 +60,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         if (mapManager.getDownloadMaps() == null) {
             showNotification(1, "请下载地图", R.id.maproot);
         } else {
-            adapter = new ExportAdapter(mContent, mMapBeans);
+            adapter = new MymapAdapter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);
         }
     }
