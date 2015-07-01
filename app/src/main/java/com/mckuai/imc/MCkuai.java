@@ -97,8 +97,9 @@ public class MCkuai  extends Application{
         if (null != path){
             return path + "/Download/MCPEMaps/";
         }
-        else
-        return  getFilesDir()+ File.separator + "MCPEMaps" + File.separator;
+        else {
+            return getFilesDir() + File.separator + "MCPEMaps" + File.separator;
+        }
     }
 
     public String getGameProfileDir(){
