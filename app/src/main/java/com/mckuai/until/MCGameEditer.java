@@ -31,6 +31,16 @@ public class MCGameEditer {
         loadData();
     }
 
+    public MCGameEditer(){
+        MCMapManager mapManager = new MCMapManager();
+
+    }
+
+    public void setMapDir(String mapDir){
+        fileName = mapDir + "/level.dat";
+        loadData();
+    }
+
     public boolean hasProfile(){
         return  levelData != null;
     }

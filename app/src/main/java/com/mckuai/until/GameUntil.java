@@ -1,6 +1,7 @@
 package com.mckuai.until;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -111,6 +112,18 @@ public class GameUntil {
             sdDir = Environment.getExternalStorageDirectory();//获取根目录
         }
         return sdDir.toString();
+    }
+
+    /**
+     * 启动游戏
+     * @param context
+     */
+    public static void startGame(Context context){
+        Intent intent = new Intent();
+        ComponentName name = new ComponentName("com.mojang.minecraftpe","com.mojang.minecraftpe.MainActivity");
+        intent.setComponent(name);
+        intent.setAction(Intent.ACTION_VIEW);
+        context.startActivity(intent);
     }
 
 

@@ -34,6 +34,8 @@ public class MCMapManager {
 
     private ArrayList<String> curMaps;
     private ArrayList<String> curMapsDir;
+//    private String MapName;
+//    private String mapDir;
     private ArrayList<String> index;
     private ArrayList<Map> downloadMaps;
     private ArrayList<Map> newDownloadMaps;
@@ -101,18 +103,14 @@ public class MCMapManager {
         return  downloadMaps;
     }
 
-    public ArrayList<String> getCurrentMaps(){
-        if (!isOpen){
-            openDB();
-        }
+    /**
+     * 从游戏存档目录获取所有的地图名称
+     * @return
+     */
+    public ArrayList<String> getCurrentMapDirList(){
 
-        if (!isOpen){
-            Log.e("getCurrentMaps","open db false!");
-            return null;
-        }
-
-        if (null != curMaps){
-            return  curMaps;
+        if (null != curMapsDir){
+            return  curMapsDir;
         }
 
 
@@ -129,45 +127,79 @@ public class MCMapManager {
                 curMaps.add(getMapName(file.getPath()));
             }
         }
-        return  curMaps;
+        return  curMapsDir;
     }
 
-    public String getCurrentMapdir(){
+    /**
+     * 获取当前正在使用的地图目录
+     * 首先尝试从数据库中获取，如果获取不到则从游戏存档目录中获取第一个地图,均获取不到则返回空
+     * @return
+     */
+    public String getCurrentMapDir(){
         if (!isOpen){
-            openDB();
+            if (!openDB()){
+                Log.e("getCurrentMapdir","open db false!");
+                return  null;
+            }
         }
 
-        if (!isOpen){
-            Log.e("getCurrentMap","open db false!");
-            return  null;
-        }
-
-        byte name[] = db.get("curentGameMap".getBytes());
+        byte name[] = db.get("CURRENT_MAP_DIR".getBytes());
         if (null != name){
             return  new String(name);
         }
         else {
-            ArrayList<String> maps = getCurrentMaps();
+            ArrayList<String> maps = getCurrentMapDirList();
             if (null != maps && !maps.isEmpty() )  {
+                db.put("CURRENT_MAP_DIR".getBytes(),maps.get(0).getBytes());
                 return  maps.get(0);
             }
+            else {
+                return  null;
+            }
         }
-        return  null;
-
     }
 
+    /**
+     * 获取当前的游戏地图的名称
+     * 首先尝试从数据库中获取，获取不了再从当前正在使用的游戏存档中获取
+     * @return
+     */
+    public String getCurrentMapName(){
+        if (!isOpen){
+            if (!openDB()){
+                Log.e(TAG,"getCurrentMapName,open db false!");
+                return null;
+            }
+        }
+
+        byte name[] = db.get("CURRENT_MAP_NAME".getBytes());
+        if (null != name){
+            return  new String(name);
+        }
+        else {
+            String mapdir = getCurrentMapDir();
+            if (null != mapdir){
+                String mapname = getMapName(mapdir);
+                if (null != mapname){
+                    db.put("CURRENT_MAP_NAME".getBytes(),mapname.getBytes());
+                    return getMapName(mapdir);
+                }
+            }
+            return  null;
+        }
+    }
+
+    /**
+     * 获取指定目录下的level.dat文件中读取地图名称
+     * @param mapdir
+     * @return
+     */
     public String getMapName(String mapdir){
         MCGameEditer editer = new MCGameEditer(mapdir);
         return  editer.getMapName() ;
     }
 
-    public String getCurrentMapName(){
-        String mapdir = getCurrentMapdir();
-        if (null != mapdir){
-            return getMapName(mapdir);
-        }
-        return  null;
-    }
+
 
     public void importMap(String mapFileName){
         File src = new File(mapFileName);
@@ -178,7 +210,7 @@ public class MCMapManager {
         }
 
         if (src.exists()){
-            ZipUtil.unpack(src,dst);
+            ZipUtil.unpack(src, dst);
         }
     }
 
@@ -199,7 +231,7 @@ public class MCMapManager {
             ZipUtil.pack(src,dst);
         }
         else {
-            Log.e(TAG,"导出地图失败，指定的地图不存在！");
+            Log.e(TAG, "导出地图失败，指定的地图不存在！");
         }
     }
 
@@ -300,7 +332,7 @@ public class MCMapManager {
     private void saveIndex(){
         if (!isOpen){
             if (!openDB()){
-                Log.e(TAG,"saveIndex: false,open db false!");
+                Log.e(TAG, "saveIndex: false,open db false!");
                 return;
             }
         }
@@ -334,6 +366,38 @@ public class MCMapManager {
         newDownloadMaps.clear();
 
     }
+
+    /*public String getCurMapDir(){
+        if (null == mapDir){
+            if (!isOpen){
+                if (!openDB()){
+                    Log.e(TAG,"getCurMapDir:open db false");
+                    return  null;
+                }
+                byte dir[] = db.get("CURRENT_MAP_DIR".getBytes());
+                if (null != dir){
+                    mapDir = new String(dir);
+                }
+                else {
+                    return  null;
+                }
+            }
+        }
+        return mapDir;
+    }
+
+    public void setCurMapDir(String mapdir){
+        if (null != mapdir && 1 < mapdir.length()){
+            this.mapDir = mapdir;
+            if (!isOpen){
+                openDB();
+            }
+
+            if (isOpen){
+                db.put("CURRENT_MAP_DIR".getBytes(),mapDir.getBytes());
+            }
+        }
+    }*/
 
 
 }
