@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -35,8 +36,8 @@ public class MapAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
-
-
+    private MCMapManager mapManager;
+    private static String TAG = "MapAdapter";
     private DLManager manager;
 
     public MapAdapter(Context context, ArrayList<Map> mapBeans) {
@@ -130,10 +131,10 @@ public class MapAdapter extends BaseAdapter {
                         manager = DLManager.getInstance(mContext);
                     }
                     String downloadDir = MCkuai.getInstance().getMapDownloadDir();
-                    String url = "http://"+clickedMap.getSavePath();
-                    Log.e(TAG,"downloaddir:"+downloadDir);
-                    Log.e(TAG,"url:"+url);
-                    manager.dlStart(url,downloadDir, new McDLTaskListener(clickedMap, btn) {
+                    String url = "http://" + clickedMap.getSavePath();
+                    Log.e(TAG, "downloaddir:" + downloadDir);
+                    Log.e(TAG, "url:" + url);
+                    manager.dlStart(url, downloadDir, new McDLTaskListener(clickedMap, btn) {
 
 
                     });

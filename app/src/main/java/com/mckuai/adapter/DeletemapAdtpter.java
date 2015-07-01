@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -69,6 +70,15 @@ public class DeletemapAdtpter extends BaseAdapter {
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
         holder.tv_category.setText(map.getResCategroyTwo());
+        holder.rbtn_ok.setTag(position);
+        holder.rbtn_ok.setChecked(mMapBeans.get(position).getIsSelected());
+        holder.rbtn_ok.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int index=(int) buttonView.getTag();
+                 mMapBeans.get(index).setIsSelected(isChecked);
+            }
+        });
         return convertView;
     }
 

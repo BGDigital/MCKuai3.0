@@ -40,6 +40,8 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     private Context mContent;
     private ArrayList<Map> mMapBeans;
     private Map map;
+    ArrayList<String> curmap = mapManager.getCurrentMaps();
+    ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             mapManager = new MCMapManager();
             initview();
         }
-        ArrayList<String> curmap = mapManager.getCurrentMaps();
-        ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
+
         showData();
     }
 
@@ -118,11 +119,16 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+     Map map = (Map)adapter.getItem(position);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+    public void importMap(String mapFile){
+        String str = map.getSavePath();
+        String tmp = str.substring(str.lastIndexOf("/") + 1, str.length());
+    }
+
 }

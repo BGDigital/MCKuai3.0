@@ -29,6 +29,9 @@ public class Map implements Serializable {
     private int userId;//
     private String viewName;//地图名
     private int viewNum;//
+    private Boolean isSelected=false;
+
+
 
     public String getDownNum() {
         return downNum;
@@ -214,4 +217,11 @@ public class Map implements Serializable {
         this.viewName = viewName;
     }
 
+    public Boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 }

@@ -15,7 +15,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.adapter.DeletemapAdtpter;
+import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
+
+import java.util.ArrayList;
 
 
 public class MapdeleteActivity extends BaseActivity implements View.OnClickListener {
@@ -33,6 +36,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private String orderFiled = null;
     private MapBean mapList;
     private Button map_imp;
+    private ArrayList<Map> list = new ArrayList<Map>();
 
 
     @Override
@@ -60,6 +64,15 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_left:
                 finish();
+                break;
+            case R.id.bt_go:
+                for (int i = list.size(); i >= 0; i--) {
+                    if (list.get(i).getIsSelected()) {
+                        list.remove(i);
+                    }
+                }
+
+                    adtpter.notifyDataSetChanged();
                 break;
             default:
                 break;

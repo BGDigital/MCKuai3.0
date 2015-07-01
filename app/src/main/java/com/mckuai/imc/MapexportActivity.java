@@ -128,7 +128,4 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
         String tmp = str.substring(str.lastIndexOf("/") + 1, str.length());
 
     }
-    public void importMap(String mapFile){
-
-    }
 }
