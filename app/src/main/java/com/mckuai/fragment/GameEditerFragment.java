@@ -53,7 +53,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //gameEditer = new MCGameEditer();
+        MCMapManager mcMapManager = new MCMapManager();
+
+        gameEditer = new MCGameEditer(mcMapManager.getCurrentMapdir());
         getProfileInfo();
     }
 
@@ -144,7 +146,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void showCurentMap(){
         MCMapManager mcMapManager = new MCMapManager();
-        String mapName = mcMapManager.getCurrentMap();
+        String mapName = mcMapManager.getCurrentMapName();
         tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图":mapName);
     }
 
