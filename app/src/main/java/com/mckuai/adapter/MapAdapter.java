@@ -195,7 +195,7 @@ public class MapAdapter extends BaseAdapter {
 
         @Override
         public void onError(String error) {
-            Log.e("1111112222222222222222222222222222222222222222222222222222222222222", "onError");
+            Log.e("22222222222222", "onError");
             super.onError(error);
             //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
         }

@@ -27,8 +27,8 @@ public class ServerEditer {
     private ArrayList<GameServerInfo> servers;
 
     public ServerEditer() {
-        loadServerFromDisk();
         fileName = MCkuai.getInstance().getGameProfileDir() + "minecraftpe/external_servers.txt";
+        loadServerFromDisk();
     }
 
     public ArrayList<GameServerInfo> getServers() {
@@ -43,14 +43,16 @@ public class ServerEditer {
      * @param server 要添加的服务器
      */
     public void addServer(GameServerInfo server) {
-        if (null != servers) {
+        if (null != server) {
+            int maxposition = 1;
             for (GameServerInfo info : servers) {
+                maxposition = maxposition > info.getPosition() ? maxposition : info.getPosition();
                 if (info.getViewName().equalsIgnoreCase(server.getViewName()) && info.getServerPort() == server.getServerPort() && info.getResIp().equalsIgnoreCase(server.getResIp())) {
                     //已存在此服务器，不添加
                     return;
                 }
             }
-
+            server.setPosition(maxposition + 1);
             saveAllFlag = true;
             servers.add(server);
         }
@@ -99,6 +101,13 @@ public class ServerEditer {
     }
 
     private void loadServerFromDisk() {
+        if (null == servers){
+            servers = new ArrayList<>();
+        }
+        else {
+            servers.clear();
+        }
+
         File file = new File(fileName);
         if (!file.exists()) {
             return;
@@ -112,8 +121,9 @@ public class ServerEditer {
             reader = new BufferedReader(inputStreamReader);
             String data = null;
             GameServerInfo info;
-            do {
-                data = reader.readLine().toString();
+            data = reader.readLine().toString();
+
+            while (null != data){
                 if (null != data) {
                     info = parseData(data);
                     if (null != info) {
@@ -123,8 +133,16 @@ public class ServerEditer {
                         servers.add(info);
                     }
                 }
+                try{
+                    data = reader.readLine().toString();
+                }
+                catch (Exception e){
+                    data = null;
+                    break;
+                }
+
             }
-            while (null != data);
+
             reader.close();
             inputStreamReader.close();
         } catch (Exception e) {
@@ -151,7 +169,6 @@ public class ServerEditer {
             info.setViewName(array[1]);
             info.setResIp(array[2]);
             info.setServerPort(Integer.parseInt(array[3]));
-            info.setServerPort(Integer.parseInt(array[4]));
             return info;
         }
         return null;

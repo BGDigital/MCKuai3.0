@@ -25,6 +25,7 @@ import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.GameUntil;
 import com.mckuai.until.ParseResponse;
 
 import org.apache.http.Header;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.LogRecord;
 
-public class ServerFragment extends BaseFragment implements View.OnClickListener {
+public class ServerFragment extends BaseFragment implements View.OnClickListener,ServerAdapter.OnItemClickListener,ServerAdapter.OnServerAddListener {
 
     private View view;
     private UltimateRecyclerView serverListView;
@@ -81,6 +82,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         serverListView.setLayoutManager(manager);
 
         adapter = new ServerAdapter();
+        adapter.setOnItemClickListener(this);
+        adapter.SetOnServerAddListener(this);
         serverListView.setAdapter(adapter);
 
 
@@ -256,5 +259,17 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 loadData();
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(GameServerInfo gameServerInfo) {
+        if (null != gameServerInfo){
+            Log.w(TAG,gameServerInfo.getViewName()+"");
+        }
+    }
+
+    @Override
+    public void afterServerInfoAdded() {
+        GameUntil.startGame(getActivity());
     }
 }
