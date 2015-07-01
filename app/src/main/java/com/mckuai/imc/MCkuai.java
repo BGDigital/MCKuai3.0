@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Spinner;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.bean.MCUser;
@@ -27,6 +28,7 @@ public class MCkuai  extends Application{
 
     private static  MCkuai  instance;
     private String mCacheDir;
+    private Spinner spinner;
 
     public MCUser mUser;
     public AsyncHttpClient mClient;
@@ -135,6 +137,14 @@ public class MCkuai  extends Application{
         editor.commit();
     }
 
+    public Spinner getSpinner() {
+        return spinner;
+    }
+
+    public void setSpinner(Spinner spinner) {
+        this.spinner = spinner;
+    }
+
     private String getCacheRoot()
     {
         if (null == mCacheDir)
@@ -157,5 +167,7 @@ public class MCkuai  extends Application{
             }
         }
         return mCacheDir;
+
+
     }
 }

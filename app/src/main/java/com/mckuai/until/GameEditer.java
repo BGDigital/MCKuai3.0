@@ -28,7 +28,7 @@ public class GameEditer {
     private void initDB(){
         options = new Options();
         options.createIfMissing(true);
-        String name = "/storage/sdcard0/games/com.mojang/";
+        String name = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World1/db";
         Log.w("initDB","file:"+name);
         file = new File(name);
         if (!file.exists()){

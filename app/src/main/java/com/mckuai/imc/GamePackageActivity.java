@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.common.base.CaseFormat;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
@@ -64,8 +65,10 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
         itemListView.setLayoutManager(layoutManager);
         findViewById(R.id.btn_addItem).setOnClickListener(this);
-        findViewById(R.id.btn_search).setOnClickListener(this);
-        findViewById(R.id.btn_search).setOnLongClickListener(this);
+        findViewById(R.id.btn_right).setOnLongClickListener(this);
+        findViewById(R.id.btn_left).setOnClickListener(this);
+        edt_search.setVisibility(View.GONE);
+        ((TextView)findViewById(R.id.tv_title)).setText("背包物品");
     }
 
     @Override
@@ -74,12 +77,22 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_addItem:
                 HashMap<Integer,Integer> items = adapter.getSelectedItem();
                 if (null != items){
-                    showNotification(1,"当前共选了"+items.size()+"个物品",R.id.rl_search);
+                    //showNotification(1,"当前共选了"+items.size()+"个物品",R.id.rl_search);
                     }
                 break;
-            case R.id.btn_search:
-                    String value = editer.getString(edt_search.getText().toString());
-                    edt_search.setText(value);
+            case R.id.btn_right:
+                    if (edt_search.getVisibility() == View.GONE){
+                        edt_search.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        String value = editer.getString(edt_search.getText().toString());
+                        if (!edt_search.getText().toString().isEmpty()){
+                            edt_search.setVisibility(View.GONE);
+                        }
+                    }
+                break;
+            case R.id.btn_left:
+                finish();
                 break;
         }
     }

@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private TextView tv_titlebar_title;
     private ImageButton btn_titlebar_left;
     private ImageButton btn_titlebar_right;
-    private Spinner sp_titlebar_spinner;
+    private static Spinner sp_titlebar_spinner;
 
 
 
@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         initView();
         initPage();
     }
+
 
 
     private void initView(){
@@ -79,8 +80,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
         tv_titlebar_title = (TextView)findViewById(R.id.tv_titlebar_title);
         btn_titlebar_left = (ImageButton)findViewById(R.id.btn_titlebar_left);
-        btn_titlebar_right = (ImageButton)findViewById(R.id.btn_titlebar_share);
+        btn_titlebar_right = (ImageButton)findViewById(R.id.btn_right);
         sp_titlebar_spinner = (Spinner)findViewById(R.id.sp_titlebar_type);
+        application.setSpinner(sp_titlebar_spinner);
 
         ll1.setOnClickListener(this);
         ll2.setOnClickListener(this);
@@ -102,33 +104,30 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
 
+    @Override
+    protected boolean onMenuKeyPressed() {
+        return super.onMenuKeyPressed();
+    }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU)
-        {
-            //mySlidingMenu.toggle();
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-           /* if (isMenuShowing)
+    protected boolean onBackKeyPressed() {
+        /* if (isMenuShowing)
             {
                 mySlidingMenu.toggle();
                 return true;
             }*/
-            showAlert("退出", "是否退出麦块？", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        showAlert("退出", "是否退出麦块？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
-        return super.onKeyDown(keyCode, event);
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        return  true;
     }
 
     @Override
