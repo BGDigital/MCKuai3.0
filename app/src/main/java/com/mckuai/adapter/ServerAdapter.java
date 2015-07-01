@@ -112,9 +112,11 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
             holder.owner.setText("服主：" + serverInfo.getUserName());
             if (serverInfo.getIsOnline()){
                 holder.state.setText("在线");
+                holder.state.setBackgroundResource(R.color.background_green);
             }
             else {
                 holder.state.setText("离线");
+                holder.state.setBackgroundResource(R.color.background_litegray);
             }
 
             holder.addToGame.setTag(serverInfo);

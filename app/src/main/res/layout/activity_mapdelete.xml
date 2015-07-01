@@ -4,7 +4,7 @@
 
     <include
         android:id="@+id/map_tit"
-        layout="@layout/map_title" />
+        layout="@layout/titlebar_comm" />
 
     <LinearLayout
         android:id="@+id/map_ip"

@@ -1,9 +1,11 @@
 package com.mckuai.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by kyly on 2015/6/28.
  */
-public class GameServerInfo {
+public class GameServerInfo implements Serializable {
     private int gameId;
     private int gameSize;
     private int id;

@@ -3,6 +3,7 @@ package com.mckuai.imc;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -20,10 +21,10 @@ public class BaseActivity extends FragmentActivity {
     private com.gitonway.lee.niftynotification.lib.Configuration warningCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration errorCfg;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setTitle(String title){
+        if (null != title){
+            mTitle = title;
+        }
     }
 
     /**
@@ -128,5 +129,34 @@ public class BaseActivity extends FragmentActivity {
                     });
         }
         mAlertDialogBuilder.show();
+    }
+
+    /**
+     * 重写此方法时请勿调用super方法
+     * @return
+     */
+    protected  boolean onMenuKeyPressed(){
+        return false;
+    }
+
+    /**
+     * 重写此方法时请勿调用super方法
+     * @return
+     */
+    protected  boolean onBackKeyPressed(){
+        return false;
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU)
+        {
+            if (onMenuKeyPressed()) return  true;
+        } else if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            if (onBackKeyPressed())return  true;
+        }
+        return super.onKeyDown(keyCode,event);
     }
 }

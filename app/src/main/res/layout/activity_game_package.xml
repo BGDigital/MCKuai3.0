@@ -5,26 +5,15 @@
     android:background="@color/background_Grey"
     tools:context="com.mckuai.imc.GamePackageActivity">
 
-    <RelativeLayout
-        android:id="@+id/rl_search"
-        android:layout_width="match_parent"
-        android:clickable="true"
-        android:layout_height="35dp">
+    <include layout="@layout/titlebar_comm"
+        android:id="@+id/ll_title"></include>
 
-        <ImageButton
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_search_selector"
-            android:layout_alignParentRight="true"
-            android:layout_height="wrap_content" />
-        <EditText
-            android:id="@+id/edt_search"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/btn_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+    <EditText
+        android:id="@+id/edt_search"
+        android:layout_below="@id/ll_title"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/ll_bottom"
@@ -51,7 +40,7 @@
         android:id="@+id/recy_itemList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/rl_search"
+        android:layout_below="@id/edt_search"
         android:layout_above="@id/ll_bottom"
         >
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>

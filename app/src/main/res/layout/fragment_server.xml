@@ -20,12 +20,12 @@
     <LinearLayout
         android:id="@+id/ll_serverRank"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
         android:layout_toLeftOf="@id/v_center"
-        android:background="@color/background_yellow"
+        android:background="@drawable/background_servarrand_shape"
         android:clickable="true"
         android:orientation="horizontal">
 
@@ -42,9 +42,12 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
             android:text="服务器排行"
+            android:textSize="@dimen/font_big"
             android:textColor="@color/font_white" />
 
         <View
@@ -56,11 +59,11 @@
     <LinearLayout
         android:id="@+id/ll_serverType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:layout_alignParentRight="true"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/v_center"
-        android:background="@color/background_biue"
+        android:background="@drawable/background_servartype_shape"
         android:clickable="true"
         android:orientation="horizontal">
 
@@ -70,16 +73,18 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/map_classification"
             android:layout_gravity="center_vertical" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_margin="5dp"
             android:text="服务器分类"
+            android:textSize="@dimen/font_big"
             android:textColor="@color/font_white" />
 
         <View

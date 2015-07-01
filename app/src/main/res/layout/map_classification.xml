@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/map_title"></include>
+    <include layout="@layout/titlebar_comm"></include>
 
     <EditText
         android:id="@+id/map_ed"

@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/position_title"
-        layout="@layout/map_title"></include>
+        layout="@layout/titlebar_comm"></include>
 
     <TextView
         android:id="@+id/tv_mpt"

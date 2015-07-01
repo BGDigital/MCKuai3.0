@@ -15,7 +15,7 @@
         android:paddingLeft="@dimen/com_margin"
         android:paddingRight="@dimen/padding_right_button_left"
         android:scaleType="center"
-        android:background="@drawable/iten_left"
+        android:background="@drawable/btn_back"
         />
     <ImageButton
         android:id="@+id/btn_right"

@@ -1,5 +1,7 @@
 package com.mckuai.fragment;
 
+import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,13 +22,16 @@ import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
 import com.marshalchen.ultimaterecyclerview.SwipeableRecyclerViewTouchListener;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.ServerAdapter;
 import com.mckuai.bean.GameServerInfo;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
+import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.ParseResponse;
 
@@ -41,6 +48,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private UltimateRecyclerView serverListView;
     private UltimateRecyclerView serverTypeListView;
     private RelativeLayout rl_serverTypeLayout;
+    private Spinner spinner;
 
 
     private AsyncHttpClient client;
@@ -60,7 +68,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         // Inflate the layout for this fragment
         if (null == view){
             view = inflater.inflate(R.layout.fragment_server, container, false);
-            initView();
+            //initView();
         }
         return view;
     }
@@ -70,6 +78,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         super.onResume();
         if (null == application){
             application = MCkuai.getInstance();
+            initView();
         }
         showData();
     }
@@ -85,6 +94,14 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         adapter.setOnItemClickListener(this);
         adapter.SetOnServerAddListener(this);
         serverListView.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST);
+        serverListView.addItemDecoration(dividerItemDecoration);
+
+        spinner = application.getSpinner();
+        String[] items = getResources().getStringArray(R.array.server_Type);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
+        spinner.setAdapter(adapter);
 
 
         serverListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
@@ -264,7 +281,15 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onItemClick(GameServerInfo gameServerInfo) {
         if (null != gameServerInfo){
-            Log.w(TAG,gameServerInfo.getViewName()+"");
+            Intent intent = new Intent(getActivity(), ServerDetailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("SERVER_INFO",gameServerInfo);
+            intent.putExtras(bundle);
+            getActivity().startActivity(intent);
+        }
+        else
+        {
+
         }
     }
 

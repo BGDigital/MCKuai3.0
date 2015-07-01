@@ -17,4 +17,11 @@
         <item>30000</item>
         <item>3</item>
     </integer-array>
+    <string-array name="server_Type">
+        <item>类型一</item>
+        <item>类型二</item>
+        <item>类型三</item>
+        <item>类型四</item>
+        <item>类型五</item>
+    </string-array>
 </resources>
