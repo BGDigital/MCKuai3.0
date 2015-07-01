@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.imc.GamePackageActivity;
+import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
@@ -35,11 +36,18 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ImageView iv_gameTime;
     private ImageView iv_thirdView;
     private ImageView iv_packageItem;
+
+
     private MCGameEditer gameEditer;
+    private MCMapManager mapManager;
 
     private int mode;
     private int time;
     private int viewtype;
+
+    private String mapDir;
+    private String mapName;
+    private boolean isMapChanged = true;
 
     private boolean isShowGameRunning = false;
     private boolean isGameInstalled = false;
@@ -53,10 +61,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MCMapManager mcMapManager = new MCMapManager();
-
-        gameEditer = new MCGameEditer(mcMapManager.getCurrentMapdir());
-        getProfileInfo();
+        mapManager = new MCMapManager();
     }
 
     @Override
@@ -76,8 +81,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == tv_gameMode){
             initView();
         }
-        mode = gameEditer.getGameMode();
+
         detectionGameInfo();
+        getProfileInfo();
         showCurentMap();
         showGameMode();
     }
@@ -110,6 +116,16 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void getProfileInfo(){
+        if (null == gameEditer){
+            gameEditer = new MCGameEditer(mapDir);
+            isMapChanged = false;
+        }
+
+        if (isMapChanged){
+            gameEditer.setMapDir(mapDir);
+            isMapChanged = false;
+        }
+
         if (gameEditer.hasProfile()){
             mode = gameEditer.getGameMode();
         }
@@ -133,6 +149,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showGameMode(){
+        if (null == gameEditer){
+            gameEditer = new MCGameEditer(mapDir);
+        }
+        mode = gameEditer.getGameMode();
         if (mode == 0){
             tv_gameMode.setText("生存");
             iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
@@ -188,11 +208,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             return;
         }
 
-        Intent intent = new Intent();
-        ComponentName name = new ComponentName("com.mojang.minecraftpe","com.mojang.minecraftpe.MainActivity");
-        intent.setComponent(name);
-        intent.setAction(Intent.ACTION_VIEW);
-        startActivity(intent);
+        GameUntil.startGame(getActivity());
 
     }
 
@@ -212,6 +228,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     }
                 });
             }
+            else {
+                mapDir = mapManager.getCurrentMapDir();
+                mapName = mapManager.getCurrentMapName();
+                isMapChanged = true;
+            }
         }
         else {
             showMessage("警告","你还未安装游戏，不能修改游戏内容！");
@@ -221,7 +242,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void selectMap(){
-        showNotification(0,"选择地图",R.id.fl_root);
+        Intent intent = new Intent(getActivity(), MymapActivity.class);
+        getActivity().startActivity(intent);
+        //showNotification(0,"选择地图",R.id.fl_root);
     }
 
     @Override

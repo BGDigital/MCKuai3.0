@@ -60,7 +60,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         if (mapManager.getDownloadMaps() == null) {
             showNotification(1, "请下载地图", R.id.maproot);
         } else {
-            adapter = new MymapAdapter(this, downloadMap);
+            adapter = new ExportAdapter(mContent, mMapBeans);
             map_mymap_lv.setAdapter(adapter);
         }
     }

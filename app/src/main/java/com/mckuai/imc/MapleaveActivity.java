@@ -44,7 +44,7 @@ public class MapleaveActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        ArrayList<String> curMaps = mapManager.getCurrentMaps();
+        ArrayList<String> curMaps = mapManager.getCurrentMapDirList();
     }
 
     @Override

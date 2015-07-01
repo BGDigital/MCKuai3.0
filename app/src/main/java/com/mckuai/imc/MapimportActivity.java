@@ -40,7 +40,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     private Context mContent;
     private ArrayList<Map> mMapBeans;
     private Map map;
-    ArrayList<String> curmap = mapManager.getCurrentMaps();
+    ArrayList<String> curmap = mapManager.getCurrentMapDirList();
     ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
 
     @Override

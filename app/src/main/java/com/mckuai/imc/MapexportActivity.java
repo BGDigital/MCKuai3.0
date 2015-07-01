@@ -51,7 +51,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
             mapManager = new MCMapManager();
             initview();
         }
-        ArrayList<String> curmap = mapManager.getCurrentMaps();
+        ArrayList<String> curmap = mapManager.getCurrentMapDirList();
         ArrayList<String> getData = new ArrayList<>();
         showData();
     }
