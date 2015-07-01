@@ -29,8 +29,7 @@ public class Map implements Serializable {
     private int userId;//
     private String viewName;//地图名
     private int viewNum;//
-    private Boolean isSelected=false;
-
+    private Boolean isSelected = false;
 
 
     public String getDownNum() {
@@ -223,5 +222,10 @@ public class Map implements Serializable {
 
     public void setIsSelected(Boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    public String getFileName() {
+        String tmp = savePath.substring(savePath.lastIndexOf("/") + 1, savePath.length());
+        return tmp;
     }
 }
