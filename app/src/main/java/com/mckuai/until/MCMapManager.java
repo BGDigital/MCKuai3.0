@@ -157,6 +157,14 @@ public class MCMapManager {
         return  editer.getMapName() ;
     }
 
+    public String getCurrentMapName(){
+        String mapdir = getCurrentMapdir();
+        if (null != mapdir){
+            return getMapName(mapdir);
+        }
+        return  null;
+    }
+
     public void importMap(String mapFileName){
         File src = new File(mapFileName);
         File dst = new File(application.getGameProfileDir()+"minecraftWorlds/");
