@@ -110,7 +110,7 @@ public class MCkuai  extends Application{
         return  dir;
     }
 
-    private String getSDPath(){
+    public String getSDPath(){
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
                 .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在

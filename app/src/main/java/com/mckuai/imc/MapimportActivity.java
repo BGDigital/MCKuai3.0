@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,14 +23,15 @@ import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.adapter.MapImportAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
+import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCMapManager;
 
 import java.io.File;
 import java.util.ArrayList;
 
 
-public class MapimportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
-    private ImageView btn_left, pt_im;
+public class MapimportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+    private ImageView btn_left;
     private ImageButton btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
@@ -38,10 +40,11 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     private MCMapManager mapManager;
     private ArrayList<String> curMaps;
     private Context mContent;
-    private ArrayList<Map> mMapBeans;
     private Map map;
-    ArrayList<String> curmap = mapManager.getCurrentMapDirList();
-    ArrayList<Map> downloadMap = mapManager.getDownloadMaps();
+    ArrayList<String> curmap;
+    ArrayList<Map> downloadMap;
+    private LinearLayout pt_ly;
+    private String currentDir;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +58,12 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         super.onResume();
         if (null == mapManager) {
             mapManager = new MCMapManager();
+
             initview();
         }
 
         showData();
+        curmap = mapManager.getCurrentMapDirList();
     }
 
     @Override
@@ -71,8 +76,22 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void showData() {
-//        adapter = MapImportAdapter(mContent,);
-//        mpt_ls.setAdapter(adapter);
+//        downloadMap = mapManager.getDownloadMaps();
+        if (null == dirList && null == fileList) {
+            currentDir = MCkuai.getInstance().getSDPath();
+            if (!getFileList(currentDir)) {
+                //no data
+                showNotification(1, "请确认SD卡是否存在", R.id.import_tit);
+            } else {
+                adapter = new MapImportAdapter(this, fileList, dirList);
+                mpt_ls.setAdapter(adapter);
+                return;
+            }
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+
+
     }
 
     protected ArrayList<String> getData(String dar) {
@@ -98,7 +117,9 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         bt_go = (Button) findViewById(R.id.bt_go);
         tv_title.setText("我的地图");
         mpt_ls = (ListView) findViewById(R.id.mpt_ls);
-        mpt_ls.setOnItemSelectedListener(this);
+        pt_ly = (LinearLayout) findViewById(R.id.pt_ly);
+        pt_ly.setOnClickListener(this);
+        mpt_ls.setOnItemClickListener(this);
         btn_left.setOnClickListener(this);
         bt_go.setOnClickListener(this);
     }
@@ -109,6 +130,16 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             case R.id.btn_left:
                 finish();
                 break;
+            case R.id.pt_ly:
+                String zimulu = showParentDir();
+
+                if (zimulu == null) {
+                    showNotification(1, "没有SD卡", R.id.import_tit);
+                } else {
+                    getFileList(zimulu);
+                    adapter.setdate(fileList, dirList);
+                }
+                break;
             case R.id.bt_go:
 
                 break;
@@ -118,17 +149,78 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-     Map map = (Map)adapter.getItem(position);
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        if (position >= fileList.size()) {
+            currentDir = (String) adapter.getItem(position);
+            if (getFileList(currentDir)) {
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            String filename = (String) adapter.getItem(position);
+            mapManager.importMap(filename);
+            GameUntil.startGame(this);
+        }
+
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    private String showParentDir() {
+        if (currentDir != null && !currentDir.equalsIgnoreCase(MCkuai.getInstance().getSDPath())) {
+            int index = currentDir.lastIndexOf("/");
+            if (index >= 0) {
+                String temname = currentDir.substring(0, index + 1);
+                return temname;
+            }
 
+        } else {
+            //
+            showNotification(1, "已经在最上层", R.id.import_tit);
+        }
+        return null;
     }
-    public void importMap(String mapFile){
-        String str = map.getSavePath();
-        String tmp = str.substring(str.lastIndexOf("/") + 1, str.length());
+
+
+    private ArrayList<String> dirList;
+    private ArrayList<String> fileList;
+
+    private boolean getFileList(String path) {
+        if (null == path || path.isEmpty()) {
+            return false;
+        }
+
+        File file[] = new File(path).listFiles();
+        if (null != file && 0 < file.length) {
+            if (null == dirList) {
+                dirList = new ArrayList<>();
+                fileList = new ArrayList<>();
+            } else {
+                dirList.clear();
+                fileList.clear();
+            }
+            for (File curFile : file) {
+                if (curFile.isDirectory()) {
+                    dirList.add(curFile.getPath());
+                }
+                if (curFile.isFile()) {
+                    if (isZipFile(curFile.getName())) {
+                        fileList.add(curFile.getPath());
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
+
+    private boolean isZipFile(String fileName) {
+        if (null != fileName) {
+            int index = fileName.lastIndexOf(".");
+            if (0 < index) {
+                return fileName.substring(index + 1).equalsIgnoreCase("zip");
+            }
+        }
+        return false;
+    }
+
 
 }

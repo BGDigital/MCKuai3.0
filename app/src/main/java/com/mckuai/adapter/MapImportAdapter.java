@@ -1,6 +1,7 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +24,30 @@ public class MapImportAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans;
     private ImageLoader mLoader;
+    private ArrayList<String> dirList;
+    private ArrayList<String> fileList;
 
-    public MapImportAdapter(Context context, ArrayList<Map> mapBeans) {
-        mMapBeans = mapBeans;
+    public MapImportAdapter(Context context, ArrayList<String> fileList, ArrayList<String> dirList) {
+        this.fileList = fileList;
+        this.dirList = dirList;
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return mMapBeans.size();
+
+        return (null == dirList ? 0 : dirList.size()) + (null == fileList ? 0 : fileList.size());
     }
 
     @Override
     public Object getItem(int position) {
-        return mMapBeans.get(position);
+        if (position >= fileList.size()) {
+            return dirList.get(position - fileList.size());
+        } else {
+            return fileList.get(position);
+        }
+//        return dirList.get(position);
     }
 
     @Override
@@ -48,25 +58,47 @@ public class MapImportAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        Map map = (Map) getItem(position);
-        if (null == map) {
-            return null;
-        }
+
         if (null == convertView) {
             convertView = mInflater.inflate(R.layout.item_position, null);
             holder = new ViewHolder();
             holder.image = (ImageView) convertView.findViewById(R.id.image);
-            holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            holder.tv_name = (TextView) convertView.findViewById(R.id.pt_document);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_name.setText(map.getViewName());
+        String tempstr = getFileName((String) getItem(position));
+        if (position > fileList.size()) {
+            Log.e("", "");
+        }
+        holder.tv_name.setText(tempstr + "");
         return convertView;
     }
 
     class ViewHolder {
         public ImageView image;
         public TextView tv_name;
+    }
+
+    protected String getFileName(String filepath) {
+        if (filepath == null) {
+            return null;
+        } else {
+            int index = filepath.lastIndexOf("/");
+            if (index >= 0) {
+                String temname = filepath.substring(index + 1, filepath.length());
+                return temname;
+
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public void setdate(ArrayList<String> fileList, ArrayList<String> dirList) {
+        this.fileList = fileList;
+        this.dirList = dirList;
+        notifyDataSetChanged();
     }
 }

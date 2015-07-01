@@ -123,9 +123,4 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    public void exportMap(String mapName, String dstFileDir) {
-        String str = map.getSavePath();
-        String tmp = str.substring(str.lastIndexOf("/") + 1, str.length());
-
-    }
 }
