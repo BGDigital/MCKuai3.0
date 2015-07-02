@@ -55,4 +55,11 @@ public class PageInfo implements Serializable{
             return c == page;
         }
     }
+
+    public int getNextPage(){
+        if (EOF()){
+            return  page;
+        }
+        else return  page+1;
+    }
 }

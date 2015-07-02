@@ -12,6 +12,7 @@
     <color name="font_red">#FF0000</color>
     <color name="font_secondary">#B4B4B4</color>
     <color name="font_gameedit_hint">#818181</color>
+    <color name="font_green">#38CA44</color>
 
     <!-- 边框 -->
     <color name="frame_lightgray">#EBEBEB</color>

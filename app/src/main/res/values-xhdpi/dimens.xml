@@ -67,4 +67,8 @@
 
     <!-- 帖子详情 -->
     <dimen name="button_post_margin">33dp</dimen>
+
+
+    <dimen name="item_ownerinfo_layout_height">33dp</dimen>
+    <dimen name="item_ownerinfo_usercover_height">22dp</dimen>
 </resources>

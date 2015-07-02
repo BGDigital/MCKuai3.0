@@ -35,9 +35,7 @@
     <string name="preferences_file">config</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="onloading_hint">正在加载...</string>
     <!-- 接口 -->
     <!-- 接口域名，使用域名+接口的方式来请求数据 -->
     <string name="interface_domainName">http://221.237.152.39:8081/</string>
@@ -51,8 +49,11 @@
     <string name="interface_serverDetails">server.do?act=one</string>
     <!-- 搜索服务器或地图-->
     <string name="interface_search">map.do?act=search</string>
+    <string name="interface_forumList">interface.do?act=forumList</string>
+    <string name="interface_postList">interface.do?act=talkList</string>
 
-
+    <item name="key_USERID" type="id"></item>
+    <item name="key_FORUMID" type="id"></item>
 
 
     <string name="title_activity_ranking">RankingActivity</string>
@@ -73,4 +74,12 @@
     <string name="title_activity_mapdetele">MapdeteleActivity</string>
     <string name="title_activity_mapimport">MapimportActivity</string>
     <string name="title_activity_mapexport">MapexportActivity</string>
+
+    <!-- 社区首页 -->
+    <string name="lastPost">最新</string>
+    <string name="essencePost">精华</string>
+    <string name="topPost">推荐</string>
+
+
+    <string name="addr_hint">请选择</string>
 </resources>
