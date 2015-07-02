@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.Utf8;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -25,6 +27,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by Zzz on 2015/6/25.
@@ -47,7 +51,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         initview();
-        map= (Map)getIntent().getSerializableExtra(getString(R.string.Details));
+        map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
         loadData();
     }
 
@@ -70,7 +74,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         dl.setOnClickListener(this);
         client = MCkuai.getInstance().mClient;
         mLoader = ImageLoader.getInstance();
-        sv_lh = (LinearLayout)findViewById(R.id.sv_lh);
+        sv_lh = (LinearLayout) findViewById(R.id.sv_lh);
 
 //        sv_h.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -91,23 +95,28 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         tv_category.setText(map.getResCategroyTwo());
         tx_times.setText(map.getInsertTime());
         tv_nm.setText(map.getUploadMan());
-        tv_tx.setText(map.getDres() +"\n"+ map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres()+"\n"+map.getDres());
+        tv_tx.setText(map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres());
+//        WebView
+//        WebView.loadData(URLEncoder.encode(data, "utf-8"),  "text/html",  "utf-8");
 //      pictures 详细图片
-for (int i = 0;i< 5;i++) {
-    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(212,169);
-    ImageView imv = new ImageView(this);
-    /*imv.setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            v.getParent().requestDisallowInterceptTouchEvent(true);
-            return false;
+        for (int i = 0; i < 5; i++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(212, 169);
+            ImageView imv = new ImageView(this);
+
+            params.setMargins(4, 0, 0, 0);
+            imv.setLayoutParams(params);
+            mLoader.displayImage("http://e.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a1caaa23097cad1c8a6865dd7.jpg", imv);
+//            String str = "";
+//            String[] list;
+//            list = str.split(",");   //json
+//            if(list!=null&&list.length!=0){
+//                for (int j = 0; j < list.length; j++) {
+//                 String tmp=   list[j];
+//                }
+//            }
+
+            sv_lh.addView(imv);
         }
-    });*/
-    params.setMargins(4, 0, 0, 0);
-    imv.setLayoutParams(params);
-    mLoader.displayImage("http://e.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a1caaa23097cad1c8a6865dd7.jpg", imv);
-    sv_lh.addView(imv);
-}
     }
 
     protected void loadData() {
@@ -140,7 +149,7 @@ for (int i = 0;i< 5;i++) {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (map!=null) {
+                    if (map != null) {
                         showData();
                     } else {
                         showNotification(0, "no data!!", R.id.md_r1);
