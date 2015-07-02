@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -37,11 +38,13 @@ public class ForumFragment extends BaseFragment {
     private ArrayList<Post> mPosts;
     private String[] listGroupType = { "lastChangeTime", "isJing", "isDing" };
     private String curGroupType = listGroupType[0];
+
     private com.marshalchen.ultimaterecyclerview.UltimateRecyclerView mPostListView;
     private com.marshalchen.ultimaterecyclerview.UltimateRecyclerView mForumsListView;
     private PostAdapter mPostAdapter;
     private ForumAdapter mForumAdapter;
-    private LinearLayoutManager mLayoutManager;
+
+//    private LinearLayoutManager mLayoutManager;
     private MCkuai application = MCkuai.getInstance().getInstance();
     private AsyncHttpClient mClient = application.getHttpClient();
     private String TAG = "Forums";
@@ -61,9 +64,29 @@ public class ForumFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (null == mPostListView) {
+            initView();
+        }
+        showForums();
+    }
+
+
+    private void initView(){
+        if (null == view || null != mPostListView)
+        {
+            return;
+        }
+//        ((RadioGroup) view.findViewById(R.id.rg_indicator)).setOnCheckedChangeListener(this);
+//        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        mForumsListView.setLayoutManager(mLayoutManager);
+    }
+
     private void showForums()
     {
-        if (null != mForums && 0 < mForums.size())
+        if (null != mForums &&  mForums.isEmpty())
         {
             if (null == mForumAdapter)
             {

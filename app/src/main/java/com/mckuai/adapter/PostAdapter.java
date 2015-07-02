@@ -3,13 +3,9 @@ package com.mckuai.adapter;
 import java.util.ArrayList;
 
 import com.mckuai.bean.Post;
-import com.mckuai.bean.User;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.R;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PostAdapter extends BaseAdapter implements View.OnClickListener
+public class PostAdapter extends BaseAdapter
 {
 	private ArrayList<Post> mPostList = new ArrayList<Post>(10);
 	private Context mContext;
@@ -135,8 +131,8 @@ public class PostAdapter extends BaseAdapter implements View.OnClickListener
 				// 设置用户头像和名字点击跳转到其个人中心
 				holder.owner_bottom.setTag(R.id.key_USERID, post.getUserId());
 				holder.owner_bottom_cover.setTag(R.id.key_USERID, post.getUserId());
-				holder.owner_bottom.setOnClickListener(this);
-				holder.owner_bottom_cover.setOnClickListener(this);
+//				holder.owner_bottom.setOnClickListener(this);
+//				holder.owner_bottom_cover.setOnClickListener(this);
 			} else
 			{
 				holder.owner_bottom.setText(post.getForumName());
@@ -163,31 +159,5 @@ public class PostAdapter extends BaseAdapter implements View.OnClickListener
 		TextView replyCount;
 	}
 
-	@Override
-	public void onClick(View v)
-	{
-		// TODO Auto-generated method stub
-		/*int userId = 0, forumId = 0;
-		try
-		{
-			userId = (Integer) v.getTag(R.id.key_USERID);
-		} catch (Exception e)
-		{
-			// TODO: handle exception
-		}
-		if (0 != userId)
-		{
-			Intent intent = new Intent(mContext, UserCenter.class);
-			User user = new User();
-			user.setId(userId);
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(mContext.getString(R.string.user), user);
-			intent.putExtras(bundle);
-			mContext.startActivity(intent);
-		} else
-		{
-			Toast.makeText(mContext, "版块ID" + forumId, Toast.LENGTH_SHORT).show();
-		}*/
-	}
 
 }

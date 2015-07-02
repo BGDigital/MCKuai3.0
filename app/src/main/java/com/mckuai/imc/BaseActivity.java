@@ -1,5 +1,6 @@
 package com.mckuai.imc;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
@@ -200,4 +202,15 @@ public class BaseActivity extends FragmentActivity {
             }
         }
     };
+
+    protected void hideKeyboard(View view)
+    {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    protected void showKeyboard(View view){
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
 }

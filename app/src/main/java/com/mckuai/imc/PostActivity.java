@@ -11,21 +11,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnCloseListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Post;
-import com.mckuai.bean.User;
+import com.mckuai.fragment.MCSildingMenu;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,7 +39,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -105,8 +100,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private AsyncHttpClient mClient;
 	private SlidingMenu mySlidingMenu;
-	//private MCSildingMenu menu;
-	// private com.umeng.socialize.controller.UMSocialService mShareService;
+	private MCSildingMenu menu;
+	 private com.umeng.socialize.controller.UMSocialService mShareService;
 
 	private static final int LOGIN = 0;
 	private static final int GETPIC = 1;
@@ -270,7 +265,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void initSlidingMenu()
 	{
-		//menu = new MCSildingMenu();
+		/*menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
 		mySlidingMenu = new SlidingMenu(this, null);
@@ -303,7 +298,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
 			}
 		});
-//		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menu).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menu).commit();
 		mySlidingMenu.setOnOpenedListener(new OnOpenedListener()
 		{
 
@@ -311,8 +306,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			public void onOpened()
 			{
 				// TODO Auto-generated method stub
-//				menu.callOnResumeForUpdate();
-//				menu.showData();
+				menu.callOnResumeForUpdate();
+				menu.showData();
 			}
 		});
 		mySlidingMenu.setOnCloseListener(new OnCloseListener()
@@ -322,10 +317,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			public void onClose()
 			{
 				// TODO Auto-generated method stub
-//				menu.callOnPauseForUpdate();
-//				hideKeyboard(mySlidingMenu);
+				menu.callOnPauseForUpdate();
+				hideKeyboard(mySlidingMenu);
 			}
-		});
+		});*/
 	}
 
 	private void addInterface()
@@ -361,27 +356,27 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private void showReply()
 	{
 		isShowPost = false;
-		btn_showOwner.setText("发 布");
-		showKeyboard(null);
+//		btn_showOwner.setText("发 布");
+//		showKeyboard(null);
 		if (isReplyPost)
 		{
-			MobclickAgent.onEvent(this, "replyPost");
+//			MobclickAgent.onEvent(this, "replyPost");
 			tv_title.setText("跟帖");
 		} else
 		{
-			MobclickAgent.onEvent(this, "replyFoolr");
+//			MobclickAgent.onEvent(this, "replyFoolr");
 			tv_title.setText("回复");
 		}
 		post_layout.setVisibility(View.GONE);
 		reply_layout.setVisibility(View.VISIBLE);
-		showKeyboard(null);
+//		showKeyboard(null);
 	}
 
 	private void resumeShowPost()
 	{
-		hideKeyboard(edt_content);
+//		hideKeyboard(edt_content);
 		isShowPost = true;
-		btn_showOwner.setText("只看楼主");
+//		btn_showOwner.setText("只看楼主");
 		tv_title.setText("帖子详情");
 		post_layout.setVisibility(View.VISIBLE);
 		reply_layout.setVisibility(View.GONE);
@@ -425,7 +420,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		// TODO Auto-generated method stub
 		switch (v.getId())
 		{
-		case R.id.btn_return:
+		case R.id.btn_left:
 			if (isShowPost)
 			{
 				this.finish();
@@ -439,16 +434,16 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			// 关注帖子
 			if (isCollect)
 			{
-				MobclickAgent.onEvent(this, "cancleCollectPost");
+//				MobclickAgent.onEvent(this, "cancleCollectPost");
 			} else
 			{
-				MobclickAgent.onEvent(this, "collectPost");
+//				MobclickAgent.onEvent(this, "collectPost");
 			}
 			collectPost();
 			break;
 		case R.id.btn_sharePost:
 			// 分享帖子
-			MobclickAgent.onEvent(this, "sharePost");
+//			MobclickAgent.onEvent(this, "sharePost");
 			sharePost();
 			// CustomShareBoard shareBoard = new
 			// CustomShareBoard(this,mShareService,post);
@@ -459,7 +454,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			isReplyPost = true;
 			showReply();
 			break;
-		case R.id.btn_showOwner:
+/*		case R.id.btn_showOwner:
 			if (isShowPost)
 			{
 				if (key.equals(type[0]))
@@ -476,16 +471,15 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			{
 				replyPost();
 			}
-			break;
+			break;*/
 		case R.id.btn_addPic:
-			MobclickAgent.onEvent(this, "addPic_Reply");
-			Intent intent = new Intent(Intent.ACTION_PICK,
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//			MobclickAgent.onEvent(this, "addPic_Reply");
+			Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			startActivityForResult(intent, GETPIC);
 			break;
 
 		case R.id.btn_rewardPost:
-			MobclickAgent.onEvent(this, "rewardPost");
+//			MobclickAgent.onEvent(this, "rewardPost");
 			rewardPost();
 			break;
 
@@ -510,7 +504,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					// TODO Auto-generated method stub
 					super.onStart();
 					// showNotification("正在打赏楼主!");
-					popupProgressDialog("正在打赏楼主!");
+					popupLoadingToast("正在打赏楼主!");
 				}
 
 				/*
@@ -531,7 +525,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 						{
 							// showNotification("打赏成功！\n楼主获得了1个钻石");
 							Toast.makeText(PostActivity.this, "打赏成功！\n楼主获得了1个钻石", Toast.LENGTH_SHORT).show();
-							cancelProgressDialog(true);
+							cancleLodingToast(true);
 							isReward = true;
 							setButtonFunction();
 							return;
@@ -541,7 +535,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							// response.getString("msg"));
 							Toast.makeText(PostActivity.this, "打赏失败！原因：" + response.getString("msg"),
 									Toast.LENGTH_SHORT).show();
-							cancelProgressDialog(false);
+							cancleLodingToast(false);
 							return;
 						}
 					} catch (Exception e)
@@ -550,7 +544,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					}
 					// showNotification("打赏失败！");
 					Toast.makeText(PostActivity.this, "打赏失败！", Toast.LENGTH_SHORT).show();
-					cancelProgressDialog(false);
+					cancleLodingToast(false);
 				}
 
 				/*
@@ -570,7 +564,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					// throwable.getLocalizedMessage());
 					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
 							.show();
-					cancelProgressDialog(false);
+					cancleLodingToast(false);
 				}
 			});
 		} else
@@ -603,10 +597,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					super.onStart();
 					if (isCollect)
 					{
-						popupProgressDialog("正在取消收藏...");
+						popupLoadingToast("正在取消收藏...");
 					}
 					else {
-						popupProgressDialog("正在添加到背包...");
+						popupLoadingToast("正在添加到背包...");
 					}
 					
 				}
@@ -630,7 +624,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 								{
 									Toast.makeText(PostActivity.this, "帖子关注成功，可在背包中看到!", Toast.LENGTH_SHORT).show();
 								}
-								cancelProgressDialog(true);
+								cancleLodingToast(true);
 								// btn_collect.setEnabled(false);
 								isCollect = !isCollect;
 								setButtonFunction();
@@ -638,7 +632,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							} else
 							{
 								Toast.makeText(PostActivity.this, "操作失败!", Toast.LENGTH_LONG).show();
-								cancelProgressDialog(false);
+								cancleLodingToast(false);
 								return;
 								// showNotification("自动收获机器已经收获过此帖了!");
 							}
@@ -646,7 +640,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 						{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-							cancelProgressDialog(false);
+							cancleLodingToast(false);
 							// showNotification("自动收获机器被熊孩子玩坏了!");
 							Toast.makeText(PostActivity.this, "收割机器被熊孩子玩坏了,OP正在收拾他们!" + e.getLocalizedMessage(),
 									Toast.LENGTH_SHORT).show();
@@ -659,7 +653,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				{
 					// TODO Auto-generated method stub
 					super.onFailure(statusCode, headers, responseString, throwable);
-					cancelProgressDialog(false);
+					cancleLodingToast(false);
 					// showNotification("惨遭核弹洗礼,服主正在哭泣中!\n" +
 					// throwable.getLocalizedMessage());
 					Toast.makeText(PostActivity.this, "收藏失败，原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
@@ -692,7 +686,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			ArrayList<String> picIds;
 			if (null != picsList && picsList.size() > 0 && !isPicUpload)
 			{
-				MobclickAgent.onEvent(this, "picCount_Reply", picsList.size());
+//				MobclickAgent.onEvent(this, "picCount_Reply", picsList.size());
 				uploadPic();
 				return;
 			}
@@ -746,7 +740,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					{
 						msg = "正在发布回复，请稍候";
 					}
-					popupProgressDialog(msg);
+					popupLoadingToast(msg);
 				}
 
 				/*
@@ -769,10 +763,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							{
 								if (isReplyPost)
 								{
-									MobclickAgent.onEvent(PostActivity.this, "replyPost_Success");
+//									MobclickAgent.onEvent(PostActivity.this, "replyPost_Success");
 								} else
 								{
-									MobclickAgent.onEvent(PostActivity.this, "replyFoolr_Success");
+//									MobclickAgent.onEvent(PostActivity.this, "replyFoolr_Success");
 								}
 								// 恢复显示
 								resumeShowPost();
@@ -785,7 +779,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 								}
 								isPicUpload = false;
 								picUrl = null;
-								cancelProgressDialog(true);
+								cancleLodingToast(true);
 								return;
 							}
 						} catch (Exception e)
@@ -796,7 +790,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					}
 					Toast.makeText(PostActivity.this, "发送失败，请重试！", Toast.LENGTH_SHORT).show();
 					// showNotification("发送失败，请重试！");
-					cancelProgressDialog(false);
+					cancleLodingToast(false);
 				}
 
 				/*
@@ -814,7 +808,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					super.onFailure(statusCode, headers, responseString, throwable);
 					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
 							.show();
-					cancelProgressDialog(false);
+					cancleLodingToast(false);
 				}
 			});
 		}
@@ -846,7 +840,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				bmp = BitmapFactory.decodeFile(picturePath, opts);
 			} catch (OutOfMemoryError err)
 			{
-				showNotification("图片过大!");
+				showNotification(2,"图片太大!",R.id.root);
 				return;
 			}
 			if (null == picsList)
@@ -893,7 +887,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			{
 				// TODO Auto-generated method stub
 				super.onStart();
-				showNotification("正在上传图片...");
+				showNotification(1,"正在上传图片...",R.id.root);
 			}
 
 			/*
@@ -917,7 +911,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							picUrl = response.getString("msg");
 							if (null != picUrl)
 							{
-								showNotification("图片上传完成");
+								showNotification(1,"图片上传完成!",R.id.root);
 								isPicUpload = true;
 								replyPost();
 								return;
@@ -1005,14 +999,13 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		// TODO Auto-generated method stub
-		// super.onActivityResult(requestCode, resultCode, data);
-		UMSsoHandler ssoHandler = mShareService.getConfig().getSsoHandler(requestCode);
+		/*UMSsoHandler ssoHandler = mShareService.getConfig().getSsoHandler(requestCode);
 		if (null != ssoHandler)
 		{
 			Log.e(TAG, "get ssoHandler");
 			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
 			return;
-		}
+		}*/
 		switch (requestCode)
 		{
 		case LOGIN:
@@ -1072,7 +1065,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void getParams()
 	{
-		// String jsStr = "javascript:setUserId(" + userID + ")";
 		String jsStr = "javascript:getParameters()";
 		webView.loadUrl(jsStr);
 	}
@@ -1248,15 +1240,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			case 6:
 				addInterface();
 				break;
-			case 7:
-				User user = new User();
-				user.setId(msg.arg1);
-				Intent intent = new Intent(PostActivity.this, UserCenter.class);
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(getString(R.string.user), user);
-				intent.putExtras(bundle);
-				startActivity(intent);
-				break;
 
 			default:
 				break;
@@ -1328,7 +1311,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	protected void sharePost()
 	{
-		if (null == post)
+/*		if (null == post)
 		{
 			return;
 		}
@@ -1337,7 +1320,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		{
 			mShareService.setShareMedia(new UMImage(this, post.getMobilePic()));
 		}
-		mShareService.openShare(this, false);
+		mShareService.openShare(this, false);*/
 	}
 
 	private void getPostMark()
@@ -1404,7 +1387,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void configPlatforms()
 	{
-		String targetUrl = "http://www.mckuai.com/thread-" + post.getId() + ".html";
+		/*String targetUrl = "http://www.mckuai.com/thread-" + post.getId() + ".html";
 		String title = "麦块for我的世界盒子";
 		String context = post.getTalkTitle();
 		UMImage image;
@@ -1447,7 +1430,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mShareService.getConfig().removePlatform(SHARE_MEDIA.TENCENT, SHARE_MEDIA.SINA);
 		// 添加内容和图片
 		mShareService.setShareContent(context);
-		mShareService.setShareMedia(image);
+		mShareService.setShareMedia(image);*/
 	}
 
 }

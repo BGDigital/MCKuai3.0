@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingLeft="@dimen/com_margin" >
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/titlebar_height" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
+
+        <RelativeLayout
+            android:id="@+id/rl_userInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/com_margin"
+            android:paddingTop="@dimen/com_margin" >
+
+            <com.mckuai.imc.widget.CircleImageView
+                android:id="@+id/user_Progress"
+                android:layout_width="@dimen/usercover_recommend_height"
+                android:layout_height="@dimen/usercover_recommend_height"
+                android:layout_alignParentTop="true"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/background_user_cover_default" />
+
+            <TextView
+                android:id="@+id/tv_userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/user_Progress"
+                android:layout_marginLeft="@dimen/com_margin"
+                android:layout_toRightOf="@id/user_Progress"
+                android:maxLength="6"
+                android:singleLine="true"
+                android:text="未登录"
+                android:textColor="@color/font_white"
+                android:textSize="@dimen/font_dimen_primary" />
+
+            <TextView
+                android:id="@+id/tv_userLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/user_Progress"
+                android:layout_marginLeft="@dimen/com_margin"
+                android:layout_toRightOf="@id/user_Progress"
+                android:background="@drawable/background_user_level"
+                android:gravity="center"
+                android:maxLength="6"
+                android:paddingLeft="@dimen/com_margin"
+                android:paddingRight="@dimen/com_margin"
+                android:singleLine="true"
+                android:textColor="@color/font_white"
+                android:textSize="@dimen/font_dimen_small"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_shareMe"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titlebar_height"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:drawableLeft="@drawable/btn_slidingmenu_share"
+            android:drawablePadding="@dimen/com_margin"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="0dp"
+            android:text="分享给好友"
+            android:textColor="@color/btn_textcolor_selector"
+            android:textSize="@dimen/font_dimen_big" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_softSetting"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titlebar_height"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:drawableLeft="@drawable/btn_slidingmenu_config"
+            android:drawablePadding="@dimen/com_margin"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="0dp"
+            android:text="软件设置"
+            android:textColor="@color/btn_textcolor_selector"
+            android:textSize="@dimen/font_dimen_big"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_tappraise"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titlebar_height"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:drawableLeft="@drawable/btn_slidingmenu_price"
+            android:drawablePadding="@dimen/com_margin"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="0dp"
+            android:text="评价APP"
+            android:textColor="@color/btn_textcolor_selector"
+            android:textSize="@dimen/font_dimen_big" />
+
+        <View
+            android:id="@+id/v_checkupgread"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/tv_checkUpgread"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titlebar_height"
+            android:background="@null"
+            android:drawableLeft="@drawable/btn_check_upgread"
+            android:drawablePadding="@dimen/com_margin"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="0dp"
+            android:text="检查更新"
+            android:textColor="@color/btn_textcolor_selector"
+            android:textSize="@dimen/font_dimen_big" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titlebar_height"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:drawableLeft="@drawable/btn_slidingmenu_logout"
+            android:drawablePadding="@dimen/com_margin"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="0dp"
+            android:text="退出登录"
+            android:textColor="@color/btn_textcolor_selector"
+            android:textSize="@dimen/font_dimen_big" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+    </LinearLayout>
+
+</ScrollView>

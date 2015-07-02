@@ -5,20 +5,16 @@
     android:background="@color/background_white"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <LinearLayout
-        android:id="@+id/ll_actionbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentLeft="true" >
+    <include layout="@layout/titlebar_comm"
+        android:id="@+id/ll_titlebar"></include>
 
-    </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll_actionbar"
+        android:layout_below="@id/ll_titlebar"
         android:background="@color/background_white" >
 
         <LinearLayout

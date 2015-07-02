@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('open_sdk_r5043_lite.jar'))

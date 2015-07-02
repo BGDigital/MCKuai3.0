@@ -28,6 +28,19 @@
         android:paddingLeft="30dp"
         android:visibility="visible"/>
 
+    <Button
+        android:id="@+id/btn_showOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:minWidth="90dp"
+        android:text="只显示楼主"
+        android:gravity="right|center_vertical"
+        android:paddingRight="10dp"
+        android:background="@null"
+        android:textColor="@color/font_white"
+        android:layout_alignParentRight="true"
+        />
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"

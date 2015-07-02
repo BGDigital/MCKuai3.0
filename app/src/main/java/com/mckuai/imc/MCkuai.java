@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Spinner;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.until.JsonCache;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -19,6 +20,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by kyly on 2015/6/23.
@@ -34,6 +36,8 @@ public class MCkuai  extends Application{
     public AsyncHttpClient mClient;
     public JsonCache mCache;
     public int fragmentIndex = 0;
+
+    public ArrayList<ForumInfo> forumList;
 
     private static final int MEM_CACHE_SIZE = 8 * 1024 * 1024;// 内存缓存大小
     private static final int CONNECT_TIME = 15 * 1000;// 连接时间
@@ -61,6 +65,14 @@ public class MCkuai  extends Application{
             mClient = new AsyncHttpClient();
         }
         return mClient;
+    }
+
+    public ArrayList<ForumInfo> getForumList() {
+        return forumList;
+    }
+
+    public void setForumList(ArrayList<ForumInfo> forumList) {
+        this.forumList = forumList;
     }
 
     private void initImageLoader(){
@@ -167,7 +179,23 @@ public class MCkuai  extends Application{
             }
         }
         return mCacheDir;
+    }
 
+    public MCUser getUser(){
+        return  mUser;
+    }
 
+    public boolean isLogin(){
+        if (mUser != null & 0 < mUser.getId()){
+            return  true;
+        }
+        else {
+            return  false;
+        }
+    }
+
+    public boolean LogOut(){
+        this.mUser = null;
+        return true;
     }
 }

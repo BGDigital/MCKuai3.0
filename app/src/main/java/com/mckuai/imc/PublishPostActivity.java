@@ -2,37 +2,27 @@ package com.mckuai.imc;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.baidu.location.LLSInterface;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
-import com.mckuai.imc.R;
-import com.mckuai.imc.fragment.MCSildingMenu;
-import com.tars.mckuai.adapter.ForumAdapter_Publish;
-import com.tars.mckuai.adapter.PostTypeAdapter_Publish;
-import com.tars.mckuai.baen.ForumInfo;
-import com.tars.mckuai.baen.Post;
-import com.tars.mckuai.baen.PostType;
+import com.mckuai.adapter.ForumAdapter_Publish;
+import com.mckuai.adapter.PostTypeAdapter_Publish;
+import com.mckuai.bean.ForumInfo;
+import com.mckuai.bean.Post;
+import com.mckuai.bean.PostType;
+import com.mckuai.fragment.MCSildingMenu;
 import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
-import android.app.DownloadManager.Request;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -43,7 +33,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.EditTextPreference;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -51,9 +40,6 @@ import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Button;
@@ -65,7 +51,6 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,8 +90,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 
 	private SlidingMenu mySlidingMenu;
 	private MCSildingMenu menu;
-
-	private MyApplication application;
+	private MCkuai application;
 	private AsyncHttpClient mClient;
 
 	private static boolean isSlidingMenuShowing = false;
@@ -117,9 +101,8 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_publish_post);
 
-		application = MyApplication.getInstance();
-		mClient = application.getClient();
-		setNotificationViewGroup(R.id.ll_top);
+		application = MCkuai.getInstance();
+		mClient = application.mClient;
 	}
 
 	@Override
@@ -127,14 +110,14 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	{
 		// TODO Auto-generated method stub
 		super.onResume();
-		MobclickAgent.onPageStart("发帖");
+//		MobclickAgent.onPageStart("发帖");
 		if (null == mFroums)
 		{
 			mFroums = (GridView) findViewById(R.id.gv_forums);
 			mPostType = (GridView) findViewById(R.id.gv_type);
 			mTitle = (EditText) findViewById(R.id.edt_title);
 			mContent = (EditText) findViewById(R.id.edt_content);
-			tv_Title = (TextView) findViewById(R.id.tv_posttitle);
+			tv_Title = (TextView) findViewById(R.id.tv_title);
 			tv_selectedForum = (TextView) findViewById(R.id.tv_forum_Checked);
 			tv_selectedType = (TextView) findViewById(R.id.tv_type_Checked);
 			btn_publish = (Button) findViewById(R.id.btn_showOwner);
@@ -144,7 +127,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			mTypeLayout_Checked = (LinearLayout) findViewById(R.id.ll_checkedType);
 			mpics = (LinearLayout) findViewById(R.id.ll_pics);
 
-			findViewById(R.id.btn_return).setOnClickListener(this);
+			findViewById(R.id.btn_right).setOnClickListener(this);
 			mTypeLayout_Checked.setOnClickListener(this);
 			mTitle.setOnFocusChangeListener(this);
 			mContent.setOnFocusChangeListener(this);
@@ -169,12 +152,12 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	{
 		// TODO Auto-generated method stub
 		super.onPause();
-		MobclickAgent.onPageEnd("发帖");
+//		MobclickAgent.onPageEnd("发帖");
 	}
 
 	private void initSlidingMenu()
 	{
-		menu = new MCSildingMenu();
+//		menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
 		mySlidingMenu = new SlidingMenu(this, null);
@@ -186,7 +169,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		mySlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		mySlidingMenu.setBackgroundResource(R.drawable.background_slidingmenu);
 		mySlidingMenu.setBehindOffset(width);
-		mySlidingMenu.setBehindCanvasTransformer(new CanvasTransformer()
+		mySlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
 		{
 
 			@Override
@@ -197,7 +180,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
 			}
 		});
-		mySlidingMenu.setAboveCanvasTransformer(new CanvasTransformer()
+		mySlidingMenu.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer()
 		{
 
 			@Override
@@ -209,7 +192,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			}
 		});
 		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menu).commit();
-		mySlidingMenu.setOnOpenedListener(new OnOpenedListener()
+		mySlidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener()
 		{
 
 			@Override
@@ -221,7 +204,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				isSlidingMenuShowing = true;
 			}
 		});
-		mySlidingMenu.setOnClosedListener(new OnClosedListener()
+		mySlidingMenu.setOnClosedListener(new SlidingMenu.OnClosedListener()
 		{
 
 			@Override
@@ -237,7 +220,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 
 	private void showData()
 	{
-		if (null != application.getForums() && !application.getForums().isEmpty())
+		if (null != application.getForumList() && !application.getForumList().isEmpty())
 		{
 			if (null == mFroumAdapter)
 			{
@@ -369,7 +352,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				// TODO Auto-generated method stub
 				isUploading = false;
 				super.onFailure(statusCode, headers, responseString, throwable);
-				showNotification("上传图片失败！原因：" + throwable.getLocalizedMessage());
+				showNotification(3,"上传图片失败！原因：" + throwable.getLocalizedMessage(),R.id.ll_top);
 			}
 		});
 	}
@@ -407,7 +390,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			{
 				// TODO Auto-generated method stub
 				super.onStart();
-				popupProgressDialog(getString(R.string.publish_hint));
+				popupLoadingToast("正在发布...");
 				isUploading = true;
 			}
 
@@ -457,7 +440,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				isUploading = false;
 				// Toast.makeText(PublishPostActivity.this, "发帖失败了,原因:" +
 				// throwable.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-				showNotification("发帖失败,原因" + throwable.getLocalizedMessage());
+				showNotification(2,"发帖失败,原因" + throwable.getLocalizedMessage(),R.id.ll_top);
 			}
 
 			@Override
@@ -541,7 +524,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		// TODO Auto-generated method stub
 		if (isUploading)
 		{
-			if (v.getId() != R.id.btn_return)
+			if (v.getId() != R.id.btn_left)
 			{
 				Toast.makeText(this, "正在上传,请稍候再操作!", Toast.LENGTH_SHORT).show();
 				// showNotification("正在上传,请稍候再操作!");
@@ -565,7 +548,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			startActivityForResult(intent, GETPIC);
 			break;
 
-		case R.id.btn_return:
+		case R.id.btn_left:
 			if (isSlidingMenuShowing)
 			{
 				mySlidingMenu.toggle();

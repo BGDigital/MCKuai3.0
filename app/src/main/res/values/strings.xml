@@ -1,4 +1,11 @@
 <resources>
+    <string name="channel_Owner">官方</string>
+    <string name="channel_BaiDu">百度</string>
+    <string name="channel_QQ">腾讯</string>
+    <string name="channel_360">360</string>
+
+
+
     <string name="app_name">MCKuai</string>
 
     <string name="hello_world">Hello world!</string>
@@ -55,12 +62,31 @@
     <string name="interface_forumList">interface.do?act=forumList</string>
     <string name="interface_postList">interface.do?act=talkList</string>
     <string name="interface_showPost">interface.do?act=talkOne</string>
+    <!-- 打赏 -->
+    <string name="interface_reward">interface.do?act=daShang</string>
+    <!-- 收藏帖子interface.do?act=toCollect&userId=&talkId= // -->
+    <string name="interface_collectpost">interface.do?act=toCollect</string>
+    <!-- 取消收藏帖子interface.do?act=cancleCollect&userId=&talkId= -->
+    <string name="interface_cancle_collectpost">interface.do?act=cancleCollect</string>
+    <!-- 跟帖，跟帖前取参数window.interface.setparameters(),window.interface.getParameters() -->
+    <string name="interface_replypost">interface.do?act=followTalk</string>
+    <!-- 回复楼层 -->
+    <string name="interface_replyfloor">interface.do?act=replyTalk</string>
+    <!-- 上传图片 回图片路径字符串  http://cdn.mckuai.com/xxx.jpg 需加在content 帖子内容后面 -->
+    <string name="interface_uploadpic">group.do?act=uploadImg</string>
+    <string name="interface_sendpost">interface.do?act=addTalk</string>
+    <!-- 是否打赏或收藏 -->
+    <string name="interface_getpostmark">interface.do?act=isCollect</string>
+    <!-- 检查更新 -->
+    <string name="interface_checkupgread">interface.do?act=androidUpdate</string>
 
     <item name="key_USERID" type="id"></item>
     <item name="key_FORUMID" type="id"></item>
     <string name="tag_post">TAG_POST</string>
+    <string name="needLoginResult">NEED_RESULT</string>
+    <string name="publish_hint">正在...</string>
 
-    <string name="post_title">帖子详情</string>
+
 
 
     <string name="title_activity_ranking">RankingActivity</string>
@@ -86,6 +112,16 @@
     <string name="lastPost">最新</string>
     <string name="essencePost">精华</string>
     <string name="topPost">推荐</string>
+
+    <string name="post_title">帖子详情</string>
+    <string name="btn_showowneronly">只看楼主</string>
+    <string name="post_replypost">跟楼</string>
+    <string name="post_replyfloor">回复楼层</string>
+    <string name="post_unlogin">未登录</string>
+    <string name="needMore">还需输入</string>
+    <string name="tooMuch">已经超出</string>
+    <string name="spare">还可输入</string>
+    <string name="unit">个字</string>
 
 
     <string name="addr_hint">请选择</string>

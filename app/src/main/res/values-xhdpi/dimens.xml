@@ -71,4 +71,5 @@
 
     <dimen name="item_ownerinfo_layout_height">33dp</dimen>
     <dimen name="item_ownerinfo_usercover_height">22dp</dimen>
+    <dimen name="usercover_recommend_height">40dp</dimen>
 </resources>
