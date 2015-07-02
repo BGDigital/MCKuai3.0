@@ -87,7 +87,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
         rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
-       // serverListView.setHasFixedSize(true);
         serverListView.setLayoutManager(manager);
 
         adapter = new ServerAdapter();
@@ -96,14 +95,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         serverListView.setAdapter(adapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST);
-        serverListView.addItemDecoration(dividerItemDecoration);
-
-        spinner = application.getSpinner();
-        String[] items = getResources().getStringArray(R.array.server_Type);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
-        spinner.setAdapter(adapter);
-
-
+        serverListView.addItemDecoration(dividerItemDecoration);serverListView.enableLoadmore();
         serverListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int i, int i1) {
@@ -120,6 +112,13 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 loadData();
             }
         });
+
+        spinner = application.getSpinner();
+        String[] items = getResources().getStringArray(R.array.server_Type);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
+        spinner.setAdapter(adapter);
+
+
 
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
@@ -141,22 +140,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         else {
             adapter.notifyDataSetChanged();
         }
-        if (page.EOF() ){
-            if (isLoadmoreAlowed){
-                Log.w(TAG,"disableLoadmore");
-                serverListView.disableLoadmore();
-                isLoadmoreAlowed = false;
-            }
-        }
-        else {
-            if (!isLoadmoreAlowed){
-                Log.w(TAG,"enableLoadmore") ;
-                serverListView.enableLoadmore();
-                isLoadmoreAlowed = true;
-            }
-
-        }
-
     }
 
     private void showServerType(){
