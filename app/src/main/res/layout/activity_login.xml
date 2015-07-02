@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/tv_login_with_qq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/com_margin"
+        android:text="@string/btn_login"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_dimen_big" />
+
+    <ImageButton
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_login_with_qq"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/com_margin"
+        android:background="@drawable/btn_login" />
+
+    <FrameLayout
+        android:id="@+id/fl_root"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@id/btn_login"
+        android:layout_alignRight="@id/btn_login"
+        android:layout_below="@id/tv_login_with_qq"
+        android:layout_margin="@dimen/com_margin" >
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_anonymous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/com_margin"
+        android:layout_marginRight="@dimen/com_margin"
+        android:clickable="true"
+        android:paddingBottom="@dimen/com_margin"
+        android:paddingTop="@dimen/com_margin"
+        android:text="@string/tv_anonymous"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_dimen_big" />
+
+</RelativeLayout>

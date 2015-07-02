@@ -3,6 +3,8 @@ package com.mckuai.fragment;
 
 import android.app.Fragment;
 import android.graphics.Point;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
 
@@ -152,6 +154,7 @@ public class BaseFragment extends android.support.v4.app.Fragment {
         }
         mToast.setText(msg);
         mToast.show();
+        _mHander.sendEmptyMessageDelayed(1,15000);
     }
 
     protected  void cancleLodingToast(boolean isSuccess){
@@ -163,6 +166,15 @@ public class BaseFragment extends android.support.v4.app.Fragment {
             mToast = null;
         }
     }
+
+    Handler _mHander = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (null != mToast){
+                cancleLodingToast(false);
+            }
+        }
+    };
 
     public String getmTitle() {
         return mTitle;

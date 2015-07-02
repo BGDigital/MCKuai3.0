@@ -1,6 +1,8 @@
 package com.mckuai.imc;
 
-import android.os.Bundle;
+import android.graphics.Point;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -11,6 +13,8 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.gitonway.lee.niftynotification.lib.Effects;
 import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
 
+import net.steamcrafted.loadtoast.LoadToast;
+
 
 public class BaseActivity extends FragmentActivity {
 
@@ -20,6 +24,8 @@ public class BaseActivity extends FragmentActivity {
     private com.gitonway.lee.niftynotification.lib.Configuration msgCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration warningCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration errorCfg;
+    private LoadToast mToast;
+    private Point mPoint;
 
     protected void setTitle(String title){
         if (null != title){
@@ -159,4 +165,39 @@ public class BaseActivity extends FragmentActivity {
         }
         return super.onKeyDown(keyCode,event);
     }
+
+    protected void popupLoadingToast(String msg){
+        if (null == mToast){
+            if (null == mPoint){
+                mPoint = new Point();
+                getWindowManager().getDefaultDisplay().getSize(mPoint);
+            }
+            mToast = new LoadToast(this);
+            mToast.setTranslationY((int) (mPoint.y * 0.4));
+            mToast.setTextColor(getResources().getColor(R.color.font_white)).setBackgroundColor(
+                    getResources().getColor(R.color.background_green));
+        }
+        mToast.setText(msg);
+        mToast.show();
+        _mHander.sendEmptyMessageDelayed(1,15000);
+    }
+
+    protected  void cancleLodingToast(boolean isSuccess){
+        if (null != mToast){
+            if (isSuccess){
+                mToast.success();
+            }
+            else mToast.error();
+            mToast = null;
+        }
+    }
+
+    Handler _mHander = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (null != mToast){
+                cancleLodingToast(false);
+            }
+        }
+    };
 }

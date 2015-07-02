@@ -27,6 +27,9 @@
     <string name="total">全部</string>
     <string name="export_map_export">选择要导出的地图</string>
 
+    <string name="btn_login">使用QQ账号登录</string>
+    <string name="tv_anonymous">>>随便看看</string>
+
     <!--缓存-->
     <string name="cache_root">cache</string>
     <string name="imagecache_dir">image</string>
@@ -51,9 +54,13 @@
     <string name="interface_search">map.do?act=search</string>
     <string name="interface_forumList">interface.do?act=forumList</string>
     <string name="interface_postList">interface.do?act=talkList</string>
+    <string name="interface_showPost">interface.do?act=talkOne</string>
 
     <item name="key_USERID" type="id"></item>
     <item name="key_FORUMID" type="id"></item>
+    <string name="tag_post">TAG_POST</string>
+
+    <string name="post_title">帖子详情</string>
 
 
     <string name="title_activity_ranking">RankingActivity</string>
