@@ -1,9 +1,88 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.mckuai.fragment.ForumFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/rv_forums"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/forumlist_height"
+        android:background="@color/background_green"
+        android:paddingBottom="@dimen/com_margin"
+        android:paddingTop="@dimen/com_margin"
+        android:scrollbars="none" />
 
-</FrameLayout>
+    <RadioGroup
+        android:id="@+id/rg_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_height_lv2"
+        android:layout_below="@id/rv_forums"
+        android:background="@drawable/background_top_bottom_frame"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_lastPost"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/lastPost"
+            android:textColor="@color/radio_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_essencePost"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/essencePost"
+            android:textColor="@color/radio_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_topPost"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/topPost"
+            android:textColor="@color/radio_textcolor_selector" />
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/rg_indicator" >
+
+        <RelativeLayout
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/v_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon_empty" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_empty"
+                android:gravity="center"
+                android:text="没有内容！" />
+        </RelativeLayout>
+
+        <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+            android:id="@+id/lv_postList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:dividerHeight="@dimen/item_divider_height" />
+    </RelativeLayout>
+</RelativeLayout>

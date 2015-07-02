@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 普通帖 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_normalpost_height"
+    android:background="@drawable/background_top_bottom_frame" >
+
+    <!-- 顶部所有者 -->
+
+    <TextView
+        android:id="@+id/tv_postTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/com_margin"
+        android:layout_marginRight="@dimen/com_margin"
+        android:layout_marginTop="@dimen/com_margin"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/font_primary" />
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_ownerinfo_layout_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/com_margin"
+        android:paddingRight="@dimen/com_margin" >
+
+        <ImageView
+            android:id="@+id/civ_postOwner_bottom"
+            android:layout_width="@dimen/item_ownerinfo_usercover_height"
+            android:layout_height="@dimen/item_ownerinfo_usercover_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/background_user_cover_default" />
+
+        <TextView
+            android:id="@+id/v_postReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/icon_reply_big"
+            android:drawablePadding="@dimen/com_padding"
+            android:drawableStart="@drawable/icon_reply_big"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/font_secondary" />
+
+        <TextView
+            android:id="@+id/tv_postrepayTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="5分钟前"
+            android:textColor="@color/font_secondary" />
+
+        <TextView
+            android:id="@+id/tv_postOwner_bottom"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/com_margin"
+            android:layout_marginRight="@dimen/com_margin"
+            android:layout_toEndOf="@id/civ_postOwner_bottom"
+            android:layout_toLeftOf="@id/v_postReply"
+            android:layout_toRightOf="@id/civ_postOwner_bottom"
+            android:layout_toStartOf="@id/v_postReply"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="用户名"
+            android:textColor="@color/font_secondary" />
+    </RelativeLayout>
+
+    <!-- 置顶 -->
+
+    <ImageView
+        android:id="@+id/tv_typeTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/icon_posttype_top"
+        android:contentDescription="@string/addr_hint"
+        android:visibility="gone" />
+
+    <!-- 精华 -->
+
+    <ImageView
+        android:id="@+id/tv_typeEssence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/icon_posttype_essence"
+        android:visibility="gone" />
+
+</RelativeLayout>
