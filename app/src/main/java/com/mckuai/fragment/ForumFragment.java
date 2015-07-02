@@ -2,7 +2,9 @@ package com.mckuai.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.adapter.ForumAdapter;
 import com.mckuai.adapter.PostAdapter;
 import com.mckuai.bean.ForumBean;
@@ -24,17 +27,18 @@ import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ForumFragment extends BaseFragment {
+public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener,ForumAdapter.OnItemClickListener {
 
     private View view;
     private PageInfo page;
 
     private ArrayList<ForumInfo> mForums;
-    private PageInfo mCurPageInfo = new PageInfo();
+    //private PageInfo mCurPageInfo = new PageInfo();
     private ArrayList<Post> mPosts;
     private String[] listGroupType = { "lastChangeTime", "isJing", "isDing" };
     private String curGroupType = listGroupType[0];
@@ -52,6 +56,7 @@ public class ForumFragment extends BaseFragment {
     private boolean isLoading = false;
     private boolean isReadyToShow = false;
     private ForumInfo curForum;
+    private boolean isAllowedLoadMore = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,30 +84,64 @@ public class ForumFragment extends BaseFragment {
         {
             return;
         }
-//        ((RadioGroup) view.findViewById(R.id.rg_indicator)).setOnCheckedChangeListener(this);
-//        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        mForumsListView.setLayoutManager(mLayoutManager);
+        mForumsListView = (UltimateRecyclerView) view.findViewById(R.id.rv_forums);
+        mPostListView = (UltimateRecyclerView) view.findViewById(R.id.rv_postList);
+        LinearLayoutManager forumLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager postLayoutManager = new LinearLayoutManager(getActivity());
+        forumLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        postLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mForumsListView.setLayoutManager(forumLayoutManager);
+        mPostListView.setLayoutManager(postLayoutManager);
+        mPostListView.setHasFixedSize(true);
+        mPostListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void loadMore(int i, int i1) {
+                if (!page.EOF()) {
+                    loadPostList(curForum);
+                }
+                else {
+                    showNotification(1,"没有更多内容了！",R.id.rl_post_root);
+                }
+            }
+        });
+        mPostListView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                page.setPage(0);
+                mPosts.clear();
+                loadPostList(curForum);
+            }
+        });
+        mPostListView.enableLoadmore();
+
+        mForumAdapter = new ForumAdapter();
+        mPostAdapter = new PostAdapter(getActivity());
+        mForumsListView.setAdapter(mForumAdapter);
+        mPostListView.setAdapter(mPostAdapter);
+        mForumAdapter.setOnItemClickListener(this);
+
+        ((RadioGroup) view.findViewById(R.id.rg_indicator)).setOnCheckedChangeListener(this);
     }
 
     private void showForums()
     {
-        if (null != mForums &&  mForums.isEmpty())
+        if (null != mForums &&  !mForums.isEmpty())
         {
             if (null == mForumAdapter)
             {
-                mForumAdapter = new ForumAdapter(mForums);
+                mForumAdapter = new ForumAdapter();
                 mForumsListView.setAdapter(mForumAdapter);
             } else
             {
                 mForumAdapter.setData(mForums);
             }
-
+            //加载帖子列表
             if (curForum == null)
             {
                 curForum = mForums.get(0);
-                loadPostListDelay();
+                loadPostList(curForum);
 //				publishPost.setVisibility(View.GONE);
-                showForums();
+//                showForums();
             }
         } else
         {
@@ -117,17 +156,8 @@ public class ForumFragment extends BaseFragment {
             if (null == mPostAdapter)
             {
                 mPostAdapter = new PostAdapter(getActivity());
-                //mPostListView.setAdapter(mPostAdapter);
             }
             mPostAdapter.setData(mPosts);
-            if (mCurPageInfo.getPage() < mCurPageInfo.getPageCount())
-            {
-                mPostListView.enableLoadmore();
-            } else
-            {
-                mPostListView.disableLoadmore();
-            }
-//			publishPost.setVisibility(View.VISIBLE);
         }
     }
 
@@ -147,12 +177,16 @@ public class ForumFragment extends BaseFragment {
             {
                 // TODO Auto-generated method stub
                 super.onStart();
-                String result = getData(url);
-                if (null != result)
-                {
-                    parseForumList(null, result);
-                    showForums();
+                if (isCacheEnabled) {
+                    String result = getData(url);
+                    if (null != result) {
+                        parseForumList(null, result);
+                        showForums();
+                        isCacheEnabled = false;
+                        return;
+                    }
                 }
+                popupLoadingToast(getString(R.string.onloading_hint));
             }
 
             /*
@@ -175,31 +209,28 @@ public class ForumFragment extends BaseFragment {
                         if (response.getString("state").equalsIgnoreCase("ok"))
                         {
                             parseForumList(url, response.toString());
-                            mCurPageInfo = new PageInfo();
-                            showForums();
-                            if (null == mPosts)
-                            {
-                                curForum = mForums.get(0);
-                                loadPostList(curForum);
-                            }
                             cacheData(url, response.toString());
                         }
                     } catch (Exception e)
                     {
                         // TODO: handle exception
-//						showNotification("获取板块信息失败,请重试!");
-                        Toast.makeText(getActivity(), "获取板块信息失败,请重试!", Toast.LENGTH_SHORT).show();
+                        showNotification(2,"获取板块信息失败,请重试!！",R.id.rl_post_root);
+                    }
+                    page = new PageInfo();
+                    showForums();
+                    if (null == mPosts)
+                    {
+                        curForum = mForums.get(0);
+                        loadPostList(curForum);
                     }
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
-            {
-                // TODO Auto-generated method stub
-                super.onFailure(statusCode, headers, responseString, throwable);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
                 isLoading = false;
-                Toast.makeText(getActivity(), "获取板块信息失败,原因："+throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                showNotification(2, "获取板块信息失败,原因：" + throwable.getLocalizedMessage(), R.id.rl_post_root);
             }
         });
     }
@@ -224,9 +255,10 @@ public class ForumFragment extends BaseFragment {
     private void parsePostList(String url, RequestParams params, String result)
     {
         PostBaen bean = mGson.fromJson(result, PostBaen.class);
-        mCurPageInfo.setAllCount(bean.getAllCount());
-        mCurPageInfo.setPage(bean.getPage());
-        if (1 == mCurPageInfo.getPage())
+        page.setAllCount(bean.getAllCount());
+        page.setPage(bean.getPage());
+        page.setPageSize(bean.getPageSize());
+        if (1 == page.getPage())
         {
             if (null != url && null != params)
             {
@@ -255,27 +287,27 @@ public class ForumFragment extends BaseFragment {
         params.put("forumId", forumInfo.getId());
         params.put("page", page.getNextPage());
         params.put("type", curGroupType);
-        mClient.get(url, params, new JsonHttpResponseHandler()
-        {
+        Log.e(TAG, url + "&" + params.toString());
+        mClient.get(url, params, new JsonHttpResponseHandler() {
             /*
              * (non-Javadoc)
              *
              * @see com.loopj.android.http.AsyncHttpResponseHandler#onStart()
              */
             @Override
-            public void onStart()
-            {
+            public void onStart() {
                 // TODO Auto-generated method stub
                 super.onStart();
-                String result = getData(url, params);
-                if (null != result && 10 < result.length())
-                {
-                    parsePostList(null, null, result);
-                    showPosts();
-                } else
-                {
-                    popupLoadingToast(getString(R.string.onloading_hint));
+                if (isSecondCacheEnable) {
+                    String result = getData(url, params);
+                    if (null != result && 10 < result.length()) {
+                        parsePostList(null, null, result);
+                        showPosts();
+                        isSecondCacheEnable = false;
+                        return;
+                    }
                 }
+                popupLoadingToast(getString(R.string.onloading_hint));
             }
 
             /*
@@ -286,30 +318,23 @@ public class ForumFragment extends BaseFragment {
              * org.apache.http.Header[], org.json.JSONObject)
              */
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response)
-            {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // TODO Auto-generated method stub
                 isLoading = false;
                 cancleLodingToast(true);
                 super.onSuccess(statusCode, headers, response);
-                if (null != response && response.has("state"))
-                {
-                    try
-                    {
-                        // parsePostList(url,response.getString("dataObject"));
-                        if (response.getString("state").equalsIgnoreCase("ok"))
-                        {
+                if (null != response && response.has("state")) {
+                    try {
+                        if (response.getString("state").equalsIgnoreCase("ok")) {
                             parsePostList(url, params, response.getString("dataObject"));
-                            showPosts();
-                            return;
                         }
-                    } catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         // TODO: handle exception
                     }
-
+                    showPosts();
+                    return;
                 }
-                Toast.makeText(getActivity(), "获取帖子列表失败，请重试！", Toast.LENGTH_SHORT).show();
+                showNotification(2, "获取帖子列表失败，请重试！", R.id.rl_post_root);
             }
 
             /*
@@ -320,39 +345,40 @@ public class ForumFragment extends BaseFragment {
              * org.apache.http.Header[], java.lang.String, java.lang.Throwable)
              */
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
-            {
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // TODO Auto-generated method stub
                 isLoading = false;
                 cancleLodingToast(false);
                 super.onFailure(statusCode, headers, responseString, throwable);
-//				showNotification("出错啦，原因："+ throwable.getLocalizedMessage());
-                Toast.makeText(getActivity(), "出错啦，原因："+ throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                showNotification(2, "出错啦，原因：" + throwable.getLocalizedMessage(), R.id.rl_post_root);
             }
         });
     }
 
-    private void loadPostListDelay()
-    {
-        mHandler.sendMessage(mHandler.obtainMessage(9945));
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId){
+            case R.id.rb_lastPost:
+                curGroupType = listGroupType[0];
+                showPosts();
+                break;
+            case R.id.rb_essencePost:
+                curGroupType = listGroupType[1];
+
+                break;
+            case R.id.rb_topPost:
+                curGroupType = listGroupType[2];
+                break;
+        }
+        page.setPage(0);
+        loadPostList(curForum);
     }
 
-    Handler mHandler = new Handler()
-    {
-        public void handleMessage(android.os.Message msg)
-        {
-            switch (msg.what)
-            {
-                case 9945:
-                    mHandler.sendMessageDelayed(mHandler.obtainMessage(5543), 200);
-                    break;
-                case 5543:
-                    loadPostList(curForum);
-                    break;
-                default:
-                    break;
-            }
-        };
-    };
-
+    @Override
+    public void onItemClick(ForumInfo forumInfo) {
+        page.setPage(0);
+        mForumAdapter.notifyDataSetChanged();
+        loadPostList(forumInfo);
+        this.curForum = forumInfo;
+    }
 }

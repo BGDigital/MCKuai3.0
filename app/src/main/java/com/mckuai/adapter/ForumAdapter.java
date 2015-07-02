@@ -34,11 +34,11 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>
 		public void onItemClick(ForumInfo forumInfo);
 	}
 
-	public ForumAdapter(ArrayList<ForumInfo> forumInfos)
+	public ForumAdapter()
 	{
 		// TODO Auto-generated constructor stub
-		this.forumInfos = forumInfos;
-		checkedForumId = forumInfos.get(0).getId();
+//		this.forumInfos = forumInfos;
+//		checkedForumId = forumInfos.get(0).getId();
 	}
 
 	public void setOnItemClickListener(OnItemClickListener l)
@@ -54,6 +54,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>
 		if (null != forumInfos)
 		{
 			this.forumInfos = forumInfos;
+			checkedForumId = forumInfos.get(0).getId();
 			notifyDataSetChanged();
 		}
 	}

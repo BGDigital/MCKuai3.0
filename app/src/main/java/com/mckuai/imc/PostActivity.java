@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,7 +56,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private String TAG = "PostActivity";
 
-	//private Button btn_showOwner;
+	private Button btn_showOwner;
 	private ImageView btn_return;
 	private ImageButton btn_reply;
 	private ImageButton btn_share;
@@ -116,10 +118,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		{
 			savedInstanceState = new Bundle();
 		}
-		// savedInstanceState.putString("PAGE_ID", getString(R.string.post));
+//		 savedInstanceState.putString("PAGE_ID", getString(R.string.post));
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post);
-		//initSlidingMenu();
+		initSlidingMenu();
 		post = (Post) getIntent().getSerializableExtra(getString(R.string.tag_post));
 		mApplication = MCkuai.getInstance();
 		mClient = mApplication.mClient;
@@ -183,7 +185,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		// findViewById(R.id.btn_return).setOnClickListener(this);
 		webView = (WebView) findViewById(R.id.webview);
-//		btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
+		btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
 		btn_collect = (ImageButton) findViewById(R.id.btn_collectPost);
 		btn_reply = (ImageButton) findViewById(R.id.btn_replyPost);
 		btn_reward = (ImageButton) findViewById(R.id.btn_rewardPost);
@@ -196,7 +198,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mpics = (LinearLayout) findViewById(R.id.ll_piclayer);
 
 		btn_reward.setOnClickListener(this);
-//		btn_showOwner.setOnClickListener(this);
+		btn_showOwner.setOnClickListener(this);
 		btn_collect.setOnClickListener(this);
 		btn_reply.setOnClickListener(this);
 		btn_return.setOnClickListener(this);
@@ -265,7 +267,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void initSlidingMenu()
 	{
-		/*menu = new MCSildingMenu();
+		menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
 		mySlidingMenu = new SlidingMenu(this, null);
@@ -277,7 +279,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mySlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
 		mySlidingMenu.setBackgroundResource(R.drawable.background_slidingmenu);
 		mySlidingMenu.setBehindOffset(width);
-		mySlidingMenu.setBehindCanvasTransformer(new CanvasTransformer()
+		mySlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
 		{
 			@Override
 			public void transformCanvas(Canvas canvas, float percentOpen)
@@ -287,7 +289,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
 			}
 		});
-		mySlidingMenu.setAboveCanvasTransformer(new CanvasTransformer()
+		mySlidingMenu.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer()
 		{
 
 			@Override
@@ -299,7 +301,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			}
 		});
 		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menu).commit();
-		mySlidingMenu.setOnOpenedListener(new OnOpenedListener()
+		mySlidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener()
 		{
 
 			@Override
@@ -310,7 +312,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				menu.showData();
 			}
 		});
-		mySlidingMenu.setOnCloseListener(new OnCloseListener()
+		mySlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener()
 		{
 
 			@Override
@@ -320,7 +322,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				menu.callOnPauseForUpdate();
 				hideKeyboard(mySlidingMenu);
 			}
-		});*/
+		});
 	}
 
 	private void addInterface()
@@ -356,8 +358,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private void showReply()
 	{
 		isShowPost = false;
-//		btn_showOwner.setText("发 布");
-//		showKeyboard(null);
+		btn_showOwner.setText("发 布");
+		showKeyboard(null);
 		if (isReplyPost)
 		{
 //			MobclickAgent.onEvent(this, "replyPost");

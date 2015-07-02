@@ -186,7 +186,7 @@ public class MCkuai  extends Application{
     }
 
     public boolean isLogin(){
-        if (mUser != null & 0 < mUser.getId()){
+        if (mUser != null && 0 < mUser.getId()){
             return  true;
         }
         else {

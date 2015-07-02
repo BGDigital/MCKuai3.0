@@ -46,6 +46,9 @@ public class PageInfo implements Serializable{
     }
 
     public boolean EOF(){
+        if (0 == pageSize){
+            return  true;
+        }
         int c = allCount / pageSize;
         if(allCount % pageSize == 0){
             return c == page;
@@ -57,8 +60,8 @@ public class PageInfo implements Serializable{
     }
 
     public int getNextPage(){
-        if (EOF()){
-            return  page;
+        if (pageSize == 0){
+            return  1;
         }
         else return  page+1;
     }

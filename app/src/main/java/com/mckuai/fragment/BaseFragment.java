@@ -27,6 +27,7 @@ public class BaseFragment extends android.support.v4.app.Fragment {
 
     protected  boolean isLoading = false;    //正在加载数据
     protected  boolean isCacheEnabled = true;         //启用缓存
+    protected boolean isSecondCacheEnable = true;//第二个项目的缓存
     protected  String mTitle;
 
     private Point mPoint;

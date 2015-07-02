@@ -3,52 +3,38 @@ package com.mckuai.adapter;
 import java.util.ArrayList;
 
 import com.mckuai.bean.Post;
+import com.mckuai.imc.PostActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.R;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PostAdapter extends BaseAdapter
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 {
 	private ArrayList<Post> mPostList = new ArrayList<Post>(10);
-	private Context mContext;
+	private static Context mContext;
 	private LayoutInflater mInflater;
-//	private boolean isRecommend = false;
 	private ImageLoader mLoader;
-//	private DisplayImageOptions normal;
-//	private DisplayImageOptions circle;
 
 	private static final String TAG = "PostAdapter";
 
 	public PostAdapter(Context context)
 	{
-		this(context,null);
-	}
-
-	public PostAdapter(Context context, ArrayList<Post> post)
-	{
 		init(context);
-		this.mPostList = post;
-	}
-
-	public void refresh()
-	{
-		this.notifyDataSetChanged();
 	}
 
 	protected void init(Context context)
 	{
 		this.mContext = context;
 		this.mLoader = ImageLoader.getInstance();
-		this.mInflater = (LayoutInflater) context.getApplicationContext().getSystemService(
-				Context.LAYOUT_INFLATER_SERVICE);
-//		this.normal = MyApplication.getInstance().getNormalOptions();
-//		this.circle = MyApplication.getInstance().getCircleOptions();
+		this.mInflater = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	public void setData(ArrayList<Post> data)
@@ -57,22 +43,59 @@ public class PostAdapter extends BaseAdapter
 		{
 			this.mPostList = data;
 			notifyDataSetChanged();
-		} else
-		{
-			notifyDataSetInvalidated();
 		}
 	}
 
+
 	@Override
-	public int getCount()
-	{
-			return (null == mPostList ? 0 : mPostList.size());
+	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(mContext).inflate(R.layout.item_post_normal,parent,false);
+		final ViewHolder holder = new ViewHolder(view);
+		view.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Post post = (Post) v.getTag();
+				if (null != post){
+					Intent intent = new Intent(mContext, PostActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable(mContext.getString(R.string.tag_post), post);
+					intent.putExtras(bundle);
+					mContext.startActivity(intent);
+				}
+			}
+		});
+		return holder;
 	}
 
 	@Override
-	public Object getItem(int position)
-	{
-			return mPostList.get(position);
+	public void onBindViewHolder(ViewHolder holder, int position) {
+		Post post =    mPostList.get(position);
+		 if (null != post){
+			 if (null != post.getIcon() && 10 < post.getIcon().length()) {
+				 mLoader.displayImage(post.getIcon(),holder.iv_cover);
+			 }
+
+			 if (post.isEssence()){
+			 	holder.iv_essence.setVisibility(View.VISIBLE);
+			 }
+			 else {
+				 holder.iv_essence.setVisibility(View.GONE);
+			 }
+
+			 if (post.isTop()){
+				 holder.iv_top.setVisibility(View.VISIBLE);
+			 }
+			 else {
+				 holder.iv_top.setVisibility(View.GONE);
+			 }
+
+			 holder.tv_title.setText(post.getTalkTitle()+"");
+			 holder.tv_owner.setText(post.getUserName()+"");
+			 holder.tv_reply.setText(post.getReplyNum()+"");
+			 holder.tv_time.setText(post.getLastReplyTime()+"");
+
+			 holder.itemView.setTag(post);
+		 }
 	}
 
 	@Override
@@ -82,82 +105,49 @@ public class PostAdapter extends BaseAdapter
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
+	public int getItemCount() {
+		return null == mPostList ? 0:mPostList.size();
+	}
+
+
+
+
+	/**
+	 * @author kyly
+	 *
+	 */
+	public static class ViewHolder extends RecyclerView.ViewHolder
 	{
-		if (null != mPostList && -1 < position && position < mPostList.size())
+		private TextView tv_title ;
+		private TextView tv_owner;
+		private TextView tv_reply;
+		private TextView tv_time;
+		private ImageView iv_cover;
+		private ImageView iv_top;
+		private ImageView iv_essence;
+
+		/**
+		 * @param itemView
+		 */
+		public ViewHolder(View itemView)
 		{
-			Post_ViewHolder holder;
-			Post post = mPostList.get(position);
-			if (null == convertView)
-			{
-				convertView = mInflater.inflate(R.layout.item_post_normal, parent, false);
-				holder = new Post_ViewHolder();
-				holder.owner_bottom = (TextView) convertView.findViewById(R.id.tv_postOwner_bottom);
-				holder.owner_bottom_cover = (ImageView) convertView.findViewById(R.id.civ_postOwner_bottom);
-				holder.typeTop = (ImageView) convertView.findViewById(R.id.tv_typeTop);
-				holder.typeEssence = (ImageView) convertView.findViewById(R.id.tv_typeEssence);
-				holder.title = (TextView) convertView.findViewById(R.id.tv_postTitle);
-				holder.replyCount = (TextView) convertView.findViewById(R.id.v_postReply);
-				holder.replyTime = (TextView) convertView.findViewById(R.id.tv_postrepayTime);
-				convertView.setTag(holder);
-			} else
-			{
-				holder = (Post_ViewHolder) convertView.getTag();
-			}
-			holder.title.setText(post.getTalkTitle() + "");
-			holder.replyCount.setText(post.getReplyNum() + "");
-			holder.replyTime.setText(post.getLastReplyTime());
-			if (post.isTop())
-			{
-				holder.typeTop.setVisibility(View.VISIBLE);
-			} else
-			{
-				holder.typeTop.setVisibility(View.GONE);
-			}
-			if (post.isEssence())
-			{
-				holder.typeEssence.setVisibility(View.VISIBLE);
-			} else
-			{
-				holder.typeEssence.setVisibility(View.GONE);
-			}
-			if (null != post.getUserName())
-			{
-				holder.owner_bottom.setText(post.getUserName() + "");
-				if (null != post.getHeadImg() && 10 < post.getHeadImg().length())
-				{
-					mLoader.displayImage(post.getHeadImg(), holder.owner_bottom_cover);
-				}
-				// 设置用户头像和名字点击跳转到其个人中心
-				holder.owner_bottom.setTag(R.id.key_USERID, post.getUserId());
-				holder.owner_bottom_cover.setTag(R.id.key_USERID, post.getUserId());
-//				holder.owner_bottom.setOnClickListener(this);
-//				holder.owner_bottom_cover.setOnClickListener(this);
-			} else
-			{
-				holder.owner_bottom.setText(post.getForumName());
-				if (null != post.getIcon() && 10 < post.getIcon().length())
-				{
-					mLoader.displayImage(post.getIcon(), holder.owner_bottom_cover);
-				}
-			}
+			super(itemView);
+			// TODO Auto-generated constructor stub
+			iv_cover = (ImageView) itemView.findViewById(R.id.civ_postOwner_bottom);
+			iv_top = (ImageView) itemView.findViewById(R.id.iv_typeTop);
+			iv_essence = (ImageView) itemView.findViewById(R.id.iv_typeEssence);
+			tv_title = (TextView) itemView.findViewById(R.id.tv_postTitle);
+			tv_owner = (TextView) itemView.findViewById(R.id.tv_postOwner_bottom);
+			tv_reply = (TextView) itemView.findViewById(R.id.tv_postReply);
+			tv_time = (TextView) itemView.findViewById(R.id.tv_postrepayTime);
+
+
 		}
-		return convertView;
+
+
 	}
 
 
-
-	class Post_ViewHolder
-	{
-		ImageView cover;
-		ImageView owner_bottom_cover;
-		TextView owner_bottom;
-		TextView title;
-		ImageView typeTop;
-		ImageView typeEssence;
-		TextView replyTime;
-		TextView replyCount;
-	}
 
 
 }

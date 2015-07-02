@@ -83,6 +83,14 @@
             android:label="@string/title_activity_mapexport" >
         </activity>
         <activity
+            android:name=".PostActivity"
+            android:label="@string/title_activity_mapexport" >
+        </activity>
+        <activity
+            android:name=".PublishPostActivity"
+            android:label="@string/title_activity_mapexport" >
+        </activity>
+        <activity
             android:name=".LoginActivity"
             android:label="登录"
             android:windowSoftInputMode="adjustResize|stateVisible" >

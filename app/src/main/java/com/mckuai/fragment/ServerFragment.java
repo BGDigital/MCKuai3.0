@@ -172,7 +172,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             return;
         }
         else {
-            Log.e(TAG,"loading...");
             isLoading = true;
         }
         if (null == client){
@@ -194,20 +193,28 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             params.put("page",page.getPage()+1);
         }
 
-        String url = getString(R.string.interface_domainName) + getString(R.string.interface_serverlist);
+        final String url = getString(R.string.interface_domainName) + getString(R.string.interface_serverlist);
         Log.w(TAG, url + "&" + params.toString());
 
         client.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
+                if (isCacheEnabled){
+                    String result = getData(url,params);
+                    if (null != result){
+                        ResponseParseResult responseParseResult = new ResponseParseResult();
+                        responseParseResult.data = result;
+                        parseData(responseParseResult);
+                        showData();
+                        return;
+                    }
+                }
                 popupLoadingToast("正在加载列表！");
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                //super.onSuccess(statusCode, headers, response);
-                //cancleLodingToast(false);
                 isLoading = false;
                 ParseResponse parse = new ParseResponse();
                 ResponseParseResult result = parse.parse(response);
@@ -215,6 +222,9 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                     cancleLodingToast(true);
                     parseData(result);
                     showData();
+                    if (page.getPage() == 1){
+                        cacheData(url,params,result.toString());
+                    }
                 } else {
                     showNotification(3, result.msg,R.id.rl_serverList_Root);
                 }

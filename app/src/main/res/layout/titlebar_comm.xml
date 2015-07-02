@@ -26,7 +26,7 @@
         android:paddingRight="@dimen/com_margin"
         android:clickable="true"
         android:paddingLeft="30dp"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btn_showOwner"
@@ -38,6 +38,7 @@
         android:paddingRight="10dp"
         android:background="@null"
         android:textColor="@color/font_white"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         />
 

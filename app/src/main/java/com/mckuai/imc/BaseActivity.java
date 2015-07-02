@@ -22,6 +22,7 @@ public class BaseActivity extends FragmentActivity {
 
     protected  boolean isLoading = false;    //正在加载数据
     protected  boolean isCacheEnabled = true;         //启用缓存
+    protected boolean isSecondCacheEnable = true;//第二个项目的缓存
     protected  String mTitle;
     private com.gitonway.lee.niftynotification.lib.Configuration msgCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration warningCfg;

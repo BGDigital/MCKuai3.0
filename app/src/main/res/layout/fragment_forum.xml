@@ -51,8 +51,8 @@
             android:textColor="@color/radio_textcolor_selector" />
     </RadioGroup>
 
-    <RelativeLayout
-        android:id="@+id/root"
+    <FrameLayout
+        android:id="@+id/rl_post_root"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
@@ -79,10 +79,10 @@
         </RelativeLayout>
 
         <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
-            android:id="@+id/lv_postList"
+            android:id="@+id/rv_postList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:dividerHeight="@dimen/item_divider_height" />
-    </RelativeLayout>
+    </FrameLayout>
 </RelativeLayout>
