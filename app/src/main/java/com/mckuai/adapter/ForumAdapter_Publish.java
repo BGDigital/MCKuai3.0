@@ -37,18 +37,19 @@ public class ForumAdapter_Publish extends BaseAdapter {
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
 		mInflater = LayoutInflater.from(context);
-//		mListener = listener;
-		//parseForumData();
 	}
 	
 	public void setOnCheckedChangeListener(android.widget.CompoundButton.OnCheckedChangeListener l){
 		this.mListener = l;
 	}
+
 	
-	public void refresh()
+	public void setData(ArrayList<ForumInfo> forums)
 	{
-		parseForumData();
-		notifyDataSetChanged();
+		if (null != forums && !forums.isEmpty()) {
+			this.mFroumInfos = forums;
+			notifyDataSetChanged();
+		}
 	}
 	/* (non-Javadoc)
 	 * @see android.widget.Adapter#getCount()
@@ -91,15 +92,5 @@ public class ForumAdapter_Publish extends BaseAdapter {
 			textView.setOnCheckedChangeListener(mListener);
 		}
 		return convertView;
-	}
-	
-	private void parseForumData(){
-		String forum = null;
-		Gson gson = new Gson();
-		ForumBean bean = gson.fromJson(forum, ForumBean.class);
-		if (null != bean && null != bean.getDataObject())
-		{
-			mFroumInfos = bean.getDataObject();
-		}
 	}
 }

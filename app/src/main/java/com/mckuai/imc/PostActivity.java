@@ -10,7 +10,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+//import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -101,7 +101,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private boolean isReward = false;// 帽子是否被打赏
 
 	private AsyncHttpClient mClient;
-	private SlidingMenu mySlidingMenu;
+//	private SlidingMenu mySlidingMenu;
 	private MCSildingMenu menu;
 	 private com.umeng.socialize.controller.UMSocialService mShareService;
 
@@ -197,6 +197,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		btn_pic = (ImageButton) findViewById(R.id.btn_addPic);
 		mpics = (LinearLayout) findViewById(R.id.ll_piclayer);
 
+		btn_showOwner.setVisibility(View.VISIBLE);
+
 		btn_reward.setOnClickListener(this);
 		btn_showOwner.setOnClickListener(this);
 		btn_collect.setOnClickListener(this);
@@ -267,10 +269,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void initSlidingMenu()
 	{
-		menu = new MCSildingMenu();
+		/*menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
-		mySlidingMenu = new SlidingMenu(this, null);
+		mySlidingMenu = new SlidingMenu(PostActivity.this, null);
 		mySlidingMenu.setMode(SlidingMenu.LEFT);
 		mySlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		mySlidingMenu.setBehindOffsetRes(R.dimen.com_margin);
@@ -322,7 +324,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				menu.callOnPauseForUpdate();
 				hideKeyboard(mySlidingMenu);
 			}
-		});
+		});*/
 	}
 
 	private void addInterface()
@@ -456,7 +458,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			isReplyPost = true;
 			showReply();
 			break;
-/*		case R.id.btn_showOwner:
+		case R.id.btn_showOwner:
 			if (isShowPost)
 			{
 				if (key.equals(type[0]))
@@ -473,7 +475,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			{
 				replyPost();
 			}
-			break;*/
+			break;
 		case R.id.btn_addPic:
 //			MobclickAgent.onEvent(this, "addPic_Reply");
 			Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

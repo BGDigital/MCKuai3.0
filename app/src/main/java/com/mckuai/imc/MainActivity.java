@@ -1,11 +1,14 @@
 package com.mckuai.imc;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,6 +19,9 @@ import com.mckuai.fragment.ForumFragment;
 import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ServerFragment;
+import com.mckuai.until.CircleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.w3c.dom.Text;
 
@@ -43,8 +49,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private MCkuai application;
 
     private TextView tv_titlebar_title;
-    private ImageButton btn_titlebar_left;
-    private ImageButton btn_titlebar_right;
+    private ImageView btn_titlebar_left;
+    private ImageView btn_titlebar_right;
     private static Spinner sp_titlebar_spinner;
 
 
@@ -61,7 +67,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         initPage();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (application.isLogin()){
+            showUser();
+        }
+    }
 
     private void initView(){
         vp = (ViewPager) findViewById(R.id.pager);
@@ -79,17 +91,30 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         ll4 = (LinearLayout)findViewById(R.id.rb4);
 
         tv_titlebar_title = (TextView)findViewById(R.id.tv_titlebar_title);
-        btn_titlebar_left = (ImageButton)findViewById(R.id.btn_titlebar_left);
-        btn_titlebar_right = (ImageButton)findViewById(R.id.btn_right);
+        btn_titlebar_left = (ImageView)findViewById(R.id.btn_titlebar_left);
+        btn_titlebar_right = (ImageView)findViewById(R.id.btn_titlebar_right);
         sp_titlebar_spinner = (Spinner)findViewById(R.id.sp_titlebar_type);
+        btn_titlebar_right.setImageResource(R.drawable.btn_post_publish);
         application.setSpinner(sp_titlebar_spinner);
 
         ll1.setOnClickListener(this);
         ll2.setOnClickListener(this);
         ll3.setOnClickListener(this);
         ll4.setOnClickListener(this);
+       // btn_titlebar_right.setOnClickListener(this);
+        btn_titlebar_left.setOnClickListener(this);
+        application.setBtn_publish(btn_titlebar_right);
 
         changeCheckedButton(0);
+    }
+
+    private void showUser(){
+        ImageLoader loader = ImageLoader.getInstance();
+        String userCover = application.mUser.getHeadImg();
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
+        if (null != userCover && 10 < userCover.length()) {
+            loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left,options);
+        }
     }
 
     private void initPage(){
@@ -169,6 +194,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 tv4.setEnabled(true);
                 img4.setEnabled(true);
                 ll4.setEnabled(true);
+                btn_titlebar_right.setVisibility(View.INVISIBLE);
                 break;
             default:
                 tv1.setEnabled(true);
@@ -198,6 +224,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 tv4.setEnabled(false);
                 img4.setEnabled(false);
                 ll4.setEnabled(false);
+                btn_titlebar_right.setVisibility(View.VISIBLE);
                 break;
             default:
                 tv_titlebar_title.setText("工具");
@@ -227,7 +254,25 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 application.fragmentIndex = 3;
                 vp.setCurrentItem(3,false);
                 break;
+            case R.id.btn_titlebar_left:
+                if (!application.isLogin()){
+                    Intent intent = new Intent(this,LoginActivity.class);
+                    startActivityForResult(intent,1);
+                }
+                break;
+            case R.id.btn_titlebar_right:
+                Intent intent = new Intent(this,PublishPostActivity.class);
+                startActivity(intent);
+                break;
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (1 == requestCode && resultCode == RESULT_OK){
+            showUser();
         }
     }
 }

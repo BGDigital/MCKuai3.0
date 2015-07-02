@@ -3,13 +3,14 @@ package com.mckuai.imc;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.json.JSONObject;
 
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+//import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -88,12 +89,14 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	private static final int LOGIN = 0;
 	private static final int GETPIC = 1;
 
-	private SlidingMenu mySlidingMenu;
+//	private SlidingMenu mySlidingMenu;
 	private MCSildingMenu menu;
 	private MCkuai application;
 	private AsyncHttpClient mClient;
 
 	private static boolean isSlidingMenuShowing = false;
+
+	private ArrayList<ForumInfo> mForums;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -103,6 +106,8 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 
 		application = MCkuai.getInstance();
 		mClient = application.mClient;
+		Intent intent = getIntent();
+		mForums = (ArrayList<ForumInfo>) intent.getSerializableExtra("FORUM_LIST");
 	}
 
 	@Override
@@ -113,31 +118,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 //		MobclickAgent.onPageStart("发帖");
 		if (null == mFroums)
 		{
-			mFroums = (GridView) findViewById(R.id.gv_forums);
-			mPostType = (GridView) findViewById(R.id.gv_type);
-			mTitle = (EditText) findViewById(R.id.edt_title);
-			mContent = (EditText) findViewById(R.id.edt_content);
-			tv_Title = (TextView) findViewById(R.id.tv_title);
-			tv_selectedForum = (TextView) findViewById(R.id.tv_forum_Checked);
-			tv_selectedType = (TextView) findViewById(R.id.tv_type_Checked);
-			btn_publish = (Button) findViewById(R.id.btn_showOwner);
-			// findViewById(R.id.btn_showOwner).setVisibility(View.GONE);
-			btn_pic = (ImageButton) findViewById(R.id.imgbtn_pic);
-			mTypeLayout = (LinearLayout) findViewById(R.id.ll_type);
-			mTypeLayout_Checked = (LinearLayout) findViewById(R.id.ll_checkedType);
-			mpics = (LinearLayout) findViewById(R.id.ll_pics);
-
-			findViewById(R.id.btn_right).setOnClickListener(this);
-			mTypeLayout_Checked.setOnClickListener(this);
-			mTitle.setOnFocusChangeListener(this);
-			mContent.setOnFocusChangeListener(this);
-
-			// btn_publish.setVisibility(View.VISIBLE);
-			btn_publish.setText("发布");
-			btn_publish.setOnClickListener(this);
-			btn_pic.setOnClickListener(this);
-			tv_Title.setText(getString(R.string.publishpost));
-			initSlidingMenu();
+			initView();
 		}
 		showData();
 	}
@@ -155,9 +136,36 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 //		MobclickAgent.onPageEnd("发帖");
 	}
 
+	private void initView(){
+		mFroums = (GridView) findViewById(R.id.gv_forums);
+		mPostType = (GridView) findViewById(R.id.gv_type);
+		mTitle = (EditText) findViewById(R.id.edt_title);
+		mContent = (EditText) findViewById(R.id.edt_content);
+		tv_Title = (TextView) findViewById(R.id.tv_title);
+		tv_selectedForum = (TextView) findViewById(R.id.tv_forum_Checked);
+		tv_selectedType = (TextView) findViewById(R.id.tv_type_Checked);
+		btn_publish = (Button) findViewById(R.id.btn_showOwner);
+		btn_pic = (ImageButton) findViewById(R.id.imgbtn_pic);
+		mTypeLayout = (LinearLayout) findViewById(R.id.ll_type);
+		mTypeLayout_Checked = (LinearLayout) findViewById(R.id.ll_checkedType);
+		mpics = (LinearLayout) findViewById(R.id.ll_pics);
+
+		findViewById(R.id.btn_right).setOnClickListener(this);
+		mTypeLayout_Checked.setOnClickListener(this);
+		mTitle.setOnFocusChangeListener(this);
+		mContent.setOnFocusChangeListener(this);
+
+		// btn_publish.setVisibility(View.VISIBLE);
+		btn_publish.setText("发布");
+		btn_publish.setOnClickListener(this);
+		btn_pic.setOnClickListener(this);
+		tv_Title.setText(getString(R.string.publishpost));
+		initSlidingMenu();
+	}
+
 	private void initSlidingMenu()
 	{
-//		menu = new MCSildingMenu();
+		/*menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
 		mySlidingMenu = new SlidingMenu(this, null);
@@ -215,19 +223,19 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				isSlidingMenuShowing = false;
 				hideKeyboard(mySlidingMenu);
 			}
-		});
+		});*/
 	}
 
 	private void showData()
 	{
-		if (null != application.getForumList() && !application.getForumList().isEmpty())
+		if (null != mForums && !mForums.isEmpty())
 		{
 			if (null == mFroumAdapter)
 			{
 				mFroumAdapter = new ForumAdapter_Publish(this);
 				mFroumAdapter.setOnCheckedChangeListener(this);
 				mFroums.setAdapter(mFroumAdapter);
-				mFroumAdapter.refresh();
+				mFroumAdapter.setData(mForums);
 
 				/*
 				 * mFroums.setSelection(0); RadioButton radioButton
@@ -551,7 +559,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		case R.id.btn_left:
 			if (isSlidingMenuShowing)
 			{
-				mySlidingMenu.toggle();
+//				mySlidingMenu.toggle();
 			} else
 			{
 				this.finish();
@@ -690,7 +698,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_MENU || (keyCode == KeyEvent.KEYCODE_BACK && isSlidingMenuShowing))
 		{
-			mySlidingMenu.toggle();
+//			mySlidingMenu.toggle();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);

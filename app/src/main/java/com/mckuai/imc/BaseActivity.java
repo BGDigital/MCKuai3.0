@@ -36,6 +36,10 @@ public class BaseActivity extends FragmentActivity {
         }
     }
 
+    public String getmTitle() {
+        return mTitle;
+    }
+
     /**
      * 显示通知
      * @param level 通知级别， 2为错误，1为警告，其它为普通

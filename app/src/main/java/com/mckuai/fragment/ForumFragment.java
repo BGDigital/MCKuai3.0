@@ -1,5 +1,6 @@
 package com.mckuai.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.Post;
 import com.mckuai.bean.PostBaen;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.PublishPostActivity;
 import com.mckuai.imc.R;
 
 import org.apache.http.Header;
@@ -32,7 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener,ForumAdapter.OnItemClickListener {
+public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener,ForumAdapter.OnItemClickListener,View.OnClickListener {
 
     private View view;
     private PageInfo page;
@@ -57,6 +60,7 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
     private boolean isReadyToShow = false;
     private ForumInfo curForum;
     private boolean isAllowedLoadMore = false;
+    private ImageView btn_publish = application.getBtn_publish();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,9 +102,8 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
             public void loadMore(int i, int i1) {
                 if (!page.EOF()) {
                     loadPostList(curForum);
-                }
-                else {
-                    showNotification(1,"没有更多内容了！",R.id.rl_post_root);
+                } else {
+                    showNotification(1, "没有更多内容了！", R.id.rl_post_root);
                 }
             }
         });
@@ -121,6 +124,7 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         mForumAdapter.setOnItemClickListener(this);
 
         ((RadioGroup) view.findViewById(R.id.rg_indicator)).setOnCheckedChangeListener(this);
+        btn_publish.setOnClickListener(this);
     }
 
     private void showForums()
@@ -380,5 +384,23 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         mForumAdapter.notifyDataSetChanged();
         loadPostList(forumInfo);
         this.curForum = forumInfo;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case  R.id.btn_titlebar_right:
+                if (null != mForums && !mForums.isEmpty()) {
+                    Intent intent = new Intent(getActivity(), PublishPostActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("FORUM_LIST",mForums);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else {
+
+                }
+                break;
+        }
     }
 }

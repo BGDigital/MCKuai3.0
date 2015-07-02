@@ -35,8 +35,6 @@
     <string name="total">全部</string>
     <string name="export_map_export">选择要导出的地图</string>
 
-    <string name="btn_login">使用QQ账号登录</string>
-    <string name="tv_anonymous">>>随便看看</string>
 
     <!--缓存-->
     <string name="cache_root">cache</string>
@@ -80,11 +78,11 @@
     <string name="interface_getpostmark">interface.do?act=isCollect</string>
     <!-- 检查更新 -->
     <string name="interface_checkupgread">interface.do?act=androidUpdate</string>
+    <string name="interface_qqlogin">interface.do?act=login</string>
 
     <item name="key_USERID" type="id"></item>
     <item name="key_FORUMID" type="id"></item>
     <string name="tag_post">TAG_POST</string>
-    <string name="needLoginResult">NEED_RESULT</string>
     <string name="publish_hint">正在...</string>
 
 
@@ -123,6 +121,33 @@
     <string name="tooMuch">已经超出</string>
     <string name="spare">还可输入</string>
     <string name="unit">个字</string>
+
+    <!-- 登录相关 -->
+    <string name="enable_autologin">AutoLogin</string>
+    <string name="btn_login">使用QQ账号登录</string>
+    <string name="tv_anonymous">>>随便看看</string>
+    <string name="qqToken">QQ_TOKEN</string>
+    <string name="qq_OpenId">QQ_OPEN_ID</string>
+    <string name="mc_id">MC_ID</string>
+    <string name="tokenTime">QQ_TOKEN_BIRTHDAY</string>
+    <string name="tokenExpires">QQ_TOKEN_EXPIRES</string>
+    <string name="rcToken">RC_TOKEN</string>
+    <string name="mc_userFace">MC_HEADIMAGE</string>
+    <string name="mc_nick">MC_NICK</string>
+    <string name="mc_gender">MC_GENDER</string>
+    <string name="mc_userName">MC_USERNAME</string>
+    <string name="mc_userPwd">MC_USERPWD</string>
+    <string name="rc_userName">RC_USERNAME</string>
+    <string name="rc_userPwd">RC_USERPWD</string>
+    <string name="needLoginResult">NEED_RESULT</string>
+    <string name="login_hint">正在登录到服务器，请稍候...</string>
+    <string name="loginFail_hint">登录到麦块服务器时失败，代码：</string>
+    <string name="loginFail">登录失败</string>
+    <string name="loginFailContext_QQ">QQ服务器返回的登录信息为空!</string>
+    <string name="loginFail_QQ">登录到QQ时失败，请重试!</string>
+    <string name="loginFailCode">错误代码：</string>
+    <string name="loginFail_type">返回的数据格式不正确,</string>
+    <string name="loginFail_nouser">登录到QQ上时未能获取取用户信息，请重试!</string>
 
 
     <string name="addr_hint">请选择</string>

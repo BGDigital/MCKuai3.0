@@ -5,6 +5,18 @@
     android:background="@drawable/background_login"
     tools:context="${relativePackage}.${activityClass}" >
 
+    <include
+        android:id="@+id/ll_titlebar"
+        layout="@layout/titlebar_comm"></include>
+
+    <RelativeLayout
+        android:id="@+id/rl_login_root"
+        android:layout_below="@id/ll_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
     <TextView
         android:id="@+id/tv_login_with_qq"
         android:layout_width="wrap_content"
@@ -26,10 +38,8 @@
 
     <FrameLayout
         android:id="@+id/fl_root"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_alignLeft="@id/btn_login"
-        android:layout_alignRight="@id/btn_login"
         android:layout_below="@id/tv_login_with_qq"
         android:layout_margin="@dimen/com_margin" >
     </FrameLayout>
@@ -48,5 +58,6 @@
         android:text="@string/tv_anonymous"
         android:textColor="@color/font_white"
         android:textSize="@dimen/font_dimen_big" />
+        </RelativeLayout>
 
 </RelativeLayout>
