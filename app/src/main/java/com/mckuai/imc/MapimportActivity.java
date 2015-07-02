@@ -169,6 +169,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             int index = currentDir.lastIndexOf("/");
             if (index >= 0) {
                 String temname = currentDir.substring(0, index + 1);
+                currentDir=temname;
                 return temname;
             }
 
