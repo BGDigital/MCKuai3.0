@@ -19,6 +19,7 @@
     <string name="go_map">导入地图</string>
     <string name="leave_map">导出地图</string>
     <string name="delete_map">删除地图</string>
+    <string name="delete">一键删除</string>
     <string name="import_map">选择要导入的地图zip文件</string>
     <string name="go">导入</string>
     <string name="export_map">选择将地图导出的位置</string>

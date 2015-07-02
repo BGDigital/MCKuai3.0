@@ -27,11 +27,10 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     private String searchContext;//输入内容
     private Context mContent;
     private ListView map_mymap_lv;
-    private ImageView btn_left;
-    private ImageButton btn_right;
+    private ImageView btn_left, btn_right;
     private TextView tv_title;
     private EditText map_ed;
-    private Button go_map, leave_map, delete_map;
+    private Button go_map, leave_map, delete_map, btn_showOwner;
     private MCMapManager mapManager;
     private MymapAdapter adapter;
     ArrayList<Map> downloadMap;
@@ -68,13 +67,15 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
 
     private void initView() {
         btn_left = (ImageView) findViewById(R.id.btn_left);
-        btn_right = (ImageButton) findViewById(R.id.btn_right);
+        btn_right = (ImageView) findViewById(R.id.btn_right);
         map_ed = (EditText) findViewById(R.id.map_ed);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("我的地图");
         map_mymap_lv = (ListView) findViewById(R.id.map_mymap_lv);
         go_map = (Button) findViewById(R.id.go_map);
         leave_map = (Button) findViewById(R.id.leave_map);
+        btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
+        btn_showOwner.setVisibility(View.GONE);
         delete_map = (Button) findViewById(R.id.delete_map);
         btn_left.setOnClickListener(this);
         btn_right.setOnClickListener(this);

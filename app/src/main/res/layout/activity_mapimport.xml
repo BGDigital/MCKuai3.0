@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/import_tit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/import_tit">
+    android:orientation="vertical">
 
     <include
         android:id="@+id/position_title"
@@ -15,13 +15,15 @@
         android:layout_below="@+id/position_title"
         android:padding="@dimen/item_divider_height"
         android:text="@string/import_map"
-        android:textSize="24dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/font_secondary"/>
 
     <LinearLayout
         android:id="@+id/pt_ly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_mpt"
+        android:gravity="center_vertical"
         android:padding="@dimen/item_divider_height">
 
         <ImageView
@@ -29,14 +31,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_mpt"
-            android:background="@mipmap/ic_launcher" />
+            android:background="@drawable/map_upward" />
 
         <TextView
             android:id="@+id/tv_t"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_mpt"
-            android:layout_marginTop="5dp"
+
             android:layout_toRightOf="@+id/pt_im"
             android:padding="@dimen/item_divider_height"
             android:text="@string/revert" />

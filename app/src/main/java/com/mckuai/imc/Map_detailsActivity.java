@@ -1,6 +1,7 @@
 package com.mckuai.imc;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
  */
 public class Map_detailsActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_title, tv_name, tv_nm, tv_category, tx_times, tv_tx;
-    private ImageView btn_left, image;
+    private ImageView btn_left, imag;
     private ImageButton btn_right;
     private Button dl;
     private ScrollView sv_v;
@@ -50,13 +51,27 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
-        initview();
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
-        loadData();
+        mLoader = ImageLoader.getInstance();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (null == imag) {
+            initview();
+        }
+        if (null != map) {
+            showData();
+            loadData();
+        } else {
+            showNotification(3, "未获取到地图信息,请返回!", R.id.details);
+        }
     }
 
     public void initview() {
-        image = (ImageView) findViewById(R.id.image);
+//        iv_cover = (ImageView) findViewById(R.id.iv_serverCover);
+        imag = (ImageView) findViewById(R.id.image);
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
         btn_right = (ImageButton) findViewById(R.id.btn_right);
@@ -89,34 +104,63 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
 
     private void showData() {
-
-        mLoader.displayImage(map.getIcon(), image);
+        if (null != map.getIcon() && 10 < map.getIcon().length()) {
+            mLoader.displayImage(map.getIcon() + "", imag);
+        }
+        showPics();
+//        mLoader.displayImage(map.getIcon(), image);
         tv_name.setText(map.getViewName());
-        tv_category.setText(map.getResCategroyTwo());
+//        tv_category.setText(map.getResCategroyTwo());
+        if (null != map.getResCategroyTwo() && 1 < map.getResCategroyTwo().length()) {
+            String tag[] = map.getResCategroyTwo().split("|");
+            tv_category.setText("类型：" + tag[0]);
+        }
         tx_times.setText(map.getInsertTime());
         tv_nm.setText(map.getUploadMan());
-        tv_tx.setText(map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres() + "\n" + map.getDres());
-//        WebView
-//        WebView.loadData(URLEncoder.encode(data, "utf-8"),  "text/html",  "utf-8");
-//      pictures 详细图片
-        for (int i = 0; i < 5; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(212, 169);
-            ImageView imv = new ImageView(this);
+        tv_tx.setText(Html.fromHtml(map.getDres() + ""));
+////      pictures 详细图片
+//        for (int i = 0; i < 5; i++) {
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(424, 238);
+//            ImageView imv = new ImageView(this);
+//
+//            params.setMargins(4, 0, 0, 0);
+//            imv.setLayoutParams(params);
+//            mLoader.displayImage("http://e.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a1caaa23097cad1c8a6865dd7.jpg", imv);
+////            String str = "";
+////            String[] list;
+////            list = str.split(",");   //json
+////            if(list!=null&&list.length!=0){
+////                for (int j = 0; j < list.length; j++) {
+////                 String tmp=   list[j];
+////                }
+////            }
+//            sv_lh.addView(imv);
+//        }
+    }
 
-            params.setMargins(4, 0, 0, 0);
-            imv.setLayoutParams(params);
-            mLoader.displayImage("http://e.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a1caaa23097cad1c8a6865dd7.jpg", imv);
-//            String str = "";
-//            String[] list;
-//            list = str.split(",");   //json
-//            if(list!=null&&list.length!=0){
-//                for (int j = 0; j < list.length; j++) {
-//                 String tmp=   list[j];
-//                }
-//            }
+    private void showPics() {
+        if (null != map.getPictures() && 1 < map.getPictures().length()) {
+            String[] pic = map.getPictures().split(",");
+            sv_lh.removeAllViews();
+            LayoutInflater inflater = LayoutInflater.from(this);
+            for (int i = 0; i < 5; i++) {
+                for (String curpic : pic) {
+                    ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
+                    params.setMargins(dp2px(2), dp2px(10), dp2px(2), dp2px(10));
 
-            sv_lh.addView(imv);
+                    imageView.setLayoutParams(params);
+                    mLoader.displayImage(curpic, imageView);
+                    imageView.setTag(curpic);
+                    sv_lh.addView(imageView);
+                }
+            }
         }
+    }
+
+    private int dp2px(int dp) {
+        final float scale = this.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 
     protected void loadData() {

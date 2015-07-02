@@ -25,11 +25,10 @@ import java.util.ArrayList;
 
 public class Export_mapActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private Context mContent;
-    private ImageView btn_left, pt_im;
-    private ImageButton btn_right;
+    private ImageView btn_left, pt_im, btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
-    private Button bt_go;
+    private Button bt_go, btn_showOwner;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private MCkuai application;
@@ -82,9 +81,11 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
 
     protected void initview() {
         btn_left = (ImageView) findViewById(R.id.btn_left);
-        btn_right = (ImageButton) findViewById(R.id.btn_right);
+        btn_right = (ImageView) findViewById(R.id.btn_right);
         tv_title = (TextView) findViewById(R.id.tv_title);
         bt_go = (Button) findViewById(R.id.bt_go);
+        btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
+        btn_showOwner.setVisibility(View.GONE);
         tv_title.setText("我的地图");
         mpt_ls = (ListView) findViewById(R.id.mpt_ls);
         mpt_ls.setOnItemSelectedListener(this);

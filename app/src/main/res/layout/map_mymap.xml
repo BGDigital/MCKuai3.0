@@ -7,11 +7,11 @@
     <include layout="@layout/titlebar_comm" />
 
     <LinearLayout
+        android:id="@+id/maproot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/item_divider_height"
-        android:id="@+id/maproot">
+        android:padding="@dimen/item_divider_height">
 
         <Button
             android:id="@+id/go_map"
@@ -22,6 +22,7 @@
             android:checked="true"
             android:drawableLeft="@drawable/mymap_go"
             android:gravity="center"
+            android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/go_map"
             android:textColor="@color/font_white" />
@@ -36,6 +37,7 @@
             android:checked="true"
             android:drawableLeft="@drawable/mymap_leave"
             android:gravity="center"
+            android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/leave_map"
             android:textColor="@color/font_white" />
@@ -46,10 +48,11 @@
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@color/background_dark_green"
+            android:background="@color/font_red"
             android:checked="true"
             android:drawableLeft="@drawable/mymap_delete"
             android:gravity="center"
+            android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/delete_map"
             android:textColor="@color/font_white" />

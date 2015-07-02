@@ -31,11 +31,10 @@ import java.util.ArrayList;
 
 
 public class MapimportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private ImageView btn_left;
-    private ImageButton btn_right;
+    private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
-    private Button bt_go;
+    private Button bt_go, btn_showOwner;
     private MapImportAdapter adapter;
     private MCMapManager mapManager;
     private ArrayList<String> curMaps;
@@ -45,6 +44,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     ArrayList<Map> downloadMap;
     private LinearLayout pt_ly;
     private String currentDir;
+    private String filename;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,10 +111,12 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
 
     protected void initview() {
         btn_left = (ImageView) findViewById(R.id.btn_left);
-        btn_right = (ImageButton) findViewById(R.id.btn_right);
+        btn_right = (ImageView) findViewById(R.id.btn_right);
         btn_right.setVisibility(View.GONE);
         tv_title = (TextView) findViewById(R.id.tv_title);
         bt_go = (Button) findViewById(R.id.bt_go);
+        btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
+        btn_showOwner.setVisibility(View.GONE);
         tv_title.setText("我的地图");
         mpt_ls = (ListView) findViewById(R.id.mpt_ls);
         pt_ly = (LinearLayout) findViewById(R.id.pt_ly);
@@ -132,7 +134,6 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.pt_ly:
                 String zimulu = showParentDir();
-
                 if (zimulu == null) {
                     showNotification(1, "没有SD卡", R.id.import_tit);
                 } else {
@@ -141,7 +142,10 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.bt_go:
-
+//                if(){
+//
+//                }
+//                mapManager.importMap();
                 break;
             default:
                 break;
@@ -157,9 +161,9 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                 adapter.notifyDataSetChanged();
             }
         } else {
-            String filename = (String) adapter.getItem(position);
-            mapManager.importMap(filename);
-            GameUntil.startGame(this);
+            filename = (String) adapter.getItem(position);
+//            mapManager.importMap(filename);
+//            GameUntil.startGame(this);
         }
 
     }
@@ -169,12 +173,11 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             int index = currentDir.lastIndexOf("/");
             if (index >= 0) {
                 String temname = currentDir.substring(0, index + 1);
-                currentDir=temname;
+//                currentDir = temname;
                 return temname;
             }
 
         } else {
-            //
             showNotification(1, "已经在最上层", R.id.import_tit);
         }
         return null;
@@ -222,6 +225,4 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         }
         return false;
     }
-
-
 }

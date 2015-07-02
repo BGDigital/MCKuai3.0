@@ -75,10 +75,16 @@ public class DeletemapAdtpter extends BaseAdapter {
         holder.rbtn_ok.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                int index=(int) buttonView.getTag();
-                 mMapBeans.get(index).setIsSelected(isChecked);
+
             }
         });
+//        holder.rbtn_ok.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                int index=(int) buttonView.getTag();
+//                 mMapBeans.get(index).setIsSelected(isChecked);
+//            }
+//        });
         return convertView;
     }
 

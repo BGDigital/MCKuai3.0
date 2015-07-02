@@ -67,10 +67,6 @@
             android:label="@string/title_activity_export_map" >
         </activity>
         <activity
-            android:name=".MapleaveActivity"
-            android:label="@string/title_activity_mapleave" >
-        </activity>
-        <activity
             android:name=".ServerDetailsActivity"
             android:label="@string/title_activity_server_details" >
         </activity>

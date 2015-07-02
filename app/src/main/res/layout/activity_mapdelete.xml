@@ -22,6 +22,7 @@
             android:background="@color/background_yellow"
             android:drawableLeft="@drawable/mymap_go"
             android:gravity="center"
+            android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/go_map"
             android:textColor="@color/font_white" />
@@ -35,6 +36,7 @@
             android:background="@color/background_biue"
             android:drawableLeft="@drawable/mymap_leave"
             android:gravity="center"
+            android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/leave_map"
             android:textColor="@color/font_white" />
@@ -45,9 +47,10 @@
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@color/background_dark_green"
+            android:background="@color/font_red"
             android:drawableLeft="@drawable/mymap_delete"
             android:gravity="center"
+            android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/delete_map"
             android:textColor="@color/font_white" />
@@ -67,8 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/background_green"
-        android:text="@string/go"
+        android:background="@color/font_red"
+        android:text="@string/delete"
         android:textColor="@color/font_white" />
 
     <ListView

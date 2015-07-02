@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,9 +34,9 @@ import org.json.JSONObject;
 public class RankingActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
     private ListView ranking_lv;
     private String searchContext;//输入内容
-    private ImageView btn_left;
-    private ImageButton btn_right;
+    private ImageView btn_left, btn_right;
     private TextView tv_title;
+    private Button btn_showOwner;
     private EditText map_ed;
     private RankingAdapter adapter;
     private AsyncHttpClient client;
@@ -92,8 +93,10 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.tv_title);
+        btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
+        btn_showOwner.setVisibility(View.GONE);
         tv_title.setText("地图排行");
-        btn_right = (ImageButton) findViewById(R.id.btn_right);
+        btn_right = (ImageView) findViewById(R.id.btn_right);
         btn_right.setOnClickListener(this);
         client = application.mClient;
 

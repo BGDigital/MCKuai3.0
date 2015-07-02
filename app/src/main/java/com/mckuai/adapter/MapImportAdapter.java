@@ -63,6 +63,11 @@ public class MapImportAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.item_position, null);
             holder = new ViewHolder();
             holder.image = (ImageView) convertView.findViewById(R.id.image);
+            if (position == fileList.size()) {
+                holder.image.setBackgroundResource(R.drawable.map_dir);
+            } else {
+                holder.image.setBackgroundResource(R.drawable.map_file);
+            }
             holder.tv_name = (TextView) convertView.findViewById(R.id.pt_document);
             convertView.setTag(holder);
         } else {
@@ -101,4 +106,5 @@ public class MapImportAdapter extends BaseAdapter {
         this.dirList = dirList;
         notifyDataSetChanged();
     }
+
 }
