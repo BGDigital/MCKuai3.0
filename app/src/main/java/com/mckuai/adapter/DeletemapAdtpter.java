@@ -66,14 +66,14 @@ public class DeletemapAdtpter extends BaseAdapter {
             holder.rbtn_ok =(ImageView)convertView.findViewById(R.id.rbtn_ok);
             holder.rbtn_ok.setBackgroundResource(R.drawable.btn_cooper_normal);
             holder.rbtn_ok.setTag(position);
-            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.setBackgroundResource(R.drawable.btn_cooper_checked);
-                    int index = (int) v.getTag();
-                    mMapBeans.get(index).setIsSelected(true);
-                }
-            });
+//            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    v.setBackgroundResource(R.drawable.btn_cooper_checked);
+//                    int index = (int) v.getTag();
+//                    mMapBeans.get(index).setIsSelected(true);
+//                }
+//            });
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -93,7 +93,7 @@ public class DeletemapAdtpter extends BaseAdapter {
         public TextView tv_size;
         public ImageView rbtn_ok;
     }
-    public ArrayList<Map> chuancan() {
-        return mMapBeans;
-    }
+//    public ArrayList<Map> chuancan() {
+//        return mMapBeans;
+//    }
 }

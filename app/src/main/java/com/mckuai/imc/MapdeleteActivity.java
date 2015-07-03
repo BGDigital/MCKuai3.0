@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,10 +22,11 @@ import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.until.MCMapManager;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
-public class MapdeleteActivity extends BaseActivity implements View.OnClickListener {
+public class MapdeleteActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener {
     private String searchContext;//输入内容
     private ImageView btn_left, btn_right;
     private TextView tv_title;
@@ -42,6 +44,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private MCMapManager mapManager;
     ArrayList<Map> downloadMap;
     private DeletemapAdtpter adapter;
+    private File files;
 
 
     @Override
@@ -98,11 +101,12 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
-                for (int i = list.size(); i >= 0; i--) {
-                    if (list.get(i).getIsSelected()) {
-                        list.remove(i);
-                    }
-                }
+//                files =new File();
+//                for (int i = list.size(); i >= 0; i--) {
+//                    if (list.get(i).getIsSelected()) {
+//                        list.remove(i);
+//                    }
+//                }
                 adtpter.notifyDataSetChanged();
                 break;
             case R.id.go_map:
@@ -115,5 +119,10 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }
