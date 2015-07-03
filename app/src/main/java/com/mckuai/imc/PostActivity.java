@@ -10,13 +10,11 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Post;
 import com.mckuai.fragment.MCSildingMenu;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,6 +48,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
+
+import slidingmenu.SlidingMenu;
 
 public class PostActivity extends BaseActivity implements OnClickListener, TextWatcher
 {
@@ -101,7 +101,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private boolean isReward = false;// 帽子是否被打赏
 
 	private AsyncHttpClient mClient;
-//	private SlidingMenu mySlidingMenu;
+	private SlidingMenu mySlidingMenu;
 	private MCSildingMenu menu;
 	 private com.umeng.socialize.controller.UMSocialService mShareService;
 
@@ -197,8 +197,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		btn_pic = (ImageButton) findViewById(R.id.btn_addPic);
 		mpics = (LinearLayout) findViewById(R.id.ll_piclayer);
 
-		btn_showOwner.setVisibility(View.VISIBLE);
-
 		btn_reward.setOnClickListener(this);
 		btn_showOwner.setOnClickListener(this);
 		btn_collect.setOnClickListener(this);
@@ -269,10 +267,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void initSlidingMenu()
 	{
-		/*menu = new MCSildingMenu();
+		menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
-		mySlidingMenu = new SlidingMenu(PostActivity.this, null);
+		mySlidingMenu = new SlidingMenu(this);
 		mySlidingMenu.setMode(SlidingMenu.LEFT);
 		mySlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		mySlidingMenu.setBehindOffsetRes(R.dimen.com_margin);
@@ -324,7 +322,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				menu.callOnPauseForUpdate();
 				hideKeyboard(mySlidingMenu);
 			}
-		});*/
+		});
 	}
 
 	private void addInterface()

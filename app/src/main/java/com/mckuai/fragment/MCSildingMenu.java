@@ -30,6 +30,7 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -81,8 +82,8 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		mLoader = ImageLoader.getInstance();
 		mTencent = Tencent.createInstance("101155101", getActivity().getApplicationContext());
 		Log.e(TAG, "onCreate");
-		isMainActivity = getActivity().getClass().getName().equals("com.mckuai.imc.MainActivity");
-		initShare();
+		isMainActivity = getActivity().getClass().getName().equals("com.mckuai.imc");
+//		initShare();
 	}
 
 	@Override
@@ -280,7 +281,8 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			break;
 		case R.id.btn_tappraise:
 			MobclickAgent.onEvent(getActivity(), "evealuation");
-			Uri uri = Uri.parse("market://details?id=" + "com.tars.mckuai");
+
+			Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
 			intent = new Intent(Intent.ACTION_VIEW, uri);
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
