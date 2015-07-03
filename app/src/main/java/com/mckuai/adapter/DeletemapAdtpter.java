@@ -93,4 +93,7 @@ public class DeletemapAdtpter extends BaseAdapter {
         public TextView tv_size;
         public ImageView rbtn_ok;
     }
+    public ArrayList<Map> chuancan() {
+        return mMapBeans;
+    }
 }
