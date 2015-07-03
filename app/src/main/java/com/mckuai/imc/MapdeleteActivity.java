@@ -26,8 +26,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class MapdeleteActivity extends BaseActivity implements View.OnClickListener,AdapterView.OnItemClickListener {
-    private String searchContext;//输入内容
+public class MapdeleteActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private EditText map_ed;
@@ -45,6 +44,9 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     ArrayList<Map> downloadMap;
     private DeletemapAdtpter adapter;
     private File files;
+    private String download;
+    private Map map;
+    private String downloadDir;
 
 
     @Override
@@ -52,6 +54,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapdelete);
         list = new ArrayList<Map>();
+        downloadDir = MCkuai.getInstance().getMapDownloadDir();
         initview();
     }
 
@@ -101,7 +104,8 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
-//                files =new File();
+                files = new File(download);
+                files.delete();
 //                for (int i = list.size(); i >= 0; i--) {
 //                    if (list.get(i).getIsSelected()) {
 //                        list.remove(i);
@@ -123,6 +127,8 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        view.setBackgroundResource(R.drawable.btn_cooper_checked);
+        map = (Map) adapter.getItem(position);
+        download = downloadDir + map.getViewName();
     }
 }
