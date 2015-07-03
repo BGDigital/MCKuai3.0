@@ -87,7 +87,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         sb_itemCountPeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                float count = progress * 0.64f;
+                tv_itemCount.setText((int)count+"");
             }
 
             @Override
