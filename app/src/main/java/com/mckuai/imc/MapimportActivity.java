@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +48,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     private LinearLayout pt_ly;
     private String currentDir;
     private String filename;
+    private String namefile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,6 +130,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         bt_go.setOnClickListener(this);
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -144,10 +147,12 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.bt_go:
-//                if(){
-//
-//                }
-//                mapManager.importMap();
+                if(namefile==null){
+                    showNotification(1,"请选择文件",R.id.import_tit);
+                }else {
+                    mapManager.importMap(namefile);
+                    showNotification(1,"导入成功",R.id.import_tit);
+                }
                 break;
             default:
                 break;
@@ -164,6 +169,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             }
         } else {
             filename = (String) adapter.getItem(position);
+            namefile= filename;
 //            mapManager.importMap(filename);
 //            GameUntil.startGame(this);
         }
@@ -174,7 +180,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         if (currentDir != null && !currentDir.equalsIgnoreCase(MCkuai.getInstance().getSDPath())) {
             int index = currentDir.lastIndexOf("/");
             if (index >= 0) {
-                String temname = currentDir.substring(0, index );
+                String temname = currentDir.substring(0, index);
                 currentDir = temname;
                 return temname;
             }
@@ -216,7 +222,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             Comparator<String> comparator = new Comparator<String>() {
                 @Override
                 public int compare(String lhs, String rhs) {
-                    return  lhs.compareToIgnoreCase(rhs);
+                    return lhs.compareToIgnoreCase(rhs);
                 }
             };
             Collections.sort(dirList);

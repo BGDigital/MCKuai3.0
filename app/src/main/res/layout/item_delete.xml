@@ -11,13 +11,14 @@
         android:layout_height="@dimen/fm_h"
         android:background="@mipmap/ic_launcher" />
 
-    <CheckBox
+    <ImageView
         android:id="@+id/rbtn_ok"
         android:layout_width="@dimen/xz_wh"
         android:layout_height="@dimen/xz_wh"
         android:layout_alignParentRight="true"
-        android:background="@drawable/btn_cooper_selector"
-        android:button="@null" />
+        android:background="@drawable/btn_delete"
+        android:clickable="true"
+        android:gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/tv_name"

@@ -38,7 +38,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private String orderFiled = null;
     private MapBean mapList;
     private Button map_imp, go_map, leave_map, btn_showOwner;
-    private ArrayList<Map> list = new ArrayList<Map>();
+    private ArrayList<Map> list;
     private MCMapManager mapManager;
     ArrayList<Map> downloadMap;
     private DeletemapAdtpter adapter;
@@ -48,6 +48,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mapdelete);
+        list = new ArrayList<Map>();
         initview();
     }
 
@@ -86,6 +87,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         btn_right = (ImageView) findViewById(R.id.btn_right);
         btn_right.setVisibility(View.GONE);
         map_mymap_lv = (ListView) findViewById(R.id.map_mymap_lv);
+//        map_mymap_lv.setOnClickListener(this);
     }
 
     @Override

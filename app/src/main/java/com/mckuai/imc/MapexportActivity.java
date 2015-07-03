@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 
 public class MapexportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private ImageView btn_left, pt_im;
+    private ImageView btn_left;
     private ImageButton btn_right;
     private TextView tv_title;
     private ListView map_lv_leave;
@@ -43,11 +43,16 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     private String currentDir;
     private String filename;
     private LinearLayout pt_ly;
+    private ArrayList<Map> chuancan;
+    private ArrayList<String> getCurrentMaps;
+    private String name;
+    private String temname;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_leave);
+        chuancan = (ArrayList<Map>) getIntent().getSerializableExtra("DELETE");
         initview();
     }
 
@@ -118,6 +123,20 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
         bt_go.setOnClickListener(this);
     }
 
+    public void huoqu() {
+        for (int j = 0; j < chuancan.size(); j++) {
+            Boolean index = chuancan.get(j).getIsSelected();
+            if (index == true) {
+                name = chuancan.get(j).getViewName();
+            } else {
+                showNotification(1, "游戏已经存在", R.id.import_tit);
+            }
+
+        }
+        mapManager.exportMap(name, currentDir);
+
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -125,7 +144,8 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
-//                mapManager.exportMap();
+                huoqu();
+//                mapManager.exportMap(chuancan.get);
                 break;
             case R.id.pt_ly:
                 String zimulu = showParentDir();
@@ -147,8 +167,8 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
         if (currentDir != null && !currentDir.equalsIgnoreCase(MCkuai.getInstance().getSDPath())) {
             int index = currentDir.lastIndexOf("/");
             if (index >= 0) {
-                String temname = currentDir.substring(0, index + 1);
-//                currentDir = temname;
+                temname = currentDir.substring(0, index + 1);
+                currentDir = temname;
                 return temname;
             }
 

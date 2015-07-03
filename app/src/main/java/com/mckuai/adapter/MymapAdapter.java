@@ -61,7 +61,7 @@ public class MymapAdapter extends BaseAdapter {
             return null;
         }
         if (null == convertView) {
-            convertView = mInflater.inflate(R.layout.item_export, null);
+            convertView = mInflater.inflate(R.layout.item_mymap, null);
             holder = new ViewHolder();
             holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);

@@ -63,7 +63,17 @@ public class DeletemapAdtpter extends BaseAdapter {
             holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
-            holder.rbtn_ok = (CheckBox) convertView.findViewById(R.id.rbtn_ok);
+            holder.rbtn_ok =(ImageView)convertView.findViewById(R.id.rbtn_ok);
+            holder.rbtn_ok.setBackgroundResource(R.drawable.btn_cooper_normal);
+            holder.rbtn_ok.setTag(position);
+            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setBackgroundResource(R.drawable.btn_cooper_checked);
+                    int index = (int) v.getTag();
+                    mMapBeans.get(index).setIsSelected(true);
+                }
+            });
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -72,15 +82,6 @@ public class DeletemapAdtpter extends BaseAdapter {
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
         holder.tv_category.setText(map.getResCategroyTwo());
-        holder.rbtn_ok.setTag(position);
-        holder.rbtn_ok.setChecked(mMapBeans.get(position).getIsSelected());
-        holder.rbtn_ok.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                int index = (int) buttonView.getTag();
-                mMapBeans.get(index).setIsSelected(isChecked);
-            }
-        });
         return convertView;
     }
 
@@ -90,6 +91,6 @@ public class DeletemapAdtpter extends BaseAdapter {
         public TextView tv_category;
         public TextView tv_time;
         public TextView tv_size;
-        public CheckBox rbtn_ok;
+        public ImageView rbtn_ok;
     }
 }

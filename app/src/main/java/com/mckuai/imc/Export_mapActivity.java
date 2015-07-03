@@ -2,6 +2,7 @@ package com.mckuai.imc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +24,7 @@ import com.mckuai.until.MCMapManager;
 import java.util.ArrayList;
 
 
-public class Export_mapActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class Export_mapActivity extends BaseActivity implements View.OnClickListener {
     private Context mContent;
     private ImageView btn_left, pt_im, btn_right;
     private TextView tv_title;
@@ -41,6 +42,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private String data;
     private Map map;
     ArrayList<Map> downloadMap;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
         btn_showOwner.setVisibility(View.GONE);
         tv_title.setText("我的地图");
         mpt_ls = (ListView) findViewById(R.id.mpt_ls);
-        mpt_ls.setOnItemSelectedListener(this);
+//        mpt_ls.setOnItemClickListener(this);
         btn_left.setOnClickListener(this);
         btn_right.setVisibility(View.GONE);
         bt_go.setOnClickListener(this);
@@ -103,21 +105,13 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.bt_go:
                 intent = new Intent(this, MapexportActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("DELETE", adapter.chuancan());
+                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Map map = (Map) adapter.getItem(position);
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 }

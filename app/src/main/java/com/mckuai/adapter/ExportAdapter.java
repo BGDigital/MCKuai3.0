@@ -5,9 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.mckuai.bean.Map;
@@ -62,7 +60,17 @@ public class ExportAdapter extends BaseAdapter {
             holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
-            holder.rbtn_ok = (CheckBox) convertView.findViewById(R.id.rbtn_ok);
+            holder.rbtn_ok = (ImageView) convertView.findViewById(R.id.rbtn_ok);
+            holder.rbtn_ok.setBackgroundResource(R.drawable.btn_cooper_normal);
+            holder.rbtn_ok.setTag(position);
+            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    v.setBackgroundResource(R.drawable.btn_cooper_checked);
+                    int index = (int) v.getTag();
+                    mMapBeans.get(index).setIsSelected(true);
+                }
+            });
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -80,6 +88,10 @@ public class ExportAdapter extends BaseAdapter {
         public TextView tv_category;
         public TextView tv_time;
         public TextView tv_size;
-        public CheckBox rbtn_ok;
+        public ImageView rbtn_ok;
+    }
+
+    public ArrayList<Map> chuancan() {
+        return mMapBeans;
     }
 }
