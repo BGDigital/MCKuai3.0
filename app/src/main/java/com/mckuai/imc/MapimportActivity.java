@@ -28,6 +28,8 @@ import com.mckuai.until.MCMapManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class MapimportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -172,8 +174,8 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         if (currentDir != null && !currentDir.equalsIgnoreCase(MCkuai.getInstance().getSDPath())) {
             int index = currentDir.lastIndexOf("/");
             if (index >= 0) {
-                String temname = currentDir.substring(0, index + 1);
-//                currentDir = temname;
+                String temname = currentDir.substring(0, index );
+                currentDir = temname;
                 return temname;
             }
 
@@ -211,6 +213,15 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                     }
                 }
             }
+            Comparator<String> comparator = new Comparator<String>() {
+                @Override
+                public int compare(String lhs, String rhs) {
+                    return  lhs.compareToIgnoreCase(rhs);
+                }
+            };
+            Collections.sort(dirList);
+            Collections.sort(fileList);
+            Collections.sort(dirList, comparator);
             return true;
         }
         return false;

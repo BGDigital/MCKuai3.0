@@ -44,4 +44,69 @@
         android:layout_above="@id/ll_bottom"
         >
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/rl_changeItemCount"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:background="@drawable/background_white_with_frame"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_currentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/background_white_with_frame"
+            />
+
+        <SeekBar
+            android:id="@+id/sb_countPeeker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@id/tv_currentCount"
+            android:layout_alignParentBottom="true"
+            />
+
+        <ImageView
+            android:id="@+id/iv_itemIcon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_above="@id/sb_countPeeker"
+            android:background="@color/background_orange"
+            />
+
+        <TextView
+            android:id="@+id/tv_itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/font_big"
+            android:textColor="@color/font_primary"
+            android:text="火火火"
+            android:layout_alignTop="@id/iv_itemIcon"
+            android:layout_toRightOf="@id/iv_itemIcon"
+            android:layout_marginLeft="20dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_itemType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_itemName"
+            android:layout_alignBottom="@id/iv_itemIcon"
+            android:text="类型：工具"
+            />
+    </RelativeLayout>
 </RelativeLayout>

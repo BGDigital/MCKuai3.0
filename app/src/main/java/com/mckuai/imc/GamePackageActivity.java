@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.common.base.CaseFormat;
@@ -22,10 +24,15 @@ import java.util.HashMap;
 public class GamePackageActivity extends BaseActivity implements View.OnClickListener,OnLongClickListener {
 
     private UltimateRecyclerView itemListView;
+    private SeekBar sb_itemCountPeeker;
     private ArticAdapter adapter;
     private GameEditer editer;
 
     private EditText edt_search;
+    private TextView tv_itemName;
+    private TextView tv_itemType;
+    private TextView tv_itemCount;
+    private ImageView iv_itemIcon;
 //    private ImageButton btn_search;
 
     @Override
@@ -69,6 +76,30 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.btn_left).setOnClickListener(this);
         edt_search.setVisibility(View.GONE);
         ((TextView)findViewById(R.id.tv_title)).setText("背包物品");
+
+        tv_itemName = (TextView) findViewById(R.id.tv_itemName);
+        tv_itemType = (TextView) findViewById(R.id.tv_itemType);
+        tv_itemCount = (TextView) findViewById(R.id.tv_currentCount);
+        iv_itemIcon = (ImageView) findViewById(R.id.iv_itemIcon);
+
+        sb_itemCountPeeker = (SeekBar)findViewById(R.id.sb_countPeeker);
+        sb_itemCountPeeker.setProgress(7);
+        sb_itemCountPeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
