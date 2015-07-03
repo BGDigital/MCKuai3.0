@@ -13,7 +13,7 @@
 
         <Button
             android:id="@+id/rb_map"
-            android:layout_width="@dimen/bt_w"
+            android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
             android:layout_weight="1"
             android:background="@color/background_yellow"
@@ -26,7 +26,7 @@
 
         <Button
             android:id="@+id/rb_classification"
-            android:layout_width="@dimen/bt_w"
+            android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
@@ -40,7 +40,7 @@
 
         <Button
             android:id="@+id/rb_mymap"
-            android:layout_width="@dimen/bt_w"
+            android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -31,6 +32,7 @@ public class DeletemapAdtpter extends BaseAdapter {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
     }
+
     @Override
     public int getCount() {
         return mMapBeans.size();
@@ -54,14 +56,14 @@ public class DeletemapAdtpter extends BaseAdapter {
             return null;
         }
         if (null == convertView) {
-            convertView = mInflater.inflate(R.layout.item_export, null);
+            convertView = mInflater.inflate(R.layout.item_delete, null);
             holder = new ViewHolder();
             holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
             holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
-            holder.rbtn_ok = (RadioButton) convertView.findViewById(R.id.rbtn_ok);
+            holder.rbtn_ok = (CheckBox) convertView.findViewById(R.id.rbtn_ok);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -75,16 +77,10 @@ public class DeletemapAdtpter extends BaseAdapter {
         holder.rbtn_ok.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                int index = (int) buttonView.getTag();
+                mMapBeans.get(index).setIsSelected(isChecked);
             }
         });
-//        holder.rbtn_ok.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                int index=(int) buttonView.getTag();
-//                 mMapBeans.get(index).setIsSelected(isChecked);
-//            }
-//        });
         return convertView;
     }
 
@@ -94,6 +90,6 @@ public class DeletemapAdtpter extends BaseAdapter {
         public TextView tv_category;
         public TextView tv_time;
         public TextView tv_size;
-        public RadioButton rbtn_ok;
+        public CheckBox rbtn_ok;
     }
 }
