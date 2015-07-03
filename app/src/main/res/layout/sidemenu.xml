@@ -24,7 +24,7 @@
             android:paddingBottom="@dimen/com_margin"
             android:paddingTop="@dimen/com_margin" >
 
-            <com.mckuai.imc.widget.CircleImageView
+            <com.mckuai.widget.CircleImageView
                 android:id="@+id/user_Progress"
                 android:layout_width="@dimen/usercover_recommend_height"
                 android:layout_height="@dimen/usercover_recommend_height"
