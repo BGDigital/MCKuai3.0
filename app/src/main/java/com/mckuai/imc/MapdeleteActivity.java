@@ -93,7 +93,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         btn_right = (ImageView) findViewById(R.id.btn_right);
         btn_right.setVisibility(View.GONE);
         map_mymap_lv = (ListView) findViewById(R.id.map_mymap_lv);
-//        map_mymap_lv.setOnClickListener(this);
+        map_mymap_lv.setOnItemClickListener(this);
     }
 
     @Override
@@ -106,11 +106,6 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_go:
                 files = new File(download);
                 files.delete();
-//                for (int i = list.size(); i >= 0; i--) {
-//                    if (list.get(i).getIsSelected()) {
-//                        list.remove(i);
-//                    }
-//                }
                 adtpter.notifyDataSetChanged();
                 break;
             case R.id.go_map:

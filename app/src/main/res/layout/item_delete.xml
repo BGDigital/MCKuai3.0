@@ -12,7 +12,7 @@
         android:background="@mipmap/ic_launcher" />
 
     <ImageView
-        android:id="@+id/rbtn_ok"
+        android:id="@+id/rbtn_delete"
         android:layout_width="@dimen/xz_wh"
         android:layout_height="@dimen/xz_wh"
         android:layout_alignParentRight="true"

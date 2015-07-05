@@ -62,9 +62,9 @@ public class DeletemapAdtpter extends BaseAdapter {
             holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
-            holder.rbtn_ok =(ImageView)convertView.findViewById(R.id.rbtn_ok);
-            holder.rbtn_ok.setBackgroundResource(R.drawable.btn_cooper_normal);
-            holder.rbtn_ok.setTag(position);
+            holder.rbtn_delete =(ImageView)convertView.findViewById(R.id.rbtn_ok);
+            holder.rbtn_delete.setBackgroundResource(R.drawable.btn_cooper_normal);
+            holder.rbtn_delete.setTag(position);
 //            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -90,7 +90,7 @@ public class DeletemapAdtpter extends BaseAdapter {
         public TextView tv_category;
         public TextView tv_time;
         public TextView tv_size;
-        public ImageView rbtn_ok;
+        public ImageView rbtn_delete;
     }
 //    public ArrayList<Map> chuancan() {
 //        return mMapBeans;
