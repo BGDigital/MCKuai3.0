@@ -59,7 +59,7 @@ public class MCMapManager {
 
         for (String resId:index){
             if (resId.equalsIgnoreCase(map.getResId())){
-                Log.w("addDownloadMap","地图已存在!");
+                Log.w("addDownloadMap", "地图已存在!");
                 return;
             }
         }
@@ -368,7 +368,9 @@ public class MCMapManager {
         for (String curmap:index){
             data = curmap + ",";
         }
-        data = data.substring(0,data.length() - 1);
+        if (data.length() > 1) {
+            data = data.substring(0, data.length() - 1);
+        }
 
         db.put(mapIndex.getBytes(), data.getBytes());
     }

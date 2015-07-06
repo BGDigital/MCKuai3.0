@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
+import com.mckuai.until.GameEditer;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
@@ -40,6 +41,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private MCGameEditer gameEditer;
     private MCMapManager mapManager;
+    private GameEditer editer;//for test
 
     private int mode;
     private int time;
@@ -62,6 +64,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mapManager = new MCMapManager();
+        editer = new GameEditer();
     }
 
     @Override
@@ -242,9 +245,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void selectMap(){
-        Intent intent = new Intent(getActivity(), MymapActivity.class);
-        getActivity().startActivity(intent);
+//        Intent intent = new Intent(getActivity(), MymapActivity.class);
+//        getActivity().startActivity(intent);
         //showNotification(0,"选择地图",R.id.fl_root);
+        editer.getAllItem();
     }
 
     @Override

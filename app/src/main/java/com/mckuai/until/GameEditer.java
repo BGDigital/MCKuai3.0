@@ -2,20 +2,19 @@ package com.mckuai.until;
 
 import android.util.Log;
 
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.DBIterator;
-import org.iq80.leveldb.Options;
+
+import com.litl.leveldb.DB;
+import com.litl.leveldb.DBIterator;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import static org.iq80.leveldb.impl.Iq80DBFactory.factory;
 
 /**
  * Created by kyly on 2015/6/26.
  */
 public class GameEditer {
-    private Options options;
+    //private Options options;
     private DB db;
     private File file;
 
@@ -26,8 +25,8 @@ public class GameEditer {
     }
 
     private void initDB(){
-        options = new Options();
-        options.createIfMissing(true);
+//        options = new Options();
+//        options.createIfMissing(true);
         String name = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World1/db";
         Log.w("initDB","file:"+name);
         file = new File(name);
@@ -45,7 +44,8 @@ public class GameEditer {
             try{
                 System.setProperty("sun.arch.data.model", "32");
                 System.setProperty("leveldb.mmap", "false");
-                db = factory.open(file,options);
+//                db = factory.open(file,options);
+                db.open();
                 isOpen = true;
             }
             catch (Exception e){
@@ -104,6 +104,9 @@ public class GameEditer {
    public  class  Item{
         String key;
         String value;
+       Item(){
+
+       }
         Item(String k,String v){
             this.key = k;
             this.value = v;
@@ -116,10 +119,12 @@ public class GameEditer {
         }
         ArrayList<Item> rst = new ArrayList<>(20);
         DBIterator iterator = db.iterator();
-        for (iterator.seekToFirst();iterator.hasNext();iterator.next()){
-            String key = new String(iterator.peekNext().getKey());
-            String value = new String(iterator.peekNext().getValue());
-            Item item = new Item(key,value);
+        for (iterator.seekToFirst();iterator.isValid();iterator.next()){
+            final byte[] key = iterator.getKey();
+            final byte[] value = iterator.getValue();
+            Item item = new Item();
+            item.key = new String(key);
+            item.value = new String(value);
             rst.add(item);
         }
         return rst;
