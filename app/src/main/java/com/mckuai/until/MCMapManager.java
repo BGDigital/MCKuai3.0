@@ -68,8 +68,36 @@ public class MCMapManager {
         newDownloadMaps.add(map);
     }
 
-    private void delDownloadMap(Map map){
+    public boolean delDownloadMap(String mapId){
+        if (null == mapId || null == index || index.isEmpty()){
+            return false;
+        }
+        for (String id:index){
+            if (id.equalsIgnoreCase(mapId)){
+                index.remove(id);
+                return deleteMapfromDb(mapId);
+            }
+        }
+        return  false;
+    }
 
+    private boolean deleteMapfromDb(String mapid){
+        if (!isReady()){
+            if (!openDB()){
+                return  false;
+            }
+            byte data[] = db.get(mapid.getBytes());
+            if (null == data){
+                Log.e("deleteMapfromDb","map not exist");
+                return  false;
+            }
+            else {
+                db.delete(mapid.getBytes());
+                data = db.get(mapid.getBytes());
+                return  null == data;
+            }
+        }
+        return false;
     }
 
     public ArrayList<Map> getDownloadMaps(){
