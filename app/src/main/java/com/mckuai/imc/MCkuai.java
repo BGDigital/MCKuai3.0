@@ -11,6 +11,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.until.JsonCache;
+import com.mckuai.until.MCDTListener;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -24,6 +25,9 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 /**
  * Created by kyly on 2015/6/23.
@@ -48,6 +52,8 @@ public class MCkuai  extends Application{
     private static final int CONNECT_TIME = 15 * 1000;// 连接时间
     private static final int TIME_OUT = 30 * 1000;// 超时时间
     private static final int IMAGE_POOL_SIZE = 3;// 线程池数量
+
+    private HashMap<String,MCDTListener> downloadTask;
 
 
     @Override
@@ -253,5 +259,34 @@ public class MCkuai  extends Application{
 
     public void setBtn_publish(ImageView btn_publish) {
         this.btn_publish = btn_publish;
+    }
+
+    public HashMap<String,MCDTListener> getDownloadTask(){
+        if (null == downloadTask){
+            downloadTask = new HashMap<>();
+        }
+        return  downloadTask;
+    }
+
+    public void addDownloadTask(String resId,MCDTListener listener){
+        if (null == downloadTask){
+            downloadTask = new HashMap<>();
+        }
+        downloadTask.put(resId,listener);
+    }
+
+    public MCDTListener getDownloadTask(String resId){
+        if (null != downloadTask){
+            return  downloadTask.get(resId);
+        }
+    }
+
+    public void deleteDownloadTask(String resId){
+        if (null != downloadTask){
+            DLTaskListener listener = downloadTask.get(resId);
+            if (null != listener){
+                downloadTask.remove(listener);
+            }
+        }
     }
 }
