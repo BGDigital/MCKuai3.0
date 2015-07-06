@@ -1,5 +1,6 @@
 package com.mckuai.imc;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -23,6 +24,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
+import com.mckuai.until.MCDTListener;
+import com.mckuai.until.MCMapManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
@@ -31,6 +34,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import cn.aigestudio.downloader.bizs.DLManager;
+
 /**
  * Created by Zzz on 2015/6/25.
  */
@@ -38,20 +43,24 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_title, tv_name, tv_nm, tv_category, tx_times, tv_tx;
     private ImageView btn_left, imag, btn_right;
     private com.mckuai.widget.ProgressButton dl;
+    private Context mContext;
     private ScrollView sv_v;
     private HorizontalScrollView sv_h;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private ImageLoader mLoader;
-
+    private MCDTListener McDLTaskListene;
     private Map map;
     private LinearLayout sv_lh;
+    private DLManager manager;
+    private MCMapManager mapManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
         mLoader = ImageLoader.getInstance();
+        mapManager = new MCMapManager();
     }
 
     @Override
@@ -217,11 +226,18 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_left:
                 finish();
                 break;
-//            case R.id.btn_right:
-
             case R.id.dl:
+                manager = DLManager.getInstance(mContext);
+                McDLTaskListene = new MCDTListener();
+//                if (map.getViewName() != mapManager.addDownloadMap(map.getViewName()) {
+                MCkuai.getInstance().addDownloadTask(map.getResId(), McDLTaskListene);
+                String url = "http://" + map.getSavePath();
+                String downloadDir = MCkuai.getInstance().getMapDownloadDir();
+                manager.dlStart(url, downloadDir, McDLTaskListene);
+//            }
 
-                break;
+
+            break;
             default:
                 break;
         }
