@@ -50,8 +50,6 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
             initView();
         }
 
-//        ArrayList<String> curmap = mapManager.getCurrentMaps();
-
         showData();
     }
 

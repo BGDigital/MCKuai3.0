@@ -31,7 +31,6 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private TextView tv_title;
     private EditText map_ed;
     private ListView map_mymap_lv;
-    private DeletemapAdtpter adtpter;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private MCkuai application;
@@ -67,6 +66,15 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         showData();
     }
 
+    @Override
+    protected void onDestroy() {
+
+        if (null != mapManager) {
+            mapManager.closeDB();
+        }
+        super.onDestroy();
+    }
+
     protected void showData() {
         downloadMap = mapManager.getDownloadMaps();
         if (downloadMap == null) {
@@ -80,6 +88,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     protected void initview() {
         map_ed = (EditText) findViewById(R.id.map_ed);
         map_imp = (Button) findViewById(R.id.bt_go);
+        map_imp.setOnClickListener(this);
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.tv_title);
@@ -106,7 +115,15 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
             case R.id.bt_go:
                 files = new File(download);
                 files.delete();
-                adtpter.notifyDataSetChanged();
+                boolean seed = mapManager.delDownloadMap(map.getResId());
+                mapManager.closeDB();
+                if (seed == true) {
+                    downloadMap.remove(download);
+                    adapter.setchuancan();
+                } else {
+                    showNotification(1, "删除失败，请重新尝试", R.id.maproot);
+                }
+//                adapter.notifyDataSetChanged();
                 break;
             case R.id.go_map:
                 intent = new Intent(MapdeleteActivity.this, MapimportActivity.class);
@@ -122,8 +139,11 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        view.setBackgroundResource(R.drawable.btn_cooper_checked);
+//        view.setBackgroundResource(R.drawable.btn_cooper_checked);
+        ImageView image;
         map = (Map) adapter.getItem(position);
-        download = downloadDir + map.getViewName();
+        image = (ImageView) view.findViewById(R.id.rbtn_delete);
+        image.setBackgroundResource(R.drawable.btn_map_detele_checked);
+        download = downloadDir + map.getFileName();
     }
 }

@@ -10,11 +10,11 @@
         android:id="@+id/image"
         android:layout_width="@dimen/fm_w"
         android:layout_height="@dimen/fm_h"
-        android:background="@mipmap/ic_launcher" />
+        android:background="@drawable/map_default" />
 
     <com.mckuai.widget.MasterLayout
         android:id="@+id/MasterLayout01"
-        android:layout_width="@dimen/xz_wh"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/xz_wh"
         android:layout_alignParentRight="true"
         android:clickable="true"></com.mckuai.widget.MasterLayout>

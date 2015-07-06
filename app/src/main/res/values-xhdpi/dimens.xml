@@ -35,7 +35,7 @@
     <dimen name="fm_w">115dp</dimen>
     <dimen name="fm_h">65dp</dimen>
     <!-- 下载控件 -->
-    <dimen name="xz_wh">48dp</dimen>
+    <dimen name="xz_wh">50dp</dimen>
     <!-- button高宽 -->
     <dimen name="bt_h">46dp</dimen>
     <dimen name="bt_w">109dp</dimen>

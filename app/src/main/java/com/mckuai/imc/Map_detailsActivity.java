@@ -76,6 +76,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         btn_left.setOnClickListener(this);
         btn_right = (ImageButton) findViewById(R.id.btn_right);
         btn_right.setOnClickListener(this);
+        btn_right.setVisibility(View.GONE);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("地图详情");
         tv_name = (TextView) findViewById(R.id.tv_name);

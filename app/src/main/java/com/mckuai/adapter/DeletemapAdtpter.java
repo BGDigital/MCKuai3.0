@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.bean.Map;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.MCMapManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -21,12 +23,15 @@ import java.util.ArrayList;
  */
 public class DeletemapAdtpter extends BaseAdapter {
     private Context mContext;
+    private MCMapManager mapManager;
     private View view;
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
+    private Map map;
 
     public DeletemapAdtpter(Context context, ArrayList<Map> mapBeans) {
+        mapManager = new MCMapManager();
         mMapBeans = mapBeans;
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
@@ -62,9 +67,9 @@ public class DeletemapAdtpter extends BaseAdapter {
             holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
-            holder.rbtn_delete =(ImageView)convertView.findViewById(R.id.rbtn_ok);
-            holder.rbtn_delete.setBackgroundResource(R.drawable.btn_cooper_normal);
-            holder.rbtn_delete.setTag(position);
+            holder.rbtn_delete = (ImageView) convertView.findViewById(R.id.rbtn_delete);
+//            holder.rbtn_delete.setBackgroundResource(R.drawable.btn_cooper_normal);
+//            holder.rbtn_delete.setTag(position);
 //            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -92,7 +97,10 @@ public class DeletemapAdtpter extends BaseAdapter {
         public TextView tv_size;
         public ImageView rbtn_delete;
     }
-//    public ArrayList<Map> chuancan() {
-//        return mMapBeans;
-//    }
+
+    public void setchuancan() {
+        mMapBeans = mapManager.getDownloadMaps();
+        notifyDataSetChanged();
+    }
+
 }
