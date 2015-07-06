@@ -301,6 +301,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
     }
 
     protected void totle() {
+        hideTypeLayout();
         mapType = null;
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);

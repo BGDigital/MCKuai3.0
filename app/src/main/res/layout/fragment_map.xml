@@ -76,9 +76,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="20dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
                 android:background="@color/background_green" />
@@ -98,9 +99,10 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="21dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
                 android:background="@color/background_green" />
@@ -120,9 +122,10 @@
             android:layout_below="@id/cf_l1"
             android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
                 android:background="@color/background_green" />
@@ -144,9 +147,10 @@
             android:layout_below="@id/cf_l2"
             android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
                 android:background="@color/background_green" />
@@ -167,9 +171,10 @@
             android:layout_below="@id/cf_l3"
             android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
                 android:background="@color/background_green" />
@@ -191,9 +196,10 @@
             android:layout_below="@id/cf_l4"
             android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
                 android:background="@color/background_green" />

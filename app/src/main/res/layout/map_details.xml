@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/tit"
-        layout="@layout/map_tit" />
+        layout="@layout/titlebar_comm" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/md_r1"
@@ -69,7 +69,7 @@
             android:textColor="@color/secondary" />
     </RelativeLayout>
 
-    <Button
+    <com.mckuai.widget.ProgressButton
         android:id="@+id/dl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/details_ht_h"

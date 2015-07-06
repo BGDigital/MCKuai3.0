@@ -36,9 +36,8 @@ import java.util.ArrayList;
  */
 public class Map_detailsActivity extends BaseActivity implements View.OnClickListener {
     private TextView tv_title, tv_name, tv_nm, tv_category, tx_times, tv_tx;
-    private ImageView btn_left, imag;
-    private ImageButton btn_right;
-    private Button dl;
+    private ImageView btn_left, imag, btn_right;
+    private com.mckuai.widget.ProgressButton dl;
     private ScrollView sv_v;
     private HorizontalScrollView sv_h;
     private AsyncHttpClient client;
@@ -74,8 +73,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         imag = (ImageView) findViewById(R.id.image);
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
-        btn_right = (ImageButton) findViewById(R.id.btn_right);
-        btn_right.setOnClickListener(this);
+        btn_right = (ImageView) findViewById(R.id.btn_right);
+//        btn_right.setOnClickListener(this);
         btn_right.setVisibility(View.GONE);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("地图详情");
@@ -86,7 +85,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         tv_tx = (TextView) findViewById(R.id.tv_tx);
         sv_v = (ScrollView) findViewById(R.id.sv_v);
         sv_h = (HorizontalScrollView) findViewById(R.id.sv_h);
-        dl = (Button) findViewById(R.id.dl);
+        dl = (com.mckuai.widget.ProgressButton) findViewById(R.id.dl);
         dl.setOnClickListener(this);
         client = MCkuai.getInstance().mClient;
         mLoader = ImageLoader.getInstance();
@@ -218,7 +217,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_left:
                 finish();
                 break;
-            case R.id.btn_right:
+//            case R.id.btn_right:
 
             case R.id.dl:
 
