@@ -279,6 +279,7 @@ public class MCkuai  extends Application{
         if (null != downloadTask){
             return  downloadTask.get(resId);
         }
+        else  return null;
     }
 
     public void deleteDownloadTask(String resId){
