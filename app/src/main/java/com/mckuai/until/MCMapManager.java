@@ -86,6 +86,7 @@ public class MCMapManager {
             if (!openDB()){
                 return  false;
             }
+        }
             byte data[] = db.get(mapid.getBytes());
             if (null == data){
                 Log.e("deleteMapfromDb","map not exist");
@@ -96,8 +97,6 @@ public class MCMapManager {
                 data = db.get(mapid.getBytes());
                 return  null == data;
             }
-        }
-        return false;
     }
 
     public ArrayList<Map> getDownloadMaps(){
