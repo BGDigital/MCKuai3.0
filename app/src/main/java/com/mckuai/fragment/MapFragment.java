@@ -32,7 +32,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MapFragment extends BaseFragment implements View.OnClickListener,AdapterView.OnItemClickListener {
+public class MapFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
     private View view;
     private Context mContent;
     private Button rb_map, rb_classification, rb_mymap;
@@ -49,7 +49,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
     private String mapType = null;
     private String orderFiled = null;
 
-    private static  final  String TAG = "MapFragment";
+    private static final String TAG = "MapFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,9 +60,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-            if (null == view){
-                view = inflater.inflate(R.layout.fragment_map, container, false);
-            }
+        if (null == view) {
+            view = inflater.inflate(R.layout.fragment_map, container, false);
+        }
         application = MCkuai.getInstance();
         return view;
     }
@@ -71,35 +71,34 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
     public void onResume() {
         super.onResume();
         Log.w(TAG, "onResume");
-        if (null == map_ls){
+        if (null == map_ls) {
             initView();
         }
-         showData();
+        showData();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             showData();
         }
     }
 
     private void showData() {
-        if (isLoading || application.fragmentIndex != 1){
-            Log.w(TAG,"当前页面不是可显示页面,返回");
+        if (isLoading || application.fragmentIndex != 1) {
+            Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
-        if (null == mapList || null == mapList.getData() || 0 == mapList.getPageBean().getPage()){
+        if (null == mapList || null == mapList.getData() || 0 == mapList.getPageBean().getPage()) {
             isLoading = true;
             loadData();
             return;
         }
-        if (null  == adapter){
+        if (null == adapter) {
             adapter = new MapAdapter(getActivity(), mapList.getData());
             map_ls.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.notifyDataSetChanged();
         }
     }
@@ -185,12 +184,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
         }
     }
 
-    private void showTypeLayout(){
+    private void showTypeLayout() {
         map_ls.setVisibility(View.GONE);
         mp_r1.setVisibility(View.VISIBLE);
     }
 
-    private void hideTypeLayout(){
+    private void hideTypeLayout() {
         map_ls.setVisibility(View.VISIBLE);
         l1.setVisibility(View.VISIBLE);
         mp_r1.setVisibility(View.GONE);
@@ -209,7 +208,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
         if (null != orderFiled) {
             params.put("orderField", orderFiled);
         }
-        Log.e("url:",url+"&"+params.toString());
+        Log.e("url:", url + "&" + params.toString());
         client.get(url, params, new JsonHttpResponseHandler() {
 
             @Override
@@ -244,10 +243,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener,Ad
                         showData();
                         return;
                     } else {
-                        showNotification(0, "no data!!", R.id.l1);
+                        showNotification(0, "没有当前选项", R.id.l1);
                     }
                 } else {
-                    showNotification(0, "load data error!!", R.id.l1);
+                    showNotification(0, "加载数据错误", R.id.l1);
                 }
                 cancleLodingToast(false);
             }

@@ -2,6 +2,7 @@ package com.mckuai.imc;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import cn.aigestudio.downloader.bizs.DLManager;
 
@@ -49,23 +52,36 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private ImageLoader mLoader;
-    private MCDTListener McDLTaskListene;
+    private MCDTListener taskListener;
     private Map map;
     private LinearLayout sv_lh;
     private DLManager manager;
     private MCMapManager mapManager;
+    private int downloadstate;//0未下载，1正在下载，2已下载
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
-        mLoader = ImageLoader.getInstance();
         mapManager = new MCMapManager();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        checkState();
+        mLoader = ImageLoader.getInstance();
+
+        dl = (com.mckuai.widget.ProgressButton) findViewById(R.id.dl);
+        taskListener = new MCDTListener() {
+            @Override
+            public void onProgress(int progress) {
+                super.onProgress(progress);
+                dl.updateProgress(progress);
+            }
+        };
+
+
         if (null == imag) {
             initview();
         }
@@ -74,6 +90,24 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             loadData();
         } else {
             showNotification(3, "未获取到地图信息,请返回!", R.id.details);
+        }
+    }
+
+    public void checkState() {
+        ArrayList<Map> curDownloadedMaps = mapManager.getDownloadMaps();
+        if (null != curDownloadedMaps) {
+            for (Map curMap : curDownloadedMaps) {
+                if (curMap.getResId().equalsIgnoreCase(map.getResId())) {
+                    downloadstate = 2;
+                    return;
+                }
+            }
+        }
+        taskListener = MCkuai.getInstance().getDownloadTask(map.getResId());
+        if (null == taskListener) {
+            downloadstate = 0;
+        } else {
+            downloadstate = 1;
         }
     }
 
@@ -127,7 +161,21 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         tx_times.setText(map.getInsertTime());
         tv_nm.setText(map.getUploadMan());
         tv_tx.setText(Html.fromHtml(map.getDres() + ""));
-////      pictures 详细图片
+        switch (downloadstate) {
+            case 2:
+                dl.setText("导入");
+                break;
+            case 1:
+                handler.sendMessage(handler.obtainMessage(0));
+
+                break;
+            case 0:
+                dl.setText("下载");
+                break;
+            default:
+                break;
+        }
+////     pictures 详细图片
 //        for (int i = 0; i < 5; i++) {
 //            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(424, 238);
 //            ImageView imv = new ImageView(this);
@@ -220,6 +268,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -228,18 +277,41 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.dl:
                 manager = DLManager.getInstance(mContext);
-                McDLTaskListene = new MCDTListener();
-//                if (map.getViewName() != mapManager.addDownloadMap(map.getViewName()) {
-                MCkuai.getInstance().addDownloadTask(map.getResId(), McDLTaskListene);
-                String url = "http://" + map.getSavePath();
+                taskListener = new MCDTListener();
                 String downloadDir = MCkuai.getInstance().getMapDownloadDir();
-                manager.dlStart(url, downloadDir, McDLTaskListene);
-//            }
+                String filename = downloadDir + map.getFileName();
+                switch (downloadstate) {
+                    case 0:
+                        MCkuai.getInstance().addDownloadTask(map.getResId(), taskListener);
+                        String url = "http://" + map.getSavePath();
 
-
-            break;
+                        manager.dlStart(url, downloadDir, taskListener);
+                        break;
+                    case 2:
+                        mapManager.importMap(filename);
+                        showNotification(1, "导入成功", R.id.md_r1);
+                        break;
+                }
+                break;
             default:
                 break;
         }
     }
+
+    android.os.Handler handler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    dl.updateProgress(taskListener.getProcess());
+                    handler.sendMessageDelayed(handler.obtainMessage(0), 500);
+                    break;
+                case 1:
+                    dl.setText("导入");
+                    downloadstate = 2;
+                    break;
+            }
+        }
+    };
+
 }
