@@ -1,13 +1,9 @@
-package com.litl.leveldb;
-
+package com.mckuai.db;
 
 import java.io.File;
 import java.nio.ByteBuffer;
 
-/**
- * Created by kyly on 2015/7/6.
- */
-public class DB extends  NativeObject {
+public class DB extends NativeObject {
     public abstract static class Snapshot extends NativeObject {
         Snapshot(long ptr) {
             super(ptr);
@@ -95,11 +91,11 @@ public class DB extends  NativeObject {
         nativeWrite(mPtr, batch.getPtr());
     }
 
-    public DBIterator iterator() {
+    public Iterator iterator() {
         return iterator(null);
     }
 
-    public DBIterator iterator(final Snapshot snapshot) {
+    public Iterator iterator(final Snapshot snapshot) {
         assertOpen("Database is closed");
 
         ref();
@@ -108,7 +104,7 @@ public class DB extends  NativeObject {
             snapshot.ref();
         }
 
-        return new DBIterator(nativeIterator(mPtr, snapshot != null ? snapshot.getPtr() : 0)) {
+        return new Iterator(nativeIterator(mPtr, snapshot != null ? snapshot.getPtr() : 0)) {
             @Override
             protected void closeNativeObject(long ptr) {
                 super.closeNativeObject(ptr);

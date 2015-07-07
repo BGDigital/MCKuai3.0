@@ -1,10 +1,7 @@
-package com.litl.leveldb;
+package com.mckuai.db;
 
-/**
- * Created by kyly on 2015/7/6.
- */
-public class DBIterator extends  NativeObject {
-    DBIterator(long iterPtr) {
+public class Iterator extends NativeObject {
+    Iterator(long iterPtr) {
         super(iterPtr);
     }
 
@@ -14,17 +11,17 @@ public class DBIterator extends  NativeObject {
     }
 
     public void seekToFirst() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         nativeSeekToFirst(mPtr);
     }
 
     public void seekToLast() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         nativeSeekToLast(mPtr);
     }
 
     public void seek(byte[] target) {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         if (target == null) {
             throw new IllegalArgumentException();
         }
@@ -32,27 +29,27 @@ public class DBIterator extends  NativeObject {
     }
 
     public boolean isValid() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         return nativeValid(mPtr);
     }
 
     public void next() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         nativeNext(mPtr);
     }
 
     public void prev() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         nativePrev(mPtr);
     }
 
     public byte[] getKey() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         return nativeKey(mPtr);
     }
 
     public byte[] getValue() {
-        assertOpen("DBIterator is closed");
+        assertOpen("Iterator is closed");
         return nativeValue(mPtr);
     }
 

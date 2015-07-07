@@ -1,13 +1,10 @@
-package com.litl.leveldb;
+package com.mckuai.db;
 
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.Closeable;
 
-/**
- * Created by kyly on 2015/7/6.
- */
 abstract class NativeObject implements Closeable {
     private static final String TAG = NativeObject.class.getSimpleName();
     protected long mPtr;

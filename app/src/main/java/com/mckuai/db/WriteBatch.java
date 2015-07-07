@@ -1,11 +1,8 @@
-package com.litl.leveldb;
+package com.mckuai.db;
 
 import java.nio.ByteBuffer;
 
-/**
- * Created by kyly on 2015/7/6.
- */
-public class WriteBatch extends  NativeObject {
+public class WriteBatch extends NativeObject {
     public WriteBatch() {
         super(nativeCreate());
     }
