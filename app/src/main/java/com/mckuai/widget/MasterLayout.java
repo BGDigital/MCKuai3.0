@@ -22,6 +22,10 @@ import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.mckuai.imc.MCkuai;
+
+import javax.crypto.Mac;
+
 public class MasterLayout extends FrameLayout implements OnClickListener {
 
     public CusImage cusview;
@@ -268,7 +272,6 @@ public class MasterLayout extends FrameLayout implements OnClickListener {
         int height = metrics.heightPixels;
         float scarea = width * height;
         pix = (int) Math.sqrt(scarea * 0.0217);
-
     }
 
     private void iconCreate() {

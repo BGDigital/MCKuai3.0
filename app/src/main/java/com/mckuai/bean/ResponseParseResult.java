@@ -1,6 +1,5 @@
 package com.mckuai.bean;
 
-import com.google.common.base.Objects;
 
 /**
  * Created by kyly on 2015/6/29.

@@ -12,7 +12,6 @@ import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.until.JsonCache;
 import com.mckuai.until.MCDTListener;
-import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;

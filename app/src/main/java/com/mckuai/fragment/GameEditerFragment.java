@@ -1,8 +1,6 @@
 package com.mckuai.fragment;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,14 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.imc.GamePackageActivity;
-import com.mckuai.imc.MymapActivity;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.until.GameEditer;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
 
-import java.util.List;
 
 public class GameEditerFragment extends BaseFragment implements View.OnClickListener {
     private static  final  String TAG = "GameEditerFragment";
@@ -41,7 +37,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private MCGameEditer gameEditer;
     private MCMapManager mapManager;
-    private GameEditer editer;//for test
+//    private GameEditer editer;//for test
 
     private int mode;
     private int time;
@@ -63,8 +59,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mapManager = new MCMapManager();
-        editer = new GameEditer();
+        //mapManager = new MCMapManager();
+        //editer = new GameEditer();
     }
 
     @Override
@@ -83,6 +79,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         Log.w(TAG, "onResume");
         if (null == tv_gameMode){
             initView();
+        }
+
+        if (null == mapManager){
+           mapManager = MCkuai.getInstance().getMapManager();
         }
 
         detectionGameInfo();
@@ -168,8 +168,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showCurentMap(){
-        MCMapManager mcMapManager = new MCMapManager();
-        String mapName = mcMapManager.getCurrentMapName();
+        String mapName = mapManager.getCurrentMapName();
         tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图":mapName);
     }
 
@@ -248,7 +247,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 //        Intent intent = new Intent(getActivity(), MymapActivity.class);
 //        getActivity().startActivity(intent);
         //showNotification(0,"选择地图",R.id.fl_root);
-        editer.getAllItem();
+        //editer.getAllItem();
     }
 
     @Override

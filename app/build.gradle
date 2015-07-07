@@ -10,6 +10,7 @@ android {
         targetSdkVersion 22
         versionCode 9
         versionName "3.0"
+
     }
     buildTypes {
         release {
@@ -38,8 +39,9 @@ dependencies {
     compile 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
     compile 'com.github.sd6352051:NiftyNotification:1.2'
     compile 'com.github.ganfra:material-spinner:1.1.0'
-    compile 'org.iq80.leveldb:leveldb:0.7'
-    compile 'org.iq80.leveldb:leveldb-api:0.7'
+    //    compile 'org.iq80.leveldb:leveldb:0.7'
+
+    //    compile 'org.iq80.leveldb:leveldb-api:0.7'
     compile 'com.flowpowered:flow-nbt:1.0.0'
     compile 'org.zeroturnaround:zt-zip:1.8'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.common.base.CaseFormat;
+
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.adapter.ArticAdapter;
 import com.mckuai.bean.ArticItem;
