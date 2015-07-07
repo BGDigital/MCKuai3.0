@@ -130,7 +130,7 @@ public class MCkuai  extends Application{
     }
 
     public String getImageCacheDir() {
-        return getCacheRoot() + File.separator + getString(R.string.imagecache_dir);
+        return getCacheRoot() + File.separator + getString(R.string.imagecache_dir)+File.separator;
     }
 
     public String getMapDownloadDir(){
@@ -193,16 +193,14 @@ public class MCkuai  extends Application{
             {
                 if (null != getExternalCacheDir())
                 {
-                    mCacheDir = getExternalCacheDir().getPath() + File.separator + getString(R.string.cache_root);
+                    mCacheDir = getExternalCacheDir().getPath() ;
                 } else
                 {
-                    mCacheDir = getCacheDir().getPath() + File.separator
-                            + getString(R.string.cache_root);
+                    mCacheDir = getCacheDir().getPath();
                 }
             } else
             {
-                mCacheDir = getCacheDir().getPath() + File.separator
-                        + getString(R.string.cache_root);
+                mCacheDir = getCacheDir().getPath();
             }
         }
         return mCacheDir;
