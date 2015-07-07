@@ -12,6 +12,8 @@ import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.until.JsonCache;
 import com.mckuai.until.MCDTListener;
+import com.mckuai.until.MCGameEditer;
+import com.mckuai.until.MCMapManager;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -40,6 +42,8 @@ public class MCkuai  extends Application{
     private Spinner spinner;
     private ImageView btn_publish;
 
+    private MCMapManager mapManager;
+
     public MCUser mUser;
     public JsonCache mCache;
     public int fragmentIndex = 0;
@@ -47,6 +51,7 @@ public class MCkuai  extends Application{
 
     public AsyncHttpClient mClient;
     public Tencent tencent;
+
 
     private static final int MEM_CACHE_SIZE = 8 * 1024 * 1024;// 内存缓存大小
     private static final int CONNECT_TIME = 15 * 1000;// 连接时间
@@ -289,5 +294,16 @@ public class MCkuai  extends Application{
                 downloadTask.remove(listener);
             }
         }
+    }
+
+    public MCMapManager getMapManager() {
+        if (null == mapManager){
+            mapManager = new MCMapManager();
+        }
+        return mapManager;
+    }
+
+    public void setMapManager(MCMapManager mapManager) {
+        this.mapManager = mapManager;
     }
 }
