@@ -1,9 +1,7 @@
 package com.mckuai.fragment;
 
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +17,6 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
-import com.marshalchen.ultimaterecyclerview.SwipeableRecyclerViewTouchListener;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.ServerAdapter;
@@ -28,8 +24,8 @@ import com.mckuai.bean.GameServerInfo;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
+import com.mckuai.imc.Export_mapActivity;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.until.GameUntil;
@@ -40,7 +36,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.LogRecord;
 
 public class ServerFragment extends BaseFragment implements View.OnClickListener,ServerAdapter.OnItemClickListener,ServerAdapter.OnServerAddListener {
 
@@ -70,17 +65,28 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             view = inflater.inflate(R.layout.fragment_server, container, false);
             //initView();
         }
+        application = MCkuai.getInstance();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (null == application){
-            application = MCkuai.getInstance();
+        if (null == serverListView){
             initView();
         }
         showData();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && null != view){
+            if (null == serverListView){
+                initView();
+            }
+            showData();
+        }
     }
 
     private void initView(){
@@ -125,7 +131,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void showData(){
-        if (isLoading){
+        if (!isShowCatche &&(isLoading || 2 != application.fragmentIndex)){
             return;
         }
 
@@ -186,10 +192,9 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 if (isCacheEnabled){
                     String result = getData(url,params);
                     if (null != result){
-                        ResponseParseResult responseParseResult = new ResponseParseResult();
-                        responseParseResult.data = result;
-                        parseData(responseParseResult);
+                        parseData(result);
                         showData();
+                        isShowCatche = false;
                         return;
                     }
                 }
@@ -206,7 +211,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                     parseData(result);
                     showData();
                     if (page.getPage() == 1){
-                        cacheData(url,params,result.toString());
+                        cacheData(url,params,result.data);
+                        isCacheEnabled = false;
                     }
                 } else {
                     showNotification(3, result.msg,R.id.rl_serverList_Root);
@@ -244,6 +250,28 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             serverInfos.addAll((Collection<? extends GameServerInfo>) bean.getData().clone());
         }
 
+    }
+
+    private void parseData(String data){
+        if (null == gson){
+            gson = new Gson();
+        }
+
+        ServerBean bean = gson.fromJson(data,ServerBean.class);
+        if (null != bean){
+
+            if (bean.getPageBean().getPage() == 1){
+                if (null == serverInfos){
+                    serverInfos = new ArrayList<>(20);
+                }
+                else {
+                    serverInfos.clear();
+                }
+            }
+
+            page =  bean.getPageBean();
+            serverInfos.addAll((Collection<? extends GameServerInfo>) bean.getData().clone());
+        }
     }
 
     @Override

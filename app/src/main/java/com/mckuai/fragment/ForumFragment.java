@@ -82,6 +82,13 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         showForums();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            showForums();
+        }
+    }
 
     private void initView(){
         if (null == view || null != mPostListView)
@@ -129,6 +136,9 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
 
     private void showForums()
     {
+        if (application.fragmentIndex != 3){
+            return;
+        }
         if (null != mForums &&  !mForums.isEmpty())
         {
             if (null == mForumAdapter)
