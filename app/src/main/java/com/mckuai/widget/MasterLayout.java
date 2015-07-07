@@ -272,6 +272,7 @@ public class MasterLayout extends FrameLayout implements OnClickListener {
         int height = metrics.heightPixels;
         float scarea = width * height;
         pix = (int) Math.sqrt(scarea * 0.0217);
+
     }
 
     private void iconCreate() {

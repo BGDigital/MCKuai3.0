@@ -119,7 +119,7 @@ public class MapAdapter extends BaseAdapter {
             btn.animation();
             Map clickedMap = (Map) v.getTag();
             if (mapManager == null) {
-                mapManager = new MCMapManager();
+                mapManager = MCkuai.getInstance().getMapManager();
             }
 
             if (null == clickedMap) {

@@ -62,7 +62,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
-        mapManager = new MCMapManager();
+        mapManager = MCkuai.getInstance().getMapManager();
     }
 
     @Override
@@ -152,11 +152,11 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         showPics();
 //        mLoader.displayImage(map.getIcon(), image);
         tv_name.setText(map.getViewName());
-//        tv_category.setText(map.getResCategroyTwo());
-        if (null != map.getResCategroyTwo() && 1 < map.getResCategroyTwo().length()) {
-            String tag[] = map.getResCategroyTwo().split("|");
-            tv_category.setText("类型：" + tag[0]);
-        }
+        tv_category.setText(map.getResCategroyTwo());
+//        if (null != map.getResCategroyTwo() && 1 < map.getResCategroyTwo().length()) {
+//            String str[] = map.getResCategroyTwo().split("|");
+//            tv_category.setText("类型：" + str[0]);
+//        }
         tx_times.setText(map.getInsertTime());
         tv_nm.setText(map.getUploadMan());
         tv_tx.setText(Html.fromHtml(map.getDres() + ""));
@@ -252,10 +252,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     if (map != null) {
                         showData();
                     } else {
-                        showNotification(0, "no data!!", R.id.md_r1);
+                        showNotification(0, "详情出错", R.id.md_r1);
                     }
                 } else {
-                    showNotification(0, "load data error!!", R.id.md_r1);
+                    showNotification(0, "加载数据错误", R.id.md_r1);
                 }
 
             }
@@ -283,8 +283,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     case 0:
                         MCkuai.getInstance().addDownloadTask(map.getResId(), taskListener);
                         String url = "http://" + map.getSavePath();
-
                         manager.dlStart(url, downloadDir, taskListener);
+                        showNotification(1, "下载成功", R.id.md_r1);
                         break;
                     case 2:
                         mapManager.importMap(filename);

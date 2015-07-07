@@ -46,7 +46,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     protected void onResume() {
         super.onResume();
         if (null == mapManager) {
-            mapManager = new MCMapManager();
+            mapManager = MCkuai.getInstance().getMapManager();
             initView();
         }
 

@@ -61,7 +61,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     public void onResume() {
         super.onResume();
         if (null == mapManager) {
-            mapManager = new MCMapManager();
+            mapManager = MCkuai.getInstance().getMapManager();
 
             initview();
         }

@@ -60,7 +60,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (null == mapManager) {
-            mapManager = new MCMapManager();
+            mapManager =MCkuai.getInstance().getMapManager();
             initview();
         }
         showData();

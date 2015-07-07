@@ -215,7 +215,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
             public void onStart() {
                 // TODO Auto-generated method stub
                 super.onStart();
-                popupLoadingToast("download");
+                popupLoadingToast("正在加载，请稍后");
             }
 
             @Override
