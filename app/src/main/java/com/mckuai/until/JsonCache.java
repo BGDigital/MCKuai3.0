@@ -132,9 +132,11 @@ public class JsonCache {
 		File file = new File(mCacheFile);
 		if (!file.exists()) {
 			try {
-				file.createNewFile();
-				Log.e(TAG, "创建文件");
-			} catch (IOException e) {
+				makeRootDir(file.getParent());
+
+				//file.createNewFile();
+				Log.e(TAG, "创建文件:"+file.getPath());
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return;
@@ -165,6 +167,14 @@ public class JsonCache {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	private void makeRootDir(String path){
+		File file = new File(path);
+		if (!file.exists()){
+			Log.e(TAG,"创建根目录："+path);
+			file.mkdirs();
 		}
 	}
 

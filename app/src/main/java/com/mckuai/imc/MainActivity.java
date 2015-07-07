@@ -1,6 +1,7 @@
 package com.mckuai.imc;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import com.mckuai.adapter.FragmentAdapter;
 import com.mckuai.fragment.BaseFragment;
 import com.mckuai.fragment.ForumFragment;
 import com.mckuai.fragment.GameEditerFragment;
+import com.mckuai.fragment.MCSildingMenu;
 import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ServerFragment;
 import com.mckuai.until.CircleBitmapDisplayer;
@@ -26,6 +28,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+
+import slidingmenu.SlidingMenu;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener,View.OnClickListener {
@@ -53,7 +57,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private ImageView btn_titlebar_right;
     private static Spinner sp_titlebar_spinner;
 
-
+    private SlidingMenu mySlidingMenu;
+    private MCSildingMenu menu;
 
     private ArrayList<BaseFragment> mList;
     private boolean isFragmentChanged=false;
@@ -65,6 +70,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         application = MCkuai.getInstance();
         initView();
         initPage();
+        initSlidingMenu();
     }
 
     @Override
@@ -73,6 +79,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         if (application.isLogin()){
             showUser();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        application.mCache.saveCacheFile();
     }
 
     private void initView(){
@@ -125,22 +137,78 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mList.add(new ForumFragment());
         vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
         vp.setOnPageChangeListener(this);
+    }
 
+    private void initSlidingMenu()
+    {
+        menu = new MCSildingMenu();
+        int width = getWindowManager().getDefaultDisplay().getWidth();
+        width = (int) (width / 3.5);
+        mySlidingMenu = new SlidingMenu(this);
+        mySlidingMenu.setMode(SlidingMenu.LEFT);
+        mySlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        mySlidingMenu.setBehindOffsetRes(R.dimen.com_margin);
+        mySlidingMenu.setFadeDegree(0.42f);
+        mySlidingMenu.setMenu(R.layout.frame_menu);
+        mySlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        mySlidingMenu.setBackgroundResource(R.drawable.background_slidingmenu);
+        mySlidingMenu.setBehindOffset(width);
+        mySlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {
+            @Override
+            public void transformCanvas(Canvas canvas, float percentOpen) {
+                // TODO Auto-generated method stub
+                float scale = (float) (percentOpen * 0.25 + 0.75);
+                canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
+            }
+        });
+        mySlidingMenu.setAboveCanvasTransformer(new SlidingMenu.CanvasTransformer() {
+
+            @Override
+            public void transformCanvas(Canvas canvas, float percentOpen) {
+                // TODO Auto-generated method stub
+                float scale = (float) (1 - percentOpen * 0.25);
+                canvas.scale(scale, scale, 0, canvas.getHeight() / 2);
+            }
+        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, menu).commit();
+        mySlidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+
+            @Override
+            public void onOpened() {
+                // TODO Auto-generated method stub
+                menu.callOnResumeForUpdate();
+                menu.showData();
+                isShowingMenu = true;
+            }
+        });
+        mySlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+
+            @Override
+            public void onClose() {
+                // TODO Auto-generated method stub
+                menu.callOnPauseForUpdate();
+                hideKeyboard(mySlidingMenu);
+                isShowingMenu = false;
+            }
+        });
     }
 
 
     @Override
     protected boolean onMenuKeyPressed() {
-        return super.onMenuKeyPressed();
+        mySlidingMenu.toggle();
+        return true;
     }
+
+
 
     @Override
     protected boolean onBackKeyPressed() {
-        /* if (isMenuShowing)
+         if (isShowingMenu)
             {
                 mySlidingMenu.toggle();
                 return true;
-            }*/
+            }
         showAlert("退出", "是否退出麦块？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,6 +243,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private void changeCheckedButton(int position){
         setUnChecked();
         setChecked(position);
+        application.fragmentIndex = position;
     }
 
     private void setUnChecked(){

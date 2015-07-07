@@ -47,7 +47,7 @@
     <string name="onloading_hint">正在加载...</string>
     <!-- 接口 -->
     <!-- 接口域名，使用域名+接口的方式来请求数据 -->
-    <string name="interface_domainName">http://221.237.152.39:8081/</string>
+    <string name="interface_domainName">http://api.mckuai.com/</string>
     <!-- 地图详情 -->
     <string name="interface_details">map.do?act=one</string>
     <!-- 地图列表-->

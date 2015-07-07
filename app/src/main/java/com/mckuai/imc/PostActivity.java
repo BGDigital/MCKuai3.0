@@ -159,11 +159,28 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		//MobclickAgent.onPageEnd("帖子详情");
 	}
 
+	@Override
+	protected boolean onMenuKeyPressed() {
+		mySlidingMenu.toggle();
+		return true;
+	}
+
+	@Override
+	protected boolean onBackKeyPressed() {
+		if (isShowingMenu)
+		{
+			mySlidingMenu.toggle();
+			return true;
+		}
+		finish();
+		return  true;
+	}
+
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.mckuai.imc.activity.BaseActivity#finish()
-	 */
+             * (non-Javadoc)
+             *
+             * @see com.mckuai.imc.activity.BaseActivity#finish()
+             */
 	@Override
 	public void finish()
 	{
@@ -196,6 +213,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		edt_content = (EditText) findViewById(R.id.edt_reply_Content);
 		btn_pic = (ImageButton) findViewById(R.id.btn_addPic);
 		mpics = (LinearLayout) findViewById(R.id.ll_piclayer);
+		btn_showOwner.setVisibility(View.VISIBLE);
 
 		btn_reward.setOnClickListener(this);
 		btn_showOwner.setOnClickListener(this);
@@ -310,6 +328,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				// TODO Auto-generated method stub
 				menu.callOnResumeForUpdate();
 				menu.showData();
+				isShowingMenu = true;
 			}
 		});
 		mySlidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener()
@@ -321,6 +340,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				// TODO Auto-generated method stub
 				menu.callOnPauseForUpdate();
 				hideKeyboard(mySlidingMenu);
+				isShowingMenu = false;
 			}
 		});
 	}
@@ -359,6 +379,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		isShowPost = false;
 		btn_showOwner.setText("发 布");
+		btn_showOwner.setVisibility(View.VISIBLE);
 		showKeyboard(null);
 		if (isReplyPost)
 		{
@@ -371,14 +392,14 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		}
 		post_layout.setVisibility(View.GONE);
 		reply_layout.setVisibility(View.VISIBLE);
-//		showKeyboard(null);
+		showKeyboard(null);
 	}
 
 	private void resumeShowPost()
 	{
-//		hideKeyboard(edt_content);
+		hideKeyboard(edt_content);
 		isShowPost = true;
-//		btn_showOwner.setText("只看楼主");
+		btn_showOwner.setText("只看楼主");
 		tv_title.setText("帖子详情");
 		post_layout.setVisibility(View.VISIBLE);
 		reply_layout.setVisibility(View.GONE);

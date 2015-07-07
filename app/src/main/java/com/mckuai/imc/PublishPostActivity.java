@@ -55,6 +55,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import slidingmenu.SlidingMenu;
+
 public class PublishPostActivity extends BaseActivity implements OnClickListener, OnCheckedChangeListener,
 		OnFocusChangeListener
 {
@@ -89,12 +91,10 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	private static final int LOGIN = 0;
 	private static final int GETPIC = 1;
 
-//	private SlidingMenu mySlidingMenu;
+	private SlidingMenu mySlidingMenu;
 	private MCSildingMenu menu;
 	private MCkuai application;
 	private AsyncHttpClient mClient;
-
-	private static boolean isSlidingMenuShowing = false;
 
 	private ArrayList<ForumInfo> mForums;
 
@@ -103,11 +103,12 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_publish_post);
-
+		initSlidingMenu();
 		application = MCkuai.getInstance();
 		mClient = application.mClient;
 		Intent intent = getIntent();
 		mForums = (ArrayList<ForumInfo>) intent.getSerializableExtra("FORUM_LIST");
+		setTitle("发帖");
 	}
 
 	@Override
@@ -133,7 +134,22 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	{
 		// TODO Auto-generated method stub
 		super.onPause();
-//		MobclickAgent.onPageEnd("发帖");
+		MobclickAgent.onPageEnd("发帖");
+	}
+
+	@Override
+	protected boolean onMenuKeyPressed() {
+		mySlidingMenu.toggle();
+		return true;
+	}
+
+	@Override
+	protected boolean onBackKeyPressed() {
+		if (isShowingMenu){
+			mySlidingMenu.toggle();
+			return  true;
+		}
+		return super.onBackKeyPressed();
 	}
 
 	private void initView(){
@@ -158,14 +174,15 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		// btn_publish.setVisibility(View.VISIBLE);
 		btn_publish.setText("发布");
 		btn_publish.setOnClickListener(this);
+		btn_publish.setVisibility(View.VISIBLE);
 		btn_pic.setOnClickListener(this);
 		tv_Title.setText(getString(R.string.publishpost));
-		initSlidingMenu();
+//		initSlidingMenu();
 	}
 
 	private void initSlidingMenu()
 	{
-		/*menu = new MCSildingMenu();
+		menu = new MCSildingMenu();
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		width = (int) (width / 3.5);
 		mySlidingMenu = new SlidingMenu(this, null);
@@ -209,7 +226,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				// TODO Auto-generated method stub
 				menu.showData();
 				menu.callOnResumeForUpdate();
-				isSlidingMenuShowing = true;
+				isShowingMenu = true;
 			}
 		});
 		mySlidingMenu.setOnClosedListener(new SlidingMenu.OnClosedListener()
@@ -220,10 +237,10 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			{
 				// TODO Auto-generated method stub
 				menu.callOnPauseForUpdate();
-				isSlidingMenuShowing = false;
+				isShowingMenu = false;
 				hideKeyboard(mySlidingMenu);
 			}
-		});*/
+		});
 	}
 
 	private void showData()
@@ -557,9 +574,9 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			break;
 
 		case R.id.btn_left:
-			if (isSlidingMenuShowing)
+			if (isShowingMenu)
 			{
-//				mySlidingMenu.toggle();
+				mySlidingMenu.toggle();
 			} else
 			{
 				this.finish();
@@ -691,18 +708,18 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		mTypeLayout.setVisibility(View.GONE);
 		mTypeLayout_Checked.setVisibility(View.VISIBLE);
 	}
-
+/*
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_MENU || (keyCode == KeyEvent.KEYCODE_BACK && isSlidingMenuShowing))
+		if (keyCode == KeyEvent.KEYCODE_MENU || (keyCode == KeyEvent.KEYCODE_BACK && isShowingMenu))
 		{
 //			mySlidingMenu.toggle();
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
-	}
+	}*/
 
 	// 加载大图时,计算缩放比例,以免出现OOM
 	public static int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels)
