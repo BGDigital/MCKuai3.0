@@ -3,8 +3,8 @@ package com.mckuai.until;
 import android.util.Log;
 
 
-import com.litl.leveldb.DB;
-import com.litl.leveldb.DBIterator;
+import com.mckuai.db.DB;
+import com.mckuai.db.Iterator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,39 +14,33 @@ import java.util.ArrayList;
  * Created by kyly on 2015/6/26.
  */
 public class GameEditer {
-    //private Options options;
     private DB db;
     private File file;
-
-    private boolean isOpen = false;
 
     public GameEditer(){
         initDB();
     }
 
     private void initDB(){
-//        options = new Options();
-//        options.createIfMissing(true);
-        String name = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World1/db";
+        String name = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/db";
         Log.w("initDB","file:"+name);
         file = new File(name);
         if (!file.exists()){
             Log.w("initDB","error:file not exist");
+            file.mkdirs();
         }
-        else{
-            Log.w("initDB","get file");
-        }
+        Log.w("initDB","get file");
+        db = new DB(file);
+        db.open();
 
     }
 
     private void openDB(){
-        if (!isOpen){
+        if (!isReady()){
             try{
                 System.setProperty("sun.arch.data.model", "32");
                 System.setProperty("leveldb.mmap", "false");
-//                db = factory.open(file,options);
                 db.open();
-                isOpen = true;
             }
             catch (Exception e){
                 Log.e("openDB",e.getLocalizedMessage());
@@ -56,10 +50,10 @@ public class GameEditer {
     }
 
     public void closeDB(){
-        if (isOpen){
+        if (isReady()){
             try{
                 db.close();
-                isOpen = false;
+                db = null;
             }
             catch (Exception e){
             Log.w("closeDB", e.getLocalizedMessage());
@@ -69,7 +63,7 @@ public class GameEditer {
 
 
     public void addItem(String key,String value){
-        if (!isOpen){
+        if (!isReady()){
             openDB();
         }
         db.put(key.getBytes(),value.getBytes());
@@ -77,7 +71,7 @@ public class GameEditer {
     }
 
     public String getString(String key){
-        if (!isOpen){
+        if (!isReady()){
             openDB();
         }
         byte b[] =db.get(key.getBytes());
@@ -91,7 +85,7 @@ public class GameEditer {
     }
 
     public int getInt(String key){
-        if (!isOpen){
+        if (!isReady()){
             openDB();
         }
         byte[] mykey = key.getBytes();
@@ -114,11 +108,11 @@ public class GameEditer {
     }
 
     public ArrayList<Item> getAllItem(){
-        if (!isOpen){
+        if (!isReady()){
             openDB();
         }
         ArrayList<Item> rst = new ArrayList<>(20);
-        DBIterator iterator = db.iterator();
+        Iterator iterator = db.iterator();
         for (iterator.seekToFirst();iterator.isValid();iterator.next()){
             final byte[] key = iterator.getKey();
             final byte[] value = iterator.getValue();
@@ -128,6 +122,10 @@ public class GameEditer {
             rst.add(item);
         }
         return rst;
+    }
+
+    private boolean isReady(){
+        return  null != db;
     }
 
 

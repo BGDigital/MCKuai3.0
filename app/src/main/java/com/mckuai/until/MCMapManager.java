@@ -2,21 +2,18 @@ package com.mckuai.until;
 
 import android.util.Log;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.mckuai.bean.Map;
+import com.mckuai.db.DB;
 import com.mckuai.imc.MCkuai;
 
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.Options;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
+import java.io.FileReader;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
-import static org.iq80.leveldb.impl.Iq80DBFactory.factory;
 
 /**
  * Created by kyly on 2015/6/28.
@@ -32,18 +29,14 @@ public class MCMapManager {
 
     private MCkuai application;
 
-    private ArrayList<String> curMaps;
-    private ArrayList<String> curMapsDir;
-//    private String MapName;
-//    private String mapDir;
-    private ArrayList<String> index;
-    private ArrayList<Map> downloadMaps;
-    private ArrayList<Map> newDownloadMaps;
-    private Options options;
+    private ArrayList<String> curMaps;                        //当前游戏中已经有的地图名称
+    private ArrayList<String> curMapsDir;                   //当前游戏中地图的路径，与上面的一一对应
+    private ArrayList<String> index;                             //这是所有的下载的地图的resid
+    private ArrayList<Map> downloadMaps;                //已经下载了的
+    private ArrayList<Map> newDownloadMaps;         //新下载的东西存在这里
     private DB db;
     private File file;
-    private String saveDir;
-    private boolean isOpen = false;
+    private String saveDir; //下载路径
     private Gson gson ;
     private final  String mapIndex = "MAP_INDEX";
     private final  String mapDownloaded = "DOWNLOAD_MAP";
@@ -74,8 +67,13 @@ public class MCMapManager {
         }
         for (String id:index){
             if (id.equalsIgnoreCase(mapId)){
-                index.remove(id);
-                return deleteMapfromDb(mapId);
+                index.remove(id);  //删除索引
+                for (Map map:downloadMaps){
+                    if (map.getResId().equalsIgnoreCase(id)){
+                        downloadMaps.remove(map);//删除已下载地图中的记录
+                    }
+                }
+                return deleteMapfromDb(mapId);  //删除数据库
             }
         }
         return  false;
@@ -83,9 +81,7 @@ public class MCMapManager {
 
     private boolean deleteMapfromDb(String mapid){
         if (!isReady()){
-            if (!openDB()){
-                return  false;
-            }
+            return  false;
         }
             byte data[] = db.get(mapid.getBytes());
             if (null == data){
@@ -118,15 +114,12 @@ public class MCMapManager {
             }
             String maps = new String(data);
 
-           // Type listType = new TypeToken<ArrayList<String>>(){}.getType();
             Map map = gson.fromJson(maps,Map.class);
             if (null == downloadMaps){
                 downloadMaps = new ArrayList<>(5);
             }
             downloadMaps.add(map);
-            //downloadMaps = gson.fromJson(maps,listType);
         }
-
         return  downloadMaps;
     }
 
@@ -163,12 +156,12 @@ public class MCMapManager {
      * @return
      */
     public String getCurrentMapDir(){
-        if (!isOpen){
+       /* if (!isOpen){
             if (!openDB()){
                 Log.e("getCurrentMapdir","open db false!");
                 return  null;
             }
-        }
+        }*/
 
         byte name[] = db.get("CURRENT_MAP_DIR".getBytes());
         if (null != name){
@@ -192,12 +185,12 @@ public class MCMapManager {
      * @return
      */
     public String getCurrentMapName(){
-        if (!isOpen){
+       /* if (!isOpen){
             if (!openDB()){
                 Log.e(TAG,"getCurrentMapName,open db false!");
                 return null;
             }
-        }
+        }*/
 
         byte name[] = db.get("CURRENT_MAP_NAME".getBytes());
         if (null != name){
@@ -270,15 +263,18 @@ public class MCMapManager {
     }
 
     public boolean isReady(){
-        return openDB();
+        return null != db;
     }
 
 
     private void initDB(){
-        options = new Options();
-        options.createIfMissing(true);
         Log.w("initDB", "file:" + saveDir);
         file = new File(saveDir);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        db = new DB(file);
+        db.open();
         if (!file.exists()){
             Log.w("initDB","error:file not exist");
         }
@@ -288,25 +284,11 @@ public class MCMapManager {
         getIndex();
     }
 
-    private boolean openDB(){
-        if (!isOpen){
-            try{
-                System.setProperty("sun.arch.data.model", "32");
-                System.setProperty("leveldb.mmap", "false");
-                db = factory.open(file,options);
-                isOpen = true;
-            }
-            catch (Exception e){
-                Log.e("openDB", e.getLocalizedMessage());
-            }
-        }
-        return  isOpen;
-    }
 
     public void closeDB(){
         if (null != newDownloadMaps && !newDownloadMaps.isEmpty()){
-            if (!isOpen){
-                openDB();
+            if (!isReady()){
+                return;
             }
         }
 
@@ -318,23 +300,18 @@ public class MCMapManager {
 
         }
 
-        if (isOpen){
-            try{
-                db.close();
-                isOpen = false;
-            }
-            catch (Exception e){
-                Log.w("closeDB", e.getLocalizedMessage());
-            }
+        try{
+            db.close();
+        }
+        catch (Exception e){
+            Log.w("closeDB", e.getLocalizedMessage());
         }
     }
 
     private boolean getIndex(){
-        if (!isOpen){
-            if (!openDB()){
-                Log.e(TAG, "getIndex: false,open db false!");
-                return false;
-            }
+        if (!isReady()){
+            Log.e(TAG, "getIndex: false,open db false!");
+            return false;
         }
 
         if (null == index){
@@ -357,11 +334,8 @@ public class MCMapManager {
     }
 
     private void saveIndex(){
-        if (!isOpen){
-            if (!openDB()){
-                Log.e(TAG, "saveIndex: false,open db false!");
-                return;
-            }
+        if (!isReady()){
+            return;
         }
 
         String data = "";
@@ -380,11 +354,9 @@ public class MCMapManager {
             return;
         }
 
-        if (!isOpen){
-            if (!openDB()){
-                Log.e(TAG,"saveNewDownload: false,open db false!");
-                return;
-            }
+        if (!isReady()){
+            Log.e(TAG,"saveNewDownload: false,open db false!");
+            return;
         }
 
         for (Map map:newDownloadMaps){
