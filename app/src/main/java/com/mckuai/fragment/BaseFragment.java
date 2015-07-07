@@ -28,6 +28,7 @@ public class BaseFragment extends android.support.v4.app.Fragment {
     protected  boolean isLoading = false;    //正在加载数据
     protected  boolean isCacheEnabled = true;         //启用缓存
     protected boolean isSecondCacheEnable = true;//第二个项目的缓存
+    protected boolean isShowCatche = true;//显示的是缓存
     protected  String mTitle;
 
     private Point mPoint;
@@ -68,7 +69,7 @@ public class BaseFragment extends android.support.v4.app.Fragment {
                 if (null == warningCfg){
                     warningCfg =  new com.gitonway.lee.niftynotification.lib.Configuration.Builder()
                             .setAnimDuration(700)
-                            .setDispalyDuration(1500)
+                            .setDispalyDuration(2000)
                             .setBackgroundColor(getColorString(R.color.notification_background))
                             .setTextColor(getColorString(R.color.notification_textColor))
                                     // .setIconBackgroundColor("#FFFFFFFF")
@@ -83,7 +84,7 @@ public class BaseFragment extends android.support.v4.app.Fragment {
                 if (null == msgCfg) {
                     msgCfg = new com.gitonway.lee.niftynotification.lib.Configuration.Builder()
                             .setAnimDuration(700)
-                            .setDispalyDuration(1500)
+                            .setDispalyDuration(3000)
                             .setBackgroundColor(getColorString(R.color.notification_background))
                             .setTextColor(getColorString(R.color.notification_textColor))
                                     // .setIconBackgroundColor("#FFFFFFFF")
