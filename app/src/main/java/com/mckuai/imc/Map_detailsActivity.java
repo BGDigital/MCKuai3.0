@@ -65,7 +65,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
         mapManager = MCkuai.getInstance().getMapManager();
-//        options = new DisplayImageOptions.Builder().
+        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.background_user_cover_default)
+                .showImageForEmptyUri(R.drawable.background_user_cover_default)
+                .showImageOnFail(R.drawable.background_user_cover_default)
+                .build();
     }
 
     @Override
@@ -206,6 +209,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
                 imageView.setLayoutParams(params);
                 mLoader.displayImage(curpic, imageView);
+                mLoader.displayImage(curpic, imageView, options);
                 imageView.setTag(curpic);
                 sv_lh.addView(imageView);
             }
