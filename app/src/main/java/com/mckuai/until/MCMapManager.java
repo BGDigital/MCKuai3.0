@@ -4,15 +4,12 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.mckuai.bean.Map;
-import com.mckuai.db.DB;
+import com.mckuai.io.db.DB;
 import com.mckuai.imc.MCkuai;
 
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
-import java.io.FileReader;
-import java.lang.ref.SoftReference;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**

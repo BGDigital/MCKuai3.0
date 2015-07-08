@@ -3,11 +3,10 @@ package com.mckuai.until;
 import android.util.Log;
 
 
-import com.mckuai.db.DB;
-import com.mckuai.db.Iterator;
+import com.mckuai.io.db.DB;
+import com.mckuai.io.db.Iterator;
 
 import java.io.File;
-import java.util.ArrayList;
 
 
 /**
@@ -95,33 +94,17 @@ public class GameEditer {
         return  value;
     }
 
-   public  class  Item{
-        String key;
-        String value;
-       Item(){
 
-       }
-        Item(String k,String v){
-            this.key = k;
-            this.value = v;
-        }
-    }
-
-    public ArrayList<Item> getAllItem(){
+    public void getAllItem(){
         if (!isReady()){
             openDB();
         }
-        ArrayList<Item> rst = new ArrayList<>(20);
         Iterator iterator = db.iterator();
         for (iterator.seekToFirst();iterator.isValid();iterator.next()){
             final byte[] key = iterator.getKey();
             final byte[] value = iterator.getValue();
-            Item item = new Item();
-            item.key = new String(key);
-            item.value = new String(value);
-            rst.add(item);
+
         }
-        return rst;
     }
 
     private boolean isReady(){
