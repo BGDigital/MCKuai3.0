@@ -90,6 +90,12 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        cancleLodingToast(false);
+    }
+
     private void initView(){
         if (null == view || null != mPostListView)
         {

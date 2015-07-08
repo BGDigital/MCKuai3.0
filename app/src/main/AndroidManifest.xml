@@ -151,6 +151,10 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="@string/channel_Owner" />
+        <!-- 百度定位 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="8BeV0Eu1X94jbXQgFckSaL8L" />
     </application>
 
 </manifest>

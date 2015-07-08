@@ -89,6 +89,12 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        cancleLodingToast(false);
+    }
+
     private void initView(){
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
         rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);

@@ -3,7 +3,10 @@ package com.mckuai.adapter;
 import java.util.ArrayList;
 
 import com.mckuai.bean.Post;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.PostActivity;
+import com.mckuai.until.CircleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.R;
 import android.content.Context;
@@ -22,6 +25,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 	private static Context mContext;
 	private LayoutInflater mInflater;
 	private ImageLoader mLoader;
+	private DisplayImageOptions options;
 
 	private static final String TAG = "PostAdapter";
 
@@ -35,6 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 		this.mContext = context;
 		this.mLoader = ImageLoader.getInstance();
 		this.mInflater = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.options = MCkuai.getInstance().getCircleOption();
 	}
 
 	public void setData(ArrayList<Post> data)
@@ -72,7 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 		Post post =    mPostList.get(position);
 		 if (null != post){
 			 if (null != post.getIcon() && 10 < post.getIcon().length()) {
-				 mLoader.displayImage(post.getIcon(),holder.iv_cover);
+				 mLoader.displayImage(post.getIcon(),holder.iv_cover,options);
 			 }
 
 			 if (post.isEssence()){

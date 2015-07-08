@@ -83,6 +83,15 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
         if (isVisibleToUser) {
             showData();
         }
+        else {
+            cancleLodingToast(false);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        cancleLodingToast(false);
     }
 
     private void showData() {

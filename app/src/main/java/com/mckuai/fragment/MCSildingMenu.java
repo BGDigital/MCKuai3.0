@@ -82,8 +82,8 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		mLoader = ImageLoader.getInstance();
 		mTencent = Tencent.createInstance("101155101", getActivity().getApplicationContext());
 		Log.e(TAG, "onCreate");
-		isMainActivity = getActivity().getClass().getName().equals("com.mckuai.imc");
-//		initShare();
+		isMainActivity = getActivity().getClass().getName().equalsIgnoreCase("com.mckuai.imc.MainActivity");
+		initShare();
 	}
 
 	@Override
@@ -251,11 +251,13 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			user_level.setText("Lv." + user.getLevel() + "");
 			user_level.setVisibility(View.VISIBLE);
 			mLoader.displayImage(user.getHeadImg() + "", user_cover);
+			btn_Logout.setVisibility(View.VISIBLE);
 		} else
 		{
 			user_cover.setImageResource(R.drawable.background_user_cover_default);
 			user_name.setText("未登录");
 			user_level.setVisibility(View.GONE);
+			btn_Logout.setVisibility(View.GONE);
 		}
 	}
 
@@ -274,9 +276,23 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 
 		case R.id.btn_logout:
 			MobclickAgent.onEvent(getActivity(), "logout");
+
 			if (MCkuai.getInstance().isLogin())
 			{
-				showLogoutAlertDialog();
+				//showLogoutAlertDialog();
+				showAlert("是否退出", "退出后将不能,发布帖子等操作.\n" +
+						"是否退出?", new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				}, new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						MCkuai.getInstance().LogOut();
+						showData();
+					}
+				});
 			}
 			break;
 		case R.id.btn_tappraise:

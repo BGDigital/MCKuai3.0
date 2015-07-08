@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
+import com.mckuai.until.CircleBitmapDisplayer;
 import com.mckuai.until.JsonCache;
 import com.mckuai.until.MCDTListener;
 import com.mckuai.until.MCMapManager;
@@ -40,6 +41,7 @@ public class MCkuai  extends Application{
     private String mCacheDir;
     private Spinner spinner;
     private ImageView btn_publish;
+    private DisplayImageOptions circleOption;
 
     private MCMapManager mapManager;
 
@@ -50,6 +52,7 @@ public class MCkuai  extends Application{
 
     public AsyncHttpClient mClient;
     public Tencent tencent;
+
 
 
     private static final int MEM_CACHE_SIZE = 8 * 1024 * 1024;// 内存缓存大小
@@ -68,8 +71,9 @@ public class MCkuai  extends Application{
         mClient = new AsyncHttpClient();
         initImageLoader();
         initTencent();
-//        initUM();
+        initUM();
         getProfile();//获取保存的用户信息
+        circleOption = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
     }
 
     @Override
@@ -216,6 +220,10 @@ public class MCkuai  extends Application{
     }
 
     public boolean LogOut(){
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_file), 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putLong(getString(R.string.tokenExpires), 0);
+        editor.commit();
         this.mUser = null;
         return true;
     }
@@ -302,5 +310,9 @@ public class MCkuai  extends Application{
 
     public void setMapManager(MCMapManager mapManager) {
         this.mapManager = mapManager;
+    }
+
+    public DisplayImageOptions getCircleOption() {
+        return circleOption;
     }
 }

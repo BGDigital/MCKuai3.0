@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
@@ -71,14 +73,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         initView();
         initPage();
         initSlidingMenu();
+        mHandler.sendMessageDelayed(mHandler.obtainMessage(1), 1500);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (application.isLogin()){
-            showUser();
-        }
+        showUser();
     }
 
     @Override
@@ -116,16 +117,22 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
        // btn_titlebar_right.setOnClickListener(this);
         btn_titlebar_left.setOnClickListener(this);
         application.setBtn_publish(btn_titlebar_right);
+        btn_titlebar_left.setOnClickListener(this);
 
         changeCheckedButton(0);
     }
 
     private void showUser(){
-        ImageLoader loader = ImageLoader.getInstance();
-        String userCover = application.mUser.getHeadImg();
-        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
-        if (null != userCover && 10 < userCover.length()) {
-            loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left,options);
+        if (application.isLogin()) {
+            ImageLoader loader = ImageLoader.getInstance();
+            String userCover = application.mUser.getHeadImg();
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
+            if (null != userCover && 10 < userCover.length()) {
+                loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left, options);
+            }
+        }
+        else {
+            btn_titlebar_left.setBackgroundResource(R.drawable.background_user_cover_default);
         }
     }
 
@@ -189,6 +196,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 menu.callOnPauseForUpdate();
                 hideKeyboard(mySlidingMenu);
                 isShowingMenu = false;
+                showUser();
             }
         });
     }
@@ -328,6 +336,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     Intent intent = new Intent(this,LoginActivity.class);
                     startActivityForResult(intent,1);
                 }
+                else {
+                    mySlidingMenu.toggle();
+                }
                 break;
             case R.id.btn_titlebar_right:
                 Intent intent = new Intent(this,PublishPostActivity.class);
@@ -343,5 +354,22 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         if (1 == requestCode && resultCode == RESULT_OK){
             showUser();
         }
+    }
+
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+           switch (msg.what){
+               case 1:
+                   checkUpdate();
+                   break;
+           }
+        }
+    };
+
+    private void checkUpdate()
+    {
+        menu.callOnResumeForUpdate();
+        menu.checkUpdate(true);
     }
 }
