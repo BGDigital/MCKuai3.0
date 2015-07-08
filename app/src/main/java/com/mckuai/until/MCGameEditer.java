@@ -16,6 +16,7 @@ public class MCGameEditer {
     private static final  String TAG = "MCGameEditer";
 
     private byte levelData[];
+    private Long lastModified;
     private int gameMode;
     private int gameTime;
     private int thirdView;
