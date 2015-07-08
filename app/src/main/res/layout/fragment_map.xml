@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/item_divider_height">
+        android:padding="@dimen/item_divider_height"
+        android:background="@color/frame_darkgray">
 
         <Button
             android:id="@+id/rb_map"
@@ -60,7 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="@dimen/lv_dividerHeight"
-        android:visibility="visible"></ListView>
+        android:visibility="visible"
+        android:divider="@color/frame_darkgray"></ListView>
 
     <RelativeLayout
         android:id="@+id/mp_r1"

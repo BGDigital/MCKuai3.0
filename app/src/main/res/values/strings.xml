@@ -5,7 +5,6 @@
     <string name="channel_360">360</string>
 
 
-
     <string name="app_name">MCKuai</string>
 
     <string name="hello_world">Hello world!</string>
@@ -50,6 +49,8 @@
     <string name="interface_domainName">http://api.mckuai.com/</string>
     <!-- 地图详情 -->
     <string name="interface_details">map.do?act=one</string>
+    <!-- 地图搜索 -->
+    <string name="interface_map_search">map.do?act=search</string>
     <!-- 地图列表-->
     <string name="interface_map">map.do?act=list</string>
     <!-- 服务器列表-->
@@ -84,8 +85,6 @@
     <item name="key_FORUMID" type="id"></item>
     <string name="tag_post">TAG_POST</string>
     <string name="publish_hint">正在...</string>
-
-
 
 
     <string name="title_activity_ranking">RankingActivity</string>

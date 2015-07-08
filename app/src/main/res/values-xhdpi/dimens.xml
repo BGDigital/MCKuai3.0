@@ -26,6 +26,8 @@
     <dimen name="group_divider_height">26dp</dimen>
     <dimen name="item_padleft">9dp</dimen>
     <dimen name="item_height">89dp</dimen>
+    <dimen name="item_height_interval">6dp</dimen>
+    <dimen name="item_padTB">12dp</dimen>
     <!-- 二级菜单的高度 -->
     <dimen name="menu_height_lv2">53dp</dimen>
     <!-- 图文间距 -->

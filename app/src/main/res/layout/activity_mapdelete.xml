@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/map_tit"
+        android:background="@color/frame_darkgray"
         android:orientation="horizontal"
         android:padding="@dimen/item_divider_height">
 
@@ -80,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/bt_go"
         android:layout_below="@id/map_ip"
-        android:dividerHeight="12dp" />
+        android:divider="@color/frame_darkgray"
+        android:dividerHeight="@dimen/item_height_interval" />
 
 </RelativeLayout>

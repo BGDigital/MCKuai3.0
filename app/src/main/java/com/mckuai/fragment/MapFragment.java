@@ -244,6 +244,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
                         return;
                     } else {
                         showNotification(0, "没有当前选项", R.id.l1);
+                        if (mapType != null && mapList.getData().size() == 0) {
+                           totle();
+                        }
                     }
                 } else {
                     showNotification(0, "加载数据错误", R.id.l1);

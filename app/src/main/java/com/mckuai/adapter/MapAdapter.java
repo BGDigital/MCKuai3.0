@@ -90,7 +90,8 @@ public class MapAdapter extends BaseAdapter {
         holder.tv_time.setText(map.getInsertTime());
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
-        holder.tv_category.setText(map.getResCategroyTwo());
+        String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
+        holder.tv_category.setText(leixing);
         holder.MasterLayout01.setTag(map);
         return convertView;
     }
@@ -185,6 +186,7 @@ public class MapAdapter extends BaseAdapter {
         public void onProgress(int progress) {
             super.onProgress(progress);
             MasterLayout01.cusview.setupprogress(progress);
+            Log.e("10101", "progress");
         }
 
         @Override
@@ -201,6 +203,7 @@ public class MapAdapter extends BaseAdapter {
             Log.e("22222222222222", "onError");
             super.onError(error);
             //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
+
         }
     }
 }

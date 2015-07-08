@@ -151,10 +151,10 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
                         showData();
                         return;
                     } else {
-                        showNotification(0, "no data!!", R.id.ranking_lv);
+                        showNotification(0, "没有排行信息", R.id.ranking_lv);
                     }
                 } else {
-                    showNotification(0, "load data error!!", R.id.ranking_lv);
+                    showNotification(0, "加载数据错误", R.id.ranking_lv);
                 }
 //                cancleLodingToast(false);
             }

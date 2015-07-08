@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/item_divider_height">
+        android:padding="@dimen/item_divider_height"
+        android:background="@color/frame_darkgray">
 
         <Button
             android:id="@+id/go_map"
@@ -71,5 +72,6 @@
         android:id="@+id/map_mymap_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="12dp"></ListView>
+        android:dividerHeight="@dimen/item_height_interval"
+        android:divider="@color/frame_darkgray"></ListView>
 </LinearLayout>

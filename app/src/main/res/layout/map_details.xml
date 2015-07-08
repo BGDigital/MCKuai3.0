@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/tit"
-        layout="@layout/titlebar_comm" />
+        layout="@layout/map_title_details" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/md_r1"
@@ -103,6 +103,7 @@
                     android:id="@+id/sv_h"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/frame_darkgray"
                     android:fillViewport="true"
                     android:scrollbars="horizontal">
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="@dimen/titlebar_height"
+    android:background="@color/background_green">
+    <ImageView
+        android:id="@+id/btn_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="30dp"
+        android:scaleType="center"
+        android:src="@drawable/btn_back"
+        />
+    <ImageView
+        android:id="@+id/btn_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="center"
+        android:src="@drawable/btn_search_selector"
+        android:paddingRight="@dimen/com_margin"
+        android:clickable="true"
+        android:paddingLeft="30dp"/>
+
+    <Button
+        android:id="@+id/btn_showOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:minWidth="90dp"
+        android:text="只显示楼主"
+        android:gravity="right|center_vertical"
+        android:paddingRight="10dp"
+        android:background="@null"
+        android:textColor="@color/font_white"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:maxLength="8"
+        android:singleLine="true"
+        android:text="title"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_dimen_title" />
+</RelativeLayout>

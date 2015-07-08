@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -35,6 +36,7 @@ public class RankingAdapter extends BaseAdapter {
     private ImageLoader mLoader;
     private Map maps;
     private DLManager manager;
+    private MCMapManager mapManager;
 
     public RankingAdapter(Context context, ArrayList<Map> mapBeans) {
         mMapBeans = mapBeans;
@@ -50,6 +52,7 @@ public class RankingAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
+
         return mMapBeans.get(position);
     }
 
@@ -61,7 +64,9 @@ public class RankingAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        Map map = (Map) getItem(position);
+//        final Map map = (Map) getItem(position);
+        final Map map = mMapBeans.get(position);
+        Log.e("22121211", "" + position);
         if (null == map) {
             return null;
         }
@@ -75,28 +80,27 @@ public class RankingAdapter extends BaseAdapter {
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.rk_tv = (TextView) convertView.findViewById(R.id.rk_tv);
             holder.MasterLayout01 = (MasterLayout) convertView.findViewById(R.id.MasterLayout01);
-            holder.rk_tv.setText(++position + "");
-            if (position == 1) {
-                holder.rk_tv.setBackgroundResource(R.drawable.map_one);
-            } else {
-                holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
-            }
             final MasterLayout btn = holder.MasterLayout01;
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     btn.animation();
-                    Map clickedMap = (Map) v.getTag();
+                    final Map clickedMap = (Map) v.getTag();
+                    if (mapManager == null) {
+                        mapManager = MCkuai.getInstance().getMapManager();
+                    }
                     if (null == clickedMap) {
-                        Toast.makeText(mContext, "点击出错", Toast.LENGTH_SHORT).show();
-                        return;
+//                        Toast.makeText(mContext, "点击出错", Toast.LENGTH_SHORT).show();
+//                        return;
                     }
                     switch (btn.getFlg_frmwrk_mode()) {
                         case 1:
                             if (null == manager) {
                                 manager = DLManager.getInstance(mContext);
                             }
-                            manager.dlStart(clickedMap.getSavePath(), MCkuai.getInstance().getMapDownloadDir(), new DLTaskListener() {
+                            String url = "http://" + clickedMap.getSavePath();
+                            String downloadDir = MCkuai.getInstance().getMapDownloadDir();
+                            manager.dlStart(url, downloadDir, new DLTaskListener() {
                                 @Override
                                 public void onStart(String fileName, String url) {
                                     super.onStart(fileName, url);
@@ -118,6 +122,9 @@ public class RankingAdapter extends BaseAdapter {
                                 @Override
                                 public void onFinish(File file) {
                                     super.onFinish(file);
+                                    mapManager.addDownloadMap(clickedMap);
+                                    mapManager.closeDB();
+                                    MCkuai.getInstance().deleteDownloadTask(clickedMap.getResId());
                                 }
 
                                 @Override
@@ -145,7 +152,14 @@ public class RankingAdapter extends BaseAdapter {
         holder.tv_time.setText(map.getInsertTime());
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
-        holder.tv_category.setText(map.getResCategroyTwo());
+        String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
+        holder.tv_category.setText(leixing);
+        holder.rk_tv.setText((position + 1) + "");
+        if (position == 0) {
+            holder.rk_tv.setBackgroundResource(R.drawable.map_one);
+        } else {
+            holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+        }
         holder.MasterLayout01.setTag(map);
         return convertView;
     }

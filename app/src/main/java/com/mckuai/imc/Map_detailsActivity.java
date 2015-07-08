@@ -26,6 +26,7 @@ import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.until.MCDTListener;
 import com.mckuai.until.MCMapManager;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.apache.http.Header;
@@ -57,12 +58,14 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private DLManager manager;
     private MCMapManager mapManager;
     private int downloadstate;//0未下载，1正在下载，2已下载
+    private DisplayImageOptions options;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
         mapManager = MCkuai.getInstance().getMapManager();
+//        options = new DisplayImageOptions.Builder().
     }
 
     @Override
@@ -116,8 +119,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
         btn_right = (ImageView) findViewById(R.id.btn_right);
-//        btn_right.setOnClickListener(this);
-        btn_right.setVisibility(View.GONE);
+        btn_right.setOnClickListener(this);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("地图详情");
         tv_name = (TextView) findViewById(R.id.tv_name);
@@ -150,15 +152,12 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             mLoader.displayImage(map.getIcon() + "", imag);
         }
         showPics();
-//        mLoader.displayImage(map.getIcon(), image);
+
         tv_name.setText(map.getViewName());
-        tv_category.setText(map.getResCategroyTwo());
-//        if (null != map.getResCategroyTwo() && 1 < map.getResCategroyTwo().length()) {
-//            String str[] = map.getResCategroyTwo().split("|");
-//            tv_category.setText("类型：" + str[0]);
-//        }
+        String leixing = "类型:" + map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
+        tv_category.setText(leixing);
         tx_times.setText(map.getInsertTime());
-        tv_nm.setText(map.getUploadMan());
+        tv_nm.setText("作者:" + map.getUploadMan());
         tv_tx.setText(Html.fromHtml(map.getDres() + ""));
         switch (downloadstate) {
             case 2:
@@ -169,7 +168,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
                 break;
             case 0:
-                dl.setText("下载");
+                dl.setText("下载" + "   " + map.getResSize());
                 break;
             default:
                 break;
@@ -199,18 +198,18 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             String[] pic = map.getPictures().split(",");
             sv_lh.removeAllViews();
             LayoutInflater inflater = LayoutInflater.from(this);
-            for (int i = 0; i < 5; i++) {
-                for (String curpic : pic) {
-                    ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
-                    params.setMargins(dp2px(2), dp2px(10), dp2px(2), dp2px(10));
+//            for (int i = 0; i < 5; i++) {
+            for (String curpic : pic) {
+                ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
+                params.setMargins(dp2px(2), dp2px(10), dp2px(2), dp2px(10));
 
-                    imageView.setLayoutParams(params);
-                    mLoader.displayImage(curpic, imageView);
-                    imageView.setTag(curpic);
-                    sv_lh.addView(imageView);
-                }
+                imageView.setLayoutParams(params);
+                mLoader.displayImage(curpic, imageView);
+                imageView.setTag(curpic);
+                sv_lh.addView(imageView);
             }
+//            }
         }
     }
 
@@ -273,6 +272,9 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.btn_left:
                 finish();
+                break;
+            case R.id.btn_right:
+
                 break;
             case R.id.dl:
                 manager = DLManager.getInstance(mContext);
