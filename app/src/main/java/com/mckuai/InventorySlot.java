@@ -1,6 +1,8 @@
 package com.mckuai;
 
-public class InventorySlot {
+import java.io.Serializable;
+
+public class InventorySlot  implements Serializable{
 
 	private byte slot;
 
@@ -31,4 +33,6 @@ public class InventorySlot {
 		return "Slot " + getSlot() + ": Type: " + contents.getTypeId() +
 			"; Damage: " + contents.getDurability() + "; Amount: "  + contents.getAmount();
 	}
+
+
 }

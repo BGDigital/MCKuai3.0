@@ -3,10 +3,11 @@ package com.mckuai.entity;
 import com.mckuai.InventorySlot;
 import com.mckuai.ItemStack;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class Player extends LivingEntity {
+public class Player extends LivingEntity implements Serializable {
 	private List<InventorySlot> inventory;
 	private List<ItemStack> armorSlots;
 	private PlayerAbilities abilities = new PlayerAbilities();

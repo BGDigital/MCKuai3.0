@@ -13,12 +13,15 @@ import android.widget.TextView;
 
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.mckuai.InventorySlot;
+import com.mckuai.Level;
 import com.mckuai.adapter.ArticAdapter;
 import com.mckuai.bean.ArticItem;
 import com.mckuai.until.GameEditer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class GamePackageActivity extends BaseActivity implements View.OnClickListener,OnLongClickListener {
@@ -26,7 +29,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private UltimateRecyclerView itemListView;
     private SeekBar sb_itemCountPeeker;
     private ArticAdapter adapter;
-    private GameEditer editer;
+    //private GameEditer editer;
+    private List<InventorySlot> inventorySlotList;
 
     private EditText edt_search;
     private TextView tv_itemName;
@@ -39,7 +43,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_package);
-        editer = new GameEditer();
+        inventorySlotList = MCkuai.getInstance().inventorySlots;
     }
 
     @Override
@@ -52,18 +56,10 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void showData(){
-        ArrayList<ArticItem> articItems = new ArrayList<>(10);
-        for (int i = 0; i < 10;i++){
-            ArticItem item = new ArticItem();
-            item.setName("火把"+i);
-            item.setId(i);
-            articItems.add(item);
-        }
-
         if (null == adapter)
         adapter = new ArticAdapter();
         itemListView.setAdapter(adapter);
-        adapter.setArtics(articItems);
+        adapter.setArtics(inventorySlotList);
     }
 
     private void initView(){
@@ -117,7 +113,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
                         edt_search.setVisibility(View.VISIBLE);
                     }
                     else {
-                        String value = editer.getString(edt_search.getText().toString());
+//                        String value = editer.getString(edt_search.getText().toString());
                         if (!edt_search.getText().toString().isEmpty()){
                             edt_search.setVisibility(View.GONE);
                         }
@@ -131,9 +127,9 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public boolean onLongClick(View v) {
-        int value = editer.getInt(edt_search.getText().toString());
+        /*int value = editer.getInt(edt_search.getText().toString());
         edt_search.setText(value+"");
-        editer.closeDB();
+        editer.closeDB();*/
         return false;
     }
 }

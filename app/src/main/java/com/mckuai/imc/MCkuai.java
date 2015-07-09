@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.mckuai.InventorySlot;
 import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.until.CircleBitmapDisplayer;
@@ -28,6 +29,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
@@ -52,6 +54,7 @@ public class MCkuai  extends Application{
 
     public AsyncHttpClient mClient;
     public Tencent tencent;
+    public List<InventorySlot> inventorySlots;
 
 
 

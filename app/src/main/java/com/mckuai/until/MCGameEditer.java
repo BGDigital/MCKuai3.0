@@ -2,11 +2,14 @@ package com.mckuai.until;
 
 import android.util.Log;
 
+import com.mckuai.InventorySlot;
 import com.mckuai.Level;
+import com.mckuai.entity.Player;
 import com.mckuai.io.LevelDataConverter;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by kyly on 2015/6/27.
@@ -106,12 +109,12 @@ public class MCGameEditer {
     }
 
     public void setTimeToNight(){
-        level.setTime(((level.getTime() / DAY_LENGTH) * DAY_LENGTH) + (2 *DAY_LENGTH /3) );
+        level.setTime(((level.getTime() / DAY_LENGTH) * DAY_LENGTH) + (2 * DAY_LENGTH / 3));
         saveData();
     }
 
     public String getTime(){
-        Log.e(TAG,"time:" + level.getTime());
+        Log.e(TAG, "time:" + level.getTime());
         long timeInDay = level.getTime() % DAY_LENGTH;
         if (timeInDay > (DAY_LENGTH / 2)){
             return "黑夜";
@@ -131,11 +134,30 @@ public class MCGameEditer {
     }
 
     public boolean getThirdView(){
-        return level.getSpawnMobs();
+        if (null != level && null != level.getPlayer()){
+            Player player = level.getPlayer();
+            return true;
+        }
+        return false;
+    }
+
+    public List<InventorySlot> getInventory(){
+        if (null != level && null != level.getPlayer()){
+            return  level.getPlayer().getInventory();
+        }
+        return  null;
+    }
+
+    public void setInventory(List<InventorySlot> inventorySlotList){
+
     }
 
     public void switchThirdView(){
         level.setSpawnMobs(!level.getSpawnMobs());
         saveData();
+    }
+
+    public Level getLevel() {
+        return level;
     }
 }

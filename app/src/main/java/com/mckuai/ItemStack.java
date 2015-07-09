@@ -2,7 +2,7 @@ package com.mckuai;
 
 import java.io.Serializable;
 
-public class ItemStack {
+public class ItemStack implements Serializable{
 
 	private short id;
 
@@ -48,4 +48,11 @@ public class ItemStack {
 		return "ItemStack: type=" + getTypeId() + ", durability=" + getDurability() + ", amount=" + getAmount();
 	}
 
+	public short getId() {
+		return id;
+	}
+
+	public void setId(short id) {
+		this.id = id;
+	}
 }

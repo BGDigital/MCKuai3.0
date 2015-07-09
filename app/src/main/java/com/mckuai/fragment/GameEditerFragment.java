@@ -10,13 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mckuai.Level;
+import com.mckuai.InventorySlot;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
+
+import java.util.List;
 
 
 public class GameEditerFragment extends BaseFragment implements View.OnClickListener {
@@ -43,6 +45,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private int mode;
     private String time;
     private boolean thirdViewEnable;
+    private List<InventorySlot> inventorySlots;
 
     private String mapDir;
     private String mapName;
@@ -133,7 +136,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
 
         if (null == gameEditer){
-            gameEditer = new MCGameEditer(mapDir);
+//            gameEditer = new MCGameEditer(mapDir);//
+            gameEditer = new MCGameEditer("/storage/sdcard0/games/com.mojang/minecraftWorlds/My World");
             isMapChanged = false;
         }
 
@@ -146,6 +150,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             mode = gameEditer.getGameMode();
             time = gameEditer.getTime();
             mapName = mapManager.getCurrentMapName();
+
+            inventorySlots = gameEditer.getInventory();
         }
 
     }
@@ -184,6 +190,14 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 tv_gameTime.setText("黑夜");
                 iv_gameTime.setBackgroundResource(R.drawable.icon_time_night);
             }
+
+        //背包
+        if (null != inventorySlots && !inventorySlots.isEmpty()){
+            tv_packageItemCount.setText(inventorySlots.size()+"种");
+        }
+        else {
+            tv_packageItemCount.setText("没有物品");
+        }
 
     }
 
@@ -225,6 +239,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void changePackageItem(){
         Intent intent = new Intent(getActivity(), GamePackageActivity.class);
+        MCkuai.getInstance().inventorySlots = inventorySlots;
         startActivity(intent);
     }
 
@@ -312,7 +327,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rl_gamePackage:
                 if (gameEditer.hasProfile()) {
-                    changePackageItem();
+                    if (null != gameEditer.getInventory()) {
+                        changePackageItem();
+                    }
+                    else {
+                        showNotification(3,"背包没有物品！",R.id.fl_root);
+                    }
                 }
                 else {
                     showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
@@ -333,5 +353,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
         }
     }
+
+
 
 }

@@ -4,10 +4,11 @@ import com.mckuai.entity.Entity;
 import com.mckuai.entity.Player;
 import com.mckuai.tileentity.TileEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class Level {
+public class Level implements Serializable{
 
 	private int gameType;
 
@@ -216,4 +217,7 @@ public class Level {
     public void setLimitedworldoriginz(int limitedworldoriginz) {
         this.limitedworldoriginz = limitedworldoriginz;
     }
+
+
+
 }

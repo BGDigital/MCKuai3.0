@@ -2,7 +2,9 @@ package com.mckuai.entity;
 
 import com.mckuai.until.Vector3f;
 
-public class Entity {
+import java.io.Serializable;
+
+public class Entity implements Serializable {
 
 	private Vector3f location = new Vector3f(0, 0, 0);
 
@@ -108,5 +110,37 @@ public class Entity {
 		EntityType type = EntityType.getById(typeId);
 		if (type == null) type = EntityType.UNKNOWN;
 		return type;
+	}
+
+	public Vector3f getMotion() {
+		return motion;
+	}
+
+	public void setMotion(Vector3f motion) {
+		this.motion = motion;
+	}
+
+	public short getFire() {
+		return fire;
+	}
+
+	public void setFire(short fire) {
+		this.fire = fire;
+	}
+
+	public short getAir() {
+		return air;
+	}
+
+	public void setAir(short air) {
+		this.air = air;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 }

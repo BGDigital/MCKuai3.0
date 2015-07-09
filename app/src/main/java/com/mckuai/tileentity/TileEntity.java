@@ -3,7 +3,9 @@ package com.mckuai.tileentity;
 
 import com.mckuai.until.Vector3f;
 
-public class TileEntity {
+import java.io.Serializable;
+
+public class TileEntity implements Serializable{
 
 	private String id = null;
 
@@ -51,4 +53,6 @@ public class TileEntity {
 	public String toString() {
 		return this.id + ": X: " + x + " Y: " + y + " Z: " + z;
 	}
+
+
 }
