@@ -219,9 +219,9 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
             mapList = new MapBean();
         }
         params.put("page", mapList.getPageBean().getPage() + 1 + "");
-        params.put("type",map);
+        params.put("type", map);
         params.put("key", searchContext);
-        client.get(url,params,new JsonHttpResponseHandler(){
+        client.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -232,8 +232,30 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
                 super.onSuccess(statusCode, headers, response);
                 isLoading = false;
                 if (response != null && response.has("state")) {
-
-                }else {
+                    try {
+                        if (response.getString("state").equals("ok")) {
+                            JSONObject object = response.getJSONObject("dataObject");
+                            MapBean bean = mGson.fromJson(object.toString(), MapBean.class);
+                            if (null == mapList) {
+                                mapList = new MapBean();
+                            }
+                            if (bean.getPageBean().getPage() == 1) {
+                                mapList.getData().clear();
+                            }
+                            mapList.getData().addAll(bean.getData());
+                            mapList.setPageBean(bean.getPageBean());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (!mapList.getData().isEmpty()) {
+                        cancleLodingToast(true);
+                        showData();
+                        return;
+                    } else {
+                        showNotification(0, "没有当前选项", R.id.l1);
+                    }
+                } else {
                     showNotification(0, "加载数据错误", R.id.l1);
                 }
                 cancleLodingToast(false);
