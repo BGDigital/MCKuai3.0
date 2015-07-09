@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/r_l1"
     >
-<include   layout="@layout/titlebar_comm"
+<include   layout="@layout/map_tit"
     android:id="@+id/title"/>
         <EditText
             android:id="@+id/map_ed"

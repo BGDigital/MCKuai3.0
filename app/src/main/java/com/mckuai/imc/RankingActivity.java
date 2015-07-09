@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.inputmethod.EditorInfo;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,6 +29,7 @@ import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,6 +40,7 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private Button btn_showOwner;
+    private Map map;
     private EditText map_ed;
     private RankingAdapter adapter;
     private AsyncHttpClient client;
@@ -89,6 +93,21 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
         ranking_lv = (ListView) findViewById(R.id.ranking_lv);
         ranking_lv.setOnItemClickListener(this);
         map_ed = (EditText) findViewById(R.id.map_ed);
+        map_ed.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    if (null != map_ed.getText() && 0 < map_ed.getText().toString().trim().length()) {
+                        searchContext = map_ed.getText().toString();
+//                        search();
+                    } else {
+                        Toast.makeText(RankingActivity.this, "不能搜索空内容!", Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         r_l1 = (LinearLayout) findViewById(R.id.r_l1);
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
@@ -97,6 +116,7 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
         btn_showOwner.setVisibility(View.GONE);
         tv_title.setText("地图排行");
         btn_right = (ImageView) findViewById(R.id.btn_right);
+        btn_right.setVisibility(View.VISIBLE);
         btn_right.setOnClickListener(this);
         client = application.mClient;
 
@@ -185,12 +205,6 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
                 break;
             case R.id.btn_right:
                 map_ed.setVisibility(View.VISIBLE);
-                if (0 < map_ed.getText().length()) {
-                    searchContext = map_ed.getText().toString().trim();//trim() 表示空格
-                    search();
-                } else {
-                    Toast.makeText(this, "不能为空", Toast.LENGTH_SHORT).show();
-                }
                 break;
 
             default:
@@ -199,7 +213,37 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
     }
 
     private void search() {
+        final RequestParams params = new RequestParams();
+        final String url = getString(R.string.interface_domainName) + getString(R.string.interface_map_search);
+        if (mapList == null) {
+            mapList = new MapBean();
+        }
+        params.put("page", mapList.getPageBean().getPage() + 1 + "");
+        params.put("type",map);
+        params.put("key", searchContext);
+        client.get(url,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
 
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                isLoading = false;
+                if (response != null && response.has("state")) {
+
+                }else {
+                    showNotification(0, "加载数据错误", R.id.l1);
+                }
+                cancleLodingToast(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 }
 
