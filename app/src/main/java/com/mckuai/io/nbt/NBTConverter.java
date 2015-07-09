@@ -164,54 +164,57 @@ public final class NBTConverter {
 	public static CompoundTag writePlayer(Player player, String name) {
 		List<Tag> tags = new ArrayList<Tag>();
 		/* shared properties with all entities */
-		tags.add(new ShortTag("Air", player.getAirTicks()));
-		tags.add(new FloatTag("FallDistance", player.getFallDistance()));
-		tags.add(new ShortTag("Fire", player.getFireTicks()));
-		tags.add(writeVector(player.getVelocity(), "Motion"));
-		tags.add(writeVector(player.getLocation(), "Pos"));
-		List<FloatTag> rotationTags = new ArrayList<FloatTag>(2);
-		rotationTags.add(new FloatTag("", player.getYaw()));
-		rotationTags.add(new FloatTag("", player.getPitch()));
-		tags.add(new ListTag<FloatTag>("Rotation", FloatTag.class, rotationTags));
-		tags.add(new ByteTag("OnGround", player.isOnGround() ? (byte) 1: (byte) 0));
+        if (null != player) {
+            tags.add(new ShortTag("Air", player.getAirTicks()));
+            tags.add(new FloatTag("FallDistance", player.getFallDistance()));
+            tags.add(new ShortTag("Fire", player.getFireTicks()));
+            tags.add(writeVector(player.getVelocity(), "Motion"));
+            tags.add(writeVector(player.getLocation(), "Pos"));
+            List<FloatTag> rotationTags = new ArrayList<FloatTag>(2);
+            rotationTags.add(new FloatTag("", player.getYaw()));
+            rotationTags.add(new FloatTag("", player.getPitch()));
+            tags.add(new ListTag<FloatTag>("Rotation", FloatTag.class, rotationTags));
+            tags.add(new ByteTag("OnGround", player.isOnGround() ? (byte) 1 : (byte) 0));
 
 		/* mobs' tags */
-		tags.add(new ShortTag("AttackTime", player.getAttackTime()));
-		tags.add(new ShortTag("DeathTime", player.getDeathTime()));
-		tags.add(new ShortTag("Health", player.getHealth()));
-		tags.add(new ShortTag("HurtTime", player.getHurtTime()));
+            tags.add(new ShortTag("AttackTime", player.getAttackTime()));
+            tags.add(new ShortTag("DeathTime", player.getDeathTime()));
+            tags.add(new ShortTag("Health", player.getHealth()));
+            tags.add(new ShortTag("HurtTime", player.getHurtTime()));
 
 		/* Human specific tags */
 
-		if (player.getArmor() != null) {
-			tags.add(writeArmor(player.getArmor(), "Armor"));
-		}
-		tags.add(new IntTag("BedPositionX", player.getBedPositionX()));
-		tags.add(new IntTag("BedPositionY", player.getBedPositionY()));
-		tags.add(new IntTag("BedPositionZ", player.getBedPositionZ()));
-		tags.add(new IntTag("Dimension", player.getDimension()));
-		tags.add(writeInventory(player.getInventory(), "Inventory"));
-		tags.add(new IntTag("Score", player.getScore()));
-		tags.add(new ByteTag("Sleeping", player.isSleeping() ? (byte) 1: (byte) 0));
-		tags.add(new ShortTag("SleepTimer", player.getSleepTimer()));
-		tags.add(new IntTag("SpawnX", player.getSpawnX()));
-		tags.add(new IntTag("SpawnY", player.getSpawnY()));
-		tags.add(new IntTag("SpawnZ", player.getSpawnZ()));
-		tags.add(writeAbilities(player.getAbilities(), "abilities"));
-		if (player.getRiding() != null) {
-			tags.add(writeEntity(player.getRiding(), "Riding"));
-		}
+            if (player.getArmor() != null) {
+                tags.add(writeArmor(player.getArmor(), "Armor"));
+            }
+            tags.add(new IntTag("BedPositionX", player.getBedPositionX()));
+            tags.add(new IntTag("BedPositionY", player.getBedPositionY()));
+            tags.add(new IntTag("BedPositionZ", player.getBedPositionZ()));
+            tags.add(new IntTag("Dimension", player.getDimension()));
+            tags.add(writeInventory(player.getInventory(), "Inventory"));
+            tags.add(new IntTag("Score", player.getScore()));
+            tags.add(new ByteTag("Sleeping", player.isSleeping() ? (byte) 1 : (byte) 0));
+            tags.add(new ShortTag("SleepTimer", player.getSleepTimer()));
+            tags.add(new IntTag("SpawnX", player.getSpawnX()));
+            tags.add(new IntTag("SpawnY", player.getSpawnY()));
+            tags.add(new IntTag("SpawnZ", player.getSpawnZ()));
+            tags.add(writeAbilities(player.getAbilities(), "abilities"));
+            if (player.getRiding() != null) {
+                tags.add(writeEntity(player.getRiding(), "Riding"));
+            }
 
 		/* all level.dat tags are sorted for some reason */
 
-		Collections.sort(tags, new Comparator<Tag>() {
-			public int compare(Tag a, Tag b) {
-				return a.getName().compareTo(b.getName());
-			}
-			public boolean equals(Tag a, Tag b) {
-				return a.getName().equals(b.getName());
-			}
-		});
+            Collections.sort(tags, new Comparator<Tag>() {
+                public int compare(Tag a, Tag b) {
+                    return a.getName().compareTo(b.getName());
+                }
+
+                public boolean equals(Tag a, Tag b) {
+                    return a.getName().equals(b.getName());
+                }
+            });
+        }
 
 		return new CompoundTag(name, tags);
 	}
@@ -266,8 +269,14 @@ public final class NBTConverter {
 			} else if (name.equals("Dimension")) {
 				level.setDimension(((IntTag) tag).getValue());
 			} else if (name.equals("Generator")) {
-				level.setGenerator(((IntTag) tag).getValue());
-			} else {
+                level.setGenerator(((IntTag) tag).getValue());
+            } else if (name.equals("LimitedWorldOriginX")){
+                level.setLimitedworldoriginx(((IntTag) tag).getValue());
+            } else if (name.equals("LimitedWorldOriginY")){
+                level.setLimitedworldoriginx(((IntTag) tag).getValue());
+            } else if (name.equals("LimitedWorldOriginZ")){
+                level.setLimitedworldoriginx(((IntTag) tag).getValue());
+            } else {
 				System.out.println("Unhandled level tag: " + name + ":" + tag);
 			}
 		}
@@ -275,13 +284,19 @@ public final class NBTConverter {
 	}
 
 	public static CompoundTag writeLevel(Level level) {
-		List<Tag> tags = new ArrayList<Tag>(11);
+		List<Tag> tags = new ArrayList<Tag>(15);
 		/* tags should be sorted alphabetically */
 		tags.add(new IntTag("GameType", level.getGameType()));
+        tags.add(new IntTag("Generator",level.getGenerator()));
 		tags.add(new LongTag("LastPlayed", level.getLastPlayed()));
 		tags.add(new StringTag("LevelName", level.getLevelName()));
+        tags.add(new IntTag("LimitedWorldOriginX",level.getLimitedworldoriginx()));
+        tags.add(new IntTag("LimitedWorldOriginY",level.getLimitedworldoriginy()));
+        tags.add(new IntTag("LimitedWorldOriginZ",level.getLimitedworldoriginz()));
 		tags.add(new IntTag("Platform", level.getPlatform()));
-		tags.add(writePlayer(level.getPlayer(), "Player"));
+        if (null != level.getPlayer()) {
+            tags.add(writePlayer(level.getPlayer(), "Player"));
+        }
 		tags.add(new LongTag("RandomSeed", level.getRandomSeed()));
 		tags.add(new LongTag("SizeOnDisk", level.getSizeOnDisk()));
 		tags.add(new IntTag("SpawnX", level.getSpawnX()));

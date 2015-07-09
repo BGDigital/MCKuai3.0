@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mckuai.Level;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
@@ -40,16 +41,17 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 //    private GameEditer editer;//for test
 
     private int mode;
-    private int time;
-    private int viewtype;
+    private String time;
+    private boolean thirdViewEnable;
 
     private String mapDir;
     private String mapName;
     private boolean isMapChanged = true;
 
     private boolean isShowGameRunning = false;
-    private boolean isGameInstalled = false;
+    private boolean isGameInstalled = true;
     private boolean isGameRunning = false;
+
 
 
     public GameEditerFragment(){
@@ -85,10 +87,17 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
            mapManager = MCkuai.getInstance().getMapManager();
         }
 
-        detectionGameInfo();
-        getProfileInfo();
-        showCurentMap();
-        showGameMode();
+       detectionGameInfo();
+
+        if (isGameInstalled){
+            getWorldInfo();
+            if (gameEditer.hasProfile()) {
+                updateWorldInfo();
+            }
+            else {
+                showNotification(2,"未能获取到游戏信息",R.id.fl_root);
+            }
+        }
     }
 
     @Override
@@ -118,7 +127,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.btn_selectMap).setOnClickListener(this);
     }
 
-    private void getProfileInfo(){
+    private void getWorldInfo(){
+        if (!isGameInstalled){
+            return;
+        }
+
         if (null == gameEditer){
             gameEditer = new MCGameEditer(mapDir);
             isMapChanged = false;
@@ -131,7 +144,47 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
         if (gameEditer.hasProfile()){
             mode = gameEditer.getGameMode();
+            time = gameEditer.getTime();
+            mapName = mapManager.getCurrentMapName();
         }
+
+    }
+
+    private void updateWorldInfo(){
+        //游戏模式
+        if (mode == 0){
+            tv_gameMode.setText("生存");
+            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
+        }
+        else {
+            tv_gameMode.setText("创造");
+            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
+        }
+        //游戏地图名称
+        tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图" : mapName);
+
+        //第三人称视角
+        if (thirdViewEnable){
+            tv_thirdView.setText("已开启");
+            iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_enable);
+        }
+        else {
+            tv_thirdView.setText("未开启");
+            iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_disable);
+        }
+
+        //白天夜晚
+        if (null == time){
+            time = "白天";
+        }
+            if (time.equals("白天")) {
+                tv_gameTime.setText("白天");
+                iv_gameTime.setBackgroundResource(R.drawable.icon_time_day);
+            } else {
+                tv_gameTime.setText("黑夜");
+                iv_gameTime.setBackgroundResource(R.drawable.icon_time_night);
+            }
+
     }
 
     private void switchGameMode(){
@@ -144,54 +197,30 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         if (gameEditer.setGameMode(temp)){
             mode = temp;
-            showGameMode();
+            updateWorldInfo();
         }
         else {
             showNotification(2, "保存游戏模式失败!", R.id.fl_root);
         }
     }
 
-    private void showGameMode(){
-        if (null == gameEditer){
-            gameEditer = new MCGameEditer(mapDir);
-        }
-        mode = gameEditer.getGameMode();
-        if (mode == 0){
-            tv_gameMode.setText("生存");
-            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
-        }
-        else {
-            tv_gameMode.setText("创造");
-            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
-        }
-
-    }
-
-    private void showCurentMap(){
-        String mapName = mapManager.getCurrentMapName();
-        tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图":mapName);
-    }
 
     private void switchGameTime(){
-        if (tv_gameTime.getText().equals("白天")){
-            tv_gameTime.setText("黑夜");
-            iv_gameTime.setBackgroundResource(R.drawable.icon_time_night);
+        if (time.equals("白天")){
+            gameEditer.setTimeToNight();
+            time = "黑夜";
         }
         else {
-            tv_gameTime.setText("白天");
-            iv_gameTime.setBackgroundResource(R.drawable.icon_time_day);
+            gameEditer.setTimeToMorning();
+            time = "白天";
         }
+        updateWorldInfo();
     }
 
     private void switchView(){
-        if (tv_thirdView.getText().equals("未开启")){
-            tv_thirdView.setText("已开启");
-            iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_enable);
-        }
-        else {
-            tv_thirdView.setText("未开启");
-            iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_disable);
-        }
+        gameEditer.switchThirdView();
+        thirdViewEnable = !thirdViewEnable;
+        updateWorldInfo();
     }
 
     private void changePackageItem(){
@@ -201,12 +230,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void startGame(){
         if (!isGameInstalled){
-          showNotification(2,"警告：你还未安装游戏！",R.id.rl_root);
+          showNotification(2,"警告：你还未安装游戏！",R.id.fl_root);
             return;
         }
 
         if (isGameRunning){
-            showNotification(3,"游戏已经在运行，无需再次启动！",R.id.rl_root);
+            showNotification(3, "游戏已经在运行，无需再次启动！", R.id.fl_root);
             return;
         }
 
@@ -226,15 +255,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        GameUntil.killGameTask(getActivity());
+                        isGameRunning = !GameUntil.killGameTask(getActivity());
                     }
                 });
             }
-            else {
-                mapDir = mapManager.getCurrentMapDir();
-                mapName = mapManager.getCurrentMapName();
-                isMapChanged = true;
-            }
+            mapDir = mapManager.getCurrentMapDir();
+            mapName = mapManager.getCurrentMapName();
+            isMapChanged = true;
         }
         else {
             showMessage("警告","你还未安装游戏，不能修改游戏内容！");
@@ -252,25 +279,59 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        if (isGameRunning){
+            showNotification(3,"游戏正在运行，不能修改当前设置！",R.id.fl_root);
+            return;
+        }
         switch (v.getId()){
             case R.id.rl_gameMode:
-                switchGameMode();
+                if (gameEditer.hasProfile()) {
+                    switchGameMode();
+                }
+                else {
+                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                }
                 break;
             case R.id.rl_gameTime:
-                switchGameTime();
+                if (gameEditer.hasProfile()) {
+                    switchGameTime();
+                }
+                else {
+                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                }
+
                 break;
             case R.id.rl_thirdView:
-                switchView();
+                if (gameEditer.hasProfile()) {
+                    switchView();
+                }
+                else {
+                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                }
+
                 break;
             case R.id.rl_gamePackage:
-                changePackageItem();
+                if (gameEditer.hasProfile()) {
+                    changePackageItem();
+                }
+                else {
+                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                }
+
                 break;
             case R.id.btn_startGame:
                 startGame();
                 break;
             case R.id.btn_selectMap:
-                selectMap();
+                if (gameEditer.hasProfile()) {
+                    selectMap();
+                }
+                else {
+                    showNotification(3,"没有地图，不能修改当前设置！",R.id.rl_root);
+                }
+
                 break;
         }
     }
+
 }

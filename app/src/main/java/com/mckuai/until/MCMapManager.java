@@ -3,6 +3,7 @@ package com.mckuai.until;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.mckuai.WorldItem;
 import com.mckuai.bean.Map;
 import com.mckuai.io.db.DB;
 import com.mckuai.imc.MCkuai;
@@ -10,6 +11,8 @@ import com.mckuai.imc.MCkuai;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 
 /**
@@ -26,11 +29,12 @@ public class MCMapManager {
 
     private MCkuai application;
 
-    private ArrayList<String> curMaps;                        //当前游戏中已经有的地图名称
-    private ArrayList<String> curMapsDir;                   //当前游戏中地图的路径，与上面的一一对应
+//    private ArrayList<String> curMaps;                        //当前游戏中已经有的地图名称
+//    private ArrayList<String> curMapsDir;                   //当前游戏中地图的路径，与上面的一一对应
     private ArrayList<String> index;                             //这是所有的下载的地图的resid
     private ArrayList<Map> downloadMaps;                //已经下载了的
     private ArrayList<Map> newDownloadMaps;         //新下载的东西存在这里
+    private ArrayList<WorldItem> gameMaps;//游戏中的地图
     private DB db;
     private File file;
     private String saveDir; //下载路径
@@ -125,85 +129,80 @@ public class MCMapManager {
      * @return
      */
     public ArrayList<String> getCurrentMapDirList(){
-
-        if (null != curMapsDir){
-            return  curMapsDir;
+       //已经有地图
+        if (null != gameMaps){
+            ArrayList<String> dirs = new ArrayList<>(gameMaps.size());
+            for (WorldItem item:gameMaps){
+                dirs.add(item.getFolder().toString());
+            }
+            return  dirs;
         }
-
-
+        //还未取出地图
+        gameMaps = new ArrayList<>();
         File[] files = new File(application.getGameProfileDir()+"minecraftWorlds/").listFiles();
         if (null == files || 0 == files.length){
             return  null;
         }
 
-        curMaps = new ArrayList<>();
-        curMapsDir = new ArrayList<>();
+        ArrayList<String> dirs = new ArrayList<>();
         for (File file:files){
-            if (file.isDirectory()){
-                curMapsDir.add(file.getPath());
-                curMaps.add(getMapName(file.getPath()));
+            WorldItem item = new WorldItem(file);
+            gameMaps.add(item);
+        }
+        return  dirs;
+    }
+
+    private long getLastPlayTime(String path){
+        path = path + "/level.dat";
+        File file = new File(path);
+        return file.lastModified();
+    }
+
+    private void insertNewGameMap(WorldItem world){
+        for (int i = 0; i < gameMaps.size();i++){
+            if (gameMaps.get(i).lastPlayTime > gameMap.lastPlayTime){
+                gameMaps.add(i,gameMap);
+                return;
             }
         }
-        return  curMapsDir;
+        gameMaps.add(gameMap);
     }
 
     /**
      * 获取当前正在使用的地图目录
-     * 首先尝试从数据库中获取，如果获取不到则从游戏存档目录中获取第一个地图,均获取不到则返回空
+     * 从游戏存档目录中获取最近被修改过的地图,均获取不到则返回空
      * @return
      */
     public String getCurrentMapDir(){
-       /* if (!isOpen){
-            if (!openDB()){
-                Log.e("getCurrentMapdir","open db false!");
-                return  null;
-            }
-        }*/
 
-        byte name[] = db.get("CURRENT_MAP_DIR".getBytes());
-        if (null != name){
-            return  new String(name);
+        if (null == gameMaps){
+            getCurrentMapDirList();
+        }
+        if (null != gameMaps && !gameMaps.isEmpty()){
+            return  gameMaps.get(0).dir;
         }
         else {
-            ArrayList<String> maps = getCurrentMapDirList();
-            if (null != maps && !maps.isEmpty() )  {
-                db.put("CURRENT_MAP_DIR".getBytes(),maps.get(0).getBytes());
-                return  maps.get(0);
-            }
-            else {
-                return  null;
-            }
+            return  null;
         }
     }
 
     /**
      * 获取当前的游戏地图的名称
-     * 首先尝试从数据库中获取，获取不了再从当前正在使用的游戏存档中获取
+     * 从当前正在使用的游戏存档中获取
      * @return
      */
     public String getCurrentMapName(){
-       /* if (!isOpen){
-            if (!openDB()){
-                Log.e(TAG,"getCurrentMapName,open db false!");
-                return null;
-            }
-        }*/
+        if (null == gameMaps){
+            getCurrentMapDirList();
+        }
 
-        byte name[] = db.get("CURRENT_MAP_NAME".getBytes());
-        if (null != name){
-            return  new String(name);
+        if (null != gameMaps && !gameMaps.isEmpty()){
+            return  gameMaps.get(0).name;
         }
         else {
-            String mapdir = getCurrentMapDir();
-            if (null != mapdir){
-                String mapname = getMapName(mapdir);
-                if (null != mapname){
-                    db.put("CURRENT_MAP_NAME".getBytes(),mapname.getBytes());
-                    return getMapName(mapdir);
-                }
-            }
-            return  null;
+            return null;
         }
+
     }
 
     /**
@@ -257,6 +256,14 @@ public class MCMapManager {
         application = MCkuai.getInstance();
         saveDir = application.getMapDownloadDir();
         initDB();
+        File  file = new File(MCkuai.getInstance().getSDPath(),"games/com.mojang/minecraftWorlds");
+        gameMaps = new ArrayList<>();
+        if (file.exists()){
+            File[] fileList = file.listFiles();
+            for (File curFile:fileList){
+                gameMaps.add(new WorldItem(curFile));
+            }
+        }
     }
 
     public boolean isReady(){
@@ -396,6 +403,7 @@ public class MCMapManager {
             }
         }
     }*/
+
 
 
 }

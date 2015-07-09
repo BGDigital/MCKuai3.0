@@ -37,6 +37,10 @@ public class Level {
 
 	private int generator = 0;
 
+	private int limitedworldoriginy = 0;
+	private int limitedworldoriginx = 0;
+	private int limitedworldoriginz = 0;
+
 	private List<Entity> entities;
 
 	private List<TileEntity> tileEntities;
@@ -184,4 +188,32 @@ public class Level {
 	public void setGenerator(int generator) {
 		this.generator = generator;
 	}
+
+    public boolean isSpawnMobs() {
+        return spawnMobs;
+    }
+
+    public int getLimitedworldoriginy() {
+        return limitedworldoriginy;
+    }
+
+    public void setLimitedworldoriginy(int limitedworldoriginy) {
+        this.limitedworldoriginy = limitedworldoriginy;
+    }
+
+    public int getLimitedworldoriginx() {
+        return limitedworldoriginx;
+    }
+
+    public void setLimitedworldoriginx(int limitedworldoriginx) {
+        this.limitedworldoriginx = limitedworldoriginx;
+    }
+
+    public int getLimitedworldoriginz() {
+        return limitedworldoriginz;
+    }
+
+    public void setLimitedworldoriginz(int limitedworldoriginz) {
+        this.limitedworldoriginz = limitedworldoriginz;
+    }
 }

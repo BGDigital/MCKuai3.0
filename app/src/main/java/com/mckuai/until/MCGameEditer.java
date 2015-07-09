@@ -2,10 +2,10 @@ package com.mckuai.until;
 
 import android.util.Log;
 
+import com.mckuai.Level;
+import com.mckuai.io.LevelDataConverter;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.Arrays;
 
 /**
@@ -14,15 +14,9 @@ import java.util.Arrays;
 public class MCGameEditer {
 
     private static final  String TAG = "MCGameEditer";
-
-    private byte levelData[];
+    private Level level;
     private Long lastModified;
-    private int gameMode;
-    private int gameTime;
-    private int thirdView;
-    private int offset_GameMode = 0;
-    private int offset_GameTime = 0;
-    private int offset_ThirdView = 0;
+    private static final int DAY_LENGTH = 19200;
 
 //    private final  String fileName = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/level.dat";
     private String fileName;
@@ -33,8 +27,6 @@ public class MCGameEditer {
     }
 
     public MCGameEditer(){
-        MCMapManager mapManager = new MCMapManager();
-
     }
 
     public void setMapDir(String mapDir){
@@ -43,47 +35,28 @@ public class MCGameEditer {
     }
 
     public boolean hasProfile(){
-        return  levelData != null;
+        return  null != level;
     }
 
     public int getGameMode(){
-        if (0 == offset_GameMode){
-            offset_GameMode = getValueOffset("GameType");
-        }
-        if (0 < offset_GameMode){
-            byte mode[] = {0,0,0,0};
-            if (getByteBlock(offset_GameMode, mode)){
-                return  toInt(mode);
-            }
+        if (null != level){
+            return  level.getGameType();
         }
         return  -1;
     }
 
     public boolean setGameMode(int mode){
-        if (0 == offset_GameMode){
-            offset_GameMode = getValueOffset("GameType");
-        }
-
-        if (0 < offset_GameMode){
-            if (setByteBlock(offset_GameMode, toByteArray(mode, 4))){
-                if (saveData()){
-                    return  true;
-                }
-            }
+        if (null != level){
+            level.setGameType(mode);
+            saveData();
+            return  true;
         }
         return  false;
     }
 
     public String getMapName(){
-        int offset = getValueOffset("LevelName");
-        if (0 < offset){
-            byte bytelength[] = {0,0};
-            if (getByteBlock(offset, bytelength)){
-                byte mapname[] = new byte[toInt(bytelength)];
-                if (getByteBlock(offset + 2, mapname)){
-                    return new String(mapname);
-                }
-            }
+        if (null != level){
+            return  level.getLevelName();
         }
         return  null;
     }
@@ -93,138 +66,76 @@ public class MCGameEditer {
     }
 
 
-    /**
-     * 获取指定key的值的起始位置
-     * @param key 要查找的key
-     * @return 如果找到则返回其值的位置,否则返回-1
-     */
-    private int getValueOffset(String key){
-        if (null != levelData && null != key && 1 < key.length()){
-            //查找指定字符串的位置,如果找到则设置index
-            for (int i = 0;i < levelData.length - 8;i++){
-                byte src[] = key.getBytes();
-                byte dst[] = src.clone();
-                if (getByteBlock(i, dst)) {
-                    if (Arrays.equals(dst,src)){
-                        return i + src.length;
-                    }
-                }
-            }
-
-        }
-        return  -1;
-    }
-
-    /**
-     * 从指定位置起读取给定个数的byte
-     * @param offset 起始位置
-     * @param dst 接收读取到的byte[]
-     * @return 如果读取成功则返回true,否则返回false;
-     */
-    private boolean getByteBlock(int offset,byte dst[]){
-        if (null != dst && offset + dst.length < levelData.length){
-            for (int i = 0 ;i < dst.length;i++){
-                dst[i] = levelData[offset + i];
-            }
-            return  true;
-        }
-        return  false;
-    }
-
-
-    /**
-     * 从指定位置起读取给定个数的byte
-     * @param offset 起始位置
-     * @param dst 接收读取到的byte[]
-     * @param length 要读取的长度
-     * @return 如果读取成功则返回true,否则返回false;
-     */
-    private boolean getByteBlock(int offset,byte dst[],int length){
-        if (null != dst && offset +length < levelData.length){
-            for (int i = 0 ;i < length;i++){
-                dst[i] = levelData[offset + i];
-            }
-            return  true;
-        }
-        return  false;
-    }
-
-    private boolean setByteBlock(int offset,byte dst[]){
-        if (null != dst && offset + dst.length < levelData.length){
-            for (int i = 0;i < dst.length;i++){
-                levelData[offset + i] = dst[i];
-            }
-            return  true;
-        }
-        return false;
-    }
-
-    /**
-     * 将byte[]转换为int类型的数据
-     * @param bRefArr  要转换的byte[]
-     * @return 转换出来的数据
-     */
-    public static int toInt(byte[] bRefArr) {
-        int iOutcome = 0;
-        byte bLoop;
-
-        for (int i = 0; i < bRefArr.length; i++) {
-            bLoop = bRefArr[i];
-            iOutcome += (bLoop & 0xFF) << (8 * i);
-        }
-        return iOutcome;
-    }
-
-    /**
-     * 将int转换为byte[]
-     * @param iSource 被转换的整形
-     * @param iArrayLen 数组长度
-     * @return 转换后的byte[]
-     */
-    public static byte[] toByteArray(int iSource, int iArrayLen) {
-        byte[] bLocalArr = new byte[iArrayLen];
-        for (int i = 0; (i < 4) && (i < iArrayLen); i++) {
-            bLocalArr[i] = (byte) (iSource >> 8 * i & 0xFF);
-        }
-        return bLocalArr;
-    }
-
-
     private void loadData(){
         File file = new File(fileName);
         if (!file.exists()){
             return;
         }
-        InputStream is = null;
         try {
-            is = new FileInputStream(file);
-            levelData = new byte[(int)file.length()];
-            is.read(levelData);
-            is.close();
+            this.level = LevelDataConverter.read(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    public boolean saveData(){
+
+    private boolean saveData(){
     File file = new File(fileName);
         if (!file.exists()){
             return false;
         }
-        else {
-            //file.delete();
-            //file.createNewFile();
-        }
         try {
-            FileOutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(levelData);
-            outputStream.close();
+            LevelDataConverter.write(level,file);
+            file = null;
             return  true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (Exception e){
             Log.e(TAG,"save false,"+e.getLocalizedMessage());
+            file = null;
             return  false;
         }
+    }
+
+    public void setTimeToMorning(){
+        long dayCount = (level.getTime() / DAY_LENGTH);
+        if (level.getTime() % DAY_LENGTH > 0){
+            dayCount++;
+        }
+        level.setTime(dayCount * DAY_LENGTH);
+        saveData();
+    }
+
+    public void setTimeToNight(){
+        level.setTime(((level.getTime() / DAY_LENGTH) * DAY_LENGTH) + (2 *DAY_LENGTH /3) );
+        saveData();
+    }
+
+    public String getTime(){
+        Log.e(TAG,"time:" + level.getTime());
+        long timeInDay = level.getTime() % DAY_LENGTH;
+        if (timeInDay > (DAY_LENGTH / 2)){
+            return "黑夜";
+        }
+        else {
+            return "白天";
+        }
+    }
+
+    public Long getLastModified(){
+        if (null != level) {
+            return level.getLastPlayed();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public boolean getThirdView(){
+        return level.getSpawnMobs();
+    }
+
+    public void switchThirdView(){
+        level.setSpawnMobs(!level.getSpawnMobs());
+        saveData();
     }
 }

@@ -29,13 +29,13 @@ public final class LevelDataConverter {
 
 	public static void write(Level level, File file) throws IOException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		new NBTOutputStream(bos, false, true).writeTag(NBTConverter.writeLevel(level));
-		FileOutputStream os = new FileOutputStream(file);
-		DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(os));
+        new NBTOutputStream(bos, false, true).writeTag(NBTConverter.writeLevel(level));
+		DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 		int length = bos.size();
 		dos.write(header);
 		dos.writeInt(Integer.reverseBytes(length));
 		bos.writeTo(dos);
+        bos.close();
 		dos.close();
 	}	
 

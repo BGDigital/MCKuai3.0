@@ -163,7 +163,7 @@ public class MCkuai  extends Application{
         {
             sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
-        return sdDir.toString();
+        return null == sdDir ? "":sdDir.toString();
     }
 
     public boolean isFirstBoot()
