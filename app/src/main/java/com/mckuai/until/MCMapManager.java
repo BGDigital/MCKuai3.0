@@ -34,7 +34,7 @@ public class MCMapManager {
     private ArrayList<String> index;                             //这是所有的下载的地图的resid
     private ArrayList<Map> downloadMaps;                //已经下载了的
     private ArrayList<Map> newDownloadMaps;         //新下载的东西存在这里
-    private ArrayList<WorldItem> gameMaps;//游戏中的地图
+    private ArrayList<WorldItem> worldItemList;//游戏中的地图
     private DB db;
     private File file;
     private String saveDir; //下载路径
@@ -130,15 +130,15 @@ public class MCMapManager {
      */
     public ArrayList<String> getCurrentMapDirList(){
        //已经有地图
-        if (null != gameMaps){
-            ArrayList<String> dirs = new ArrayList<>(gameMaps.size());
-            for (WorldItem item:gameMaps){
+        if (null != worldItemList){
+            ArrayList<String> dirs = new ArrayList<>(worldItemList.size());
+            for (WorldItem item:worldItemList){
                 dirs.add(item.getFolder().toString());
             }
             return  dirs;
         }
         //还未取出地图
-        gameMaps = new ArrayList<>();
+        worldItemList = new ArrayList<>();
         File[] files = new File(application.getGameProfileDir()+"minecraftWorlds/").listFiles();
         if (null == files || 0 == files.length){
             return  null;
@@ -147,7 +147,7 @@ public class MCMapManager {
         ArrayList<String> dirs = new ArrayList<>();
         for (File file:files){
             WorldItem item = new WorldItem(file);
-            gameMaps.add(item);
+            worldItemList.add(item);
         }
         return  dirs;
     }
@@ -159,13 +159,13 @@ public class MCMapManager {
     }
 
     private void insertNewGameMap(WorldItem world){
-        for (int i = 0; i < gameMaps.size();i++){
-            if (gameMaps.get(i).lastPlayTime > gameMap.lastPlayTime){
-                gameMaps.add(i,gameMap);
+        for (int i = 0; i < worldItemList.size();i++){
+            if (worldItemList.get(i).lastPlayTime > world.lastPlayTime){
+                worldItemList.add(i,world);
                 return;
             }
         }
-        gameMaps.add(gameMap);
+        worldItemList.add(world);
     }
 
     /**
@@ -175,11 +175,11 @@ public class MCMapManager {
      */
     public String getCurrentMapDir(){
 
-        if (null == gameMaps){
+        if (null == worldItemList){
             getCurrentMapDirList();
         }
-        if (null != gameMaps && !gameMaps.isEmpty()){
-            return  gameMaps.get(0).dir;
+        if (null != worldItemList && !worldItemList.isEmpty()){
+            return  worldItemList.get(0).folder.toString();
         }
         else {
             return  null;
@@ -192,12 +192,12 @@ public class MCMapManager {
      * @return
      */
     public String getCurrentMapName(){
-        if (null == gameMaps){
+        if (null == worldItemList){
             getCurrentMapDirList();
         }
 
-        if (null != gameMaps && !gameMaps.isEmpty()){
-            return  gameMaps.get(0).name;
+        if (null != worldItemList && !worldItemList.isEmpty()){
+            return  worldItemList.get(0).getName();
         }
         else {
             return null;
@@ -257,11 +257,11 @@ public class MCMapManager {
         saveDir = application.getMapDownloadDir();
         initDB();
         File  file = new File(MCkuai.getInstance().getSDPath(),"games/com.mojang/minecraftWorlds");
-        gameMaps = new ArrayList<>();
+        worldItemList = new ArrayList<>();
         if (file.exists()){
             File[] fileList = file.listFiles();
             for (File curFile:fileList){
-                gameMaps.add(new WorldItem(curFile));
+                worldItemList.add(new WorldItem(curFile));
             }
         }
     }

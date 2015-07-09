@@ -17,7 +17,7 @@ public class WorldItem implements Serializable{
     public final File levelDat;                                  //levelDat文件
     public String showName = null;                       //文件夹名称
     private Long size;                                           //大小
-    private Long lastPlayTime;
+    public Long lastPlayTime;
 
     public WorldItem(File folderFile)
     {
@@ -62,18 +62,6 @@ public class WorldItem implements Serializable{
 
         String name = folder.getName();
 
-        /*Object localObject;
-        if (this.folder == null) {
-            localObject = null;
-        }
-        String str;
-        do
-        {
-            return (String)localObject;
-            str = this.folder.getName();
-            localObject = str;
-        } while (str.indexOf("-") <= -1);
-        return str.replaceAll("-", "") + ToolUtils.countMap(str);*/
         return name;
     }
 
@@ -132,7 +120,7 @@ public class WorldItem implements Serializable{
         if (this.folder != null) {
             return getFolderName();
         }
-        return "";
+        return null;
     }
 
     public String getShowName()

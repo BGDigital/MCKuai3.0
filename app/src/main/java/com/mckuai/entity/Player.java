@@ -8,14 +8,14 @@ import java.util.List;
 
 public class Player extends LivingEntity {
 	private List<InventorySlot> inventory;
+	private List<ItemStack> armorSlots;
+	private PlayerAbilities abilities = new PlayerAbilities();
 	private int score;
 	private int dimension;
 	private int bedPositionX = 0, bedPositionY = 0, bedPositionZ = 0;
 	private int spawnX = 0, spawnY = 64, spawnZ = 0;
 	private short sleepTimer = 0;
 	private boolean sleeping = false;
-	private List<ItemStack> armorSlots;
-	private PlayerAbilities abilities = new PlayerAbilities();
 
 	public List<InventorySlot> getInventory() {
 		return inventory;
