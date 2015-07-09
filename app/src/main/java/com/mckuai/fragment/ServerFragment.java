@@ -44,8 +44,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private UltimateRecyclerView serverTypeListView;
     private RelativeLayout rl_serverTypeLayout;
     private Spinner spinner;
-
-
     private AsyncHttpClient client;
     private MCkuai application;
     private boolean isOrderByDownload = false;

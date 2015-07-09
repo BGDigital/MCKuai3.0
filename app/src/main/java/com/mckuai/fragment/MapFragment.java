@@ -3,6 +3,9 @@ package com.mckuai.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +22,13 @@ import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.MapAdapter;
+import com.mckuai.adapter.mapadapters;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
+import com.mckuai.bean.PageInfo;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
@@ -32,29 +39,30 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MapFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+import java.util.ArrayList;
+
+public class MapFragment extends BaseFragment implements View.OnClickListener, mapadapters.OnItemClickListener, mapadapters.OnMapDownloadListener {
     private View view;
     private Context mContent;
     private Button rb_map, rb_classification, rb_mymap;
     private EditText map_ed;
     private TextView tv_title;
-    private ListView map_ls;
+    //    private ListView map_ls;
+    private UltimateRecyclerView urv_mapList;
     private RelativeLayout mp_r1;
     private MapBean mapList;
+    private PageInfo page;
     private LinearLayout l1, cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
     private MapAdapter adapter;
+    private mapadapters mapadapters;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private MCkuai application;
     private String mapType = null;
     private String orderFiled = null;
+    private ArrayList<Map> map;
 
     private static final String TAG = "MapFragment";
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +79,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
     public void onResume() {
         super.onResume();
         Log.w(TAG, "onResume");
-        if (null == map_ls) {
+        if (null == urv_mapList) {
             initView();
         }
         showData();
@@ -82,8 +90,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             showData();
-        }
-        else {
+        } else {
             cancleLodingToast(false);
         }
     }
@@ -104,12 +111,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
             loadData();
             return;
         }
-        if (null == adapter) {
-            adapter = new MapAdapter(getActivity(), mapList.getData());
-            map_ls.setAdapter(adapter);
-        } else {
-            adapter.notifyDataSetChanged();
-        }
+        mapadapters.setData(mapList.getData());
     }
 
     protected void initView() {
@@ -117,8 +119,34 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
         rb_map = (Button) view.findViewById(R.id.rb_map);
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
-        map_ls = (ListView) view.findViewById(R.id.map_ls);
-        map_ls.setOnItemClickListener(this);
+//        map_ls = (ListView) view.findViewById(R.id.map_ls);
+//        map_ls.setOnItemClickListener(this);
+        urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        urv_mapList.setLayoutManager(manager);
+        mapadapters = new mapadapters();
+        mapadapters.setOnItemClickListener(this);
+        mapadapters.setOnMapDownloadListener(this);
+        urv_mapList.setAdapter(mapadapters);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+        urv_mapList.addItemDecoration(dividerItemDecoration);
+        urv_mapList.enableLoadmore();
+        urv_mapList.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+            @Override
+            public void loadMore(int i, int i1) {
+                loadData();
+            }
+        });
+
+        urv_mapList.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (null != page) {
+                    page.setPage(0);
+                }
+                loadData();
+            }
+        });
         tv_title = (TextView) view.findViewById(R.id.tv_title);
         client = application.mClient;
         l1 = (LinearLayout) view.findViewById(R.id.l1);
@@ -152,6 +180,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
                 getActivity().startActivity(intent);
                 break;
             case R.id.rb_classification:
+                l1.setVisibility(View.GONE);
+//                tv_title.setText("地图分类");
                 showTypeLayout();
 //                tv_title.setText("��ͼ����");
                 break;
@@ -194,12 +224,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
     }
 
     private void showTypeLayout() {
-        map_ls.setVisibility(View.GONE);
+        urv_mapList.setVisibility(View.GONE);
         mp_r1.setVisibility(View.VISIBLE);
     }
 
     private void hideTypeLayout() {
-        map_ls.setVisibility(View.VISIBLE);
+        urv_mapList.setVisibility(View.VISIBLE);
         l1.setVisibility(View.VISIBLE);
         mp_r1.setVisibility(View.GONE);
     }
@@ -254,7 +284,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
                     } else {
                         showNotification(0, "没有当前选项", R.id.l1);
                         if (mapType != null && mapList.getData().size() == 0) {
-                           totle();
+                            totle();
                         }
                     }
                 } else {
@@ -319,13 +349,30 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, A
         loadData();
     }
 
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
+//        Map mapList = (Map) mapadapters.getItem(position);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(getString(R.string.Details), mapList);
+//        intent.putExtras(bundle);
+//        getActivity().startActivity(intent);
+//    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
-        Map mapList = (Map) adapter.getItem(position);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(getString(R.string.Details), mapList);
-        intent.putExtras(bundle);
-        getActivity().startActivity(intent);
+    public void onItemClick(Map mapinfo) {
+        if (null != mapinfo) {
+            Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(getString(R.string.Details), mapinfo);
+            intent.putExtras(bundle);
+            getActivity().startActivity(intent);
+        } else {
+        }
+    }
+
+    @Override
+    public void afterMapDownload() {
+
     }
 }

@@ -1,7 +1,6 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,21 +17,16 @@ import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-
 import java.io.File;
-import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import cn.aigestudio.downloader.bizs.DLManager;
 
 /**
- * Created by Administrator on 2015/7/8.
+ * Created by Zzz on 2015/7/9.
  */
-public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
-
+public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> {
     private final String TAG = "mapadaptres";
     private ArrayList<Map> maps;
     private ImageLoader loader;
@@ -102,8 +96,15 @@ public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
             holder.tv_category.setText(leixing);
             holder.tv_size.setText(map.getResSize());
             holder.tv_time.setText(map.getInsertTime());
+            holder.rk_tv.setText((position + 1) + "");
+            if (position == 0) {
+                holder.rk_tv.setBackgroundResource(R.drawable.map_one);
+            } else {
+                holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+            }
             holder.MasterLayout01.setTag(map);
         }
+
     }
 
     @Override
@@ -112,12 +113,13 @@ public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView tv_name;
-        TextView tv_category;
-        TextView tv_time;
-        TextView tv_size;
-        MasterLayout MasterLayout01;
+        public ImageView image;
+        public TextView tv_name;
+        public TextView tv_category;
+        public TextView tv_time;
+        public TextView tv_size;
+        public TextView rk_tv;
+        public MasterLayout MasterLayout01;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -126,6 +128,7 @@ public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
             tv_category = (TextView) itemView.findViewById(R.id.tv_category);
             tv_size = (TextView) itemView.findViewById(R.id.tv_size);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+            rk_tv = (TextView) itemView.findViewById(R.id.rk_tv);
             MasterLayout01 = (MasterLayout) itemView.findViewById(R.id.MasterLayout01);
         }
     }
@@ -159,7 +162,7 @@ public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
                     }
                     String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                     String url = clickedMap.getSavePath();
-                    url=URLEncoder.encode(url);
+                    url = URLEncoder.encode(url);
                     Log.e(TAG, "downloaddir:" + downloadDir);
                     Log.e(TAG, "url:" + url);
 
