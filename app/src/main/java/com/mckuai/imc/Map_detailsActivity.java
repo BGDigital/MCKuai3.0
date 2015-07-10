@@ -26,9 +26,11 @@ import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.until.MCDTListener;
 import com.mckuai.until.MCMapManager;
+import com.mckuai.widget.CustomShareBoard;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
@@ -65,7 +67,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private int downloadstate;//0未下载，1正在下载，2已下载
     private DisplayImageOptions options;
     private com.umeng.socialize.controller.UMSocialService mShareService;
-//    private CustomShareBoard shareBoard;
+    private CustomShareBoard shareBoard;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 .showImageForEmptyUri(R.drawable.background_user_cover_default)
                 .showImageOnFail(R.drawable.background_user_cover_default)
                 .build();
+        handler.sendMessageDelayed(handler.obtainMessage(5), 1000);
+        mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
 //        shareBoard = new CustomShareBoard(this, mShareService, map);
     }
 
@@ -281,6 +285,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 //                 CustomShareBoard(this,mShareService,map);
 //                 shareBoard.showAtLocation(this.getWindow().getDecorView(),
 //                 Gravity.BOTTOM, 0, 0);
+                shareMap();
                 break;
             case R.id.dl:
                 manager = DLManager.getInstance(mContext);
@@ -317,63 +322,66 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     dl.setText("导入");
                     downloadstate = 2;
                     break;
+                case 5:
+                    configPlatforms();
+                    break;
             }
         }
     };
 
     protected void shareMap() {
-//        if (null == map) {
-//            return;
-//        }
-//        mShareService.setShareContent(map.getViewName());
-//        if (null != map.getIcon() || 10 < map.getIcon().length()) {
-//            mShareService.setShareMedia(new UMImage(this, map.getIcon()));
-//        }
-//        mShareService.openShare(this, false);
+        if (null == map) {
+            return;
+        }
+        mShareService.setShareContent(map.getViewName());
+        if (null != map.getIcon() || 10 < map.getIcon().length()) {
+            mShareService.setShareMedia(new UMImage(this, map.getIcon()));
+        }
+        mShareService.openShare(this, false);
     }
 
     private void configPlatforms() {
-//        String targetUrl = "http://www.mckuai.com/thread-" + map.getId() + ".html";
-//        String title = "麦块for我的世界盒子";
-//        String context = map.getViewName();
-//        UMImage image;
-//        if (null != map.getIcon() && 10 < map.getIcon().length()) {
-//            image = new UMImage(this, map.getIcon());
-//        } else {
-//            image = new UMImage(this, R.drawable.icon_share_default);
-//        }
-//
-//        String appID_QQ = "101155101";
-//        String appAppKey_QQ = "78b7e42e255512d6492dfd135037c91c";
-//        // 添加qq
-//        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, appID_QQ, appAppKey_QQ);
-//        qqSsoHandler.setTargetUrl(targetUrl);
-//        qqSsoHandler.setTitle(title);
-//        qqSsoHandler.addToSocialSDK();
-//        // 添加QQ空间参数
-//        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, appID_QQ, appAppKey_QQ);
-//        qZoneSsoHandler.setTargetUrl(targetUrl);
-//        qZoneSsoHandler.addToSocialSDK();
-//
-//        String appIDWX = "wx49ba2c7147d2368d";
-//        String appSecretWX = "85aa75ddb9b37d47698f24417a373134";
-//        // 添加微信
-//        UMWXHandler wxHandler = new UMWXHandler(this, appIDWX, appSecretWX);
-//        wxHandler.setTargetUrl(targetUrl);
-//        wxHandler.setTitle(title);
-//        wxHandler.showCompressToast(false);
-//        wxHandler.addToSocialSDK();
-//        // 添加微信朋友圈
-//        UMWXHandler wxCircleHandler = new UMWXHandler(this, appIDWX, appSecretWX);
-//        wxCircleHandler.setToCircle(true);
-//        wxCircleHandler.setTargetUrl(targetUrl);
-//        wxHandler.showCompressToast(false);
-//        wxCircleHandler.setTitle(title);
-//        wxCircleHandler.addToSocialSDK();
-//        // 移除多余平台
-//        mShareService.getConfig().removePlatform(SHARE_MEDIA.TENCENT, SHARE_MEDIA.SINA);
-//        // 添加内容和图片
-//        mShareService.setShareContent(context);
-//        mShareService.setShareMedia(image);
+        String targetUrl = "http://www.mckuai.com/thread-" + map.getId() + ".html";
+        String title = "麦块for我的世界盒子";
+        String context = map.getViewName();
+        UMImage image;
+        if (null != map.getIcon() && 10 < map.getIcon().length()) {
+            image = new UMImage(this, map.getIcon());
+        } else {
+            image = new UMImage(this, R.drawable.icon_share_default);
+        }
+
+        String appID_QQ = "101155101";
+        String appAppKey_QQ = "78b7e42e255512d6492dfd135037c91c";
+        // 添加qq
+        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, appID_QQ, appAppKey_QQ);
+        qqSsoHandler.setTargetUrl(targetUrl);
+        qqSsoHandler.setTitle(title);
+        qqSsoHandler.addToSocialSDK();
+        // 添加QQ空间参数
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, appID_QQ, appAppKey_QQ);
+        qZoneSsoHandler.setTargetUrl(targetUrl);
+        qZoneSsoHandler.addToSocialSDK();
+
+        String appIDWX = "wx49ba2c7147d2368d";
+        String appSecretWX = "85aa75ddb9b37d47698f24417a373134";
+        // 添加微信
+        UMWXHandler wxHandler = new UMWXHandler(this, appIDWX, appSecretWX);
+        wxHandler.setTargetUrl(targetUrl);
+        wxHandler.setTitle(title);
+        wxHandler.showCompressToast(false);
+        wxHandler.addToSocialSDK();
+        // 添加微信朋友圈
+        UMWXHandler wxCircleHandler = new UMWXHandler(this, appIDWX, appSecretWX);
+        wxCircleHandler.setToCircle(true);
+        wxCircleHandler.setTargetUrl(targetUrl);
+        wxHandler.showCompressToast(false);
+        wxCircleHandler.setTitle(title);
+        wxCircleHandler.addToSocialSDK();
+        // 移除多余平台
+        mShareService.getConfig().removePlatform(SHARE_MEDIA.TENCENT, SHARE_MEDIA.SINA);
+        // 添加内容和图片
+        mShareService.setShareContent(context);
+        mShareService.setShareMedia(image);
     }
 }
