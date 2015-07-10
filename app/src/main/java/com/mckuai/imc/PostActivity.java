@@ -15,6 +15,14 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Post;
 import com.mckuai.fragment.MCSildingMenu;
+import com.mckuai.widget.CustomShareBoard;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -77,7 +85,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private String[] type = { "admin", "all" };// admin:只显示楼主；all:显示所有
 	private String key = type[1];
 
-	//private CustomShareBoard shareBoard;// 自定义分享框
+	private CustomShareBoard shareBoard;// 自定义分享框
 
 	// 回复时所要用的一些东西，由web部分通过java接口传值
 	private int mUserId;// 当前用户的id
@@ -126,7 +134,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mApplication = MCkuai.getInstance();
 		mClient = mApplication.mClient;
 		mHandler.sendMessageDelayed(mHandler.obtainMessage(5), 1000);
-//		shareBoard = new CustomShareBoard(this, mShareService, post);
+		shareBoard = new CustomShareBoard(this, mShareService, post);
 	}
 
 	@Override
@@ -457,16 +465,16 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			// 关注帖子
 			if (isCollect)
 			{
-//				MobclickAgent.onEvent(this, "cancleCollectPost");
+				MobclickAgent.onEvent(this, "cancleCollectPost");
 			} else
 			{
-//				MobclickAgent.onEvent(this, "collectPost");
+				MobclickAgent.onEvent(this, "collectPost");
 			}
 			collectPost();
 			break;
 		case R.id.btn_sharePost:
 			// 分享帖子
-//			MobclickAgent.onEvent(this, "sharePost");
+			MobclickAgent.onEvent(this, "sharePost");
 			sharePost();
 			// CustomShareBoard shareBoard = new
 			// CustomShareBoard(this,mShareService,post);
@@ -986,7 +994,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		if (!mApplication.isLogin())
 		{
-//			mHandler.sendMessageDelayed(mHandler.obtainMessage(3), 200);
+			mHandler.sendMessageDelayed(mHandler.obtainMessage(3), 200);
 			callLogin(REPLY_POST);
 			return false;
 		}
@@ -1334,7 +1342,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	protected void sharePost()
 	{
-/*		if (null == post)
+		if (null == post)
 		{
 			return;
 		}
@@ -1343,7 +1351,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		{
 			mShareService.setShareMedia(new UMImage(this, post.getMobilePic()));
 		}
-		mShareService.openShare(this, false);*/
+		mShareService.openShare(this, false);
 	}
 
 	private void getPostMark()
@@ -1410,7 +1418,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void configPlatforms()
 	{
-		/*String targetUrl = "http://www.mckuai.com/thread-" + post.getId() + ".html";
+		String targetUrl = "http://www.mckuai.com/thread-" + post.getId() + ".html";
 		String title = "麦块for我的世界盒子";
 		String context = post.getTalkTitle();
 		UMImage image;
@@ -1453,7 +1461,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mShareService.getConfig().removePlatform(SHARE_MEDIA.TENCENT, SHARE_MEDIA.SINA);
 		// 添加内容和图片
 		mShareService.setShareContent(context);
-		mShareService.setShareMedia(image);*/
+		mShareService.setShareMedia(image);
 	}
 
 }
