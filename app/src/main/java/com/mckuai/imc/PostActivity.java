@@ -18,6 +18,7 @@ import com.mckuai.fragment.MCSildingMenu;
 import com.mckuai.widget.CustomShareBoard;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.QZoneSsoHandler;
 import com.umeng.socialize.sso.UMQQSsoHandler;
@@ -85,7 +86,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private String[] type = { "admin", "all" };// admin:只显示楼主；all:显示所有
 	private String key = type[1];
 
-	private CustomShareBoard shareBoard;// 自定义分享框
+//	private CustomShareBoard shareBoard;// 自定义分享框
 
 	// 回复时所要用的一些东西，由web部分通过java接口传值
 	private int mUserId;// 当前用户的id
@@ -111,7 +112,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private AsyncHttpClient mClient;
 	private SlidingMenu mySlidingMenu;
 	private MCSildingMenu menu;
-	 private com.umeng.socialize.controller.UMSocialService mShareService;
+	private com.umeng.socialize.controller.UMSocialService mShareService;
 
 	private static final int LOGIN = 0;
 	private static final int GETPIC = 1;
@@ -134,7 +135,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mApplication = MCkuai.getInstance();
 		mClient = mApplication.mClient;
 		mHandler.sendMessageDelayed(mHandler.obtainMessage(5), 1000);
-		shareBoard = new CustomShareBoard(this, mShareService, post);
+		mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
+//		shareBoard = new CustomShareBoard(this, mShareService, post);
 	}
 
 	@Override
