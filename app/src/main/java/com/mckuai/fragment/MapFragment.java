@@ -30,6 +30,7 @@ import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
@@ -61,6 +62,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
     private String mapType = null;
     private String orderFiled = null;
     private ArrayList<Map> map;
+    private TextView tit;
 
     private static final String TAG = "MapFragment";
 
@@ -71,6 +73,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_map, container, false);
         }
+        tit = MainActivity.gettitle();
         application = MCkuai.getInstance();
         return view;
     }
@@ -92,6 +95,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
             showData();
         } else {
             cancleLodingToast(false);
+            if (mp_r1 != null && mp_r1.getVisibility() == view.VISIBLE) {
+                hideTypeLayout();
+            }
         }
     }
 
@@ -99,6 +105,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
     public void onPause() {
         super.onPause();
         cancleLodingToast(false);
+
     }
 
     private void showData() {
@@ -115,6 +122,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
     }
 
     protected void initView() {
+
         map_ed = (EditText) view.findViewById(R.id.map_ed);
         rb_map = (Button) view.findViewById(R.id.rb_map);
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
@@ -181,9 +189,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
                 break;
             case R.id.rb_classification:
                 l1.setVisibility(View.GONE);
-//                tv_title.setText("地图分类");
+                tit.setText("地图分类");
                 showTypeLayout();
-//                tv_title.setText("��ͼ����");
                 break;
             case R.id.rb_mymap:
                 intent = new Intent(getActivity(), MymapActivity.class);
