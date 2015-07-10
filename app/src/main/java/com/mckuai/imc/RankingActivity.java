@@ -99,7 +99,7 @@ public class RankingActivity extends BaseActivity implements AdapterView.OnItemC
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     if (null != map_ed.getText() && 0 < map_ed.getText().toString().trim().length()) {
                         searchContext = map_ed.getText().toString();
-//                        search();
+                        search();
                     } else {
                         Toast.makeText(RankingActivity.this, "不能搜索空内容!", Toast.LENGTH_SHORT).show();
                     }
