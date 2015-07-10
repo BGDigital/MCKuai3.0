@@ -23,10 +23,12 @@ public class MCGameEditer {
 
 //    private final  String fileName = "/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/level.dat";
     private String fileName;
+    private OptionUntil optionUntil;
 
     public MCGameEditer(String mapDir){
         fileName = mapDir+"/level.dat";
         loadData();
+        optionUntil = new OptionUntil("/storage/sdcard0/games/com.mojang/minecraftpe/");
     }
 
     public MCGameEditer(){
@@ -35,6 +37,7 @@ public class MCGameEditer {
     public void setMapDir(String mapDir){
         fileName = mapDir + "/level.dat";
         loadData();
+        optionUntil = new OptionUntil("/storage/sdcard0/games/com.mojang/minecraftpe/");
     }
 
     public boolean hasProfile(){
@@ -133,14 +136,6 @@ public class MCGameEditer {
         }
     }
 
-    public boolean getThirdView(){
-        if (null != level && null != level.getPlayer()){
-            Player player = level.getPlayer();
-            return true;
-        }
-        return false;
-    }
-
     public List<InventorySlot> getInventory(){
         if (null != level && null != level.getPlayer()){
             return  level.getPlayer().getInventory();
@@ -159,5 +154,14 @@ public class MCGameEditer {
 
     public Level getLevel() {
         return level;
+    }
+
+    public boolean isThirdPerson(){
+        if (null != optionUntil && optionUntil.isValid()){
+            return optionUntil.isThirdPerson();
+        }
+        else {
+            return false;
+        }
     }
 }
