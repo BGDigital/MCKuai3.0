@@ -56,7 +56,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     protected void showData() {
         downloadMap = mapManager.getDownloadMaps();
         if (downloadMap == null) {
-            showNotification(1, "请下载地图", R.id.maproot);
+            showNotification(1, "请下载地图", R.id.root);
         } else {
             adapter = new MymapAdapter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);

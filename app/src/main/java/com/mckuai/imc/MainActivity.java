@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private int lastPosition = 0;
     private MCkuai application;
 
-    private TextView tv_titlebar_title;
+    private static TextView tv_titlebar_title;
     private ImageView btn_titlebar_left;
     private ImageView btn_titlebar_right;
     private static Spinner sp_titlebar_spinner;
@@ -371,5 +371,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     {
         menu.callOnResumeForUpdate();
         menu.checkUpdate(true);
+    }
+    public static TextView gettitle(){
+        return tv_titlebar_title;
     }
 }

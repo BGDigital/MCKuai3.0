@@ -222,6 +222,7 @@ public class RankingActivity extends BaseActivity implements View.OnClickListene
                     if (!mapList.getData().isEmpty()) {
 //                        cancleLodingToast(true);
                         showData();
+                        map_ed.setVisibility(View.GONE);
                         return;
                     } else {
                         showNotification(0, "没有排行信息", R.id.r_l1);

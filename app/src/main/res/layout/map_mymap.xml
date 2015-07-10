@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,9 +11,9 @@
         android:id="@+id/maproot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/frame_darkgray"
         android:orientation="horizontal"
-        android:padding="@dimen/item_divider_height"
-        android:background="@color/frame_darkgray">
+        android:padding="@dimen/item_divider_height">
 
         <Button
             android:id="@+id/go_map"
@@ -72,6 +73,28 @@
         android:id="@+id/map_mymap_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="@dimen/item_height_interval"
-        android:divider="@color/frame_darkgray"></ListView>
+        android:divider="@color/frame_darkgray"
+        android:dividerHeight="@dimen/item_height_interval"></ListView>
+
+    <RelativeLayout
+        android:id="@+id/mymapl1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/font_red"
+            android:text="@string/delete"
+            android:textColor="@color/font_white" />
+
+        <ListView
+            android:id="@+id/map_delete_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/delete"></ListView>
+    </RelativeLayout>
 </LinearLayout>
