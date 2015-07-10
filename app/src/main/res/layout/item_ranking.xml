@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mymapr1"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:id="@+id/mymapr1">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
+        android:paddingBottom="@dimen/item_padTB"
         android:paddingLeft="@dimen/item_padleft"
-        android:paddingTop="@dimen/item_padTB"
         android:paddingRight="20dp"
-        android:paddingBottom="@dimen/item_padTB">
+        android:paddingTop="@dimen/item_padTB">
 
         <ImageView
             android:id="@+id/image"
@@ -20,14 +20,15 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:lines="1"
-            android:layout_toLeftOf="@id/MasterLayout01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/image"
             android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/MasterLayout01"
             android:layout_toRightOf="@id/image"
-            android:text="地图名字" />
+            android:lines="1"
+            android:text="地图名字"
+            android:textSize="@dimen/font_big" />
 
 
         <TextView
@@ -38,7 +39,8 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/image"
             android:text="更新时间："
-            android:textColor="@color/secondary" />
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
 
         <TextView
             android:id="@+id/tv_category"
@@ -50,7 +52,8 @@
             android:layout_toRightOf="@+id/image"
             android:gravity="center_vertical"
             android:text="类别"
-            android:textColor="@color/font_radio_hint_checked" />
+            android:textColor="@color/font_radio_hint_checked"
+            android:textSize="@dimen/font_small" />
 
         <com.mckuai.widget.MasterLayout
             android:id="@+id/MasterLayout01"
@@ -69,7 +72,8 @@
             android:layout_alignRight="@id/MasterLayout01"
             android:gravity="center_horizontal"
             android:text="seze"
-            android:textColor="@color/secondary" />
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <TextView

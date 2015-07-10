@@ -30,7 +30,8 @@
         android:layout_toLeftOf="@id/rbtn_delete"
         android:layout_toRightOf="@id/image"
         android:lines="1"
-        android:text="地图名字" />
+        android:text="地图名字"
+        android:textSize="@dimen/font_big" />
 
 
     <TextView
@@ -41,7 +42,8 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/image"
         android:text="更新时间："
-        android:textColor="@color/secondary" />
+        android:textColor="@color/secondary"
+        android:textSize="@dimen/font_small" />
 
     <TextView
         android:id="@+id/tv_category"
@@ -53,7 +55,8 @@
         android:layout_toRightOf="@id/image"
         android:gravity="center_vertical"
         android:text="类别"
-        android:textColor="@color/font_radio_hint_checked" />
+        android:textColor="@color/font_radio_hint_checked"
+        android:textSize="@dimen/font_small" />
 
 
     <TextView
@@ -66,5 +69,6 @@
         android:layout_alignRight="@id/rbtn_delete"
         android:gravity="center_horizontal"
         android:text="seze"
-        android:textColor="@color/secondary" />
+        android:textColor="@color/secondary"
+        android:textSize="@dimen/font_small" />
 </RelativeLayout>

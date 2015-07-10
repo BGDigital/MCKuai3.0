@@ -42,7 +42,8 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/image"
             android:text="作者名"
-            android:textColor="@color/secondary" />
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
 
         <TextView
             android:id="@+id/tv_category"
@@ -54,7 +55,8 @@
             android:layout_toRightOf="@id/image"
             android:gravity="center_vertical"
             android:text="类别"
-            android:textColor="@color/secondary" />
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
 
         <TextView
             android:id="@+id/tx_times"
@@ -67,7 +69,8 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="时间"
-            android:textColor="@color/secondary" />
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
     </RelativeLayout>
 
     <com.mckuai.widget.ProgressButton
@@ -85,7 +88,9 @@
         android:layout_height="match_parent"
         android:layout_above="@id/dl"
         android:layout_below="@+id/md_r1"
-        android:layout_marginTop="@dimen/details_divider">
+        android:layout_marginTop="@dimen/details_divider"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <ScrollView
             android:id="@+id/sv_v"
@@ -122,14 +127,14 @@
                     android:gravity="center_vertical"
                     android:text="介绍"
                     android:textColor="@color/background_green"
-                    android:textSize="@dimen/font_dimen_title" />
+                    android:textSize="@dimen/font_normal" />
 
                 <TextView
                     android:id="@+id/tv_tx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="@dimen/font_dimen_title" />
+                    android:textSize="@dimen/font_normal" />
             </LinearLayout>
 
         </ScrollView>

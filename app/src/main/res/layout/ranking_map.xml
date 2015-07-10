@@ -14,12 +14,15 @@
             android:imeOptions="actionSearch"
             android:singleLine="true"
             android:visibility="gone" />
-    <ListView
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/ranking_lv"-->
+        <!--android:dividerHeight="@dimen/lv_dividerHeight"-->
+        <!--android:divider="@color/frame_darkgray">-->
+    <!--</ListView>-->
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/ranking_lv"
-        android:dividerHeight="@dimen/lv_dividerHeight"
-        android:divider="@color/frame_darkgray">
-
-    </ListView>
+        android:layout_height="wrap_content"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 </LinearLayout>

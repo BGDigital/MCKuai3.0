@@ -159,7 +159,7 @@ public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
                     }
                     String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                     String url = clickedMap.getSavePath();
-                    url=URLEncoder.encode(url);
+//                    url=URLEncoder.encode(url);
                     Log.e(TAG, "downloaddir:" + downloadDir);
                     Log.e(TAG, "url:" + url);
 

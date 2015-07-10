@@ -126,7 +126,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mApplication = MCkuai.getInstance();
 		mClient = mApplication.mClient;
 		mHandler.sendMessageDelayed(mHandler.obtainMessage(5), 1000);
-		//shareBoard = new CustomShareBoard(this, mShareService, post);
+//		shareBoard = new CustomShareBoard(this, mShareService, post);
 	}
 
 	@Override

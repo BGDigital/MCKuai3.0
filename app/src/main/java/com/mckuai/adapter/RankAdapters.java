@@ -61,7 +61,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_map, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         final MasterLayout btn = holder.MasterLayout01;
         view.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +162,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     }
                     String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                     String url = clickedMap.getSavePath();
-                    url = URLEncoder.encode(url);
+//                    url = URLEncoder.encode(url);
                     Log.e(TAG, "downloaddir:" + downloadDir);
                     Log.e(TAG, "url:" + url);
 
