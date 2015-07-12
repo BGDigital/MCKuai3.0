@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Iterator;
 
 import org.spout.nbt.*;
 
@@ -161,7 +162,7 @@ public final class NBTConverter {
 		return player;
 	}
 
-	public static CompoundTag writePlayer(Player player, String name) {
+	public static CompoundTag writePlayer(Player player, String name,boolean  littleEndian) {
 		List<Tag> tags = new ArrayList<Tag>();
 		/* shared properties with all entities */
         if (null != player) {
@@ -202,6 +203,10 @@ public final class NBTConverter {
             if (player.getRiding() != null) {
                 tags.add(writeEntity(player.getRiding(), "Riding"));
             }
+
+			if (littleEndian){
+				tags.add(new IntTag("id",EntityType.PLAYER.getId()));
+			}
 
 		/* all level.dat tags are sorted for some reason */
 
@@ -295,7 +300,7 @@ public final class NBTConverter {
         tags.add(new IntTag("LimitedWorldOriginZ",level.getLimitedworldoriginz()));
 		tags.add(new IntTag("Platform", level.getPlatform()));
         if (null != level.getPlayer()) {
-            tags.add(writePlayer(level.getPlayer(), "Player"));
+            tags.add(writePlayer(level.getPlayer(), "Player",true));
         }
 		tags.add(new LongTag("RandomSeed", level.getRandomSeed()));
 		tags.add(new LongTag("SizeOnDisk", level.getSizeOnDisk()));
@@ -480,6 +485,8 @@ public final class NBTConverter {
 		return entity;
 	}
 
+
+
 	public static TileEntity createTileEntityById(String id) { 
 		return TileEntityStoreLookupService.createTileEntityById(id);
 	}
@@ -554,6 +561,8 @@ public final class NBTConverter {
 	}
 
 	public static Entity readSingleEntity(CompoundTag entityTag) {
+		Iterator iterator = entityTag.getValue().iterator();
+
 		for (Tag t: entityTag.getValue()) {
 			String name = t.getName();
 			if (name.equals("id")) {
@@ -563,5 +572,18 @@ public final class NBTConverter {
 		}
 		return null;
 	}
+
+	public static TileEntity readSingleTileEntity(CompoundTag entityTag){
+		Iterator iterator = entityTag.getValue().iterator();
+		for (Tag t: entityTag.getValue()) {
+			String name = t.getName();
+			if (name.equals("id")) {
+				TileEntity tileEntity = readTileEntity(((StringTag) t).getValue(), entityTag);
+				return tileEntity;
+			}
+		}
+		return null;
+	}
+
 
 }

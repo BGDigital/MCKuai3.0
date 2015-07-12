@@ -11,13 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.InventorySlot;
+import com.mckuai.entity.Player;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.GameEditer;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -44,7 +47,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private int mode;
     private String time;
-    private boolean thirdViewEnable;
+    private boolean thirdPerson = false;
     private List<InventorySlot> inventorySlots;
 
     private String mapDir;
@@ -66,6 +69,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         //mapManager = new MCMapManager();
         //editer = new GameEditer();
+        Player player;
+        File file = new File("/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/db");
+        if (null != file && file.exists() && file.isDirectory()){
+            player = GameEditer.getPlayer(file);
+        }
     }
 
     @Override
@@ -150,8 +158,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             mode = gameEditer.getGameMode();
             time = gameEditer.getTime();
             mapName = mapManager.getCurrentMapName();
-
             inventorySlots = gameEditer.getInventory();
+            thirdPerson = gameEditer.isThirdPerson();
         }
 
     }
@@ -170,7 +178,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图" : mapName);
 
         //第三人称视角
-        if (thirdViewEnable){
+        if (thirdPerson){
             tv_thirdView.setText("已开启");
             iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_enable);
         }
@@ -232,8 +240,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void switchView(){
-        gameEditer.switchThirdView();
-        thirdViewEnable = !thirdViewEnable;
+        thirdPerson = !thirdPerson;
+        gameEditer.setThirdPerson(thirdPerson);
         updateWorldInfo();
     }
 
@@ -282,6 +290,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             showMessage("警告","你还未安装游戏，不能修改游戏内容！");
             return;
         }
+        mapManager.closeDB();
 
     }
 

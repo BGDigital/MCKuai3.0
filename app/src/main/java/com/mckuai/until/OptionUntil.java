@@ -76,9 +76,14 @@ public class OptionUntil {
         return  1 == game_thirdperson;
     }
 
-    public boolean setThirdPerson(boolean isThirdPerson){
-        game_thirdperson = true == isThirdPerson ? 1:0;
-        return saveToFile();
+    public boolean setThirdPerson(boolean view){
+        if (view != this.isThirdPerson()) {
+            game_thirdperson = true == view ? 1 : 0;
+            return saveToFile();
+        }
+        else {
+            return  true;
+        }
     }
 
     private void loadFromFile(){
