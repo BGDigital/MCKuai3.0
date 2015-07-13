@@ -6,8 +6,12 @@ import com.mckuai.InventorySlot;
 import com.mckuai.Level;
 import com.mckuai.entity.Player;
 import com.mckuai.io.LevelDataConverter;
+import com.mckuai.io.db.DB;
+import com.mckuai.io.db.DBKey;
+import com.mckuai.io.db.Iterator;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,6 +89,7 @@ public class MCGameEditer {
     }
 
 
+
     private boolean saveData(){
     File file = new File(fileName);
         if (!file.exists()){
@@ -147,9 +152,8 @@ public class MCGameEditer {
 
     }
 
-    public void switchThirdView(){
-        level.setSpawnMobs(!level.getSpawnMobs());
-        saveData();
+    public void setThirdPerson(boolean enable){
+        optionUntil.setThirdPerson(enable);
     }
 
     public Level getLevel() {
@@ -164,4 +168,5 @@ public class MCGameEditer {
             return false;
         }
     }
+
 }

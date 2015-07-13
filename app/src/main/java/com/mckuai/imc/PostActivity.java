@@ -136,7 +136,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mClient = mApplication.mClient;
 		mHandler.sendMessageDelayed(mHandler.obtainMessage(5), 1000);
 		mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
-//		shareBoard = new CustomShareBoard(this, mShareService, post);
 	}
 
 	@Override

@@ -88,7 +88,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@drawable/map_survival" />
+                android:background="@color/background_azure" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@drawable/map_decipt" />
+                android:background="@color/background_azure" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -134,7 +134,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@drawable/map_parkour" />
+                android:background="@color/background_azure" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,7 +159,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@drawable/map_architecture" />
+                android:background="@color/background_azure" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -183,7 +183,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@drawable/map_pvp" />
+                android:background="@color/background_azure" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -208,7 +208,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@drawable/map_totle" />
+                android:background="@color/background_azure" />
 
             <TextView
                 android:layout_width="wrap_content"

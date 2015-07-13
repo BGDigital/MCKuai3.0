@@ -149,13 +149,16 @@ public class MCMapManager {
             WorldItem item = new WorldItem(file);
             worldItemList.add(item);
         }
+        files = null;
         return  dirs;
     }
 
     private long getLastPlayTime(String path){
         path = path + "/level.dat";
         File file = new File(path);
-        return file.lastModified();
+        long time = file.lastModified();
+        file = null;
+        return time;
     }
 
     private void insertNewGameMap(WorldItem world){

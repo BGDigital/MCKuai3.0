@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class InventorySlot  implements Serializable{
 
 	private byte slot;
-
 	private ItemStack contents;
 
 	public InventorySlot(byte slot, ItemStack contents) {
