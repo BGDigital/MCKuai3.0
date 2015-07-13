@@ -55,6 +55,14 @@
 
 
     </LinearLayout>
+    <EditText
+        android:id="@+id/map_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="搜索"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:visibility="gone" />
 
     <!--<ListView-->
     <!--android:id="@+id/map_ls"-->
@@ -88,7 +96,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_azure" />
+                android:background="@drawable/map_survival" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,7 +119,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_azure" />
+                android:background="@drawable/map_decipt" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -134,7 +142,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_azure" />
+                android:background="@drawable/map_parkour" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,7 +167,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_azure" />
+                android:background="@drawable/map_architecture" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -183,7 +191,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_azure" />
+                android:background="@drawable/map_pvp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -208,7 +216,7 @@
             <ImageView
                 android:layout_width="@dimen/btn_hw"
                 android:layout_height="@dimen/btn_hw"
-                android:background="@color/background_azure" />
+                android:background="@drawable/map_totle" />
 
             <TextView
                 android:layout_width="wrap_content"

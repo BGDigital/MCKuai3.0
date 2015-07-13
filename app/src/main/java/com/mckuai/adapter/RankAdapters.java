@@ -35,6 +35,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
     private MCMapManager mapManager;
     private DLManager manager;
     private Context mContext;
+    private boolean isPaihang = false;
 
 
     public interface OnItemClickListener {
@@ -96,11 +97,16 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             holder.tv_category.setText(leixing);
             holder.tv_size.setText(map.getResSize());
             holder.tv_time.setText(map.getInsertTime());
-            holder.rk_tv.setText((position + 1) + "");
-            if (position == 0) {
-                holder.rk_tv.setBackgroundResource(R.drawable.map_one);
+            if (isPaihang == true) {
+                holder.rk_tv.setVisibility(View.VISIBLE);
+                holder.rk_tv.setText((position + 1) + "");
+                if (position == 0) {
+                    holder.rk_tv.setBackgroundResource(R.drawable.map_one);
+                } else {
+                    holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+                }
             } else {
-                holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+                holder.rk_tv.setVisibility(View.GONE);
             }
             holder.MasterLayout01.setTag(map);
         }
@@ -235,5 +241,10 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             //Toast.makeText(mContext, "Error", LENGTH_SHORT).show();
 
         }
+    }
+
+    public void setpaihang(boolean isChanged) {
+        isPaihang = isChanged;
+        notifyDataSetChanged();
     }
 }

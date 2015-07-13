@@ -76,7 +76,6 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         btn_showOwner.setVisibility(View.GONE);
         delete_map = (Button) findViewById(R.id.delete_map);
         btn_left.setOnClickListener(this);
-        btn_right.setOnClickListener(this);
         go_map.setOnClickListener(this);
         leave_map.setOnClickListener(this);
         delete_map.setOnClickListener(this);
@@ -89,16 +88,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
             case R.id.btn_left:
                 finish();
                 break;
-            //根据输入名搜索地图
-            case R.id.btn_right:
-                map_ed.setVisibility(View.VISIBLE);
-                if (0 < map_ed.getText().length()) {
-                    searchContext = map_ed.getText().toString().trim();//trim() 表示空格
-                    search();
-                } else {
-                    Toast.makeText(this, "不能为空", Toast.LENGTH_SHORT).show();
-                }
-                break;
+
             case R.id.go_map:
                 intent = new Intent(this, MapimportActivity.class);
                 startActivity(intent);
@@ -116,7 +106,4 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void search() {
-
-    }
 }

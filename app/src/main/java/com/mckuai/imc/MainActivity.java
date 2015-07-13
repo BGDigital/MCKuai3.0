@@ -1,7 +1,9 @@
 package com.mckuai.imc;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 import slidingmenu.SlidingMenu;
 
 
-public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener,View.OnClickListener {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private static MainActivity instance;
 
     private ViewPager vp;
@@ -55,17 +57,23 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private MCkuai application;
 
     private static TextView tv_titlebar_title;
-    private ImageView btn_titlebar_left;
-    private ImageView btn_titlebar_right;
+    private static ImageView btn_titlebar_left;
+    private static ImageView btn_titlebar_right;
     private static Spinner sp_titlebar_spinner;
 
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
+    private static Drawable drawable_left_button;
 
     private ArrayList<BaseFragment> mList;
-    private boolean isFragmentChanged=false;
+    private boolean isFragmentChanged = false;
+    private static boolean isChange = false;
+
+    private static View.OnClickListener leftButtonListener_myMaps;
+    private static View.OnClickListener rightButtonListener_myMaps;
 
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -88,25 +96,34 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         application.mCache.saveCacheFile();
     }
 
-    private void initView(){
-        vp = (ViewPager) findViewById(R.id.pager);
-        img1 = (TextView)findViewById(R.id.btn_1);
-        img2 = (TextView)findViewById(R.id.btn_2);
-        img3 = (TextView)findViewById(R.id.btn_3);
-        img4 = (TextView)findViewById(R.id.btn_4);
-        tv1 = (TextView)findViewById(R.id.tv_1);
-        tv2 = (TextView)findViewById(R.id.tv_2);
-        tv3 = (TextView)findViewById(R.id.tv_3);
-        tv4 = (TextView)findViewById(R.id.tv_4);
-        ll1 = (LinearLayout)findViewById(R.id.rb1);
-        ll2 = (LinearLayout)findViewById(R.id.rb2);
-        ll3 = (LinearLayout)findViewById(R.id.rb3);
-        ll4 = (LinearLayout)findViewById(R.id.rb4);
+    public static void setOnclickListener(View.OnClickListener leftButtonListener, View.OnClickListener rightButtonListener) {
+        if (null != leftButtonListener) {
+            leftButtonListener_myMaps = leftButtonListener;
+        }
+        if (null != rightButtonListener) {
+            rightButtonListener_myMaps = rightButtonListener;
+        }
+    }
 
-        tv_titlebar_title = (TextView)findViewById(R.id.tv_titlebar_title);
-        btn_titlebar_left = (ImageView)findViewById(R.id.btn_titlebar_left);
-        btn_titlebar_right = (ImageView)findViewById(R.id.btn_titlebar_right);
-        sp_titlebar_spinner = (Spinner)findViewById(R.id.sp_titlebar_type);
+    private void initView() {
+        vp = (ViewPager) findViewById(R.id.pager);
+        img1 = (TextView) findViewById(R.id.btn_1);
+        img2 = (TextView) findViewById(R.id.btn_2);
+        img3 = (TextView) findViewById(R.id.btn_3);
+        img4 = (TextView) findViewById(R.id.btn_4);
+        tv1 = (TextView) findViewById(R.id.tv_1);
+        tv2 = (TextView) findViewById(R.id.tv_2);
+        tv3 = (TextView) findViewById(R.id.tv_3);
+        tv4 = (TextView) findViewById(R.id.tv_4);
+        ll1 = (LinearLayout) findViewById(R.id.rb1);
+        ll2 = (LinearLayout) findViewById(R.id.rb2);
+        ll3 = (LinearLayout) findViewById(R.id.rb3);
+        ll4 = (LinearLayout) findViewById(R.id.rb4);
+
+        tv_titlebar_title = (TextView) findViewById(R.id.tv_titlebar_title);
+        btn_titlebar_left = (ImageView) findViewById(R.id.btn_titlebar_left);
+        btn_titlebar_right = (ImageView) findViewById(R.id.btn_titlebar_right);
+        sp_titlebar_spinner = (Spinner) findViewById(R.id.sp_titlebar_type);
         btn_titlebar_right.setImageResource(R.drawable.btn_post_publish);
         application.setSpinner(sp_titlebar_spinner);
 
@@ -114,15 +131,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         ll2.setOnClickListener(this);
         ll3.setOnClickListener(this);
         ll4.setOnClickListener(this);
-       // btn_titlebar_right.setOnClickListener(this);
+        // btn_titlebar_right.setOnClickListener(this);
         btn_titlebar_left.setOnClickListener(this);
         application.setBtn_publish(btn_titlebar_right);
         btn_titlebar_left.setOnClickListener(this);
-
+        btn_titlebar_right.setOnClickListener(this);
         changeCheckedButton(0);
     }
 
-    private void showUser(){
+    private void showUser() {
         if (application.isLogin()) {
             ImageLoader loader = ImageLoader.getInstance();
             String userCover = application.mUser.getHeadImg();
@@ -130,13 +147,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             if (null != userCover && 10 < userCover.length()) {
                 loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left, options);
             }
-        }
-        else {
+        } else {
             btn_titlebar_left.setBackgroundResource(R.drawable.background_user_cover_default);
         }
     }
 
-    private void initPage(){
+    private void initPage() {
         mList = new ArrayList<>(4);
         mList.add(new GameEditerFragment());
         mList.add(new MapFragment());
@@ -146,8 +162,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         vp.setOnPageChangeListener(this);
     }
 
-    private void initSlidingMenu()
-    {
+    private void initSlidingMenu() {
         menu = new MCSildingMenu();
         int width = getWindowManager().getDefaultDisplay().getWidth();
         width = (int) (width / 3.5);
@@ -209,14 +224,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     }
 
 
-
     @Override
     protected boolean onBackKeyPressed() {
-         if (isShowingMenu)
-            {
-                mySlidingMenu.toggle();
-                return true;
-            }
+        if (isShowingMenu) {
+            mySlidingMenu.toggle();
+            return true;
+        }
         showAlert("退出", "是否退出麦块？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,7 +241,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 finish();
             }
         });
-        return  true;
+        return true;
     }
 
     @Override
@@ -248,15 +261,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     }
 
-    private void changeCheckedButton(int position){
+    private void changeCheckedButton(int position) {
         setUnChecked();
         setChecked(position);
         application.fragmentIndex = position;
     }
 
-    private void setUnChecked(){
-        switch (lastPosition){
-            case  1:
+    private void setUnChecked() {
+        switch (lastPosition) {
+            case 1:
                 tv2.setEnabled(true);
                 img2.setEnabled(true);
                 ll2.setEnabled(true);
@@ -280,14 +293,16 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
         }
     }
-    private void setChecked(int position){
+
+    private void setChecked(int position) {
         lastPosition = position;
-        switch (position){
+        switch (position) {
             case 1:
-                 tv_titlebar_title.setText("地图");
+                tv_titlebar_title.setText("地图");
                 tv2.setEnabled(false);
                 img2.setEnabled(false);
                 ll2.setEnabled(false);
+
                 break;
             case 2:
                 tv_titlebar_title.setText("联机");
@@ -314,35 +329,42 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rb1:
                 application.fragmentIndex = 0;
-                vp.setCurrentItem(0,false);
+                vp.setCurrentItem(0, false);
                 break;
             case R.id.rb2:
                 application.fragmentIndex = 1;
-                vp.setCurrentItem(1,false);
+                vp.setCurrentItem(1, false);
                 break;
             case R.id.rb3:
                 application.fragmentIndex = 2;
-                vp.setCurrentItem(2,false);
+                vp.setCurrentItem(2, false);
                 break;
             case R.id.rb4:
                 application.fragmentIndex = 3;
-                vp.setCurrentItem(3,false);
+                vp.setCurrentItem(3, false);
                 break;
             case R.id.btn_titlebar_left:
-                if (!application.isLogin()){
-                    Intent intent = new Intent(this,LoginActivity.class);
-                    startActivityForResult(intent,1);
-                }
-                else {
-                    mySlidingMenu.toggle();
+                if (isChange && leftButtonListener_myMaps != null) {
+                    leftButtonListener_myMaps.onClick(v);
+                } else {
+                    if (!application.isLogin()) {
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        startActivityForResult(intent, 1);
+                    } else {
+                        mySlidingMenu.toggle();
+                    }
                 }
                 break;
             case R.id.btn_titlebar_right:
-                Intent intent = new Intent(this,PublishPostActivity.class);
-                startActivity(intent);
+                if (isChange && rightButtonListener_myMaps != null) {
+                    rightButtonListener_myMaps.onClick(v);
+                } else {
+                    Intent intent = new Intent(this, PublishPostActivity.class);
+                    startActivity(intent);
+                }
                 break;
 
         }
@@ -351,28 +373,46 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (1 == requestCode && resultCode == RESULT_OK){
+        if (1 == requestCode && resultCode == RESULT_OK) {
             showUser();
         }
     }
 
-    Handler mHandler = new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-           switch (msg.what){
-               case 1:
-                   checkUpdate();
-                   break;
-           }
+            switch (msg.what) {
+                case 1:
+                    checkUpdate();
+                    break;
+            }
         }
     };
 
-    private void checkUpdate()
-    {
+    private void checkUpdate() {
         menu.callOnResumeForUpdate();
         menu.checkUpdate(true);
     }
-    public static TextView gettitle(){
+
+    public static TextView gettitle() {
         return tv_titlebar_title;
     }
+
+    public static void setLeftButtonView(boolean isChanged) {
+        isChange = isChanged;
+        if (isChanged == true) {
+            if (drawable_left_button == null) {
+                drawable_left_button = btn_titlebar_left.getBackground();
+            }
+            btn_titlebar_left.setBackgroundColor(0x00000000);
+            btn_titlebar_left.setImageResource(R.drawable.btn_back);
+            btn_titlebar_right.setImageResource(R.drawable.btn_search_selector);
+            btn_titlebar_right.setVisibility(View.VISIBLE);
+        } else {
+            btn_titlebar_right.setVisibility(View.GONE);
+            btn_titlebar_left.setBackgroundDrawable(drawable_left_button);
+            btn_titlebar_left.setImageResource(0x00000000);
+        }
+    }
+
 }

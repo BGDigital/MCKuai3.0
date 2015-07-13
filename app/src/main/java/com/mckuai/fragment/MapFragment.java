@@ -7,16 +7,20 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -25,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.MapAdapter;
+import com.mckuai.adapter.RankAdapters;
 import com.mckuai.adapter.mapadapters;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
@@ -42,20 +47,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MapFragment extends BaseFragment implements View.OnClickListener, mapadapters.OnItemClickListener, mapadapters.OnMapDownloadListener {
+public class MapFragment extends BaseFragment implements View.OnClickListener, RankAdapters.OnItemClickListener, RankAdapters.OnMapDownloadListener {
     private View view;
+    private String searchContext;//输入内容
     private Context mContent;
+    //    private ImageView btn_left, btn_right;
     private Button rb_map, rb_classification, rb_mymap;
     private EditText map_ed;
-    private TextView tv_title;
+    private TextView tv_titles;
     //    private ListView map_ls;
     private UltimateRecyclerView urv_mapList;
     private RelativeLayout mp_r1;
     private MapBean mapList;
     private PageInfo page;
     private LinearLayout l1, cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
-    private MapAdapter adapter;
-    private mapadapters mapadapters;
+    //    private MapAdapter adapter;
+    private RankAdapters mapadapters;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private MCkuai application;
@@ -63,8 +70,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
     private String orderFiled = null;
     private ArrayList<Map> map;
     private TextView tit;
-
+    private RelativeLayout hidetitle;
+    private boolean isChanged = false;
     private static final String TAG = "MapFragment";
+    private View.OnClickListener leftButtonListener_myMaps;
+    private View.OnClickListener rightButtonListener_myMaps;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,8 +132,17 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
     }
 
     protected void initView() {
-
         map_ed = (EditText) view.findViewById(R.id.map_ed);
+        map_ed.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    sousuo();
+                    return true;
+                }
+                return false;
+            }
+        });
         rb_map = (Button) view.findViewById(R.id.rb_map);
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
@@ -132,7 +151,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
         urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         urv_mapList.setLayoutManager(manager);
-        mapadapters = new mapadapters();
+        mapadapters = new RankAdapters();
         mapadapters.setOnItemClickListener(this);
         mapadapters.setOnMapDownloadListener(this);
         urv_mapList.setAdapter(mapadapters);
@@ -155,7 +174,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
                 loadData();
             }
         });
-        tv_title = (TextView) view.findViewById(R.id.tv_title);
         client = application.mClient;
         l1 = (LinearLayout) view.findViewById(R.id.l1);
         mp_r1 = (RelativeLayout) view.findViewById(R.id.mp_r1);
@@ -165,10 +183,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
         cf_l4 = (LinearLayout) view.findViewById(R.id.cf_l4);
         cf_l5 = (LinearLayout) view.findViewById(R.id.cf_l5);
         cf_l6 = (LinearLayout) view.findViewById(R.id.cf_l6);
+//        btn_right = (ImageView) view.findViewById(R.id.btn_right);
+//        btn_right.setVisibility(View.VISIBLE);
 //        btn_left = (ImageView) view.findViewById(R.id.btn_left);
-//        btn_right = (ImageButton) view.findViewById(R.id.btn_right);
-//        btn_left.setOnClickListener(this);
 //        btn_right.setOnClickListener(this);
+//        btn_left.setOnClickListener(this);
         rb_map.setOnClickListener(this);
         rb_classification.setOnClickListener(this);
         rb_mymap.setOnClickListener(this);
@@ -178,14 +197,42 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
         cf_l4.setOnClickListener(this);
         cf_l5.setOnClickListener(this);
         cf_l6.setOnClickListener(this);
+        leftButtonListener_myMaps = new onTitleButtonClickListener();
+        rightButtonListener_myMaps = new onTitleButtonClickListener();
+        MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
+    }
+
+    class onTitleButtonClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_titlebar_left:
+                    hideTypeLayout();
+                    MainActivity.setLeftButtonView(false);
+                    map_ed.setVisibility(View.GONE);
+                    mapadapters.setpaihang(false);
+                    break;
+                case R.id.btn_titlebar_right:
+                    if (map_ed.getVisibility() == View.GONE) {
+                        map_ed.setVisibility(View.VISIBLE);
+                    } else {
+                        sousuo();
+                    }
+                    break;
+            }
+        }
     }
 
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
-                intent = new Intent(getActivity(), RankingActivity.class);
-                getActivity().startActivity(intent);
+//                intent = new Intent(getActivity(), RankingActivity.class);
+//                getActivity().startActivity(intent);
+                l1.setVisibility(View.GONE);
+                tit.setText("地图排行");
+                MainActivity.setLeftButtonView(true);
+                mapadapters.setpaihang(true);
                 break;
             case R.id.rb_classification:
                 l1.setVisibility(View.GONE);
@@ -219,12 +266,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
             case R.id.cf_l6:
                 totle();
                 break;
-            case R.id.btn_left:
-
-                break;
-            case R.id.btn_right:
-
-                break;
             default:
                 break;
         }
@@ -241,19 +282,42 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
         mp_r1.setVisibility(View.GONE);
     }
 
+    private String getUrl() {
+        String url = getString(R.string.interface_domainName);
+        if (null != searchContext) {
+            //搜索
+            url += getString(R.string.interface_map_search);
+        } else {
+            url += getString(R.string.interface_map);
+        }
+        return url;
+    }
+
+    private RequestParams getparams() {
+        RequestParams params = new RequestParams();
+        if (null != searchContext) {
+            params.put("type", "map");
+            params.put("key", searchContext);
+        } else {
+            params.put("kinds", mapType);
+            params.put("orderFiled", "DownNum");
+        }
+        return params;
+    }
+
     protected void loadData() {
-        final RequestParams params = new RequestParams();
-        final String url = getString(R.string.interface_domainName) + getString(R.string.interface_map);
+        final RequestParams params = getparams();
+        final String url = getUrl();
         if (mapList == null) {
             mapList = new MapBean();
         }
         params.put("page", mapList.getPageBean().getPage() + 1 + "");
-        if (null != mapType) {
-            params.put("kinds", mapType);
-        }
-        if (null != orderFiled) {
-            params.put("orderField", orderFiled);
-        }
+//        if (null != mapType) {
+//            params.put("kinds", mapType);
+//        }
+//        if (null != orderFiled) {
+//            params.put("orderField", orderFiled);
+//        }
         Log.e("url:", url + "&" + params.toString());
         client.get(url, params, new JsonHttpResponseHandler() {
 
@@ -286,6 +350,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
                     }
                     if (!mapList.getData().isEmpty()) {
                         cancleLodingToast(true);
+                        map_ed.setVisibility(View.GONE);
                         showData();
                         return;
                     } else {
@@ -381,5 +446,17 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, m
     @Override
     public void afterMapDownload() {
 
+    }
+
+    public void sousuo() {
+        if (null != map_ed.getText() && 0 < map_ed.getText().toString().trim().length()) {
+            searchContext = map_ed.getText().toString();
+            if (mapList != null && mapList.getPageBean() != null) {
+                mapList.getPageBean().setPage(0);
+            }
+            loadData();
+        } else {
+            Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

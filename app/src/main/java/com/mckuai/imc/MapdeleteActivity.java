@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class MapdeleteActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ImageView btn_left, btn_right;
     private TextView tv_title;
-    private EditText map_ed;
     private ListView map_mymap_lv;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
@@ -86,7 +85,6 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     }
 
     protected void initview() {
-        map_ed = (EditText) findViewById(R.id.map_ed);
         map_imp = (Button) findViewById(R.id.bt_go);
         map_imp.setOnClickListener(this);
         btn_left = (ImageView) findViewById(R.id.btn_left);
