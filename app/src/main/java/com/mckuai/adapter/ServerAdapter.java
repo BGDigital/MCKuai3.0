@@ -9,17 +9,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mckuai.bean.ArticItem;
 import com.mckuai.bean.GameServerInfo;
-import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.until.GameEditer;
-import com.mckuai.until.GameUntil;
 import com.mckuai.until.ServerEditer;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by kyly on 2015/6/25.

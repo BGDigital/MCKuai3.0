@@ -2,11 +2,9 @@ package com.mckuai.imc;
 
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -14,12 +12,8 @@ import android.widget.TextView;
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.InventorySlot;
-import com.mckuai.Level;
 import com.mckuai.adapter.ArticAdapter;
-import com.mckuai.bean.ArticItem;
-import com.mckuai.until.GameEditer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +23,6 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private UltimateRecyclerView itemListView;
     private SeekBar sb_itemCountPeeker;
     private ArticAdapter adapter;
-    //private GameEditer editer;
     private List<InventorySlot> inventorySlotList;
 
     private EditText edt_search;

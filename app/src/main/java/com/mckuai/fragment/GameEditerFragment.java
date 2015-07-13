@@ -9,19 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.mckuai.InventorySlot;
-import com.mckuai.entity.Player;
+import com.mckuai.bean.WorldInfo;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.until.GameEditer;
+import com.mckuai.until.GameDBEditer;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
 
 import java.io.File;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 public class GameEditerFragment extends BaseFragment implements View.OnClickListener {
@@ -43,16 +42,14 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private MCGameEditer gameEditer;
     private MCMapManager mapManager;
-//    private GameEditer editer;//for test
 
-    private int mode;
-    private String time;
-    private boolean thirdPerson = false;
-    private List<InventorySlot> inventorySlots;
+    private int mode;//地图模式
+    private long size;//地图大小
+    private String time;//白天黑夜
+    private String viewName; //地图名字
+    private boolean thirdPerson = false; //是否启用第三人称
+    private ArrayList<WorldInfo> worldInfos;
 
-    private String mapDir;
-    private String mapName;
-    private boolean isMapChanged = true;
 
     private boolean isShowGameRunning = false;
     private boolean isGameInstalled = true;
@@ -67,13 +64,15 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //mapManager = new MCMapManager();
-        //editer = new GameEditer();
-        Player player;
-        File file = new File("/storage/sdcard0/games/com.mojang/minecraftWorlds/My World/db");
-        if (null != file && file.exists() && file.isDirectory()){
-            player = GameEditer.getPlayer(file);
-        }
+
+        gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
+            @Override
+            public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
+                if (null != worldInfos){
+                    setData(worldInfos,isThirdView);
+                }
+            }
+        });
     }
 
     @Override
@@ -102,7 +101,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
         if (isGameInstalled){
             getWorldInfo();
-            if (gameEditer.hasProfile()) {
+            if (gameEditer != null) {
                 updateWorldInfo();
             }
             else {
@@ -138,33 +137,35 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.btn_selectMap).setOnClickListener(this);
     }
 
-    private void getWorldInfo(){
+    private void setData(ArrayList<WorldInfo> worldList,boolean isThirdViewEnable){
+        this.worldInfos = worldList;
+        this.thirdPerson = isThirdViewEnable;
+        if (!worldList.isEmpty()){
+            getWorldInfo(worldList.get(0));
+        }
+    }
+
+    private void getWorldInfo(WorldInfo world){
         if (!isGameInstalled){
             return;
         }
 
-        if (null == gameEditer){
-//            gameEditer = new MCGameEditer(mapDir);//
-            gameEditer = new MCGameEditer("/storage/sdcard0/games/com.mojang/minecraftWorlds/My World");
-            isMapChanged = false;
+        if (null == world && null != world.getLevel()){
+            mode = world.getLevel().getGameType();
+            viewName = world.getLevel().getLevelName();
+            time = world.getTime();
+        }
+        else {
+            mode = 0;
+            viewName = null;
+            time = "未知";
         }
 
-        if (isMapChanged){
-            gameEditer.setMapDir(mapDir);
-            isMapChanged = false;
-        }
-
-        if (gameEditer.hasProfile()){
-            mode = gameEditer.getGameMode();
-            time = gameEditer.getTime();
-            mapName = mapManager.getCurrentMapName();
-            inventorySlots = gameEditer.getInventory();
-            thirdPerson = gameEditer.isThirdPerson();
-        }
+        updateWorldInfo(world);
 
     }
 
-    private void updateWorldInfo(){
+    private void updateWorldInfo(WorldInfo world){
         //游戏模式
         if (mode == 0){
             tv_gameMode.setText("生存");
@@ -175,7 +176,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
         }
         //游戏地图名称
-        tv_mapName.setText(null == mapName ? "点击\"选择地图\"以选择游戏地图" : mapName);
+        tv_mapName.setText(null == viewName ? "点击\"选择地图\"以选择游戏地图" : viewName);
 
         //第三人称视角
         if (thirdPerson){
@@ -200,6 +201,24 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             }
 
         //背包
+        if (null != world.getLevel() && null != world.getLevel().getPlayer() && null != world.getLevel().getPlayer().getInventory()){
+            if (!world.getLevel().getPlayer().getInventory().isEmpty()){
+                tv_packageItemCount.setText(world.getPlayer().getInventory().size()+"种");
+            }
+            else {
+                tv_packageItemCount.setText("没有物品");
+            }
+        }
+        else {
+            if (null != world.getPlayer() && null != world.getPlayer().getInventory() && !world.getPlayer().getInventory().isEmpty()){
+                tv_packageItemCount.setText(world.getPlayer().getInventory().size()+"种");
+            }
+            else {
+                tv_packageItemCount.setText("没有物品");
+            }
+        }
+
+
         if (null != inventorySlots && !inventorySlots.isEmpty()){
             tv_packageItemCount.setText(inventorySlots.size()+"种");
         }

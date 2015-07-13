@@ -4,10 +4,8 @@ import android.util.Log;
 
 
 import com.mckuai.InventorySlot;
-import com.mckuai.Level;
 import com.mckuai.entity.Entity;
 import com.mckuai.entity.Player;
-import com.mckuai.geo.Chunk;
 import com.mckuai.io.EntityDataConverter;
 import com.mckuai.io.db.DB;
 import com.mckuai.io.db.DBKey;
@@ -30,8 +28,8 @@ import java.util.List;
 /**
  * Created by kyly on 2015/6/26.
  */
-public class GameEditer {
-    private static final String TAG = "GameEditer";
+public class GameDBEditer {
+    private static final String TAG = "GameDBEditer";
 
     public EntityDataConverter.EntityData readAllEntities(File file){
         DB db = openDB(file);
