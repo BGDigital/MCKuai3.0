@@ -101,11 +101,13 @@ public class GameEditer {
             }
         }
         closeDB(db);
-        List<InventorySlot> inventorySlots = player.getInventory();
-        if (null != inventorySlots){
-            for (InventorySlot inventorySlot:inventorySlots){
-                if (255 ==inventorySlot.getContents().getAmount() && 255 == inventorySlot.getContents().getId()){
-                    inventorySlots.remove(inventorySlot);
+        if (null != player) {
+            List<InventorySlot> inventorySlots = player.getInventory();
+            if (null != inventorySlots) {
+                for (InventorySlot inventorySlot : inventorySlots) {
+                    if (255 == inventorySlot.getContents().getAmount() && 255 == inventorySlot.getContents().getId()) {
+                        inventorySlots.remove(inventorySlot);
+                    }
                 }
             }
         }
@@ -148,7 +150,6 @@ public class GameEditer {
     private static void closeDB(DB db){
         if (null != db){
             db.close();
-            db = null;
         }
     }
 
