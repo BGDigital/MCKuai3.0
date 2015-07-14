@@ -214,8 +214,7 @@ public class MCMapManager {
      * @return
      */
     public String getMapName(String mapdir){
-        MCGameEditer editer = new MCGameEditer(mapdir);
-        return  editer.getMapName() ;
+        return  MCGameEditer.getWorldName(mapdir);
     }
 
 

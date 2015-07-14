@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class MCGameEditer {
 
     private static final  String TAG = "MCGameEditer";
+    private static final String worldRoot = "/games/com.mojang/minecraftWorlds/";
     private static ArrayList<WorldInfo> worlds;   //所有的地图信息
     private static boolean isThirdViewEnable = false;
     private static OnWorldLoadListener mListener;
@@ -36,11 +37,38 @@ public class MCGameEditer {
         }
     }
 
-    public MCGameEditer(OnWorldLoadListener loadListener){
+    public MCGameEditer(OnWorldLoadListener loadListener,boolean getDetailed ){
         this.mListener = loadListener;
         isThirdViewEnable = OptionUntil.isThirdPerson();
         mIsThirdViewLoaded = true;
-        getAllWorld(mListener);
+      /*  if (getDetailed){
+            getAllWorld(mListener,getDetailed);
+        }
+        else {
+            getAllWorldLite();
+            if (null != loadListener){
+                loadListener.OnComplete(worlds,isThirdViewEnable);
+            }
+        }*/
+        getAllWorld(mListener,getDetailed);
+
+    }
+
+
+    public static String getWorldName(String path){
+        File file = new File(path,"level.dat");
+        if (null != file && file.exists() && file.isFile()) {
+            try {
+                Level level = LevelDataConverter.read(file);
+                if (null != level) {
+                    return level.getLevelName();
+                }
+                return null;
+            } catch (Exception e) {
+                Log.e(TAG,"读取level.dat文件时失败，原因："+e.getLocalizedMessage());
+            }
+        }
+        return null;
     }
 
 
@@ -66,9 +94,9 @@ public class MCGameEditer {
      * 获取游戏下所有的世界的信息
      * @return
      */
-    public static void getAllWorld(OnWorldLoadListener listener){
+    public static void getAllWorld(OnWorldLoadListener listener,boolean needPlayer){
          if (null == worlds){
-             File[] subFile = new File(MCkuai.getInstance().getSDPath() + "/games/com.mojang/minecraftWorlds/").listFiles();
+             File[] subFile = new File(MCkuai.getInstance().getSDPath() +worldRoot).listFiles();
              if (null != subFile && subFile.length > 0){
                  if (null == worlds){
                      worlds = new ArrayList<>(subFile.length);
@@ -76,7 +104,7 @@ public class MCGameEditer {
 
                  for (File curFile:subFile) {
                      if (curFile.exists() &&curFile.isDirectory()) {
-                         loadData(curFile);      //读取单个世界的信息
+                         loadData(curFile,needPlayer);      //读取单个世界的完整信息
                      }
                  }
              }
@@ -86,16 +114,61 @@ public class MCGameEditer {
         }
     }
 
+    public static ArrayList<WorldInfo> getAllWorldLite(){
+        if (null == worlds){
+            File [] subFile = new File(MCkuai.getInstance().getSDPath()+worldRoot).listFiles();
+            if (null != subFile && subFile.length >0){
+                worlds = new ArrayList<>(subFile.length);
+                for (File curFile:subFile){
+                     WorldInfo worldInfo = new WorldInfo();
+                     loadData(curFile,false);
+                }
+            }
+        }
+        return worlds;
+    }
+
+    public static Player getPlayer(String world){
+        if (null != worldRoot && !worldRoot.isEmpty()){
+            File file = new File(MCkuai.getInstance().getSDPath()+worldRoot +world);
+            if (file != null && file.exists() && file.isDirectory()){
+                Player player = loadPlayerFromDB(file);
+                return  player;
+            }
+        }
+        return null;
+    }
+
+    public static boolean setTimeToDay(String worldRoot){
+        return  false;
+    }
+
+    public static boolean setTimeToNight(String worldRoot){
+        return false;
+    }
+
+    public static boolean setGameMode(String worldRoot,int mode){
+        return false;
+    }
+
     /**
      * 获取单个世界的信息
      * @param file  要获取信息的世界
      */
-    private static void loadData(File file) {
+    private static void loadData(File file,boolean needPlayer) {
         WorldInfo worldInfo = new WorldInfo();
 
         worldInfo.setDir(file.getName());       //文件夹名称
         worldInfo.setSize(getWorldSize(file)); //大小
-        worldInfo.setHasPlayerInfo(loadPlayerFromDB(file,worldInfo));  //从数据库中获取角色信息
+        if (needPlayer) {
+            worldInfo.setPlayer(loadPlayerFromDB(file));
+            if (null != worldInfo.getPlayer()) {
+                worldInfo.setHasPlayerInfo(true);
+            }
+            else {
+                worldInfo.setHasPlayerInfo(false);
+            }
+        }
         //从level.dat文件中获取level信息（必有信息包括显示名，）
         loadLevelFromFile(file, worldInfo);
 
@@ -107,7 +180,7 @@ public class MCGameEditer {
      * @param worldRoot 游戏世界的根目录
      * @return
      */
-    private static boolean loadPlayerFromDB(File worldRoot,WorldInfo worldInfo){
+    private static Player loadPlayerFromDB(File worldRoot){
         File[] subDir = worldRoot.listFiles();
         if (null != subDir){
             for (File curDir:subDir){
@@ -115,16 +188,12 @@ public class MCGameEditer {
                 if (curDir.isDirectory()){
                     Player player = GameDBEditer.getPlayer(curDir);
                     if (null != player){
-                        worldInfo.setPlayer(player);
-                        return true;
-                    }
-                    else {
-                        return false;
+                        return player;
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
     private static boolean loadLevelFromFile(File worldRoot,WorldInfo worldInfo){
@@ -134,14 +203,16 @@ public class MCGameEditer {
             try {
                 level = LevelDataConverter.read(levelFile);
                 if (null != level){
-                    worldInfo.setLastModife(level.getLastPlayed());
-                    worldInfo.setIsCreative((level.getGameType() == 1));
+                    //worldInfo.setLastModife(level.getLastPlayed());
+                    //worldInfo.setIsCreative((level.getGameType() == 1));
                     //修改角色信息，由于之前已经尝试过从数据库中读取，则处理为以文件中的为优先
+                    worldInfo.setLevel(level);
                     if (null == worldInfo.getPlayer()){
                         //之前没有角色信息，直接设置
                         worldInfo.setPlayer(level.getPlayer());
                     }
-                    else {
+                    else
+                    {
                         //之前有角色信息，替换其能力和背包信息
                         if (null != level.getPlayer()){
                             //能力
