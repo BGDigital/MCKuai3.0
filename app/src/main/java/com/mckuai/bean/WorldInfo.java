@@ -6,12 +6,13 @@ import android.util.Log;
 import com.mckuai.Level;
 import com.mckuai.entity.Player;
 
+import java.io.Serializable;
 import java.util.IllegalFormatCodePointException;
 
 /**
  * Created by kyly on 2015/7/13.
  */
-public class WorldInfo {
+public class WorldInfo implements Serializable{
     private String dir;                                 //子目录名称
     private Player player;                            //角色信息，优先来自数据库，如果没有再从level.dat中取
     private Level level;                                 //level.dat中的内容
@@ -21,6 +22,7 @@ public class WorldInfo {
     private final int DAY_LENGTH = 19200;
 
     private final String TAG = "WorldInfo";
+    private boolean isSelected = false;
 
     public String getDir() {
         return dir;
@@ -39,43 +41,41 @@ public class WorldInfo {
     }
 
     public boolean isCreative() {
-        if (null != level){
+        if (null != level) {
             return level.getGameType() == 1;
         }
         return false;
     }
 
     public boolean setIsCreative(boolean isCreative) {
-        if (null != level){
-            level.setGameType(isCreative?1:0);
+        if (null != level) {
+            level.setGameType(isCreative ? 1 : 0);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public boolean isDay(){
+    public boolean isDay() {
         long timeInDay = level.getTime() % DAY_LENGTH;
-        return (timeInDay> (DAY_LENGTH / 2));
+        return (timeInDay > (DAY_LENGTH / 2));
     }
 
 
-    public String getTime(){
+    public String getTime() {
         Log.e(TAG, "time:" + level.getTime());
         long timeInDay = level.getTime() % DAY_LENGTH;
-        if (isDay()){
+        if (isDay()) {
             return "黑夜";
-        }
-        else {
+        } else {
             return "白天";
         }
     }
 
     public boolean setIsDay(boolean isDay) {
-        if (isDay() != isDay){
+        if (isDay() != isDay) {
             level.setTime(((level.getTime() / DAY_LENGTH) * DAY_LENGTH) + (2 * DAY_LENGTH / 3));
-            return  true;
+            return true;
         }
         return false;
     }
@@ -89,12 +89,19 @@ public class WorldInfo {
     }
 
     public long getLastModife() {
-        if (null != level){
+        if (null != level) {
             return level.getLastPlayed();
         }
         return 0l;
     }
 
+    public boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 
     public boolean isHasPlayerInfo() {
         return hasPlayerInfo;

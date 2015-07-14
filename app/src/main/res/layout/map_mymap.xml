@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/titlebar_comm" />
+    <include
+        android:id="@+id/tit"
+        layout="@layout/titlebar_comm" />
 
     <LinearLayout
         android:id="@+id/maproot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tit"
         android:background="@color/frame_darkgray"
         android:orientation="horizontal"
         android:padding="@dimen/item_divider_height">
@@ -73,6 +76,7 @@
         android:id="@+id/map_mymap_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/maproot"
         android:divider="@color/frame_darkgray"
         android:dividerHeight="@dimen/item_height_interval"></ListView>
 
@@ -97,4 +101,4 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/delete"></ListView>
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

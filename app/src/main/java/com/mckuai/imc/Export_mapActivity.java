@@ -19,6 +19,8 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
+import com.mckuai.bean.WorldInfo;
+import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.MCMapManager;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private ArrayList<Map> mMapBeans;
     private String data;
     private Map map;
-    ArrayList<Map> downloadMap;
+    ArrayList<String> downloadMap;
 
 
     @Override
@@ -72,11 +74,12 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     }
 
     private void showData() {
-        downloadMap = mapManager.getDownloadMaps();
+        downloadMap = mapManager.getCurrentMapDirList();
+        ArrayList<WorldInfo> worlds = MCGameEditer.getAllWorldLite();
         if (downloadMap == null) {
             showNotification(1, "请下载地图", R.id.maproot);
         } else {
-            adapter = new ExportAdapter(this, downloadMap);
+            adapter = new ExportAdapter(this, worlds);
             mpt_ls.setAdapter(adapter);
         }
     }

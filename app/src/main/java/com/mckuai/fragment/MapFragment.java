@@ -105,7 +105,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             showData();
         } else {
             cancleLodingToast(false);
-            if (mp_r1 != null && mp_r1.getVisibility() == view.VISIBLE) {
+            if ((mp_r1 != null && mp_r1.getVisibility() == view.VISIBLE) || (urv_mapList != null && l1.getVisibility() == View.GONE)) {
                 hideTypeLayout();
             }
         }
@@ -211,6 +211,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     MainActivity.setLeftButtonView(false);
                     map_ed.setVisibility(View.GONE);
                     mapadapters.setpaihang(false);
+                    tit.setText("地图");
                     break;
                 case R.id.btn_titlebar_right:
                     if (map_ed.getVisibility() == View.GONE) {
@@ -227,8 +228,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
-//                intent = new Intent(getActivity(), RankingActivity.class);
-//                getActivity().startActivity(intent);
                 l1.setVisibility(View.GONE);
                 tit.setText("地图排行");
                 MainActivity.setLeftButtonView(true);
@@ -265,6 +264,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 break;
             case R.id.cf_l6:
                 totle();
+                tit.setText("地图");
                 break;
             default:
                 break;

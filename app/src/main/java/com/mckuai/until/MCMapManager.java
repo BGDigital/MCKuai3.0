@@ -239,8 +239,10 @@ public class MCMapManager {
      * @param dstFileDir 导出到的目录
      */
     public void exportMap(String mapName,String dstFileDir){
-        File src = new File(MCkuai.getInstance().getGameProfileDir()+"minecraftWorlds/");
-        File dst = new File(dstFileDir+mapName +".zip");
+        File src = new File(MCkuai.getInstance().getGameProfileDir()+"minecraftWorlds/"+mapName);
+        File dst = new File(dstFileDir,mapName +".zip");
+        Log.e(TAG,"源路径："+src.getPath());
+        Log.e(TAG,"目标路径："+dst.getPath());
 
         if (src.exists() && src.isDirectory()){
             if (dst.exists()){

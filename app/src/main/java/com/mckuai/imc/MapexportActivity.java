@@ -20,6 +20,7 @@ import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.adapter.MapExportAdapter;
 import com.mckuai.adapter.MapImportAdapter;
 import com.mckuai.bean.Map;
+import com.mckuai.bean.WorldInfo;
 import com.mckuai.until.MCMapManager;
 
 import java.io.File;
@@ -27,8 +28,7 @@ import java.util.ArrayList;
 
 
 public class MapexportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-    private ImageView btn_left;
-    private ImageButton btn_right;
+    private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView map_lv_leave;
     private Button bt_go;
@@ -43,7 +43,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     private String currentDir;
     private String filename;
     private LinearLayout pt_ly;
-    private ArrayList<Map> chuancan;
+    private ArrayList<WorldInfo> chuancan;
     private ArrayList<String> getCurrentMaps;
     private String name;
     private String temname;
@@ -52,7 +52,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_leave);
-        chuancan = (ArrayList<Map>) getIntent().getSerializableExtra("DELETE");
+        chuancan = (ArrayList<WorldInfo>) getIntent().getSerializableExtra("DELETE");
         initview();
     }
 
@@ -60,7 +60,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (null == mapManager) {
-            mapManager =MCkuai.getInstance().getMapManager();
+            mapManager = MCkuai.getInstance().getMapManager();
             initview();
         }
         showData();
@@ -108,7 +108,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
 
     protected void initview() {
         btn_left = (ImageView) findViewById(R.id.btn_left);
-        btn_right = (ImageButton) findViewById(R.id.btn_right);
+        btn_right = (ImageView) findViewById(R.id.btn_right);
         btn_right.setVisibility(View.GONE);
         tv_title = (TextView) findViewById(R.id.tv_title);
         bt_go = (Button) findViewById(R.id.bt_go);
@@ -125,15 +125,15 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
 
     public void huoqu() {
         for (int j = 0; j < chuancan.size(); j++) {
-            Boolean index = chuancan.get(j).getIsSelected();
-            if (index == true) {
-                name = chuancan.get(j).getViewName();
+            if (chuancan.get(j).getIsSelected()) {
+                name = chuancan.get(j).getDir();
+                mapManager.exportMap(name, currentDir);
             } else {
                 showNotification(1, "游戏已经存在", R.id.import_tit);
             }
 
         }
-        mapManager.exportMap(name, currentDir);
+
 
     }
 

@@ -46,19 +46,6 @@
         android:textColor="@color/secondary"
         android:textSize="@dimen/font_small" />
 
-    <TextView
-        android:id="@+id/tv_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_time"
-        android:layout_below="@+id/tv_name"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/image"
-        android:gravity="center_vertical"
-        android:text="类别"
-        android:textColor="@color/font_radio_hint_checked"
-        android:textSize="@dimen/font_small" />
-
 
     <TextView
         android:id="@+id/tv_size"
