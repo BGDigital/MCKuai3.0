@@ -5,9 +5,7 @@ import java.io.Serializable;
 public class ItemStack implements Serializable{
 
 	private short id;
-
 	private short durability;
-
 	private int amount;
 
 	public ItemStack(short id, short durability, int amount) {

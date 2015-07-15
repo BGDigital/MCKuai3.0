@@ -2,6 +2,7 @@ package com.mckuai.imc;
 
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
@@ -26,6 +27,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private SeekBar sb_itemCountPeeker;
     private InventoryAdapter adapter;
     private WorldInfo world;
+    private InventorySlot curInventory;
 
     private EditText edt_search;
     private TextView tv_itemName;
@@ -33,6 +35,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_itemCount;
     private ImageView iv_itemIcon;
     private RelativeLayout changeItemCountView;
+    private final String TAG = "GamePackageActivity";
 //    private ImageButton btn_search;
 
     @Override
@@ -40,6 +43,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_package);
         world = MCkuai.getInstance().world;
+        setTitle("游戏背包管理");
     }
 
     @Override
@@ -52,15 +56,20 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void showData(){
-        if (null == adapter)
-        adapter = new InventoryAdapter();
-        adapter.setOnItemLongClickListener(this);
-        itemListView.setAdapter(adapter);
-        adapter.setInventorySlot(world.getRealInventory(world.getInventory()));
+        if (null == adapter) {
+            adapter = new InventoryAdapter();
+            adapter.setOnItemLongClickListener(this);
+            itemListView.setAdapter(adapter);
+            adapter.setInventorySlot(world.getRealInventory(world.getInventory()));
+        }
+        else {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initView(){
         itemListView = (UltimateRecyclerView) findViewById(R.id.recy_itemList);
+        itemListView.setHasFixedSize(false);
         edt_search = (EditText)findViewById(R.id.edt_search);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
         itemListView.setLayoutManager(layoutManager);
@@ -78,12 +87,14 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         iv_itemIcon = (ImageView) findViewById(R.id.iv_itemIcon);
 
         sb_itemCountPeeker = (SeekBar)findViewById(R.id.sb_countPeeker);
-        sb_itemCountPeeker.setProgress(7);
+        sb_itemCountPeeker.setMax(255);
+        //sb_itemCountPeeker.setProgress(7);
         sb_itemCountPeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float count = progress * 0.64f;
-                tv_itemCount.setText((int)count+"");
+                Log.e(TAG,"progress:"+progress);
+                tv_itemCount.setText((int)progress+"");
+
             }
 
             @Override
@@ -105,6 +116,10 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
                 HashMap<Integer,Integer> items = adapter.getSelectedItem();
                 if (null != items){
                     //showNotification(1,"当前共选了"+items.size()+"个物品",R.id.rl_search);
+                        world.setInventory(adapter.getInventorySlots());
+                        MCkuai.getInstance().world = world;
+                        setResult(RESULT_OK);
+                        this.finish();
                     }
                 break;
             case R.id.btn_right:
@@ -124,6 +139,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.btn_submitItem:
                 changeItemCountView.setVisibility(View.GONE);
+                curInventory.getContents().setAmount(sb_itemCountPeeker.getProgress());
+                adapter.updateInventory(curInventory);
                 break;
         }
 
@@ -139,10 +156,11 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onLongClick(InventorySlot inventorySlot) {
+        this.curInventory = inventorySlot;
         changeItemCountView.setVisibility(View.VISIBLE);
-        tv_itemName.setText("ID:" + inventorySlot.getContents().getId()+"");
+        tv_itemName.setText("ID:" + inventorySlot.getContents().getId() + "");
+        sb_itemCountPeeker.setProgress(inventorySlot.getContents().getAmount());
         tv_itemCount.setText(inventorySlot.getContents().getAmount() + "");
-        tv_itemType.setText("类型ID:"+inventorySlot.getContents().getTypeId());
-        sb_itemCountPeeker.setProgress((int)(inventorySlot.getContents().getAmount() / 255.0 *100));
+        tv_itemType.setText("耐久:"+inventorySlot.getContents().getDurability());
     }
 }
