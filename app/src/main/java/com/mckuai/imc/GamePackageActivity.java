@@ -4,39 +4,42 @@ import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.InventorySlot;
-import com.mckuai.adapter.ArticAdapter;
+import com.mckuai.adapter.InventoryAdapter;
+import com.mckuai.bean.WorldInfo;
 
 import java.util.HashMap;
-import java.util.List;
 
 
-public class GamePackageActivity extends BaseActivity implements View.OnClickListener,OnLongClickListener {
+public class GamePackageActivity extends BaseActivity implements View.OnClickListener,OnLongClickListener,InventoryAdapter.OnItemLongClickListener {
 
     private UltimateRecyclerView itemListView;
     private SeekBar sb_itemCountPeeker;
-    private ArticAdapter adapter;
-    private List<InventorySlot> inventorySlotList;
+    private InventoryAdapter adapter;
+    private WorldInfo world;
 
     private EditText edt_search;
     private TextView tv_itemName;
     private TextView tv_itemType;
     private TextView tv_itemCount;
     private ImageView iv_itemIcon;
+    private RelativeLayout changeItemCountView;
 //    private ImageButton btn_search;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_package);
-        inventorySlotList = MCkuai.getInstance().inventorySlots;
+        world = MCkuai.getInstance().world;
     }
 
     @Override
@@ -50,9 +53,10 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
     private void showData(){
         if (null == adapter)
-        adapter = new ArticAdapter();
+        adapter = new InventoryAdapter();
+        adapter.setOnItemLongClickListener(this);
         itemListView.setAdapter(adapter);
-        adapter.setArtics(inventorySlotList);
+        adapter.setInventorySlot(world.getRealInventory(world.getInventory()));
     }
 
     private void initView(){
@@ -63,8 +67,10 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         findViewById(R.id.btn_addItem).setOnClickListener(this);
         findViewById(R.id.btn_right).setOnLongClickListener(this);
         findViewById(R.id.btn_left).setOnClickListener(this);
+        findViewById(R.id.btn_submitItem).setOnClickListener(this);
         edt_search.setVisibility(View.GONE);
         ((TextView)findViewById(R.id.tv_title)).setText("背包物品");
+        changeItemCountView = (RelativeLayout)findViewById(R.id.rl_changeItemCount);
 
         tv_itemName = (TextView) findViewById(R.id.tv_itemName);
         tv_itemType = (TextView) findViewById(R.id.tv_itemType);
@@ -115,14 +121,28 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
             case R.id.btn_left:
                 finish();
                 break;
+
+            case R.id.btn_submitItem:
+                changeItemCountView.setVisibility(View.GONE);
+                break;
         }
+
     }
+
+
 
     @Override
     public boolean onLongClick(View v) {
-        /*int value = editer.getInt(edt_search.getText().toString());
-        edt_search.setText(value+"");
-        editer.closeDB();*/
+        changeItemCountView.setVisibility(View.VISIBLE);
         return false;
+    }
+
+    @Override
+    public void onLongClick(InventorySlot inventorySlot) {
+        changeItemCountView.setVisibility(View.VISIBLE);
+        tv_itemName.setText("ID:" + inventorySlot.getContents().getId()+"");
+        tv_itemCount.setText(inventorySlot.getContents().getAmount() + "");
+        tv_itemType.setText("类型ID:"+inventorySlot.getContents().getTypeId());
+        sb_itemCountPeeker.setProgress((int)(inventorySlot.getContents().getAmount() / 255.0 *100));
     }
 }

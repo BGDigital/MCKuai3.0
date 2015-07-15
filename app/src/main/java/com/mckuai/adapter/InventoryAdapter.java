@@ -12,20 +12,27 @@ import com.mckuai.ItemStack;
 import com.mckuai.bean.ArticItem;
 import com.mckuai.imc.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by kyly on 2015/6/25.
  */
-public class ArticAdapter extends RecyclerView.Adapter<ArticAdapter.ViewHolder> {
+public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
 
     private List<InventorySlot> inventorySlotArrayList;
     private HashMap<Integer,Integer> selecteds = new HashMap<>(10);
+    private OnItemLongClickListener mListener;
 
+    public interface OnItemLongClickListener{
+        public void onLongClick(InventorySlot inventorySlot);
+    }
 
-    public void setArtics(List<InventorySlot> inventorySlotArrayList) {
+    public void setOnItemLongClickListener(OnItemLongClickListener l){
+        this.mListener = l;
+    }
+
+    public void setInventorySlot(List<InventorySlot>inventorySlotArrayList){
         this.inventorySlotArrayList = inventorySlotArrayList;
         notifyDataSetChanged();
     }
@@ -42,19 +49,30 @@ public class ArticAdapter extends RecyclerView.Adapter<ArticAdapter.ViewHolder> 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArticItem item = (ArticItem) holder.itemView.getTag();
+                InventorySlot item = (InventorySlot) holder.itemView.getTag();
                 if (null != item)
                 {
                     if (holder.iv_selected.getVisibility() == View.VISIBLE){
                         holder.iv_selected.setVisibility(View.INVISIBLE);
-                        selecteds.remove(item.getId());
+                        selecteds.remove(item.getContents().getTypeId());
                     }
                     else {
                         holder.iv_selected.setVisibility(View.VISIBLE);
-                        selecteds.put(item.getId(),item.getId());
+                        selecteds.put((int)item.getContents().getTypeId(),item.getContents().getAmount());
                     }
                 }
 
+            }
+        });
+        view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                InventorySlot item = (InventorySlot) holder.itemView.getTag();
+                if (null != item && null != mListener){
+                    mListener.onLongClick(item);
+                    return  true;
+                }
+                return false;
             }
         });
         return holder;

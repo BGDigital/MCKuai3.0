@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_white_with_frame">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_dimen_big"
+        android:textColor="@color/font_green"
+        android:text="世界名称"
+        android:paddingBottom="5dp"
+        />
+
+    <View
+        android:id="@+id/v_worldCenter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/tv_name"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/tv_worldSize"
+        android:layout_below="@id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_dimen_small"
+        android:textColor="@color/font_secondary"
+        android:text="大小：10KB"
+        android:layout_toLeftOf="@id/v_worldCenter"/>
+
+    <TextView
+        android:id="@+id/tv_lastplayed"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tv_name"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_dimen_small"
+        android:textColor="@color/font_secondary"
+        android:text="时间：2015-10-13 12:15:16"
+        android:layout_toRightOf="@id/v_worldCenter"/>
+
+</RelativeLayout>

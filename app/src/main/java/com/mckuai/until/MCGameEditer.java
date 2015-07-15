@@ -2,6 +2,7 @@ package com.mckuai.until;
 
 import android.util.Log;
 
+import com.mckuai.InventorySlot;
 import com.mckuai.Level;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.entity.Player;
@@ -10,6 +11,7 @@ import com.mckuai.io.LevelDataConverter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kyly on 2015/6/27.
@@ -41,15 +43,6 @@ public class MCGameEditer {
         this.mListener = loadListener;
         isThirdViewEnable = OptionUntil.isThirdPerson();
         mIsThirdViewLoaded = true;
-      /*  if (getDetailed){
-            getAllWorld(mListener,getDetailed);
-        }
-        else {
-            getAllWorldLite();
-            if (null != loadListener){
-                loadListener.OnComplete(worlds,isThirdViewEnable);
-            }
-        }*/
         getAllWorld(mListener,getDetailed);
 
     }
@@ -78,16 +71,6 @@ public class MCGameEditer {
             mIsThirdViewLoaded = true;
         }
         return isThirdViewEnable;
-    }
-
-    public static boolean setThirdView(boolean isEnable){
-        boolean curType = isThirdView();
-        if (isEnable != curType){
-            isThirdViewEnable = isEnable;
-            OptionUntil.setThirdPerson(isEnable);
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -139,16 +122,28 @@ public class MCGameEditer {
         return null;
     }
 
-    public static boolean setTimeToDay(String worldRoot){
+    public static boolean setGameMode(String worldDir,int mode){
+        WorldInfo world = getWorldByDir(worldDir);
+        if (null != world){
+            world.getLevel().setGameType(mode);
+            return  saveLevelData(worldDir,world.getLevel());
+        }
         return  false;
     }
 
-    public static boolean setTimeToNight(String worldRoot){
-        return false;
-    }
-
-    public static boolean setGameMode(String worldRoot,int mode){
-        return false;
+    public List<InventorySlot> getInventory(String worldDir){
+        WorldInfo world = getWorldByDir(worldDir);
+        if (null != world){
+            if (null != world.getLevel().getPlayer() && null != world.getLevel().getPlayer().getInventory()){
+                return world.getLevel().getPlayer().getInventory();
+            }
+            else {
+                if (null != world.getPlayer()){
+                    return world.getPlayer().getInventory();
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -162,12 +157,6 @@ public class MCGameEditer {
         worldInfo.setSize(getWorldSize(file)); //大小
         if (needPlayer) {
             worldInfo.setPlayer(loadPlayerFromDB(file));
-            if (null != worldInfo.getPlayer()) {
-                worldInfo.setHasPlayerInfo(true);
-            }
-            else {
-                worldInfo.setHasPlayerInfo(false);
-            }
         }
         //从level.dat文件中获取level信息（必有信息包括显示名，）
         loadLevelFromFile(file, worldInfo);
@@ -203,28 +192,8 @@ public class MCGameEditer {
             try {
                 level = LevelDataConverter.read(levelFile);
                 if (null != level){
-                    //worldInfo.setLastModife(level.getLastPlayed());
-                    //worldInfo.setIsCreative((level.getGameType() == 1));
                     //修改角色信息，由于之前已经尝试过从数据库中读取，则处理为以文件中的为优先
                     worldInfo.setLevel(level);
-                    if (null == worldInfo.getPlayer()){
-                        //之前没有角色信息，直接设置
-                        worldInfo.setPlayer(level.getPlayer());
-                    }
-                    else
-                    {
-                        //之前有角色信息，替换其能力和背包信息
-                        if (null != level.getPlayer()){
-                            //能力
-                            if (null != level.getPlayer().getAbilities()){
-                                worldInfo.getPlayer().setAbilities(level.getPlayer().getAbilities());
-                            }
-                            //背包
-                            if (null != level.getPlayer().getInventory() && 0 < level.getPlayer().getInventory().size()){
-                                worldInfo.getPlayer().setInventory(level.getPlayer().getInventory());
-                            }
-                        }
-                    }
                     return true;
                 }
             }
@@ -254,6 +223,29 @@ public class MCGameEditer {
         return size;
     }
 
+    private static WorldInfo getWorldByDir(String worldDir){
+        for (WorldInfo world:worlds){
+            if (world.getDir().equals(worldDir)){
+                return world;
+            }
+        }
+        return null;
+    }
+
+    private static boolean saveLevelData(String worldDir,Level level) {
+        String path = MCkuai.getInstance().getSDPath() +worldRoot +worldDir;
+        File file = new File(path,"level.dat");
+        if (null != file && !file.exists()) {
+            return false;
+        }
+        try {
+            LevelDataConverter.write(level, file);
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "save false," + e.getLocalizedMessage());
+            return false;
+        }
+    }
 
 
 

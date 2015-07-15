@@ -48,11 +48,22 @@
     <RelativeLayout
         android:id="@+id/rl_changeItemCount"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="230dp"
         android:layout_centerInParent="true"
         android:visibility="gone"
         android:background="@drawable/background_white_with_frame"
         android:padding="10dp">
+
+        <Button
+            android:id="@+id/btn_submitItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_green"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_big"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:text="确定"/>
 
         <TextView
             android:id="@+id/tv_currentCount"
@@ -60,12 +71,14 @@
             android:layout_height="wrap_content"
             android:text="7"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@id/btn_submitItem"
             android:layout_marginLeft="20dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/background_white_with_frame"
             />
 
@@ -74,11 +87,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_above="@id/btn_submitItem"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="20dp"
             android:layout_toLeftOf="@id/tv_currentCount"
-            android:layout_alignParentBottom="true"
             />
+
+
 
         <ImageView
             android:id="@+id/iv_itemIcon"

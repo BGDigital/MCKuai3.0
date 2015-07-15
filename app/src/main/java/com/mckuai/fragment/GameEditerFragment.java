@@ -1,27 +1,33 @@
 package com.mckuai.fragment;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mckuai.InventorySlot;
+import com.mckuai.adapter.WorldAdapter;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
+import com.mckuai.until.OptionUntil;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GameEditerFragment extends BaseFragment implements View.OnClickListener {
+public class GameEditerFragment extends BaseFragment implements View.OnClickListener,AdapterView.OnItemClickListener {
     private static  final  String TAG = "GameEditerFragment";
 
     private View view;
@@ -37,13 +43,16 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ImageView iv_thirdView;
     private ImageView iv_packageItem;
 
+    private ListView lv_mapList;
+
+    private MCGameEditer gameEditer;
     private int mode;//地图模式
     private long size;//地图大小
     private String time;//白天黑夜
     private String viewName; //地图名字
     private boolean thirdPerson = false; //是否启用第三人称
     private ArrayList<WorldInfo> worldInfos;
-    private List<InventorySlot> inventorySlots;
+    private int inventoryTypeCount;         //背包中物品种类数
     private int curWorldIndex;//当前显示的世界的索引
 
 
@@ -51,7 +60,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private boolean isGameInstalled = true;
     private boolean isGameRunning = false;
 
-
+    private WorldAdapter adapter;
 
     public GameEditerFragment(){
         setmTitle("工具");
@@ -82,7 +91,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
 
         if (isGameInstalled && null == worldInfos){
-                MCGameEditer gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
+                gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
                     @Override
                     public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
                         Log.e(TAG,"地图数目："+worldInfos.size());
@@ -110,6 +119,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         iv_gameTime = (ImageView)view.findViewById(R.id.iv_gameTime);
         iv_thirdView = (ImageView)view.findViewById(R.id.iv_thirdView);
         iv_packageItem = (ImageView)view.findViewById(R.id.iv_gamePackage);
+        lv_mapList = (ListView)view.findViewById(R.id.lv_mapList);
 
         view.findViewById(R.id.rl_gameMode).setOnClickListener(this);
         view.findViewById(R.id.rl_gameTime).setOnClickListener(this);
@@ -117,6 +127,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.rl_gamePackage).setOnClickListener(this);
         view.findViewById(R.id.btn_startGame).setOnClickListener(this);
         view.findViewById(R.id.btn_selectMap).setOnClickListener(this);
+        lv_mapList.setOnItemClickListener(this);
     }
 
     private void setData(ArrayList<WorldInfo> worldList,boolean isThirdViewEnable){
@@ -137,27 +148,19 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
         if (null != world && null != world.getLevel()){
             if (null == world.getPlayer()) {
-                world.setPlayer(MCGameEditer.getPlayer(world.getDir()));
+                world.setPlayer(gameEditer.getPlayer(world.getDir()));
             }
 
             mode = world.getLevel().getGameType();
             viewName = world.getLevel().getLevelName();
             time = world.getTime();
-
-            if (null !=world.getLevel() && null != world.getLevel().getPlayer()) {
-                inventorySlots = world.getLevel().getPlayer().getInventory();
-            }
-            else {
-                if (null != world.getPlayer()){
-                    inventorySlots = world.getPlayer().getInventory();
-                }
-            }
+            inventoryTypeCount = world.getInventoryTypeCount();
         }
         else {
             mode = 0;
             viewName = null;
             time = "白天";
-            inventorySlots = null;
+            inventoryTypeCount = 0;
         }
         updateWorldInfo();
     }
@@ -195,32 +198,33 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
 
         //背包
-        if (null != inventorySlots){
-                tv_packageItemCount.setText(inventorySlots.size()+"种");
+        if (0 != inventoryTypeCount){
+                tv_packageItemCount.setText(inventoryTypeCount+"种");
         }
         else {
                 tv_packageItemCount.setText("没有物品");
         }
-
     }
 
     private void switchGameMode(){
         mode = Math.abs(mode - 1);
 
-        if (!MCGameEditer.setGameMode(worldInfos.get(curWorldIndex).getDir(),mode)){
+        if (!worldInfos.get(curWorldIndex).setIsCreative(1 == mode)){
             mode = Math.abs(mode - 1);
         }
+
+        updateWorldInfo();
     }
 
 
     private void switchGameTime(){
         if (time.equals("白天")){
-            if (MCGameEditer.setTimeToNight(worldInfos.get(curWorldIndex).getDir())) {
+            if (worldInfos.get(curWorldIndex).setIsDay(false)) {
                 time = "黑夜";
             }
         }
         else {
-            if (MCGameEditer.setTimeToDay(worldInfos.get(curWorldIndex).getDir())) {
+            if (worldInfos.get(curWorldIndex).setIsDay(true)) {
                 time = "白天";
             }
         }
@@ -228,7 +232,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void switchView(){
-        if (MCGameEditer.setThirdView(!thirdPerson)){
+        if (OptionUntil.setThirdPerson(!thirdPerson)){
             thirdPerson = !thirdPerson;
         }
         updateWorldInfo();
@@ -236,8 +240,18 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void changePackageItem(){
         Intent intent = new Intent(getActivity(), GamePackageActivity.class);
-        MCkuai.getInstance().inventorySlots = inventorySlots;
-        startActivity(intent);
+        MCkuai.getInstance().world = worldInfos.get(curWorldIndex);
+        startActivityForResult(intent,999);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK){
+            WorldInfo world = MCkuai.getInstance().world;
+            if (null != world){
+                worldInfos.get(curWorldIndex).setInventory(world.getInventory());
+            }
+        }
     }
 
     private void startGame(){
@@ -280,10 +294,17 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void selectMap(){
-//        Intent intent = new Intent(getActivity(), MymapActivity.class);
-//        getActivity().startActivity(intent);
-        //showNotification(0,"选择地图",R.id.fl_root);
-        //editer.getAllItem();
+        if (1 < worldInfos.size()){
+            if (null == adapter){
+                adapter = new WorldAdapter(getActivity());
+                lv_mapList.setAdapter(adapter);
+            }
+            adapter.setData(worldInfos);
+            lv_mapList.setVisibility(View.VISIBLE);
+        }
+        else {
+            showNotification(1,"当前只有一张地图！",R.id.fl_root);
+        }
     }
 
     @Override
@@ -292,39 +313,35 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             showNotification(3,"游戏正在运行，不能修改当前设置！",R.id.fl_root);
             return;
         }
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rl_gameMode:
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchGameMode();
-                }
-                else {
-                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                } else {
+                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
                 }
                 break;
             case R.id.rl_gameTime:
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchGameTime();
-                }
-                else {
-                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                } else {
+                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
                 }
 
                 break;
             case R.id.rl_thirdView:
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchView();
-                }
-                else {
-                    showNotification(3,"没有地图，不能修改当前设置！",R.id.fl_root);
+                } else {
+                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
                 }
 
                 break;
             case R.id.rl_gamePackage:
-                if (null != inventorySlots) {
+                if (0 != inventoryTypeCount) {
                     changePackageItem();
-                }
-                else {
-                    showNotification(3,"背包没有物品！",R.id.fl_root);
+                } else {
+                    showNotification(3, "背包没有物品！", R.id.fl_root);
                 }
 
                 break;
@@ -333,7 +350,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.btn_selectMap:
                 if (null != worldInfos && !worldInfos.isEmpty()) {
-                    selectMap();
+                    if (View.VISIBLE == lv_mapList.getVisibility()) {
+                        lv_mapList.setVisibility(View.GONE);
+                    } else {
+                        selectMap();
+                    }
                 }
                 else {
                     showNotification(3,"没有地图，不能修改当前设置！",R.id.rl_root);
@@ -343,6 +364,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-
-
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        lv_mapList.setVisibility(View.GONE);
+        curWorldIndex = (int)id;
+        getWorldInfo();
+    }
 }

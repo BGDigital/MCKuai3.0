@@ -99,17 +99,6 @@ public class GameDBEditer {
             }
         }
         closeDB(db);
-        if (null != player) {
-            List<InventorySlot> inventorySlots = player.getInventory();
-            if (null != inventorySlots) {
-                for (java.util.Iterator iterator = inventorySlots.iterator();iterator.hasNext();)  {
-                    InventorySlot inventorySlot = (InventorySlot) iterator.next();
-                    if (255 == inventorySlot.getContents().getAmount() && 255 == inventorySlot.getContents().getId()) {
-                        iterator.remove();
-                    }
-                }
-            }
-        }
         return player;
     }
 

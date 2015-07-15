@@ -11,6 +11,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.InventorySlot;
 import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
+import com.mckuai.bean.WorldInfo;
 import com.mckuai.until.CircleBitmapDisplayer;
 import com.mckuai.until.JsonCache;
 import com.mckuai.until.MCDTListener;
@@ -54,7 +55,7 @@ public class MCkuai  extends Application{
 
     public AsyncHttpClient mClient;
     public Tencent tencent;
-    public List<InventorySlot> inventorySlots;
+    public WorldInfo world;
 
 
 

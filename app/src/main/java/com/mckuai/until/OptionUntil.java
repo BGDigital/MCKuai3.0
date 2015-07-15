@@ -69,6 +69,7 @@ public class OptionUntil {
         }
 
         if (hasLoaded && game_thirdperson != (true == isThirdPersonView ? 1:0) ){
+            game_thirdperson = Math.abs(game_thirdperson - 1);
             String data = tostring();
             File file = new File(MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftpe/options.txt");
             try {
