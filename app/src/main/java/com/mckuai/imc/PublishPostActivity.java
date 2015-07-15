@@ -167,6 +167,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		mpics = (LinearLayout) findViewById(R.id.ll_pics);
 
 		findViewById(R.id.btn_right).setOnClickListener(this);
+		findViewById(R.id.btn_left).setOnClickListener(this);
 		mTypeLayout_Checked.setOnClickListener(this);
 		mTitle.setOnFocusChangeListener(this);
 		mContent.setOnFocusChangeListener(this);
