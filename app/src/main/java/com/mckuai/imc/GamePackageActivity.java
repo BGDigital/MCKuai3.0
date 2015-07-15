@@ -15,13 +15,17 @@ import android.widget.TextView;
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.InventorySlot;
+import com.mckuai.ItemStack;
 import com.mckuai.adapter.InventoryAdapter;
 import com.mckuai.bean.WorldInfo;
+import com.mckuai.entity.EntityItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
-public class GamePackageActivity extends BaseActivity implements View.OnClickListener,OnLongClickListener,InventoryAdapter.OnItemLongClickListener {
+public class GamePackageActivity extends BaseActivity implements View.OnClickListener,InventoryAdapter.OnItemClickedListener {
 
     private UltimateRecyclerView itemListView;
     private SeekBar sb_itemCountPeeker;
@@ -58,8 +62,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private void showData(){
         if (null == adapter) {
             adapter = new InventoryAdapter();
-            adapter.setOnItemLongClickListener(this);
             itemListView.setAdapter(adapter);
+            adapter.setOnItemClickedListener(this);
             adapter.setInventorySlot(world.getRealInventory(world.getInventory()));
         }
         else {
@@ -74,7 +78,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
         itemListView.setLayoutManager(layoutManager);
         findViewById(R.id.btn_addItem).setOnClickListener(this);
-        findViewById(R.id.btn_right).setOnLongClickListener(this);
+        //findViewById(R.id.btn_right).setOnLongClickListener(this);
         findViewById(R.id.btn_left).setOnClickListener(this);
         findViewById(R.id.btn_submitItem).setOnClickListener(this);
         edt_search.setVisibility(View.GONE);
@@ -88,13 +92,11 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
         sb_itemCountPeeker = (SeekBar)findViewById(R.id.sb_countPeeker);
         sb_itemCountPeeker.setMax(255);
-        //sb_itemCountPeeker.setProgress(7);
         sb_itemCountPeeker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Log.e(TAG,"progress:"+progress);
                 tv_itemCount.setText((int)progress+"");
-
             }
 
             @Override
@@ -113,9 +115,10 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_addItem:
-                HashMap<Integer,Integer> items = adapter.getSelectedItem();
+                //一键新增
+                //HashMap<Integer,Integer> items = adapter.getSelectedItem();
+                List<InventorySlot> items = adapter.getInventorySlots();
                 if (null != items){
-                    //showNotification(1,"当前共选了"+items.size()+"个物品",R.id.rl_search);
                         world.setInventory(adapter.getInventorySlots());
                         MCkuai.getInstance().world = world;
                         setResult(RESULT_OK);
@@ -147,20 +150,14 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-
     @Override
-    public boolean onLongClick(View v) {
-        changeItemCountView.setVisibility(View.VISIBLE);
-        return false;
+    public void OnItemClicked(InventorySlot item) {
+        if (null != item){
+            sb_itemCountPeeker.setProgress(item.getContents().getAmount());
+            tv_itemName.setText(EntityItem.getNameById(item.getContents().getId()));
+            changeItemCountView.setVisibility(View.VISIBLE);
+            curInventory = item;
+        }
     }
 
-    @Override
-    public void onLongClick(InventorySlot inventorySlot) {
-        this.curInventory = inventorySlot;
-        changeItemCountView.setVisibility(View.VISIBLE);
-        tv_itemName.setText("ID:" + inventorySlot.getContents().getId() + "");
-        sb_itemCountPeeker.setProgress(inventorySlot.getContents().getAmount());
-        tv_itemCount.setText(inventorySlot.getContents().getAmount() + "");
-        tv_itemType.setText("耐久:"+inventorySlot.getContents().getDurability());
-    }
 }
