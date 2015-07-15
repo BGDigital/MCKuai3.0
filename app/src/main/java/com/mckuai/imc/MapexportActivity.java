@@ -25,6 +25,8 @@ import com.mckuai.until.MCMapManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class MapexportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -129,7 +131,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
                 name = chuancan.get(j).getDir();
                 mapManager.exportMap(name, currentDir);
             } else {
-                showNotification(1, "游戏已经存在", R.id.import_tit);
+                showNotification(1, "没有选中游戏", R.id.import_tit);
             }
 
         }
@@ -203,6 +205,15 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
                     }
                 }
             }
+            Comparator<String> comparator = new Comparator<String>() {
+                @Override
+                public int compare(String lhs, String rhs) {
+                    return lhs.compareToIgnoreCase(rhs);
+                }
+            };
+            Collections.sort(dirList);
+            Collections.sort(fileList);
+            Collections.sort(dirList, comparator);
             return true;
         }
         return false;

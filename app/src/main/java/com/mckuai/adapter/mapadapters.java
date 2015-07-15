@@ -195,7 +195,7 @@ public class mapadapters extends RecyclerView.Adapter<mapadapters.ViewHolder> {
 
         @Override
         public void onStart(String fileName, String url) {
-            super.onStart(fileName, url);
+            //super.onStart(fileName, url);
             MCkuai.getInstance().addDownloadTask(clickedMap.getResId(), this);
             Log.e("111111", "onStart");
             //Toast.makeText(mContext, "Start", LENGTH_SHORT).show();

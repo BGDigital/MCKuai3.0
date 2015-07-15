@@ -49,14 +49,13 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
             mapManager = MCkuai.getInstance().getMapManager();
             initView();
         }
-
         showData();
     }
 
     protected void showData() {
         downloadMap = mapManager.getDownloadMaps();
         if (downloadMap == null) {
-            showNotification(1, "请下载地图", R.id.root);
+            showNotification(1, "请下载地图", R.id.mymaprot);
         } else {
             adapter = new MymapAdapter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);
@@ -106,4 +105,13 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         }
     }
 
+    private boolean isZipFile(String fileName) {
+        if (null != fileName) {
+            int index = fileName.lastIndexOf(".");
+            if (0 < index) {
+                return fileName.substring(index + 1).equalsIgnoreCase("zip");
+            }
+        }
+        return false;
+    }
 }

@@ -14,7 +14,9 @@ import com.mckuai.imc.R;
 import com.mckuai.until.MCGameEditer;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2015/6/27.
@@ -81,11 +83,16 @@ public class ExportAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        Date currentTime = new Date(world.getLevel().getLastPlayed() * 1000);
+        SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");//你需要的时间格式
+        String dateString = formatter.format(currentTime);//得到字符串类型的时间
         if (world.getLevel() == null) {
-            holder.tv_time.setText("时间：");
+            holder.tv_time.setText("更新时间：");
             holder.tv_name.setText("我的世界地图");
         } else {
-            holder.tv_time.setText(Long.toString(world.getLevel().getLastPlayed()));
+            holder.tv_time.setText("更新时间：" + dateString);
+//            holder.tv_time.setText(world.getLevel().getLastPlayed()+"");
             holder.tv_name.setText(world.getLevel().getLevelName());
         }
         holder.tv_size.setText((world.getSize() / 1024) + "kb");

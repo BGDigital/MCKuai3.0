@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
+    android:id="@+id/roots"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -63,42 +63,17 @@
             android:textColor="@color/font_white" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/map_ed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="搜索"
-        android:imeOptions="actionSearch"
-        android:singleLine="true"
-        android:visibility="gone" />
-
-    <ListView
-        android:id="@+id/map_mymap_lv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/maproot"
-        android:divider="@color/frame_darkgray"
-        android:dividerHeight="@dimen/item_height_interval"></ListView>
-
     <RelativeLayout
-        android:id="@+id/mymapl1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/delete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/font_red"
-            android:text="@string/delete"
-            android:textColor="@color/font_white" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/maproot"
+        android:id="@+id/mymaprot">
 
         <ListView
-            android:id="@+id/map_delete_lv"
+            android:id="@+id/map_mymap_lv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/delete"></ListView>
+            android:divider="@color/frame_darkgray"
+            android:dividerHeight="@dimen/item_height_interval"></ListView>
     </RelativeLayout>
 </RelativeLayout>

@@ -64,10 +64,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
     private static Drawable drawable_left_button;
-
+    private static Drawable drawable_right_button;
     private ArrayList<BaseFragment> mList;
     private boolean isFragmentChanged = false;
-    private static boolean isChange = false;
+    private static boolean isShowreturn = false;
+    private static boolean isShowSearch = false;
 
     private static View.OnClickListener leftButtonListener_myMaps;
     private static View.OnClickListener rightButtonListener_myMaps;
@@ -273,6 +274,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 tv2.setEnabled(true);
                 img2.setEnabled(true);
                 ll2.setEnabled(true);
+                setRightButtonView(false);
                 break;
             case 2:
                 tv3.setEnabled(true);
@@ -302,7 +304,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 tv2.setEnabled(false);
                 img2.setEnabled(false);
                 ll2.setEnabled(false);
-
+                setRightButtonView(true);
                 break;
             case 2:
                 tv_titlebar_title.setText("联机");
@@ -347,7 +349,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 vp.setCurrentItem(3, false);
                 break;
             case R.id.btn_titlebar_left:
-                if (isChange && leftButtonListener_myMaps != null) {
+                if (isShowreturn && leftButtonListener_myMaps != null) {
                     leftButtonListener_myMaps.onClick(v);
                 } else {
                     if (!application.isLogin()) {
@@ -359,7 +361,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 }
                 break;
             case R.id.btn_titlebar_right:
-                if (isChange && rightButtonListener_myMaps != null) {
+                if (isShowSearch && rightButtonListener_myMaps != null) {
                     rightButtonListener_myMaps.onClick(v);
                 } else {
                     Intent intent = new Intent(this, PublishPostActivity.class);
@@ -398,20 +400,30 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         return tv_titlebar_title;
     }
 
-    public static void setLeftButtonView(boolean isChanged) {
-        isChange = isChanged;
-        if (isChanged == true) {
+    public static void setLeftButtonView(boolean isShowreturns) {
+        isShowreturn = isShowreturns;
+        if (isShowreturn == true) {
             if (drawable_left_button == null) {
                 drawable_left_button = btn_titlebar_left.getBackground();
             }
             btn_titlebar_left.setBackgroundColor(0x00000000);
             btn_titlebar_left.setImageResource(R.drawable.btn_back);
+        } else {
+            btn_titlebar_left.setBackgroundDrawable(drawable_left_button);
+            btn_titlebar_left.setImageResource(0x00000000);
+        }
+    }
+
+    public static void setRightButtonView(boolean isShowSearchs) {
+        isShowSearch = isShowSearchs;
+        if (isShowSearch == true) {
+            if (drawable_right_button == null) {
+                drawable_right_button = btn_titlebar_right.getBackground();
+            }
             btn_titlebar_right.setImageResource(R.drawable.btn_search_selector);
             btn_titlebar_right.setVisibility(View.VISIBLE);
         } else {
             btn_titlebar_right.setVisibility(View.GONE);
-            btn_titlebar_left.setBackgroundDrawable(drawable_left_button);
-            btn_titlebar_left.setImageResource(0x00000000);
         }
     }
 

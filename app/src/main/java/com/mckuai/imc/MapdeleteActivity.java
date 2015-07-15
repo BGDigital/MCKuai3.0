@@ -77,7 +77,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     protected void showData() {
         downloadMap = mapManager.getDownloadMaps();
         if (downloadMap == null) {
-            showNotification(1, "没有地图,请下载地图", R.id.maproot);
+            showNotification(1, "没有地图,请下载地图", R.id.detdleroot);
         } else {
             adapter = new DeletemapAdtpter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);
@@ -119,7 +119,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                     downloadMap.remove(download);
                     adapter.setchuancan();
                 } else {
-                    showNotification(1, "删除失败，请重新尝试", R.id.maproot);
+                    showNotification(1, "删除失败，请重新尝试", R.id.rot);
                 }
 //                adapter.notifyDataSetChanged();
                 break;
