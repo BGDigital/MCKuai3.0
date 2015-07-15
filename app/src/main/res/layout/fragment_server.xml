@@ -98,21 +98,28 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/ll_serverRank"
+        android:visibility="visible"
         android:layout_alignParentBottom="true"
         ></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_serverType"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:visibility="gone">
-        <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
-            android:id="@+id/urv_serverTypeList"
+        <RelativeLayout
+            android:id="@+id/rl_serverType"
+            android:layout_alignTop="@id/urv_serverList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="200dp"
+            android:background="@drawable/background_white_with_frame"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:visibility="gone">
+            <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+                android:id="@+id/urv_serverTypeList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+            </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+        </RelativeLayout>
     </RelativeLayout>
+
+
 
 </FrameLayout>

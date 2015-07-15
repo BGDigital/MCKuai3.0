@@ -5,9 +5,7 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <include layout="@layout/titlebar_comm">
-
-    </include>
+    <include layout="@layout/titlebar_comm"/>
 
 
     <RelativeLayout

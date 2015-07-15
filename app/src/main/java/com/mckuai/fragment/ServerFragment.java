@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -20,11 +23,11 @@ import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.ServerAdapter;
+import com.mckuai.adapter.ServerTypeAdapter;
 import com.mckuai.bean.GameServerInfo;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
-import com.mckuai.imc.Export_mapActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
@@ -47,12 +50,14 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private AsyncHttpClient client;
     private MCkuai application;
     private boolean isOrderByDownload = false;
+    private String[] type;
     private String serverType;
     private static  final  String TAG = "ServerFragment";
     private ArrayList<GameServerInfo> serverInfos;
     private PageInfo page;
     private Gson gson;
     private ServerAdapter adapter;
+    private ServerTypeAdapter typeAdapter;
     private boolean isLoadmoreAlowed = false;
 
     @Override
@@ -64,6 +69,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             //initView();
         }
         application = MCkuai.getInstance();
+        type = getResources().getStringArray(R.array.server_Type);
         return view;
     }
 
@@ -95,6 +101,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
     private void initView(){
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
+        serverTypeListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverTypeList);
         rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         serverListView.setLayoutManager(manager);
@@ -123,10 +130,57 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
+        StaggeredGridLayoutManager typeLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        serverTypeListView.setLayoutManager(typeLayoutManager);
+        typeAdapter = new ServerTypeAdapter();
+        typeAdapter.setOnItemClickListener(new ServerTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String type) {
+                rl_serverTypeLayout.setVisibility(View.GONE);
+                if (type.trim().equals("全部")) {
+                    serverType = null;
+                } else {
+                    serverType = type.trim();
+                }
+                if (null != serverInfos) {
+                    serverInfos.clear();
+                }
+                page = null;
+                loadData();
+            }
+        });
+        typeAdapter.setData(getResources().getStringArray(R.array.server_Type));
+        serverTypeListView.setAdapter(typeAdapter);
+
         spinner = application.getSpinner();
         String[] items = getResources().getStringArray(R.array.server_Type);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.server_Type, R.layout.item_spinner);
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (0 == position){
+                    serverType = null;
+                }
+                else {
+                    serverType = type[position].trim();
+                }
+                if (null != serverInfos){
+                    serverInfos.clear();
+                }
+                page = null;
+                loadData();
+                rl_serverTypeLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
 
 
@@ -287,7 +341,12 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId()){
             case R.id.ll_serverType:
                     if (null == serverType){
-                        showServerType();
+                        if (rl_serverTypeLayout.getVisibility() == View.GONE) {
+                            showServerType();
+                        }
+                        else {
+                            rl_serverTypeLayout.setVisibility(View.GONE);
+                        }
                     }
                     else {
                         serverType = null;
