@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.mckuai.InventorySlot;
 import com.mckuai.ItemStack;
 import com.mckuai.bean.ArticItem;
+import com.mckuai.entity.EntityItem;
 import com.mckuai.imc.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     private List<InventorySlot> inventorySlotArrayList;
     private HashMap<Integer,Integer> selecteds = new HashMap<>(10);
     private OnItemLongClickListener mListener;
+    private ArrayList<EntityItem> itemList;
 
     public interface OnItemLongClickListener{
         public void onLongClick(InventorySlot inventorySlot);
@@ -57,6 +60,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         return  inventorySlotArrayList;
     }
 
+    public InventoryAdapter(){
+        super();
+        itemList = EntityItem.getAllItem();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_game_article,parent,false);
@@ -66,15 +74,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             @Override
             public void onClick(View v) {
                 InventorySlot item = (InventorySlot) holder.itemView.getTag();
-                if (null != item)
-                {
-                    if (holder.iv_selected.getVisibility() == View.VISIBLE){
+                if (null != item) {
+                    if (holder.iv_selected.getVisibility() == View.VISIBLE) {
                         holder.iv_selected.setVisibility(View.INVISIBLE);
                         selecteds.remove(item.getContents().getTypeId());
-                    }
-                    else {
+                    } else {
                         holder.iv_selected.setVisibility(View.VISIBLE);
-                        selecteds.put((int)item.getContents().getTypeId(),item.getContents().getAmount());
+                        selecteds.put((int) item.getContents().getTypeId(), item.getContents().getAmount());
                     }
                 }
 
@@ -96,16 +102,36 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ItemStack itemStack =  inventorySlotArrayList.get(position).getContents();
-        holder.tv_name.setText("ID:" + itemStack.getTypeId() + ",数量:" +itemStack.getAmount());
-        holder.itemView.setTag(inventorySlotArrayList.get(position));
+//        ItemStack itemStack =  inventorySlotArrayList.get(position).getContents();
+//        holder.tv_name.setText("ID:" + itemStack.getTypeId() + ",数量:" +itemStack.getAmount());
+//        holder.itemView.setTag(inventorySlotArrayList.get(position));
+        EntityItem item = itemList.get(position);
+        if (null != item){
+            holder.itemView.setTag(item);
+            holder.tv_name.setText(item.getName());
+            if (isInInventory(item)){
+                holder.iv_selected.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.iv_selected.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    private boolean isInInventory(EntityItem item){
+        if (null != inventorySlotArrayList && !inventorySlotArrayList.isEmpty()){
+            for (InventorySlot slot:inventorySlotArrayList){
+                if (slot.getContents().getId() == item.getId()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public int getItemCount() {
-        Log.e("InventoryAdapter","count="+(null ==inventorySlotArrayList ? 0:inventorySlotArrayList.size()));
-        return null == inventorySlotArrayList ? 0:inventorySlotArrayList.size();
-
+        return null ==itemList ? 0:itemList.size();
     }
 
     public static  class ViewHolder extends  RecyclerView.ViewHolder{
