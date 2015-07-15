@@ -250,6 +250,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             WorldInfo world = MCkuai.getInstance().world;
             if (null != world){
                 worldInfos.get(curWorldIndex).setInventory(world.getInventory());
+                updateWorldInfo();
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.mckuai.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,23 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         notifyDataSetChanged();
     }
 
+    public void updateInventory(InventorySlot inventorySlot){
+        if (null != inventorySlot && null != inventorySlotArrayList && !inventorySlotArrayList.isEmpty()){
+            for (InventorySlot item:inventorySlotArrayList){
+                if (item.getSlot() == inventorySlot.getSlot() && item.getContents().getTypeId() == item.getContents().getTypeId()){
+                    item = inventorySlot;
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+    }
+
     public HashMap<Integer,Integer> getSelectedItem(){
         return  selecteds;
+    }
+    public List<InventorySlot> getInventorySlots(){
+        return  inventorySlotArrayList;
     }
 
     @Override
@@ -87,7 +103,9 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public int getItemCount() {
+        Log.e("InventoryAdapter","count="+(null ==inventorySlotArrayList ? 0:inventorySlotArrayList.size()));
         return null == inventorySlotArrayList ? 0:inventorySlotArrayList.size();
+
     }
 
     public static  class ViewHolder extends  RecyclerView.ViewHolder{

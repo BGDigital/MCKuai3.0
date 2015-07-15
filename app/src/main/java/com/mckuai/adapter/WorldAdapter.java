@@ -65,9 +65,9 @@ public class WorldAdapter  extends BaseAdapter{
         if (null != world && null != world.getLevel()) {
             vh.name.setText(world.getLevel().getLevelName() + "");
             vh.worldSize.setText((world.getSize() / 1024) + "KB");
-            java.util.Date date = new Date(world.getLevel().getLastPlayed());
+            java.util.Date date = new Date(world.getLevel().getLastPlayed() *1000);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            vh.lastTime.setText(sdf.format(date));
+            vh.lastTime.setText("时间:"+sdf.format(date));
         }
 
 
