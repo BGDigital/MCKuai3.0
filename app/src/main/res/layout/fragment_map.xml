@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/frag_root">
+    android:id="@+id/frag_root"
+    android:background="@color/background_Grey">
 
     <LinearLayout
         android:id="@+id/l1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/frame_darkgray"
+        android:background="@color/background_Grey"
         android:orientation="horizontal"
         android:padding="@dimen/item_divider_height">
 
@@ -18,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
             android:layout_weight="1"
-            android:background="@drawable/btn_map_ranking"
+            android:background="@drawable/background_servarrand_shape"
             android:drawableLeft="@drawable/map_ranking"
             android:gravity="center"
             android:lines="1"
@@ -33,7 +34,7 @@
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_map_classification"
+            android:background="@drawable/background_servartype_shape"
             android:drawableLeft="@drawable/map_classification"
             android:gravity="center"
             android:lines="1"

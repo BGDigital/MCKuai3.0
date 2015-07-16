@@ -112,7 +112,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         serverListView.setAdapter(adapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST);
-        serverListView.addItemDecoration(dividerItemDecoration);serverListView.enableLoadmore();
+        serverListView.addItemDecoration(dividerItemDecoration);
+        serverListView.enableLoadmore();
         serverListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int i, int i1) {

@@ -23,14 +23,15 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
             android:layout_weight="1"
-            android:background="@drawable/btn_map_ranking"
+            android:background="@drawable/background_servarrand_shape"
             android:checked="true"
             android:drawableLeft="@drawable/mymap_go"
             android:gravity="center"
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/go_map"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/leave_map"
@@ -38,14 +39,15 @@
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_map_classification"
+            android:background="@drawable/background_servartype_shape"
             android:checked="true"
             android:drawableLeft="@drawable/mymap_leave"
             android:gravity="center"
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/leave_map"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/delete_map"
@@ -60,14 +62,15 @@
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/delete_map"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/mymaprot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/maproot"
-        android:id="@+id/mymaprot">
+        android:layout_below="@+id/maproot">
 
         <ListView
             android:id="@+id/map_mymap_lv"

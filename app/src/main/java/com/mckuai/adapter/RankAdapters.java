@@ -14,14 +14,13 @@ import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.MCDTListener;
 import com.mckuai.until.MCMapManager;
-import com.mckuai.widget.MasterLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import cn.aigestudio.downloader.bizs.DLManager;
+import mbanje.kurt.fabbutton.FabButton;
 
 /**
  * Created by Zzz on 2015/7/9.
@@ -36,7 +35,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
     private DLManager manager;
     private Context mContext;
     private boolean isPaihang = false;
-
+    private int currentProgress = 0;
 
     public interface OnItemClickListener {
         public void onItemClick(Map mapinfo);
@@ -64,7 +63,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-        final MasterLayout btn = holder.MasterLayout01;
+        //final FabButton btn = holder.btn_download_map;
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,8 +75,24 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 }
             }
         });
-        Map map = (Map) view.getTag();
-        btn.setOnClickListener(new ClickLinstener(map, btn));
+        holder.btn_download_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null == manager) {
+                    manager = DLManager.getInstance(mContext);
+                }
+                Map map = (Map) v.getTag();
+                String downloadDir = MCkuai.getInstance().getMapDownloadDir();
+                String url = map.getSavePath();
+//                    url = URLEncoder.encode(url);
+                Log.e(TAG, "downloaddir:" + downloadDir);
+                Log.e(TAG, "url:" + url);
+
+                manager.dlStart(url, downloadDir, new McDLTaskListener(map, (FabButton) v) {
+
+                });
+            }
+        });
         return holder;
     }
 
@@ -108,7 +123,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             } else {
                 holder.rk_tv.setVisibility(View.GONE);
             }
-            holder.MasterLayout01.setTag(map);
+            holder.btn_download_map.setTag(map);
+            holder.itemView.setTag(map);
         }
 
     }
@@ -125,7 +141,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         public TextView tv_time;
         public TextView tv_size;
         public TextView rk_tv;
-        public MasterLayout MasterLayout01;
+        public FabButton btn_download_map;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -135,68 +151,57 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             tv_size = (TextView) itemView.findViewById(R.id.tv_size);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
             rk_tv = (TextView) itemView.findViewById(R.id.rk_tv);
-            MasterLayout01 = (MasterLayout) itemView.findViewById(R.id.MasterLayout01);
+            btn_download_map = (FabButton) itemView.findViewById(R.id.download_map);
         }
     }
 
     class ClickLinstener implements View.OnClickListener {
         private Map map;
-        private MasterLayout MasterLayout01;
+        private FabButton btn_download_map;
 
-        public ClickLinstener(Map map, MasterLayout MasterLayout01) {
+        public ClickLinstener(Map map, FabButton btn_download_map) {
             this.map = map;
-            this.MasterLayout01 = MasterLayout01;
+            this.btn_download_map = btn_download_map;
         }
 
         @Override
         public void onClick(View v) {
-            final MasterLayout btn = MasterLayout01;
-            btn.animation();
-            Map clickedMap = (Map) v.getTag();
+            final FabButton btn = btn_download_map;
+//            btn.animation();
+            //Map clickedMap = (Map) v.getTag();
             if (mapManager == null) {
                 mapManager = MCkuai.getInstance().getMapManager();
             }
 
-            if (null == clickedMap) {
+            if (null == map) {
 //                Toast.makeText(mContext, "点击出错", LENGTH_SHORT).show();
 //                return;
             }
-            switch (btn.getFlg_frmwrk_mode()) {
-                case 1:
-                    if (null == manager) {
-                        manager = DLManager.getInstance(mContext);
-                    }
-                    String downloadDir = MCkuai.getInstance().getMapDownloadDir();
-                    String url = clickedMap.getSavePath();
-//                    url = URLEncoder.encode(url);
-                    Log.e(TAG, "downloaddir:" + downloadDir);
-                    Log.e(TAG, "url:" + url);
 
-                    manager.dlStart(url, downloadDir, new McDLTaskListener(clickedMap, btn) {
-
-
-                    });
-                    break;
-                //Download stopped
-                case 2:
-
-                    break;
-                //Download complete
-                case 3:
-
-                    break;
+            if (null == manager) {
+                manager = DLManager.getInstance(mContext);
             }
+            String downloadDir = MCkuai.getInstance().getMapDownloadDir();
+            String url = map.getSavePath();
+//                    url = URLEncoder.encode(url);
+            Log.e(TAG, "downloaddir:" + downloadDir);
+            Log.e(TAG, "url:" + url);
+
+            manager.dlStart(url, downloadDir, new McDLTaskListener(map, btn) {
+
+            });
+
         }
     }
 
     class McDLTaskListener extends MCDTListener {
         private Map clickedMap;
-        private MasterLayout MasterLayout01;
+        private FabButton btn_download_map;
 
-        public McDLTaskListener(Map clickedMap, MasterLayout MasterLayout01) {
+        public McDLTaskListener(Map clickedMap, FabButton btn_download_map) {
             //super();
             this.clickedMap = clickedMap;
-            this.MasterLayout01 = MasterLayout01;
+            this.btn_download_map = btn_download_map;
 
         }
 
@@ -221,7 +226,11 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         @Override
         public void onProgress(int progress) {
             //super.onProgress(progress);
-            MasterLayout01.cusview.setupprogress(progress);
+            btn_download_map.setProgress(progress);
+            btn_download_map.resetIcon();
+            currentProgress = 0;
+            btn_download_map.showProgress(true);
+            btn_download_map.setProgress(currentProgress);
             Log.e("10101", "progress");
         }
 

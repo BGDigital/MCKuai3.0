@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mymapr1"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/frame_top_and_bottom_white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,6 +30,7 @@
             android:layout_toRightOf="@id/image"
             android:lines="1"
             android:text="地图名字"
+            android:textColor="@color/font_primary"
             android:textSize="@dimen/font_big" />
 
 
@@ -52,24 +55,29 @@
             android:layout_toRightOf="@+id/image"
             android:gravity="center_vertical"
             android:text="类别"
-            android:textColor="@color/font_radio_hint_checked"
+            android:textColor="@color/green"
             android:textSize="@dimen/font_small" />
 
-        <com.mckuai.widget.MasterLayout
-            android:id="@+id/MasterLayout01"
+        <mbanje.kurt.fabbutton.FabButton
+            android:id="@+id/download_map"
             android:layout_width="@dimen/xz_wh"
             android:layout_height="@dimen/xz_wh"
             android:layout_alignParentRight="true"
-            android:clickable="true"></com.mckuai.widget.MasterLayout>
+            android:clickable="true"
+            android:indeterminate="true"
+            android:max="100"
+            android:src="@drawable/download"
+
+            />
 
         <TextView
             android:id="@+id/tv_size"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/image"
-            android:layout_alignLeft="@id/MasterLayout01"
+            android:layout_alignLeft="@id/download_map"
             android:layout_alignParentRight="true"
-            android:layout_alignRight="@id/MasterLayout01"
+            android:layout_alignRight="@id/download_map"
             android:gravity="center_horizontal"
             android:text="seze"
             android:textColor="@color/secondary"

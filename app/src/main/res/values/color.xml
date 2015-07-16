@@ -25,7 +25,7 @@
     <color name="background_yellow">#FFCC00</color>
     <color name="background_biue">#00CCFF</color>
     <color name="background_azure">#55C1EE</color>
-    <color name="background_dark_green">#33CC8F</color>
+    <color name="background_dark_green">#0CCB9C</color>
     <color name="background_white">#FFFFFF</color>
     <color name="background_litegray">#C9C9C9</color>
     <color name="background_orange">#F5C41E</color>
@@ -56,6 +56,6 @@
 
     <color name="green_yellow">#ADFF2F</color>
 
-
+<color name="btn_red">#e85454</color>
 
 </resources>

@@ -236,11 +236,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图排行");
                 MainActivity.setLeftButtonView(true);
                 mapadapters.setpaihang(true);
+                mapType = null;
                 mapList.getPageBean().setPage(0);
                 loadData();
                 break;
             case R.id.rb_classification:
-                l1.setVisibility(View.GONE);
                 tit.setText("地图分类");
                 showTypeLayout();
                 break;
@@ -402,6 +402,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "生存";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -410,6 +411,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "解密";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -418,6 +420,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "跑酷";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -426,6 +429,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "建筑";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -434,6 +438,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "pvp竞技";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        mapadapters.setpaihang(false);
         loadData();
     }
 

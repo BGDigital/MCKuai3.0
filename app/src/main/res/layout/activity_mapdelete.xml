@@ -21,13 +21,14 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/bt_h"
             android:layout_weight="1"
-            android:background="@drawable/btn_map_ranking"
+            android:background="@drawable/background_servarrand_shape"
             android:drawableLeft="@drawable/mymap_go"
             android:gravity="center"
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/go_map"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/leave_map"
@@ -35,13 +36,14 @@
             android:layout_height="@dimen/bt_h"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_map_classification"
+            android:background="@drawable/background_servartype_shape"
             android:drawableLeft="@drawable/mymap_leave"
             android:gravity="center"
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/leave_map"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/delete_map"
@@ -55,7 +57,8 @@
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/delete_map"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <EditText
@@ -72,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/font_red"
+        android:background="#ea4f4f"
         android:text="@string/delete"
         android:textColor="@color/font_white" />
 
