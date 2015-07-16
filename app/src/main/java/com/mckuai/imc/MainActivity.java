@@ -308,7 +308,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 break;
             case 2:
                 tv_titlebar_title.setText("联机");
-                sp_titlebar_spinner.setVisibility(View.VISIBLE);
+                //sp_titlebar_spinner.setVisibility(View.VISIBLE);
                 tv3.setEnabled(false);
                 img3.setEnabled(false);
                 ll3.setEnabled(false);
@@ -319,6 +319,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 img4.setEnabled(false);
                 ll4.setEnabled(false);
                 btn_titlebar_right.setVisibility(View.VISIBLE);
+                btn_titlebar_right.setImageResource(R.drawable.btn_post_publish);
                 break;
             default:
                 tv_titlebar_title.setText("工具");
