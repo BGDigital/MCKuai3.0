@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/frag_root">
 
     <LinearLayout
         android:id="@+id/l1"
@@ -23,7 +24,8 @@
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/ranking"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/rb_classification"
@@ -37,7 +39,8 @@
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/classification"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/rb_mymap"
@@ -51,14 +54,17 @@
             android:lines="1"
             android:paddingLeft="12dp"
             android:text="@string/mymap"
-            android:textColor="@color/font_white" />
+            android:textColor="@color/font_white"
+            android:textSize="14sp" />
 
 
     </LinearLayout>
+
     <EditText
         android:id="@+id/map_ed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/l1"
         android:hint="搜索"
         android:imeOptions="actionSearch"
         android:singleLine="true"
@@ -74,12 +80,14 @@
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map_ed"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout
         android:id="@+id/mp_r1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/map_ed"
         android:layout_weight="1"
         android:padding="@dimen/com_margin"
         android:visibility="gone">
@@ -227,4 +235,4 @@
 
         </LinearLayout>
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

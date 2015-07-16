@@ -65,7 +65,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private RankAdapters mapadapters;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
-    private MCkuai application;
     private String mapType = null;
     private String orderFiled = null;
     private ArrayList<Map> map;
@@ -75,6 +74,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private static final String TAG = "MapFragment";
     private View.OnClickListener leftButtonListener_myMaps;
     private View.OnClickListener rightButtonListener_myMaps;
+    private MCkuai application = MCkuai.getInstance();
+    private ImageView btn_right_view = application.getBtn_publish();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +85,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             view = inflater.inflate(R.layout.fragment_map, container, false);
         }
         tit = MainActivity.gettitle();
-        application = MCkuai.getInstance();
+//        application = MCkuai.getInstance();
         return view;
     }
 
@@ -107,6 +108,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             cancleLodingToast(false);
             if ((mp_r1 != null && mp_r1.getVisibility() == view.VISIBLE) || (urv_mapList != null && l1.getVisibility() == View.GONE)) {
                 hideTypeLayout();
+                map_ed.setVisibility(View.GONE);
             }
         }
     }
@@ -123,8 +125,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
+        btn_right_view.setOnClickListener(this);
         if (null == mapList || null == mapList.getData() || 0 == mapList.getPageBean().getPage()) {
-            isLoading = true;
             loadData();
             return;
         }
@@ -200,6 +202,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         leftButtonListener_myMaps = new onTitleButtonClickListener();
         rightButtonListener_myMaps = new onTitleButtonClickListener();
         MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
+
     }
 
     class onTitleButtonClickListener implements View.OnClickListener {
@@ -213,13 +216,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     mapadapters.setpaihang(false);
                     tit.setText("地图");
                     break;
-                case R.id.btn_titlebar_right:
-                    if (map_ed.getVisibility() == View.GONE) {
-                        map_ed.setVisibility(View.VISIBLE);
-                    } else {
-                        sousuo();
-                    }
-                    break;
+//                case R.id.btn_titlebar_right:
+//                    if (map_ed.getVisibility() == View.GONE) {
+//                        map_ed.setVisibility(View.VISIBLE);
+//                    } else {
+//                        sousuo();
+//                    }
+//                    break;
             }
         }
     }
@@ -228,10 +231,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
+                searchContext = null;
                 l1.setVisibility(View.GONE);
                 tit.setText("地图排行");
                 MainActivity.setLeftButtonView(true);
                 mapadapters.setpaihang(true);
+                mapList.getPageBean().setPage(0);
+                loadData();
                 break;
             case R.id.rb_classification:
                 l1.setVisibility(View.GONE);
@@ -265,6 +271,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             case R.id.cf_l6:
                 totle();
                 tit.setText("地图");
+                break;
+            case R.id.btn_titlebar_right:
+                if (map_ed.getVisibility() == View.GONE) {
+                    map_ed.setVisibility(View.VISIBLE);
+                } else {
+                    sousuo();
+                }
                 break;
             default:
                 break;
@@ -306,6 +319,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     protected void loadData() {
+        if (isLoading || (page != null && page.EOF())) {
+            return;
+        } else {
+            isLoading = true;
+        }
         final RequestParams params = getparams();
         final String url = getUrl();
         if (mapList == null) {
@@ -354,13 +372,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         showData();
                         return;
                     } else {
-                        showNotification(0, "没有当前选项", R.id.l1);
+                        showNotification(0, "没找到所选地图", R.id.urv_mapList);
                         if (mapType != null && mapList.getData().size() == 0) {
                             totle();
                         }
                     }
                 } else {
-                    showNotification(0, "加载数据错误", R.id.l1);
+                    showNotification(0, "加载数据错误", R.id.urv_mapList);
                 }
                 cancleLodingToast(false);
             }
@@ -368,6 +386,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 cancleLodingToast(false);
+                isLoading = false;
+            }
+
+            @Override
+            public void onCancel() {
+                super.onCancel();
                 isLoading = false;
             }
         });
@@ -418,6 +442,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = null;
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        searchContext = null;
         loadData();
     }
 
@@ -455,6 +480,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 mapList.getPageBean().setPage(0);
             }
             loadData();
+            searchContext = null;
+            map_ed.setVisibility(View.GONE);
         } else {
             Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
         }
