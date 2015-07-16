@@ -41,6 +41,7 @@ dependencies {
     compile 'com.github.ganfra:material-spinner:1.1.0'
     compile 'org.zeroturnaround:zt-zip:1.8'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
     //compile 'mbanje.kurt:fabbutton:1.+'
     compile files('src/libs/libammsdk.jar')
     compile files('src/libs/updatelibrary.jar')

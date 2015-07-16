@@ -159,13 +159,10 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
 
         switch (type){
             case 0:
-                //clip.setText(serverInfo.get);   //QQ group
+                clip.setText(serverInfo.getQQ());   //QQ group
                 break;
-            case 1:
-                clip.setText(serverInfo.getResIp()+"");
-                break;
-            case 2:
-                clip.setText(serverInfo.getServerPort()+"");
+            default:
+                clip.setText("服务器名称："+serverInfo.getViewName()+"\n服务器IP:"+serverInfo.getResIp()+"\n服务器端口:"+serverInfo.getServerPort()+"\n更多精彩尽在《麦块我的世界盒子》马上登录www.mckuai.com感受吧！");
                 break;
         }
         showNotification(1,"已复制!",R.id.rl_serverBasicInfo);

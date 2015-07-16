@@ -13,6 +13,9 @@ import com.lurencun.service.autoupdate.Version;
 import com.lurencun.service.autoupdate.internal.SimpleJSONParser;
 import com.mckuai.bean.MCUser;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.until.CircleBitmapDisplayer;
+import com.mckuai.widget.fabbutton.CircleImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.LoginActivity;
 import com.mckuai.imc.R;
@@ -40,17 +43,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import mbanje.kurt.fabbutton.CircleImageView;
-import mbanje.kurt.fabbutton.FabButton;
 
 public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		DialogInterface.OnClickListener
 {
 	private static MCSildingMenu instence;
-	private CircleImageView user_cover;
+	private ImageView user_cover;
 	private TextView user_name;
 	private TextView user_level;
 //	private EditText edt_Search;
@@ -197,7 +199,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		btn_CheckUpgread = (Button) view.findViewById(R.id.tv_checkUpgread);
 		user_name = (TextView) view.findViewById(R.id.tv_userName);
 		user_level = (TextView) view.findViewById(R.id.tv_userLevel);
-		user_cover = (CircleImageView) view.findViewById(R.id.user_Progress);
+		user_cover = (ImageView) view.findViewById(R.id.user_Progress);
 
 		user_cover.setOnClickListener(this);
 		btn_CheckUpgread.setOnClickListener(this);
@@ -250,7 +252,8 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			user_name.setText(user.getNike() + "");
 			user_level.setText("Lv." + user.getLevel() + "");
 			user_level.setVisibility(View.VISIBLE);
-			//mLoader.displayImage(user.getHeadImg() + "", user_cover);
+			DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
+			mLoader.displayImage(user.getHeadImg() + "", user_cover,options);
 			btn_Logout.setVisibility(View.VISIBLE);
 		} else
 		{

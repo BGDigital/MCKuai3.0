@@ -35,6 +35,7 @@ public class GameServerInfo implements Serializable {
     private String pictures;           //截图
     private String isOnline;            //是否在线，为no时是不在线
     private String userName;        //服主
+    private String QQ;
 
     public int getGameId() {
         return gameId;
@@ -266,5 +267,13 @@ public class GameServerInfo implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getQQ() {
+        return QQ;
+    }
+
+    public void setQQ(String QQ) {
+        this.QQ = QQ;
     }
 }

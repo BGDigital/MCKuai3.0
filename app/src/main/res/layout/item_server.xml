@@ -22,6 +22,7 @@
         android:layout_height="40dp"
         android:background="@drawable/btn_circle_green_shape"
         android:layout_alignParentRight="true"
+        android:textSize="@dimen/font_dimen_small"
         android:text="进入"
         android:textColor="@color/green"
         />
