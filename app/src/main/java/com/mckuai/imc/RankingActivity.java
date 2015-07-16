@@ -101,7 +101,7 @@ public class RankingActivity extends BaseActivity implements View.OnClickListene
         urv_mapList = (UltimateRecyclerView) findViewById(R.id.urv_mapList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this);
         urv_mapList.setLayoutManager(manager);
-        adapters = new RankAdapters();
+        adapters = new RankAdapters(this);
         adapters.setOnItemClickListener(this);
         adapters.setOnMapDownloadListener(this);
         urv_mapList.setAdapter(adapters);

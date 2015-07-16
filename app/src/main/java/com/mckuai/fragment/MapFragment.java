@@ -153,7 +153,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         urv_mapList.setLayoutManager(manager);
-        mapadapters = new RankAdapters();
+        mapadapters = new RankAdapters(getActivity());
         mapadapters.setOnItemClickListener(this);
         mapadapters.setOnMapDownloadListener(this);
         urv_mapList.setAdapter(mapadapters);

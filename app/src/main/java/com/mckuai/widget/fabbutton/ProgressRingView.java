@@ -37,6 +37,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.mckuai.imc.R;
 
 
 public class ProgressRingView extends View implements FabUtil.OnFabValueCallback{
@@ -78,14 +79,14 @@ public class ProgressRingView extends View implements FabUtil.OnFabValueCallback
     }
 
     protected void init(AttributeSet attrs, int defStyle) {
-        final TypedArray a = getContext().obtainStyledAttributes(attrs, mbanje.kurt.fabbutton.R.styleable.CircleImageView, defStyle, 0);
-        progress = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_progress, 0f);
-        progressColor = a.getColor(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_progressColor,progressColor);
-        maxProgress = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_max, 100f);
-        indeterminate = a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_indeterminate, false);
-        autostartanim = a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_autoStart, true);
-        animDuration = a.getInteger(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_indeterminateDuration, 4000);
-        ringWidthRatio = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_progressWidthRatio, ringWidthRatio);
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
+        progress = a.getFloat(R.styleable.CircleImageView_android_progress, 0f);
+        progressColor = a.getColor(R.styleable.CircleImageView_fbb_progressColor,progressColor);
+        maxProgress = a.getFloat(R.styleable.CircleImageView_android_max, 100f);
+        indeterminate = a.getBoolean(R.styleable.CircleImageView_android_indeterminate, false);
+        autostartanim = a.getBoolean(R.styleable.CircleImageView_fbb_autoStart, true);
+        animDuration = a.getInteger(R.styleable.CircleImageView_android_indeterminateDuration, 4000);
+        ringWidthRatio = a.getFloat(R.styleable.CircleImageView_fbb_progressWidthRatio, ringWidthRatio);
         a.recycle();
         progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressPaint.setColor(progressColor);

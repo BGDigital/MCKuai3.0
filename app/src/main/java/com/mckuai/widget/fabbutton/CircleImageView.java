@@ -42,6 +42,8 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.mckuai.imc.R;
+
 
 public class CircleImageView extends ImageView {
 
@@ -123,11 +125,11 @@ public class CircleImageView extends ImageView {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         int color = Color.BLACK;
         if (attrs != null) {
-            final TypedArray a = context.obtainStyledAttributes(attrs, mbanje.kurt.fabbutton.R.styleable.CircleImageView);
-            color = a.getColor(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_color, Color.BLACK);
-            ringWidthRatio = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_progressWidthRatio, ringWidthRatio);
+            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView);
+            color = a.getColor(R.styleable.CircleImageView_android_color, Color.BLACK);
+            ringWidthRatio = a.getFloat(R.styleable.CircleImageView_fbb_progressWidthRatio, ringWidthRatio);
 
-            setShowShadow(a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_showShadow, true));
+            setShowShadow(a.getBoolean(R.styleable.CircleImageView_fbb_showShadow, true));
             a.recycle();
         }
         setColor(color);

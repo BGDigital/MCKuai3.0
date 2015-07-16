@@ -41,6 +41,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
+import com.mckuai.imc.R;
+
 import java.util.List;
 
 
@@ -59,26 +61,26 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
     private boolean showEndBitmap;
     private boolean hideProgressOnComplete;
 
-    public FabButton(Context context) {
+/*    public FabButton(Context context) {
         super(context);
         init(context,null, 0);
-    }
+    }*/
 
     public FabButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context,attrs, 0);
     }
 
-    public FabButton(Context context, AttributeSet attrs, int defStyle) {
+ /*   public FabButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context,attrs, defStyle);
-    }
+    }*/
 
     protected void init(Context context,AttributeSet attrs, int defStyle) {
-        View v = View.inflate(context, mbanje.kurt.fabbutton.R.layout.widget_fab_button,this);
+        View v = View.inflate(context, R.layout.widget_fab_button,this);
         setClipChildren(false);
-        circle = (CircleImageView) v.findViewById(mbanje.kurt.fabbutton.R.id.fabbutton_circle);
-        ring = (ProgressRingView)v.findViewById(mbanje.kurt.fabbutton.R.id.fabbutton_ring);
+        circle = (CircleImageView) v.findViewById(R.id.fabbutton_circle);
+        ring = (ProgressRingView)v.findViewById(R.id.fabbutton_ring);
         circle.setFabViewListener(this);
         ring.setFabViewListener(this);
         int color = Color.BLACK;
@@ -88,20 +90,20 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
         float maxProgress = 0;
         float progress =0;
         if (attrs != null) {
-            final TypedArray a = context.obtainStyledAttributes(attrs, mbanje.kurt.fabbutton.R.styleable.CircleImageView);
-            color = a.getColor(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_color, Color.BLACK);
-            progressColor = a.getColor(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_progressColor, Color.BLACK);
-            progress = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_progress, 0f);
-            maxProgress = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_max, 100f);
-            indeterminate = a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_indeterminate, false);
-            autostartanim = a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_autoStart, true);
-            animDuration = a.getInteger(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_indeterminateDuration, animDuration);
-            icon = a.getResourceId(mbanje.kurt.fabbutton.R.styleable.CircleImageView_android_src, icon);
-            ringWidthRatio = a.getFloat(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_progressWidthRatio, ringWidthRatio);
-            endBitmapResource = a.getResourceId(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_endBitmap, mbanje.kurt.fabbutton.R.drawable.ic_fab_complete);
-            showEndBitmap = a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_showEndBitmap, false);
-            hideProgressOnComplete = a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_hideProgressOnComplete, false);
-            circle.setShowShadow(a.getBoolean(mbanje.kurt.fabbutton.R.styleable.CircleImageView_fbb_showShadow, true));
+            final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView);
+            color = a.getColor(R.styleable.CircleImageView_android_color, Color.BLACK);
+            progressColor = a.getColor(R.styleable.CircleImageView_fbb_progressColor, Color.BLACK);
+            progress = a.getFloat(R.styleable.CircleImageView_android_progress, 0f);
+            maxProgress = a.getFloat(R.styleable.CircleImageView_android_max, 100f);
+            indeterminate = a.getBoolean(R.styleable.CircleImageView_android_indeterminate, false);
+            autostartanim = a.getBoolean(R.styleable.CircleImageView_fbb_autoStart, true);
+            animDuration = a.getInteger(R.styleable.CircleImageView_android_indeterminateDuration, animDuration);
+            icon = a.getResourceId(R.styleable.CircleImageView_android_src, icon);
+            ringWidthRatio = a.getFloat(R.styleable.CircleImageView_fbb_progressWidthRatio, ringWidthRatio);
+            endBitmapResource = a.getResourceId(R.styleable.CircleImageView_fbb_endBitmap, R.drawable.ic_fab_complete);
+            showEndBitmap = a.getBoolean(R.styleable.CircleImageView_fbb_showEndBitmap, false);
+            hideProgressOnComplete = a.getBoolean(R.styleable.CircleImageView_fbb_hideProgressOnComplete, false);
+            circle.setShowShadow(a.getBoolean(R.styleable.CircleImageView_fbb_showShadow, true));
             a.recycle();
         }
 
@@ -147,6 +149,13 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
     public void setOnClickListener(OnClickListener listener){
         ring.setOnClickListener(listener);
         circle.setOnClickListener(listener);
+    }
+
+    @Override
+    public void setTag(Object tag) {
+        super.setTag(tag);
+        ring.setTag(this);
+        circle.setTag(this);
     }
 
     /**
@@ -307,7 +316,7 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
                         .start();
             } else {
                 Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                        button.getContext(), mbanje.kurt.fabbutton.R.anim.fab_in);
+                        button.getContext(), R.anim.fab_in);
                 anim.setDuration(200);
                 anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 button.startAnimation(anim);
@@ -341,7 +350,7 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
                         }).start();
             } else {
                 Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                        button.getContext(), mbanje.kurt.fabbutton.R.anim.fab_out);
+                        button.getContext(), R.anim.fab_out);
                 anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 anim.setDuration(200);
                 anim.setAnimationListener(new AnimationUtils.AnimationListenerAdapter() {

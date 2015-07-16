@@ -1,26 +1,31 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.MCDTListener;
 import com.mckuai.until.MCMapManager;
+import com.mckuai.widget.fabbutton.FabButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import cn.aigestudio.downloader.bizs.DLManager;
-import mbanje.kurt.fabbutton.FabButton;
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 /**
  * Created by Zzz on 2015/7/9.
@@ -59,11 +64,14 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public RankAdapters(Context context){
+        this.mContext = context;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-        //final FabButton btn = holder.btn_download_map;
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,21 +83,50 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 }
             }
         });
-        holder.btn_download_map.setOnClickListener(new View.OnClickListener() {
+        holder.btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if (null == manager) {
                     manager = DLManager.getInstance(mContext);
                 }
-                Map map = (Map) v.getTag();
+                final FabButton button = (FabButton) v.getTag();
+                Map map = (Map) button.getTag();
                 String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                 String url = map.getSavePath();
 //                    url = URLEncoder.encode(url);
                 Log.e(TAG, "downloaddir:" + downloadDir);
                 Log.e(TAG, "url:" + url);
+                button.resetIcon();
+                manager.dlStart(url,downloadDir,new DLTaskListener(){
+                    @Override
+                    public boolean onConnect(int type, String msg) {
+                        Log.e("","已连接");
+                        return super.onConnect(type, msg);
+                    }
 
-                manager.dlStart(url, downloadDir, new McDLTaskListener(map, (FabButton) v) {
+                    @Override
+                    public void onStart(String fileName, String url) {
+                        Log.e("","开始下载");
+                        super.onStart(fileName, url);
+                    }
 
+                    @Override
+                    public void onProgress(int progress) {
+                        button.setProgress(progress);
+                        Log.e("", "当前进度：" + progress);
+                    }
+
+                    @Override
+                    public void onFinish(File file) {
+                        Log.e("","开始完成");
+                        super.onFinish(file);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e("","出错了");
+                        super.onError(error);
+                    }
                 });
             }
         });
@@ -123,8 +160,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             } else {
                 holder.rk_tv.setVisibility(View.GONE);
             }
-            holder.btn_download_map.setTag(map);
-            holder.itemView.setTag(map);
+            holder.btn_download.setTag(map);
+            holder.itemView.setTag(position);
         }
 
     }
@@ -141,7 +178,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         public TextView tv_time;
         public TextView tv_size;
         public TextView rk_tv;
-        public FabButton btn_download_map;
+        public FabButton btn_download;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -151,7 +188,10 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             tv_size = (TextView) itemView.findViewById(R.id.tv_size);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
             rk_tv = (TextView) itemView.findViewById(R.id.rk_tv);
-            btn_download_map = (FabButton) itemView.findViewById(R.id.download_map);
+            btn_download = (FabButton) itemView.findViewById(R.id.download_map);
+            /*btn_progress = (DonutProgress) itemView.findViewById(R.id.download_map);
+            btn_operator = (ImageButton) itemView.findViewById(R.id.btn_operat);
+            btn_operator.setTag(btn_progress);*/
         }
     }
 
