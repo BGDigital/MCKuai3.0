@@ -13,10 +13,8 @@ import com.lurencun.service.autoupdate.Version;
 import com.lurencun.service.autoupdate.internal.SimpleJSONParser;
 import com.mckuai.bean.MCUser;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.widget.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.LoginActivity;
-import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
@@ -30,7 +28,6 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -45,6 +42,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import mbanje.kurt.fabbutton.CircleImageView;
+import mbanje.kurt.fabbutton.FabButton;
 
 public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		DialogInterface.OnClickListener
@@ -250,11 +250,11 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			user_name.setText(user.getNike() + "");
 			user_level.setText("Lv." + user.getLevel() + "");
 			user_level.setVisibility(View.VISIBLE);
-			mLoader.displayImage(user.getHeadImg() + "", user_cover);
+			//mLoader.displayImage(user.getHeadImg() + "", user_cover);
 			btn_Logout.setVisibility(View.VISIBLE);
 		} else
 		{
-			user_cover.setImageResource(R.drawable.background_user_cover_default);
+			//user_cover.setImageResource(R.drawable.background_user_cover_default);
 			user_name.setText("未登录");
 			user_level.setVisibility(View.GONE);
 			btn_Logout.setVisibility(View.GONE);
