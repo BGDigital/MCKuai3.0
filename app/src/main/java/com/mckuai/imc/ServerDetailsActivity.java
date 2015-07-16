@@ -174,6 +174,7 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
     private void addAndRunGame(){
         ServerEditer editer = new ServerEditer();
         editer.addServer(serverInfo);
+        editer.save();
         GameUntil.startGame(this);
     }
 
