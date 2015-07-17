@@ -12,12 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,9 +26,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
-import com.mckuai.adapter.MapAdapter;
 import com.mckuai.adapter.RankAdapters;
-import com.mckuai.adapter.mapadapters;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.bean.PageInfo;
@@ -39,7 +35,6 @@ import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
-import com.mckuai.imc.RankingActivity;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -451,15 +446,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         loadData();
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
-//        Map mapList = (Map) mapadapters.getItem(position);
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(getString(R.string.Details), mapList);
-//        intent.putExtras(bundle);
-//        getActivity().startActivity(intent);
-//    }
+
 
     @Override
     public void onItemClick(Map mapinfo) {

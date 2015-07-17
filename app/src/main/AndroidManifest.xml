@@ -63,11 +63,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".RankingActivity"
-            android:label="@string/title_activity_ranking"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".Export_mapActivity"
             android:label="@string/title_activity_export_map"
             android:screenOrientation="portrait">

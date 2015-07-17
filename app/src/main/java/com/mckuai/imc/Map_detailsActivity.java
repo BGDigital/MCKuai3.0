@@ -98,7 +98,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             }
         };
 
-
         if (null == imag) {
             initview();
         }
@@ -175,7 +174,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
                 break;
             case 0:
-                dl.setText("下载" + "   " + map.getResSize());
+                dl.setText("下载" + "   " + map.getResSize() + "kb");
                 break;
             default:
                 break;
@@ -259,7 +258,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     if (map != null) {
                         showData();
                     } else {
-                        showNotification(0, "详情出错", R.id.md_r1);
+                        showNotification(0, "详情加载出错", R.id.md_r1);
                     }
                 } else {
                     showNotification(0, "加载数据错误", R.id.md_r1);
@@ -296,7 +295,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 switch (downloadstate) {
                     case 0:
                         MCkuai.getInstance().addDownloadTask(map.getResId(), taskListener);
-                        String url = "http://" + map.getSavePath();
+                        String url = map.getSavePath();
                         manager.dlStart(url, downloadDir, taskListener);
                         showNotification(1, "下载成功", R.id.md_r1);
                         break;

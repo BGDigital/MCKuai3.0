@@ -90,7 +90,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     manager = DLManager.getInstance(mContext);
                 }
                 final FabButton button = (FabButton) v.getTag();
-                Map map = (Map) button.getTag();
+                final Map map = (Map) button.getTag();
                 String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                 String url = map.getSavePath();
 //                    url = URLEncoder.encode(url);
@@ -113,6 +113,10 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     @Override
                     public void onProgress(int progress) {
                         button.setProgress(progress);
+                        button.resetIcon();
+                        currentProgress = 0;
+                        button.showProgress(true);
+                        button.setProgress(currentProgress);
                         Log.e("", "当前进度：" + progress);
                     }
 
@@ -120,6 +124,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     public void onFinish(File file) {
                         Log.e("", "开始完成");
                         super.onFinish(file);
+//                        mapManager.addDownloadMap(map);
+//                        mapManager.closeDB();
+//                        MCkuai.getInstance().deleteDownloadTask(map.getResId());
                     }
 
                     @Override
@@ -148,7 +155,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
             leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
-            holder.tv_size.setText(map.getResSize());
+            holder.tv_size.setText(map.getResSize() + "KB");
             holder.tv_time.setText(map.getInsertTime());
             if (isPaihang == true) {
                 holder.rk_tv.setVisibility(View.VISIBLE);

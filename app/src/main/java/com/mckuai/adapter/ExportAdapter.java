@@ -95,7 +95,7 @@ public class ExportAdapter extends BaseAdapter {
 //            holder.tv_time.setText(world.getLevel().getLastPlayed()+"");
             holder.tv_name.setText(world.getLevel().getLevelName());
         }
-        holder.tv_size.setText((world.getSize() / 1024) + "kb");
+        holder.tv_size.setText((world.getSize() / 1024) + "KB");
 //        holder.tv_category.setText(map.getResCategroyTwo());
         return convertView;
     }
