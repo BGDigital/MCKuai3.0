@@ -310,19 +310,19 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    class taskListeners extends MCDTListener {
-        private com.mckuai.widget.ProgressButton btn;
-
-        public taskListeners(com.mckuai.widget.ProgressButton btn) {
-            this.btn = btn;
-        }
-
-        @Override
-        public void onProgress(int progress) {
-            super.onProgress(progress);
-            btn.updateProgress(progress);
-        }
-    }
+//    class taskListeners extends MCDTListener {
+//        private com.mckuai.widget.ProgressButton btn;
+//
+//        public taskListeners(com.mckuai.widget.ProgressButton btn) {
+//            this.btn = btn;
+//        }
+//
+//        @Override
+//        public void onProgress(int progress) {
+//            super.onProgress(progress);
+//            btn.updateProgress(progress);
+//        }
+//    }
 
     android.os.Handler handler = new android.os.Handler() {
         @Override
