@@ -1,6 +1,7 @@
 package com.mckuai.imc;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
@@ -11,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +32,8 @@ import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.CustomShareBoard;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
@@ -75,6 +79,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private CustomShareBoard shareBoard;
     private DownloadStatusListener statusListener;
     private ThinDownloadManager dlManager;
+    private ImageView iv_serverPic;//只有一张图时显示
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,7 +173,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         client = MCkuai.getInstance().mClient;
         mLoader = ImageLoader.getInstance();
         sv_lh = (LinearLayout) findViewById(R.id.sv_lh);
-
+        iv_serverPic = (ImageView) findViewById(R.id.iv_pic);
     }
 
 
@@ -205,21 +210,52 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private void showPics() {
         if (null != map.getPictures() && 1 < map.getPictures().length()) {
             String[] pic = map.getPictures().split(",");
-            sv_lh.removeAllViews();
-            LayoutInflater inflater = LayoutInflater.from(this);
-//            for (int i = 0; i < 5; i++) {
-            for (String curpic : pic) {
-                ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
-                params.setMargins(dp2px(2), dp2px(10), dp2px(2), dp2px(10));
+            if (pic.length == 1) {
+                mLoader.displayImage(pic[0], iv_serverPic, new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
 
-                imageView.setLayoutParams(params);
-                mLoader.displayImage(curpic, imageView);
-                mLoader.displayImage(curpic, imageView, options);
-                imageView.setTag(curpic);
-                sv_lh.addView(imageView);
-            }
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+                        float scale = loadedImage.getWidth() * 1.0f / screenWidth;
+                        int height = (int) (loadedImage.getHeight() / scale);
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(screenWidth, height);
+                        params.setMargins(0, 20, 0, 20);
+                        iv_serverPic.setLayoutParams(params);
+                        iv_serverPic.setScaleType(ImageView.ScaleType.FIT_XY);
+                        iv_serverPic.setImageBitmap(loadedImage);
+
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+
+                    }
+                });
+            } else {
+                sv_lh.removeAllViews();
+                LayoutInflater inflater = LayoutInflater.from(this);
+//            for (int i = 0; i < 5; i++) {
+                for (String curpic : pic) {
+                    ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
+                    params.setMargins(dp2px(2), dp2px(10), dp2px(2), dp2px(10));
+                    imageView.setLayoutParams(params);
+                    mLoader.displayImage(curpic, imageView);
+                    mLoader.displayImage(curpic, imageView, options);
+                    imageView.setTag(curpic);
+                    sv_lh.addView(imageView);
+                }
 //            }
+            }
         }
     }
 
@@ -343,7 +379,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 case 0:
                     dl.updateProgress(map.getDownloadProgress());
                     dl.postInvalidate();
-                    Log.e("","progress="+map.getDownloadProgress());
+                    Log.e("", "progress=" + map.getDownloadProgress());
                     if (100 != map.getDownloadProgress()) {
                         handler.sendMessageDelayed(handler.obtainMessage(0), 200);
                     }

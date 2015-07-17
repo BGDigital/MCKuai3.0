@@ -122,6 +122,12 @@
                     </LinearLayout>
                 </HorizontalScrollView>
 
+                <ImageView
+                    android:id="@+id/iv_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
