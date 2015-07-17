@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.lzyzsd.circleprogress.DonutProgress;
+//import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
@@ -64,7 +64,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public RankAdapters(Context context){
+    public RankAdapters(Context context) {
         this.mContext = context;
     }
 
@@ -97,16 +97,16 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 Log.e(TAG, "downloaddir:" + downloadDir);
                 Log.e(TAG, "url:" + url);
                 button.resetIcon();
-                manager.dlStart(url,downloadDir,new DLTaskListener(){
+                manager.dlStart(url, downloadDir, new DLTaskListener() {
                     @Override
                     public boolean onConnect(int type, String msg) {
-                        Log.e("","已连接");
+                        Log.e("", "已连接");
                         return super.onConnect(type, msg);
                     }
 
                     @Override
                     public void onStart(String fileName, String url) {
-                        Log.e("","开始下载");
+                        Log.e("", "开始下载");
                         super.onStart(fileName, url);
                     }
 
@@ -118,13 +118,13 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
 
                     @Override
                     public void onFinish(File file) {
-                        Log.e("","开始完成");
+                        Log.e("", "开始完成");
                         super.onFinish(file);
                     }
 
                     @Override
                     public void onError(String error) {
-                        Log.e("","出错了");
+                        Log.e("", "出错了");
                         super.onError(error);
                     }
                 });
@@ -146,6 +146,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             }
             holder.tv_name.setText(map.getViewName());
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
+            leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
             holder.tv_size.setText(map.getResSize());
             holder.tv_time.setText(map.getInsertTime());

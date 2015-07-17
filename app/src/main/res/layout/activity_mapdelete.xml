@@ -28,7 +28,7 @@
             android:paddingLeft="12dp"
             android:text="@string/go_map"
             android:textColor="@color/font_white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/leave_map"
@@ -43,7 +43,7 @@
             android:paddingLeft="12dp"
             android:text="@string/leave_map"
             android:textColor="@color/font_white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/delete_map"
@@ -58,7 +58,7 @@
             android:paddingLeft="12dp"
             android:text="@string/delete_map"
             android:textColor="@color/font_white"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <EditText

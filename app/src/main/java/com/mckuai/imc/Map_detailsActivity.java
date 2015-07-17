@@ -161,6 +161,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
         tv_name.setText(map.getViewName());
         String leixing = "类型:" + map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
+        leixing = leixing.replace("|", " ");
         tv_category.setText(leixing);
         tx_times.setText(map.getInsertTime());
         tv_nm.setText("作者:" + map.getUploadMan());
