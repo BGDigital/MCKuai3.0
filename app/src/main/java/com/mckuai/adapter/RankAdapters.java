@@ -22,6 +22,7 @@ import com.thin.downloadmanager.ThinDownloadManager;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,7 +198,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
         }
     }
 
-    class DownloadTask{
+    class DownloadTask implements Serializable{
         public FabButton button;
         public Map map;
 

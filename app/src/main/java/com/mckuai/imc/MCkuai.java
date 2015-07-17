@@ -25,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.tencent.tauth.Tencent;
+import com.thin.downloadmanager.DownloadStatusListener;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -54,6 +55,7 @@ public class MCkuai  extends Application{
     public AsyncHttpClient mClient;
     public Tencent tencent;
     public WorldInfo world;
+    public DownloadStatusListener downloadStatusListener;
 
 
 
