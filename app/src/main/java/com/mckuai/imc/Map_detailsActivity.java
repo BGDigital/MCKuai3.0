@@ -1,6 +1,7 @@
 package com.mckuai.imc;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Html;
@@ -29,6 +30,9 @@ import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.CustomShareBoard;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.thin.downloadmanager.DownloadRequest;
+import com.thin.downloadmanager.DownloadStatusListener;
+import com.thin.downloadmanager.ThinDownloadManager;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
@@ -40,6 +44,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -63,23 +68,44 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private Map map;
     private LinearLayout sv_lh;
     private DLManager manager;
-    private MCMapManager mapManager;
+    //    private MCMapManager mapManager;
     private int downloadstate;//0未下载，1正在下载，2已下载
     private DisplayImageOptions options;
     private com.umeng.socialize.controller.UMSocialService mShareService;
     private CustomShareBoard shareBoard;
+    private DownloadStatusListener statusListener;
+    private ThinDownloadManager dlManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
-        mapManager = MCkuai.getInstance().getMapManager();
+//        mapManager = MCkuai.getInstance().getMapManager();
         options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.background_user_cover_default)
                 .showImageForEmptyUri(R.drawable.background_user_cover_default)
                 .showImageOnFail(R.drawable.background_user_cover_default)
                 .build();
         handler.sendMessageDelayed(handler.obtainMessage(5), 1000);
         mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
+        statusListener = MCkuai.getInstance().downloadStatusListener;
+        if (null == statusListener) {
+            statusListener = new DownloadStatusListener() {
+                @Override
+                public void onDownloadComplete(int i) {
+
+                }
+
+                @Override
+                public void onDownloadFailed(int i, int i1, String s) {
+
+                }
+
+                @Override
+                public void onProgress(int downToken, long l, int progress) {
+
+                }
+            };
+        }
 //        shareBoard = new CustomShareBoard(this, mShareService, map);
     }
 
@@ -110,20 +136,14 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void checkState() {
-        ArrayList<Map> curDownloadedMaps = mapManager.getDownloadMaps();
-        if (null != curDownloadedMaps) {
-            for (Map curMap : curDownloadedMaps) {
-                if (curMap.getResId().equalsIgnoreCase(map.getResId())) {
-                    downloadstate = 2;
-                    return;
-                }
-            }
-        }
-        taskListener = MCkuai.getInstance().getDownloadTask(map.getResId());
-        if (null == taskListener) {
-            downloadstate = 0;
+        if (map.isDownload()) {
+            downloadstate = 2;
         } else {
-            downloadstate = 1;
+            if (map.getDownloadProgress() == 0) {
+                downloadstate = 0;
+            } else {
+                downloadstate = 1;
+            }
         }
     }
 
@@ -179,24 +199,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             default:
                 break;
         }
-////     pictures 详细图片
-//        for (int i = 0; i < 5; i++) {
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(424, 238);
-//            ImageView imv = new ImageView(this);
-//
-//            params.setMargins(4, 0, 0, 0);
-//            imv.setLayoutParams(params);
-//            mLoader.displayImage("http://e.hiphotos.baidu.com/image/pic/item/a9d3fd1f4134970a1caaa23097cad1c8a6865dd7.jpg", imv);
-////            String str = "";
-////            String[] list;
-////            list = str.split(",");   //json
-////            if(list!=null&&list.length!=0){
-////                for (int j = 0; j < list.length; j++) {
-////                 String tmp=   list[j];
-////                }
-////            }
-//            sv_lh.addView(imv);
-//        }
+
     }
 
     private void showPics() {
@@ -281,25 +284,34 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.btn_right:
-//                 CustomShareBoard shareBoard = new CustomShareBoard();
-//                 CustomShareBoard(this,mShareService,map);
-//                 shareBoard.showAtLocation(this.getWindow().getDecorView(),
-//                 Gravity.BOTTOM, 0, 0);
                 shareMap();
                 break;
             case R.id.dl:
                 manager = DLManager.getInstance(mContext);
                 taskListener = new MCDTListener();
+                dl = (com.mckuai.widget.ProgressButton) findViewById(R.id.dl);
                 String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                 String filename = downloadDir + map.getFileName();
                 switch (downloadstate) {
                     case 0:
-                        MCkuai.getInstance().addDownloadTask(map.getResId(), taskListener);
+                        if (null == dlManager) {
+                            dlManager = new ThinDownloadManager(3);
+                        }
                         String url = map.getSavePath();
-                        manager.dlStart(url, downloadDir, taskListener);
-                        showNotification(1, "下载成功", R.id.md_r1);
+                        try {
+                            url = url.substring(0, url.lastIndexOf("/") + 1) + URLEncoder.encode(url.substring(url.lastIndexOf("/") + 1, url.length()), "UTF-8");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        url = url.replaceAll("\\+", "%20");
+                        String downloadDirs = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
+                        DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDirs));
+                        request.setDownloadListener(statusListener);
+                        map.setTasktoken(dlManager.add(request));
                         break;
                     case 2:
+                        MCMapManager mapManager;
+                        mapManager = new MCMapManager();
                         mapManager.importMap(filename);
                         showNotification(1, "导入成功", R.id.md_r1);
                         break;
@@ -329,8 +341,12 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    dl.updateProgress(taskListener.getProcess());
-                    handler.sendMessageDelayed(handler.obtainMessage(0), 500);
+                    dl.updateProgress(map.getDownloadProgress());
+                    dl.postInvalidate();
+                    Log.e("","progress="+map.getDownloadProgress());
+                    if (100 != map.getDownloadProgress()) {
+                        handler.sendMessageDelayed(handler.obtainMessage(0), 200);
+                    }
                     break;
                 case 1:
                     dl.setText("导入");

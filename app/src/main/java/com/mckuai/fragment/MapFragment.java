@@ -1,5 +1,6 @@
 package com.mckuai.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
+import com.mckuai.until.MCMapManager;
+import com.thin.downloadmanager.DownloadStatusListener;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -62,7 +65,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private Gson mGson = new Gson();
     private String mapType = null;
     private String orderFiled = null;
-    private ArrayList<Map> map;
+    private ArrayList<Map> downloadmaps;
+    private Map maps;
     private TextView tit;
     private RelativeLayout hidetitle;
     private boolean isChanged = false;
@@ -71,6 +75,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private View.OnClickListener rightButtonListener_myMaps;
     private MCkuai application = MCkuai.getInstance();
     private ImageView btn_right_view = application.getBtn_publish();
+    private MCMapManager mapManager;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +87,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         tit = MainActivity.gettitle();
 //        application = MCkuai.getInstance();
+
         return view;
     }
 
@@ -90,6 +97,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         Log.w(TAG, "onResume");
         if (null == urv_mapList) {
             initView();
+            if (mapManager == null) {
+                mapManager = new MCMapManager();
+            }
+            downloadmaps = mapManager.getDownloadMaps();
         }
         showData();
     }
@@ -370,6 +381,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     if (!mapList.getData().isEmpty()) {
                         cancleLodingToast(true);
                         map_ed.setVisibility(View.GONE);
+                        panduanxiazai(mapList.getData(), downloadmaps);
                         showData();
                         return;
                     } else {
@@ -396,6 +408,20 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 isLoading = false;
             }
         });
+    }
+
+    protected void panduanxiazai(ArrayList<Map> liebiao, ArrayList<Map> yixiazai) {
+        if (liebiao == null || yixiazai == null) {
+            return;
+        }
+        for (Map curMap : liebiao) {
+            for (Map xiazaiMap : yixiazai) {
+                if (curMap.getResId().equals(xiazaiMap.getResId())) {
+                    curMap.setDownloadProgress(100);
+                    break;
+                }
+            }
+        }
     }
 
     protected void survival() {
@@ -453,7 +479,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
 
-
     @Override
     public void onItemClick(Map mapinfo) {
         if (null != mapinfo) {
@@ -462,9 +487,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             bundle.putSerializable(getString(R.string.Details), mapinfo);
             intent.putExtras(bundle);
             getActivity().startActivity(intent);
-        } else {
         }
     }
+
 
     @Override
     public void afterMapDownload() {

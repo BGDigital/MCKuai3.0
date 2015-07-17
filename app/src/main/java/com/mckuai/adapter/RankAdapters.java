@@ -67,25 +67,29 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
 
     public RankAdapters(Context context) {
         this.mContext = context;
-        statusListener = new DownloadStatusListener() {
-            @Override
-            public void onDownloadComplete(int i) {
+        statusListener = MCkuai.getInstance().downloadStatusListener;
+        if (null == statusListener) {
+            statusListener = new DownloadStatusListener() {
+                @Override
+                public void onDownloadComplete(int i) {
 
-            }
+                }
 
-            @Override
-            public void onDownloadFailed(int i, int i1, String s) {
+                @Override
+                public void onDownloadFailed(int i, int i1, String s) {
 
-            }
+                }
 
-            @Override
-            public void onProgress(int downToken, long l, int progress) {
-                DownloadTask task = downloadTask.get(downToken);
-                task.map.setDownloadProgress(progress);
-                task.button.setProgress(progress);
-                Log.e("",""+progress);
-            }
-        } ;
+                @Override
+                public void onProgress(int downToken, long l, int progress) {
+                    DownloadTask task = downloadTask.get(downToken);
+                    task.map.setDownloadProgress(progress);
+                    task.button.setProgress(progress);
+                     Log.e("",""+progress);
+                }
+            };
+            MCkuai.getInstance().downloadStatusListener =statusListener;
+        }
     }
 
     @Override
