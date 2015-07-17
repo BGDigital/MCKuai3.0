@@ -174,7 +174,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
                 break;
             case 0:
-                dl.setText("下载" + "   " + map.getResSize() + "kb");
+                dl.setText("下载" + "   " + map.getResSize() + "KB");
                 break;
             default:
                 break;
@@ -307,6 +307,20 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 break;
             default:
                 break;
+        }
+    }
+
+    class taskListeners extends MCDTListener {
+        private com.mckuai.widget.ProgressButton btn;
+
+        public taskListeners(com.mckuai.widget.ProgressButton btn) {
+            this.btn = btn;
+        }
+
+        @Override
+        public void onProgress(int progress) {
+            super.onProgress(progress);
+            btn.updateProgress(progress);
         }
     }
 
