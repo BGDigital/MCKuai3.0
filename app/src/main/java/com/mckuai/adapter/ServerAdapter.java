@@ -102,9 +102,10 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
 
             holder.name.setText(serverInfo.getViewName());
             holder.version.setText(serverInfo.getResVersion()+"");
-            holder.type.setText(serverInfo.getServerTag());
-            holder.userCount.setText("人数："+serverInfo.getOnlineNum() +"/"+serverInfo.getPeopleNum());
+            holder.type.setText("类型："+serverInfo.getServerTag().replaceAll("\\|","  "));
             holder.owner.setText("服主：" + serverInfo.getUserName());
+
+          /*  holder.userCount.setText("人数："+serverInfo.getOnlineNum() +"/"+serverInfo.getPeopleNum());
             if (serverInfo.getIsOnline()){
                 holder.state.setText("在线");
                 holder.state.setBackgroundResource(R.color.background_green);
@@ -112,7 +113,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
             else {
                 holder.state.setText("离线");
                 holder.state.setBackgroundResource(R.color.background_litegray);
-            }
+            }*/
 
             holder.addToGame.setTag(serverInfo);
 
@@ -130,8 +131,8 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
         TextView version;
         TextView type;
         TextView owner;
-        TextView state;
-        TextView userCount;
+        //TextView state;
+        //TextView userCount;
         Button addToGame;
 
         public ViewHolder(View itemView){
@@ -141,8 +142,8 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
             version = (TextView)itemView.findViewById(R.id.tv_serverVersion);
             type = (TextView)itemView.findViewById(R.id.tv_serverType);
             owner = (TextView)itemView.findViewById(R.id.tv_serverOwner);
-            state = (TextView)itemView.findViewById(R.id.tv_serverState);
-            userCount = (TextView)itemView.findViewById(R.id.tv_serverPlayerCount);
+            //state = (TextView)itemView.findViewById(R.id.tv_serverState);
+            //userCount = (TextView)itemView.findViewById(R.id.tv_serverPlayerCount);
             addToGame = (Button)itemView.findViewById(R.id.btn_addServer) ;
         }
     }

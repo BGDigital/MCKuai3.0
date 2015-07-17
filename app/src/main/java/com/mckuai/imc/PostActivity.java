@@ -143,7 +143,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		// TODO Auto-generated method stub
 		super.onResume();
-		//MobclickAgent.onPageStart("帖子详情");
+		MobclickAgent.onPageStart("帖子详情");
 		initView();
 		if (isShowPost)
 		{
@@ -165,7 +165,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		// TODO Auto-generated method stub
 		super.onPause();
-		//MobclickAgent.onPageEnd("帖子详情");
+		MobclickAgent.onPageEnd("帖子详情");
 	}
 
 	@Override

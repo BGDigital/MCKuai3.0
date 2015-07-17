@@ -116,12 +116,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     private void showData() {
-        if (isLoading || application.fragmentIndex != 1) {
+        if (application.fragmentIndex != 1) {
             Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
         btn_right_view.setOnClickListener(this);
-        if (null == mapList || null == mapList.getData() || 0 == mapList.getPageBean().getPage()) {
+        if (null == mapList || null == mapList.getData() || 0 == page.getPage()) {
             loadData();
             return;
         }
@@ -158,7 +158,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         urv_mapList.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int i, int i1) {
-                loadData();
+                if (!page.EOF()) {
+                    loadData();
+                }
             }
         });
 
@@ -310,6 +312,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             params.put("kinds", mapType);
             params.put("orderFiled", "DownNum");
         }
+        if (null != page) {
+            params.put("page", page.getNextPage());
+        }
         return params;
     }
 
@@ -324,7 +329,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         if (mapList == null) {
             mapList = new MapBean();
         }
-        params.put("page", mapList.getPageBean().getPage() + 1 + "");
+
 //        if (null != mapType) {
 //            params.put("kinds", mapType);
 //        }
@@ -356,7 +361,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                 mapList.getData().clear();
                             }
                             mapList.getData().addAll(bean.getData());
-                            mapList.setPageBean(bean.getPageBean());
+                            //mapList.setPageBean(bean.getPageBean());
+                            page = bean.getPageBean();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

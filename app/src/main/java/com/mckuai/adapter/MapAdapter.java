@@ -153,7 +153,7 @@ public class MapAdapter extends BaseAdapter {
         }
     }
 
-    class McDLTaskListener extends MCDTListener {
+    class McDLTaskListener extends DLTaskListener {
         private Map clickedMap;
         private MasterLayout MasterLayout01;
 
@@ -169,7 +169,7 @@ public class MapAdapter extends BaseAdapter {
         @Override
         public void onStart(String fileName, String url) {
             super.onStart(fileName, url);
-            MCkuai.getInstance().addDownloadTask(clickedMap.getResId(), this);
+            //MCkuai.getInstance().addDownloadTask(clickedMap.getResId(), this);
             Log.e("111111", "onStart");
             //Toast.makeText(mContext, "Start", LENGTH_SHORT).show();
         }
@@ -195,7 +195,7 @@ public class MapAdapter extends BaseAdapter {
             super.onFinish(file);
             mapManager.addDownloadMap(clickedMap);
             mapManager.closeDB();
-            MCkuai.getInstance().deleteDownloadTask(clickedMap.getResId());
+            //MCkuai.getInstance().deleteDownloadTask(clickedMap.getResId());
         }
 
         @Override

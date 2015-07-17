@@ -2,6 +2,7 @@ package com.mckuai.imc;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +23,10 @@ import com.mckuai.bean.GameServerInfo;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.ServerEditer;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.media.UMImage;
 
 
 public class ServerDetailsActivity extends BaseActivity implements View.OnClickListener {
@@ -42,8 +49,10 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
     private TextView tv_title;
     private TextView tv_version;
     private LinearLayout ll_pics;
+    private ImageView iv_serverPic;//只有一张图时显示
 
     private ImageLoader imageLoader;
+    private com.umeng.socialize.controller.UMSocialService mShareService;
 
 
     @Override
@@ -53,6 +62,7 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         serverInfo = (GameServerInfo) getIntent().getSerializableExtra("SERVER_INFO");
         imageLoader = ImageLoader.getInstance();
         setTitle(mTitle);
+        mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
     }
 
     @Override
@@ -85,9 +95,10 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         tv_des = (TextView) findViewById(R.id.tv_serverDes);
         tv_version = (TextView) findViewById(R.id.tv_serverVersion);
         ll_pics = (LinearLayout) findViewById(R.id.ll_serverPic);
+        iv_serverPic = (ImageView) findViewById(R.id.iv_pic);
 
-        //btn_left.setImageResource(R.drawable.btn_back);
         btn_right.setImageResource(R.drawable.btn_titlebar_share);
+        btn_right.setVisibility(View.VISIBLE);
 
         btn_right.setOnClickListener(this);
         findViewById(R.id.btn_left).setOnClickListener(this);
@@ -109,7 +120,7 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         tv_name.setText(serverInfo.getViewName() + "");
 
         if (null != serverInfo.getServerTag() && 1 < serverInfo.getServerTag().length()){
-            String tag[] = serverInfo.getServerTag().split("|");
+            String tag[] = serverInfo.getServerTag().split("\\|");
             tv_type.setText("类型："+tag[0]);
         }
 
@@ -126,13 +137,44 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
     private void showPics(){
         if (null != serverInfo.getPictures() && 1 < serverInfo.getPictures().length()){
             String[] pic = serverInfo.getPictures().split(",");
-            ll_pics.removeAllViews();
-            LayoutInflater inflater = LayoutInflater.from(this);
-            for (int i = 0;i < 5;i++) {
+            if (pic.length == 1){
+                imageLoader.displayImage(pic[0], iv_serverPic, new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+                        float scale= loadedImage.getWidth()*1.0f / screenWidth;
+                        int height = (int)(loadedImage.getHeight() / scale);
+                        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(screenWidth,height);
+                        params.setMargins(0,20,0,20);
+                        iv_serverPic.setLayoutParams(params);
+                        iv_serverPic.setScaleType(ImageView.ScaleType.FIT_XY);
+                        iv_serverPic.setImageBitmap(loadedImage);
+
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+
+                    }
+                });
+            }
+            else {
+                ll_pics.removeAllViews();
+                LayoutInflater inflater = LayoutInflater.from(this);
                 for (String curpic : pic) {
                     ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213),dp2px(120));
-                    params.setMargins(dp2px(2),dp2px(10),dp2px(2),dp2px(10));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
+                    params.setMargins(dp2px(2), dp2px(10), dp2px(2), dp2px(10));
 
                     imageView.setLayoutParams(params);
                     imageLoader.displayImage(curpic, imageView);
@@ -150,9 +192,6 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         return (int)(dp * scale + 0.5f);
     }
 
-    private void showShareView(){
-
-    }
 
     private void copyServerInfoToClip(int type){
         ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -182,7 +221,7 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.btn_right:
-                showShareView();
+                shareService();
                 break;
             case R.id.btn_copyQQGroup:
                 copyServerInfoToClip(0);
@@ -197,5 +236,19 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
                 addAndRunGame();
                 break;
         }
+    }
+
+    protected void shareService()
+    {
+        if (null == serverInfo)
+        {
+            return;
+        }
+        mShareService.setShareContent(serverInfo.getViewName());
+        if (null != serverInfo.getIcon() || 10 < serverInfo.getIcon().length())
+        {
+            mShareService.setShareMedia(new UMImage(this,serverInfo.getIcon()));
+        }
+        mShareService.openShare(this, false);
     }
 }

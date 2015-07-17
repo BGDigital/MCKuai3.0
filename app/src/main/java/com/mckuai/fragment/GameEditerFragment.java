@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GameEditerFragment extends BaseFragment implements View.OnClickListener,AdapterView.OnItemClickListener {
-    private static  final  String TAG = "GameEditerFragment";
+public class GameEditerFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+    private static final String TAG = "GameEditerFragment";
 
     private View view;
     private ImageView iv_map;
@@ -62,7 +62,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private WorldAdapter adapter;
 
-    public GameEditerFragment(){
+    public GameEditerFragment() {
         setmTitle("工具");
     }
 
@@ -86,18 +86,18 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     public void onResume() {
         super.onResume();
         Log.w(TAG, "onResume");
-        if (null == tv_gameMode){
+        if (null == tv_gameMode) {
             initView();
         }
 
-        if (isGameInstalled && null == worldInfos){
-                gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
-                    @Override
-                    public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
-                        Log.e(TAG,"地图数目："+worldInfos.size());
-                        setData(worldInfos, isThirdView);
-                    }
-                },false);
+        if (isGameInstalled && null == worldInfos) {
+            gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
+                @Override
+                public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
+                    Log.e(TAG, "地图数目：" + worldInfos.size());
+                    setData(worldInfos, isThirdView);
+                }
+            }, false);
         }
     }
 
@@ -108,18 +108,18 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
 
-    private void initView(){
-        tv_gameMode = (TextView)view.findViewById(R.id.tv_gameMode) ;
-        tv_gameTime = (TextView)view.findViewById(R.id.tv_gameTime) ;
-        tv_packageItemCount = (TextView)view.findViewById(R.id.tv_curItemCount) ;
-        tv_thirdView = (TextView)view.findViewById(R.id.tv_curView) ;
-        tv_mapName = (TextView)view.findViewById(R.id.tv_mapName) ;
-        iv_map = (ImageView)view.findViewById(R.id.iv_map);
-        iv_gameMode = (ImageView)view.findViewById(R.id.iv_gameMode);
-        iv_gameTime = (ImageView)view.findViewById(R.id.iv_gameTime);
-        iv_thirdView = (ImageView)view.findViewById(R.id.iv_thirdView);
-        iv_packageItem = (ImageView)view.findViewById(R.id.iv_gamePackage);
-        lv_mapList = (ListView)view.findViewById(R.id.lv_mapList);
+    private void initView() {
+        tv_gameMode = (TextView) view.findViewById(R.id.tv_gameMode);
+        tv_gameTime = (TextView) view.findViewById(R.id.tv_gameTime);
+        tv_packageItemCount = (TextView) view.findViewById(R.id.tv_curItemCount);
+        tv_thirdView = (TextView) view.findViewById(R.id.tv_curView);
+        tv_mapName = (TextView) view.findViewById(R.id.tv_mapName);
+        iv_map = (ImageView) view.findViewById(R.id.iv_map);
+        iv_gameMode = (ImageView) view.findViewById(R.id.iv_gameMode);
+        iv_gameTime = (ImageView) view.findViewById(R.id.iv_gameTime);
+        iv_thirdView = (ImageView) view.findViewById(R.id.iv_thirdView);
+        iv_packageItem = (ImageView) view.findViewById(R.id.iv_gamePackage);
+        lv_mapList = (ListView) view.findViewById(R.id.lv_mapList);
 
         view.findViewById(R.id.rl_gameMode).setOnClickListener(this);
         view.findViewById(R.id.rl_gameTime).setOnClickListener(this);
@@ -130,23 +130,23 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         lv_mapList.setOnItemClickListener(this);
     }
 
-    private void setData(ArrayList<WorldInfo> worldList,boolean isThirdViewEnable){
+    private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
         this.worldInfos = worldList;
         this.thirdPerson = isThirdViewEnable;
 
-        if (!worldList.isEmpty()){
+        if (!worldList.isEmpty()) {
             curWorldIndex = 0;
             getWorldInfo();
         }
     }
 
-    private void getWorldInfo(){
+    private void getWorldInfo() {
         WorldInfo world = worldInfos.get(curWorldIndex);
-        if (!isGameInstalled){
+        if (!isGameInstalled) {
             return;
         }
 
-        if (null != world && null != world.getLevel()){
+        if (null != world && null != world.getLevel()) {
             if (null == world.getPlayer()) {
                 world.setPlayer(gameEditer.getPlayer(world.getDir()));
             }
@@ -155,8 +155,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             viewName = world.getLevel().getLevelName();
             time = world.getTime();
             inventoryTypeCount = world.getInventoryTypeCount();
-        }
-        else {
+        } else {
             mode = 0;
             viewName = null;
             time = "白天";
@@ -165,13 +164,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         updateWorldInfo();
     }
 
-    private void updateWorldInfo(){
+    private void updateWorldInfo() {
         //游戏模式
-        if (mode == 0){
+        if (mode == 0) {
             tv_gameMode.setText("生存");
             iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
-        }
-        else {
+        } else {
             tv_gameMode.setText("创造");
             iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
         }
@@ -179,11 +177,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         tv_mapName.setText(null == viewName ? "点击\"选择地图\"以选择游戏地图" : viewName);
 
         //第三人称视角
-        if (thirdPerson){
+        if (thirdPerson) {
             tv_thirdView.setText("已开启");
             iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_enable);
-        }
-        else {
+        } else {
             tv_thirdView.setText("未开启");
             iv_thirdView.setBackgroundResource(R.drawable.icon_thirdview_disable);
         }
@@ -198,18 +195,17 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
 
         //背包
-        if (0 != inventoryTypeCount){
-                tv_packageItemCount.setText(inventoryTypeCount+"种");
-        }
-        else {
-                tv_packageItemCount.setText("没有物品");
+        if (0 != inventoryTypeCount) {
+            tv_packageItemCount.setText(inventoryTypeCount + "种");
+        } else {
+            tv_packageItemCount.setText("没有物品");
         }
     }
 
-    private void switchGameMode(){
+    private void switchGameMode() {
         mode = Math.abs(mode - 1);
 
-        if (!worldInfos.get(curWorldIndex).setIsCreative(1 == mode)){
+        if (!worldInfos.get(curWorldIndex).setIsCreative(1 == mode)) {
             mode = Math.abs(mode - 1);
         }
 
@@ -217,13 +213,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
 
-    private void switchGameTime(){
-        if (time.equals("白天")){
+    private void switchGameTime() {
+        if (time.equals("白天")) {
             if (worldInfos.get(curWorldIndex).setIsDay(false)) {
                 time = "黑夜";
             }
-        }
-        else {
+        } else {
             if (worldInfos.get(curWorldIndex).setIsDay(true)) {
                 time = "白天";
             }
@@ -231,37 +226,37 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         updateWorldInfo();
     }
 
-    private void switchView(){
-        if (OptionUntil.setThirdPerson(!thirdPerson)){
+    private void switchView() {
+        if (OptionUntil.setThirdPerson(!thirdPerson)) {
             thirdPerson = !thirdPerson;
         }
         updateWorldInfo();
     }
 
-    private void changePackageItem(){
+    private void changePackageItem() {
         Intent intent = new Intent(getActivity(), GamePackageActivity.class);
         MCkuai.getInstance().world = worldInfos.get(curWorldIndex);
-        startActivityForResult(intent,999);
+        startActivityForResult(intent, 999);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             WorldInfo world = MCkuai.getInstance().world;
-            if (null != world){
+            if (null != world) {
                 worldInfos.get(curWorldIndex).setInventory(world.getInventory());
                 updateWorldInfo();
             }
         }
     }
 
-    private void startGame(){
-        if (!isGameInstalled){
-          showNotification(2,"警告：你还未安装游戏！",R.id.fl_root);
+    private void startGame() {
+        if (!isGameInstalled) {
+            showNotification(2, "警告：你还未安装游戏！", R.id.fl_root);
             return;
         }
 
-        if (isGameRunning){
+        if (isGameRunning) {
             showNotification(3, "游戏已经在运行，无需再次启动！", R.id.fl_root);
             return;
         }
@@ -270,11 +265,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     }
 
-    private void detectionGameInfo(){
+    private void detectionGameInfo() {
         isGameInstalled = GameUntil.detectionIsGameInstalled(getActivity());
-        if (isGameInstalled){
+        if (isGameInstalled) {
             isGameRunning = GameUntil.detectionIsGameRunning(getActivity());
-            if (isGameRunning){
+            if (isGameRunning) {
                 showAlert("警告", "检测到我的世界正在运行,此时的修改不会生效,是否结束游戏?", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -286,32 +281,30 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     }
                 });
             }
-        }
-        else {
-            showMessage("警告","你还未安装游戏，不能修改游戏内容！");
+        } else {
+            showMessage("警告", "你还未安装游戏，不能修改游戏内容！");
             return;
         }
 
     }
 
-    private void selectMap(){
-        if (1 < worldInfos.size()){
-            if (null == adapter){
+    private void selectMap() {
+        if (1 < worldInfos.size()) {
+            if (null == adapter) {
                 adapter = new WorldAdapter(getActivity());
                 lv_mapList.setAdapter(adapter);
             }
             adapter.setData(worldInfos);
             lv_mapList.setVisibility(View.VISIBLE);
-        }
-        else {
-            showNotification(1,"当前只有一张地图！",R.id.fl_root);
+        } else {
+            showNotification(1, "当前只有一张地图！", R.id.fl_root);
         }
     }
 
     @Override
     public void onClick(View v) {
-        if (isGameRunning){
-            showNotification(3,"游戏正在运行，不能修改当前设置！",R.id.fl_root);
+        if (isGameRunning) {
+            showNotification(3, "游戏正在运行，不能修改当前设置！", R.id.fl_root);
             return;
         }
         switch (v.getId()) {
@@ -339,12 +332,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.rl_gamePackage:
-                if (0 != inventoryTypeCount) {
-                    changePackageItem();
-                } else {
-                    showNotification(3, "背包没有物品！", R.id.fl_root);
-                }
-
+                changePackageItem();
                 break;
             case R.id.btn_startGame:
                 startGame();
@@ -356,9 +344,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     } else {
                         selectMap();
                     }
-                }
-                else {
-                    showNotification(3,"没有地图，不能修改当前设置！",R.id.rl_root);
+                } else {
+                    showNotification(3, "没有地图，不能修改当前设置！", R.id.rl_root);
                 }
 
                 break;
@@ -368,7 +355,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         lv_mapList.setVisibility(View.GONE);
-        curWorldIndex = (int)id;
+        curWorldIndex = (int) id;
         getWorldInfo();
     }
 }

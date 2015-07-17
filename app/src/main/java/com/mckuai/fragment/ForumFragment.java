@@ -135,13 +135,12 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         mForumsListView.setAdapter(mForumAdapter);
         mPostListView.setAdapter(mPostAdapter);
         mForumAdapter.setOnItemClickListener(this);
-
         ((RadioGroup) view.findViewById(R.id.rg_indicator)).setOnCheckedChangeListener(this);
-        btn_publish.setOnClickListener(this);
     }
 
     private void showForums()
     {
+        btn_publish.setOnClickListener(this);
         if (application.fragmentIndex != 3){
             return;
         }

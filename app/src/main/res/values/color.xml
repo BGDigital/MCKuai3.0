@@ -11,7 +11,7 @@
     <color name="background_forum_selected">#22A53D</color>
     <color name="font_red">#FF0000</color>
     <color name="font_secondary">#B4B4B4</color>
-    <color name="font_gameedit_hint">#818181</color>
+    <color name="font_gameedit_hint">#80000000</color>
     <color name="font_green">#38CA44</color>
 
     <!-- 边框 -->

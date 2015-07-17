@@ -149,6 +149,14 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+    @Override
+    protected boolean onBackKeyPressed() {
+        if (changeItemCountView.getVisibility() == View.VISIBLE){
+            changeItemCountView.setVisibility(View.GONE);
+            return  true;
+        }
+        return super.onBackKeyPressed();
+    }
 
     @Override
     public void OnItemClicked(InventorySlot item) {

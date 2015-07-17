@@ -30,7 +30,8 @@ public class Map implements Serializable {
     private String viewName;//地图名
     private int viewNum;//
     private Boolean isSelected = false;
-
+    private int tasktoken = -1;//下载的tasktoken，为负是表示是未下载，否则是在下载中
+    private int downloadProgress;
 
     public String getDownNum() {
         return downNum;
@@ -227,5 +228,25 @@ public class Map implements Serializable {
     public String getFileName() {
         String tmp = savePath.substring(savePath.lastIndexOf("/") + 1, savePath.length());
         return tmp;
+    }
+
+    public boolean isDownload() {
+        return downloadProgress == 100;
+    }
+
+    public int getTasktoken() {
+        return tasktoken;
+    }
+
+    public void setTasktoken(int tasktoken) {
+        this.tasktoken = tasktoken;
+    }
+
+    public int getDownloadProgress() {
+        return downloadProgress;
+    }
+
+    public void setDownloadProgress(int downloadProgress) {
+        this.downloadProgress = downloadProgress;
     }
 }

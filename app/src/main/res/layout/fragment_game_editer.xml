@@ -40,7 +40,7 @@
 
     <Button
         android:id="@+id/btn_selectMap"
-        android:layout_width="wrap_content"
+        android:layout_width="94dp"
         android:textColor="@color/font_white"
         android:background="@drawable/btn_selectmap_shape"
         android:text="选择地图"
@@ -48,7 +48,7 @@
         android:paddingRight="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="36dp" />
 
     <TextView
         android:id="@+id/tv_mapName"
@@ -56,6 +56,8 @@
         android:layout_alignBottom="@id/iv_map"
         android:layout_margin="10dp"
         android:text="地图名称"
+        android:padding="5dp"
+        android:background="@drawable/background_mapname_shape"
         android:textColor="@color/font_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -79,6 +81,8 @@
             android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/iv_gameMode"
@@ -121,6 +125,8 @@
                 android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/iv_gameTime"
@@ -170,6 +176,8 @@
                 android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/iv_thirdView"
@@ -211,6 +219,8 @@
                 android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/iv_gamePackage"
@@ -254,8 +264,11 @@
         android:id="@+id/lv_mapList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignTop="@id/ll_gameEditer"
+        android:layout_alignTop="@id/fl_root"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/background_white"
         android:visibility="gone"
         >
 

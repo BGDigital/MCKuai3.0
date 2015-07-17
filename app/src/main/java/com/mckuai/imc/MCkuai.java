@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cn.aigestudio.downloader.interfaces.DLTaskListener;
-
 /**
  * Created by kyly on 2015/6/23.
  */
@@ -296,14 +294,7 @@ public class MCkuai  extends Application{
         else  return null;
     }
 
-    public void deleteDownloadTask(String resId){
-        if (null != downloadTask){
-            DLTaskListener listener = downloadTask.get(resId);
-            if (null != listener){
-                downloadTask.remove(listener);
-            }
-        }
-    }
+
 
     public MCMapManager getMapManager() {
         if (null == mapManager){

@@ -7,6 +7,106 @@
         android:id="@+id/layout_serverDetails_title"
         layout="@layout/titlebar_comm"></include>
 
+    <RelativeLayout
+        android:id="@+id/rl_serverBasicInfo"
+        android:layout_below="@id/layout_serverDetails_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/frame_top_and_bottom_white"
+        >
+        <ImageView
+            android:id="@+id/iv_serverCover"
+            android:layout_margin="10dp"
+            android:layout_width="115dp"
+            android:layout_height="66dp" />
+        <TextView
+            android:id="@+id/tv_serverVersion"
+            android:layout_alignLeft="@id/iv_serverCover"
+            android:layout_alignTop="@id/iv_serverCover"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_small"
+            android:background="@color/background_orange"
+            android:text="0.10.5"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_serverName"
+            android:textColor="@color/font_primary"
+            android:textSize="@dimen/font_big"
+            android:textStyle="bold"
+            android:text="服务器名字"
+            android:singleLine="true"
+            android:layout_toRightOf="@id/iv_serverCover"
+            android:layout_alignTop="@id/iv_serverCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />'
+
+        <TextView
+            android:id="@+id/tv_serverState"
+            android:background="@drawable/btn_green_shape"
+            android:layout_width="wrap_content"
+            android:layout_alignLeft="@id/tv_serverName"
+            android:layout_alignBottom="@id/iv_serverCover"
+            android:textSize="@dimen/font_dimen_small"
+            android:textColor="@color/font_white"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:singleLine="true"
+            android:text="在线"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/tv_serverPlayerCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:text="人数:"
+            android:textSize="@dimen/font_dimen_small"
+            android:singleLine="true"
+            android:layout_alignTop="@+id/tv_serverState"
+            android:layout_alignBottom="@+id/tv_serverState"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/tv_serverState"
+            />
+
+        <TextView
+            android:id="@+id/tv_server_type"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/font_secondary"
+            android:layout_alignLeft="@id/tv_serverName"
+            android:singleLine="true"
+            android:textSize="@dimen/font_dimen_small"
+            android:layout_above="@id/tv_serverState"
+            android:layout_below="@id/tv_serverName"
+            android:gravity="center_vertical"
+            android:text="类型："/>
+
+        <TextView
+            android:id="@+id/tv_serverOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/font_secondary"
+            android:textSize="@dimen/font_dimen_small"
+            android:layout_toRightOf="@id/tv_server_type"
+            android:paddingLeft="20dp"
+            android:singleLine="true"
+            android:layout_above="@id/tv_serverState"
+            android:layout_below="@id/tv_serverName"
+            android:gravity="center_vertical"
+            android:text="腐主："/>
+
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btn_addServer"
         android:layout_width="match_parent"
@@ -19,113 +119,19 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/layout_serverDetails_title"
+        android:layout_below="@id/rl_serverBasicInfo"
         android:layout_above="@id/btn_addServer"
         android:fillViewport="true"
         >
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/rl_serverBasicInfo"
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/frame_top_and_bottom_white"
-                >
-              <ImageView
-                  android:id="@+id/iv_serverCover"
-                  android:layout_margin="10dp"
-                  android:layout_width="115dp"
-                  android:layout_height="66dp" />
-                <TextView
-                    android:id="@+id/tv_serverVersion"
-                    android:layout_alignLeft="@id/iv_serverCover"
-                    android:layout_alignTop="@id/iv_serverCover"
-                    android:textColor="@color/font_white"
-                    android:textSize="@dimen/font_small"
-                    android:background="@color/background_orange"
-                    android:text="0.10.5"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="3dp"
-                    android:paddingTop="3dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_serverName"
-                    android:textColor="@color/font_primary"
-                    android:textSize="@dimen/font_big"
-                    android:textStyle="bold"
-                    android:text="服务器名字"
-                    android:singleLine="true"
-                    android:layout_toRightOf="@id/iv_serverCover"
-                    android:layout_alignTop="@id/iv_serverCover"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />'
-
-                <TextView
-                    android:id="@+id/tv_serverState"
-                    android:background="@drawable/btn_green_shape"
-                    android:layout_width="wrap_content"
-                    android:layout_alignLeft="@id/tv_serverName"
-                    android:layout_alignBottom="@id/iv_serverCover"
-                    android:textSize="@dimen/font_dimen_small"
-                    android:textColor="@color/font_white"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:singleLine="true"
-                    android:text="在线"
-                    android:layout_height="wrap_content"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_serverPlayerCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/green"
-                    android:text="人数:"
-                    android:textSize="@dimen/font_dimen_small"
-                    android:singleLine="true"
-                    android:layout_alignTop="@+id/tv_serverState"
-                    android:layout_alignBottom="@+id/tv_serverState"
-                    android:gravity="center"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/tv_serverState"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_server_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:textColor="@color/font_secondary"
-                    android:layout_alignLeft="@id/tv_serverName"
-                    android:singleLine="true"
-                    android:textSize="@dimen/font_dimen_small"
-                    android:layout_above="@id/tv_serverState"
-                    android:layout_below="@id/tv_serverName"
-                    android:gravity="center_vertical"
-                    android:text="类型："/>
-
-                <TextView
-                    android:id="@+id/tv_serverOwner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:textColor="@color/font_secondary"
-                    android:textSize="@dimen/font_dimen_small"
-                    android:layout_toRightOf="@id/tv_server_type"
-                    android:paddingLeft="20dp"
-                    android:singleLine="true"
-                    android:layout_above="@id/tv_serverState"
-                    android:layout_below="@id/tv_serverName"
-                    android:gravity="center_vertical"
-                    android:text="腐主："/>
-
-            </RelativeLayout>
+                android:layout_height="wrap_content">
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,8 +145,13 @@
                     android:layout_height="wrap_content">
 
                 </LinearLayout>
-
             </HorizontalScrollView>
+                <ImageView
+                    android:id="@+id/iv_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="center"/>
+            </FrameLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -162,6 +173,7 @@
                     android:layout_height="25dp"
                     android:text="复制"
                     android:textColor="@color/font_white"
+                    android:textSize="@dimen/font_dimen_small"
                     android:layout_below="@+id/tv_addServer_hint"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/btn_green_shape"/>
@@ -169,6 +181,7 @@
                     android:id="@+id/btn_copyServerIp"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:textSize="@dimen/font_dimen_small"
                     android:text="复制"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
@@ -180,6 +193,7 @@
                     android:id="@+id/btn_copyServerPort"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:textSize="@dimen/font_dimen_small"
                     android:text="复制"
                     android:textColor="@color/font_white"
                     android:layout_below="@+id/btn_copyServerIp"
