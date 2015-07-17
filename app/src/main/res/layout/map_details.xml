@@ -32,6 +32,7 @@
             android:layout_toRightOf="@id/image"
             android:lines="1"
             android:text="地图名字"
+            android:textColor="@color/font_primary"
             android:textSize="@dimen/font_dimen_title" />
 
         <TextView
