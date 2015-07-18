@@ -98,9 +98,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         if (null == urv_mapList) {
             initView();
             if (mapManager == null) {
-                mapManager = new MCMapManager();
+                mapManager = MCkuai.getInstance().getMapManager();
             }
             downloadmaps = mapManager.getDownloadMaps();
+
         }
         showData();
     }
@@ -165,6 +166,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         urv_mapList.setAdapter(mapadapters);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
         urv_mapList.addItemDecoration(dividerItemDecoration);
+        urv_mapList.setHasFixedSize(true);
         urv_mapList.enableLoadmore();
         urv_mapList.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
             @Override

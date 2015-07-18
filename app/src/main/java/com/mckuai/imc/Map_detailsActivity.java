@@ -80,6 +80,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private DownloadStatusListener statusListener;
     private ThinDownloadManager dlManager;
     private ImageView iv_serverPic;//只有一张图时显示
+    private MCMapManager mapManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,12 +93,17 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 .build();
         handler.sendMessageDelayed(handler.obtainMessage(5), 1000);
         mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
+        if (mapManager == null) {
+            mapManager = MCkuai.getInstance().getMapManager();
+        }
+
         statusListener = MCkuai.getInstance().downloadStatusListener;
         if (null == statusListener) {
             statusListener = new DownloadStatusListener() {
                 @Override
                 public void onDownloadComplete(int i) {
-
+                    mapManager.addDownloadMap(map);
+                    mapManager.closeDB();
                 }
 
                 @Override
@@ -106,9 +112,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 }
 
                 @Override
-                public void onProgress(int downToken, long l, int progress) {
-
+                public void onProgress(int i, long l, int progress) {
+                    dl.updateProgress(progress);
                 }
+
             };
         }
 //        shareBoard = new CustomShareBoard(this, mShareService, map);
@@ -138,6 +145,12 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         } else {
             showNotification(3, "未获取到地图信息,请返回!", R.id.details);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
     }
 
     public void checkState() {
@@ -323,9 +336,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 shareMap();
                 break;
             case R.id.dl:
-                manager = DLManager.getInstance(mContext);
-                taskListener = new MCDTListener();
-                dl = (com.mckuai.widget.ProgressButton) findViewById(R.id.dl);
+//                manager = DLManager.getInstance(this);
+//                taskListener = new MCDTListener();
                 String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                 String filename = downloadDir + map.getFileName();
                 switch (downloadstate) {
@@ -342,8 +354,24 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                         url = url.replaceAll("\\+", "%20");
                         String downloadDirs = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
                         DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDirs));
-                        request.setDownloadListener(statusListener);
-                        map.setTasktoken(dlManager.add(request));
+                        request.setDownloadListener(new DownloadStatusListener() {
+                            @Override
+                            public void onDownloadComplete(int i) {
+                                dl.setText("下载完成");
+                                mapManager.addDownloadMap(map);
+                                mapManager.closeDB();
+                            }
+
+                            @Override
+                            public void onDownloadFailed(int i, int i1, String s) {
+
+                            }
+
+                            @Override
+                            public void onProgress(int i, long l, int progress) {
+                                dl.updateProgress(progress);
+                            }
+                        });
                         break;
                     case 2:
                         MCMapManager mapManager;
@@ -375,6 +403,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     android.os.Handler handler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
+            super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
                     dl.updateProgress(map.getDownloadProgress());

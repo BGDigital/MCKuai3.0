@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 /**
  * Created by Zzz on 2015/7/9.
  */
-public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
+public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> {
     private final String TAG = "mapadaptres";
     private ArrayList<Map> maps;
     private ImageLoader loader;
@@ -38,9 +39,11 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
     private OnMapDownloadListener addListener;
     private ThinDownloadManager dlManager;
     private Context mContext;
+    private Map map;
     private boolean isPaihang = false;
     private HashMap<Integer, DownloadTask> downloadTask;   //下载任务，第一个参数是下载的token，第二个是包含了其按钮和地图的结构体
     private DownloadStatusListener statusListener;//下载进度监听
+    private MCMapManager mapManager;
 
 
     public interface OnItemClickListener {
@@ -67,12 +70,17 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
 
     public RankAdapters(Context context) {
         this.mContext = context;
+        if (mapManager == null) {
+            mapManager = MCkuai.getInstance().getMapManager();
+        }
         statusListener = MCkuai.getInstance().downloadStatusListener;
         if (null == statusListener) {
             statusListener = new DownloadStatusListener() {
                 @Override
-                public void onDownloadComplete(int i) {
-
+                public void onDownloadComplete(int downToken) {
+                    DownloadTask task = downloadTask.get(downToken);
+                    mapManager.addDownloadMap(task.map);
+                    mapManager.closeDB();
                 }
 
                 @Override
@@ -85,10 +93,10 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                     DownloadTask task = downloadTask.get(downToken);
                     task.map.setDownloadProgress(progress);
                     task.button.setProgress(progress);
-                     Log.e("",""+progress);
+                    Log.e("jingdu", "进度" + progress);
                 }
             };
-            MCkuai.getInstance().downloadStatusListener =statusListener;
+            MCkuai.getInstance().downloadStatusListener = statusListener;
         }
     }
 
@@ -113,7 +121,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                 if (null == dlManager) {
                     dlManager = new ThinDownloadManager(3);
                 }
-                if (null == downloadTask){
+                if (null == downloadTask) {
                     downloadTask = new HashMap<>();
                 }
 
@@ -122,18 +130,17 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                 String url = map.getSavePath();
                 try {
                     url = url.substring(0, url.lastIndexOf("/") + 1) + URLEncoder.encode(url.substring(url.lastIndexOf("/") + 1, url.length()), "UTF-8");
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                url = url.replaceAll("\\+","%20");
-                String downloadDir = MCkuai.getInstance().getMapDownloadDir()+url.substring(url.lastIndexOf("/")+1, url.length());
+                url = url.replaceAll("\\+", "%20");
+                String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
                 button.resetIcon();
                 DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
                 request.setDownloadListener(statusListener);
                 map.setTasktoken(dlManager.add(request));
-                DownloadTask task = new DownloadTask(button,map) ;
-                downloadTask.put(map.getTasktoken(),task);
+                DownloadTask task = new DownloadTask(button, map);
+                downloadTask.put(map.getTasktoken(), task);
             }
         });
         return holder;
@@ -151,6 +158,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                 loader.displayImage(map.getIcon(), holder.image);
             }
             holder.tv_name.setText(map.getViewName());
+            Log.e("viewname", "" + map.getViewName());
+            Log.e("DownloadProgress", "" + map.getDownloadProgress());
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
             leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
@@ -167,8 +176,11 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             } else {
                 holder.rk_tv.setVisibility(View.GONE);
             }
-            if (map.isDownload()){
+            if (map.isDownload()) {
                 holder.btn_download.setProgress(100);
+            }
+            else {
+                holder.btn_download.setProgress(map.getDownloadProgress());
             }
             holder.btn_download.setTag(map);
             holder.itemView.setTag(position);
@@ -202,11 +214,11 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
         }
     }
 
-    class DownloadTask implements Serializable{
+    class DownloadTask implements Serializable {
         public FabButton button;
         public Map map;
 
-        public DownloadTask(FabButton btn,Map map){
+        public DownloadTask(FabButton btn, Map map) {
             this.button = btn;
             this.map = map;
         }
