@@ -60,6 +60,10 @@ public class MCMapManager {
 
         index.add(map.getResId());
         newDownloadMaps.add(map);
+        if (null == downloadMaps){
+            downloadMaps = new ArrayList<>();
+        }
+        downloadMaps.add(map);
     }
 
     public boolean delDownloadMap(String mapId){
@@ -106,6 +110,13 @@ public class MCMapManager {
                 Log.e(TAG, "no map be downloaded!");
                 return  null;
             }
+        }
+
+        try {
+            db.open();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
 
         for (String resid:index){
@@ -290,6 +301,7 @@ public class MCMapManager {
             Log.w("initDB","get file");
         }
         getIndex();
+        downloadMaps = getDownloadMaps();
     }
 
 

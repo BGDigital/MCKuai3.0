@@ -34,7 +34,7 @@ public class MymapAdapter extends BaseAdapter {
         mMapBeans = mapBeans;
         this.mContext = context;
         app = MCkuai.getInstance();
-        mcMapManager = new MCMapManager();
+        mcMapManager = MCkuai.getInstance().getMapManager();
         mInflater = LayoutInflater.from(context);
     }
 
