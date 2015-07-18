@@ -12,6 +12,7 @@ import com.mckuai.until.GameDBEditer;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -156,7 +157,7 @@ public class WorldInfo implements Serializable{
     }
 
     public int getInventoryTypeCount(){
-        List<InventorySlot> list  = getRealInventory(getInventory());
+        List<InventorySlot> list  = getInventory();
         if (null == list || list.isEmpty()){
             return  0;
         }
@@ -178,13 +179,20 @@ public class WorldInfo implements Serializable{
     }
 
     public boolean setInventory(List<InventorySlot> inventorySlots){
-        if (null != level && null != level.getPlayer() && null != getPlayer().getInventory()){
+        /*if (null != level && null != level.getPlayer() && null != getPlayer().getInventory()){
             level.getPlayer().setInventory(inventorySlots);
             return saveLevelData();
         }
         if (null != player ){
             player.setInventory(inventorySlots);
             return saveDBData();
+        }*/
+        if (null != player){
+            player.setInventory(inventorySlots);
+            if (null != level){
+                level.setPlayer(player);
+                return saveLevelData();
+            }
         }
         return false;
     }

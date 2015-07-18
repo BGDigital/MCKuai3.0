@@ -31,7 +31,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private SeekBar sb_itemCountPeeker;
     private InventoryAdapter adapter;
     private WorldInfo world;
-    private InventorySlot curInventory;
+    private ItemStack itemStack;
 
     private EditText edt_search;
     private TextView tv_itemName;
@@ -64,7 +64,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
             adapter = new InventoryAdapter();
             itemListView.setAdapter(adapter);
             adapter.setOnItemClickedListener(this);
-            adapter.setInventorySlot(world.getRealInventory(world.getInventory()));
+            adapter.setInventorySlot(world.getInventory());
         }
         else {
             adapter.notifyDataSetChanged();
@@ -116,10 +116,11 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.btn_addItem:
                 //一键新增
-                //HashMap<Integer,Integer> items = adapter.getSelectedItem();
                 List<InventorySlot> items = adapter.getInventorySlots();
                 if (null != items){
-                        world.setInventory(adapter.getInventorySlots());
+                        if(world.setInventory(adapter.getInventorySlots())){
+                            Log.e(TAG,"保存成功！");
+                        }
                         MCkuai.getInstance().world = world;
                         setResult(RESULT_OK);
                         this.finish();
@@ -142,8 +143,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
             case R.id.btn_submitItem:
                 changeItemCountView.setVisibility(View.GONE);
-                curInventory.getContents().setAmount(sb_itemCountPeeker.getProgress());
-                adapter.updateInventory(curInventory);
+                itemStack.setAmount(sb_itemCountPeeker.getProgress());
+                adapter.updateInventory(itemStack);
                 break;
         }
 
@@ -159,12 +160,12 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void OnItemClicked(InventorySlot item) {
+    public void OnItemClicked(ItemStack item) {
         if (null != item){
-            sb_itemCountPeeker.setProgress(item.getContents().getAmount());
-            tv_itemName.setText(EntityItem.getNameById(item.getContents().getId()));
+            sb_itemCountPeeker.setProgress(item.getAmount());
+            tv_itemName.setText(EntityItem.getNameById(item.getId()));
             changeItemCountView.setVisibility(View.VISIBLE);
-            curInventory = item;
+            itemStack = item;
         }
     }
 

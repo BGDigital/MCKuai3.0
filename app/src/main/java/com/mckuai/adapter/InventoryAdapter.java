@@ -21,21 +21,20 @@ import java.util.List;
  */
 public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
 
-    private List<InventorySlot> inventorySlotArrayList;//这个是背包里的东西，最大数量为36
+    private List<InventorySlot> inventorySlotArrayList;//这个是背包里的东西，最大数量为40
     private ArrayList<EntityItem> itemList;//这个是所有的物品的列表,显示的就是它
     private OnItemClickedListener mListener;
+    private int mSlotPosition;//这个是所选的物品的插槽id。-1：新添加物品且插槽已满，需要自己创建。其它情况为对应的插槽位置
 
     public interface  OnItemClickedListener{
-        public void OnItemClicked(InventorySlot item);
+        public void OnItemClicked(ItemStack item);
     }
 
-    /**
-     * 设置item点击事件监听器
-     * @param listener item点击监听器
-     */
-    public void setOnItemClickedListener(OnItemClickedListener listener){
-        this.mListener = listener;
+    public InventoryAdapter(){
+        super();
+        itemList = EntityItem.getAllItem();
     }
+
 
 
     /**
@@ -49,21 +48,22 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     /**
      * 更新被修改过数量的插槽
-     * @param inventorySlot 被修改过的插槽
+     * @param item 被修改过的物品
      */
-    public void updateInventory(InventorySlot inventorySlot){
-        if (null != inventorySlot && null != inventorySlotArrayList && !inventorySlotArrayList.isEmpty()){
-            for (InventorySlot item:inventorySlotArrayList){
-                if (item.getSlot() == inventorySlot.getSlot() && item.getContents().getTypeId() == item.getContents().getTypeId()){
-                    item = inventorySlot;
-                    break;
-                }
+    public void updateInventory(ItemStack item){
+        if (-1 == mSlotPosition) {
+        //需要创建新的插槽
+            InventorySlot slot = createInventorySlot(item);
+            if (null != slot) {
+                inventorySlotArrayList.add(slot);
             }
-            if (inventorySlot.getContents().getAmount() == 0){
-                inventorySlotArrayList.remove(inventorySlot);
-            }
-            notifyDataSetChanged();
         }
+        else {
+            //已有现成的
+            InventorySlot slot = inventorySlotArrayList.get(mSlotPosition);
+            slot.setContents(item);
+        }
+        notifyDataSetChanged();
     }
 
     /**
@@ -74,14 +74,6 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         return  inventorySlotArrayList;
     }
 
-
-
-
-    public InventoryAdapter(){
-        super();
-        itemList = EntityItem.getAllItem();
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_game_article, parent, false);
@@ -90,18 +82,14 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EntityItem item = (EntityItem) holder.itemView.getTag();
-                //如果是已有的背包，直接取，否则够造一个
-                int index = getInventoryIndex(item);
-                InventorySlot inventorySlot;
-                if (0 > index){
-                   inventorySlot = createInventorySlot(item);
-                }
-                else {
-                    inventorySlot = inventorySlotArrayList.get(index);
-                }
-                if (null != mListener){
-                    mListener.OnItemClicked(inventorySlot);
+                EntityItem entityItem = (EntityItem) holder.itemView.getTag();
+                mSlotPosition = getInventoryIndex(entityItem);
+                if (null != mListener) {
+                    if (-1 == mSlotPosition) {
+                        mListener.OnItemClicked(new ItemStack(entityItem.getId(), (short) 255, 0));
+                    } else {
+                        mListener.OnItemClicked(inventorySlotArrayList.get(mSlotPosition).getContents());
+                    }
                 }
             }
         });
@@ -126,7 +114,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     }
 
     /**
-     * 检查所给的物品是否已存在于背包中
+     * 获取物品在于背包中的位置，如果没在背包中则返回-1
      * @param item
      * @return
      */
@@ -147,32 +135,26 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
      * @param item
      * @return
      */
-    private InventorySlot createInventorySlot(EntityItem item){
+    private InventorySlot createInventorySlot(ItemStack item){
         if (null == inventorySlotArrayList){
             inventorySlotArrayList = new ArrayList<>(10);
         }
-        if (inventorySlotArrayList.size()  < 40){
-            ItemStack itemStack = new ItemStack(item.getId(),(short)255,0);
-            short index = 0;
-            for (short i = 9;i < 51;i++){
-                boolean result = false;
-                for (InventorySlot inventorySlot:inventorySlotArrayList){
 
-                    if (byte2Short(inventorySlot.getSlot())  == i){
-                        result = true;
-                        break;
-                    }
-                }
-                if (!result){
-                    index = i;
+        byte slotId = -1;
+        boolean result = false;
+
+        do {
+            slotId ++;
+            for (InventorySlot inventorySlot:inventorySlotArrayList){
+                if (inventorySlot.getSlot() == slotId){
                     break;
                 }
             }
-            InventorySlot inventorySlot = new InventorySlot(short2Byte(index),itemStack);
-            inventorySlotArrayList.add(inventorySlot);
-           return inventorySlot;
-        }
-        return null;
+            result = true;
+        }while (!result)  ;
+
+        InventorySlot inventorySlot = new InventorySlot(slotId,item);
+        return  inventorySlot;
     }
 
     private short byte2Short(byte b){
@@ -199,6 +181,15 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             iv_selected = (ImageView)itemView.findViewById(R.id.iv_selected);
             tv_name = (TextView)itemView.findViewById(R.id.tv_articleName);
         }
+    }
+
+
+    /**
+     * 设置item点击事件监听器
+     * @param listener item点击监听器
+     */
+    public void setOnItemClickedListener(OnItemClickedListener listener){
+        this.mListener = listener;
     }
 
 }
