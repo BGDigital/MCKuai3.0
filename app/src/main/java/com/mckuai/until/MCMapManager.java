@@ -108,6 +108,13 @@ public class MCMapManager {
             }
         }
 
+        try {
+            db.open();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
         for (String resid:index){
             byte data[]= db.get(resid.getBytes());
             if (null == data){
