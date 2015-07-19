@@ -143,7 +143,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         initReciver();
         btn_right_view.setOnClickListener(this);
-        if (null == mapList || null == mapList.getData() || 0 == page.getPage()) {
+        if (null == mapList || null == mapList.getData() || null == page || 0 == page.getPage()) {
             loadData();
             return;
         }
