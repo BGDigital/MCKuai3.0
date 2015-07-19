@@ -56,6 +56,7 @@
             android:name=".Map_detailsActivity"
             android:label="@string/delete_map"
             android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".MymapActivity"
@@ -150,6 +151,21 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="8BeV0Eu1X94jbXQgFckSaL8L" />
+
+        <service android:name="com.mckuai.service_and_recevier.DownloadService">
+            <intent-filter>
+                <action android:name="com.mckuai.downloadservice"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </service>
+
+        <receiver android:name="com.mckuai.service_and_recevier.DownloadProgressRecevier">
+            <intent-filter>
+                <action android:name="com.mckuai.imc.downloadprogress">
+                </action>
+            </intent-filter>
+        </receiver>
     </application>
+
 
 </manifest>
