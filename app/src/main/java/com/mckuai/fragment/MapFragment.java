@@ -1,8 +1,8 @@
 package com.mckuai.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,8 +36,8 @@ import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
+import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.until.MCMapManager;
-import com.thin.downloadmanager.DownloadStatusListener;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -53,7 +53,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private Button rb_map, rb_classification, rb_mymap;
     private EditText map_ed;
     private TextView tv_titles;
-    //    private ListView map_ls;
     private UltimateRecyclerView urv_mapList;
     private RelativeLayout mp_r1;
     private MapBean mapList;
@@ -76,6 +75,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private MCkuai application = MCkuai.getInstance();
     private ImageView btn_right_view = application.getBtn_publish();
     private MCMapManager mapManager;
+    private DownloadProgressRecevier recevier;
+    private long lastUpdateTime;
 
 
     @Override
@@ -100,7 +101,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             if (mapManager == null) {
                 mapManager = MCkuai.getInstance().getMapManager();
             }
-            downloadmaps = mapManager.getDownloadMaps();
 
         }
         showData();
@@ -127,11 +127,21 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
     }
 
+    @Override
+    public void onDestroy() {
+          if (null != recevier){
+            getActivity().unregisterReceiver(recevier);
+            recevier = null;
+        }
+        super.onDestroy();
+    }
+
     private void showData() {
         if (application.fragmentIndex != 1) {
             Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
+        initReciver();
         btn_right_view.setOnClickListener(this);
         if (null == mapList || null == mapList.getData() || 0 == page.getPage()) {
             loadData();
@@ -195,11 +205,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         cf_l4 = (LinearLayout) view.findViewById(R.id.cf_l4);
         cf_l5 = (LinearLayout) view.findViewById(R.id.cf_l5);
         cf_l6 = (LinearLayout) view.findViewById(R.id.cf_l6);
-//        btn_right = (ImageView) view.findViewById(R.id.btn_right);
-//        btn_right.setVisibility(View.VISIBLE);
-//        btn_left = (ImageView) view.findViewById(R.id.btn_left);
-//        btn_right.setOnClickListener(this);
-//        btn_left.setOnClickListener(this);
         rb_map.setOnClickListener(this);
         rb_classification.setOnClickListener(this);
         rb_mymap.setOnClickListener(this);
@@ -213,6 +218,33 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         rightButtonListener_myMaps = new onTitleButtonClickListener();
         MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
 
+    }
+
+    private void initReciver(){
+        if (null == recevier){
+            recevier = new DownloadProgressRecevier(){
+                @Override
+                public void onProgress(String resId, int progress) {
+                    if (null != mapList && null != mapList.getData() && !mapList.getData().isEmpty()){
+                        int i = 0;
+                        for (Map map:mapList.getData()){
+                            if (map.getResId().equals(resId)){
+                                map.setDownloadProgress(progress);
+                                long time = System.currentTimeMillis();
+                                if (time - lastUpdateTime > 500 || progress == 100 || progress == 1) {
+                                    mapadapters.notifyItemChanged(i);
+                                    lastUpdateTime = time;
+                                }
+                            }
+                            i++;
+                        }
+                    }
+                }
+
+            };
+            IntentFilter filter=new IntentFilter("com.mckuai.imc.downloadprogress");
+            getActivity().registerReceiver(recevier,filter);
+        }
     }
 
     class onTitleButtonClickListener implements View.OnClickListener {
@@ -356,6 +388,15 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             public void onStart() {
                 // TODO Auto-generated method stub
                 super.onStart();
+                if (isCacheEnabled){
+                    String data = getData(url,params);
+                    if (null != data && 10 < data.length()){
+                        parseData(null,null,data);
+                        isCacheEnabled = false;
+                        showData();
+                        return;
+                    }
+                }
                 popupLoadingToast("正在加载，请稍后");
             }
 
@@ -366,7 +407,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     try {
                         if (response.getString("state").equals("ok")) {
                             JSONObject object = response.getJSONObject("dataObject");
-                            MapBean bean = mGson.fromJson(object.toString(), MapBean.class);
+                            parseData(url,params,object.toString());
+                            /*MapBean bean = mGson.fromJson(object.toString(), MapBean.class);
                             if (null == mapList) {
                                 mapList = new MapBean();
                             }
@@ -374,8 +416,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                 mapList.getData().clear();
                             }
                             mapList.getData().addAll(bean.getData());
-                            //mapList.setPageBean(bean.getPageBean());
-                            page = bean.getPageBean();
+                            page = bean.getPageBean();*/
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -383,7 +424,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     if (!mapList.getData().isEmpty()) {
                         cancleLodingToast(true);
                         map_ed.setVisibility(View.GONE);
-                        panduanxiazai(mapList.getData(), downloadmaps);
+                        panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
                         showData();
                         return;
                     } else {
@@ -410,6 +451,21 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 isLoading = false;
             }
         });
+    }
+
+    private void parseData(String url,RequestParams params,String data){
+        MapBean bean = mGson.fromJson(data, MapBean.class);
+        if (null == mapList) {
+            mapList = new MapBean();
+        }
+        if (bean.getPageBean().getPage() == 1) {
+            mapList.getData().clear();
+            if (null != url && null != params){
+                cacheData(url,params,data);
+            }
+        }
+        mapList.getData().addAll(bean.getData());
+        page = bean.getPageBean();
     }
 
     protected void panduanxiazai(ArrayList<Map> liebiao, ArrayList<Map> yixiazai) {
@@ -484,10 +540,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     @Override
     public void onItemClick(Map mapinfo) {
         if (null != mapinfo) {
+            MCkuai.getInstance().setMap(mapinfo);
             Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
-            Bundle bundle = new Bundle();
+            /*Bundle bundle = new Bundle();
             bundle.putSerializable(getString(R.string.Details), mapinfo);
-            intent.putExtras(bundle);
+            intent.putExtras(bundle);*/
             getActivity().startActivity(intent);
         }
     }

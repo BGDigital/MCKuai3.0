@@ -1,42 +1,33 @@
 package com.mckuai.imc;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Map;
-import com.mckuai.bean.MapBean;
-import com.mckuai.until.MCDTListener;
+import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.until.MCMapManager;
-import com.mckuai.widget.CustomShareBoard;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.thin.downloadmanager.DownloadRequest;
-import com.thin.downloadmanager.DownloadStatusListener;
-import com.thin.downloadmanager.ThinDownloadManager;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
@@ -47,13 +38,6 @@ import com.umeng.socialize.weixin.controller.UMWXHandler;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import cn.aigestudio.downloader.bizs.DLManager;
 
 /**
  * Created by Zzz on 2015/6/25.
@@ -68,25 +52,20 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
     private ImageLoader mLoader;
-    private MCDTListener taskListener;
     private Map map;
     private LinearLayout sv_lh;
-    private DLManager manager;
-    //    private MCMapManager mapManager;
     private int downloadstate;//0未下载，1正在下载，2已下载
     private DisplayImageOptions options;
     private com.umeng.socialize.controller.UMSocialService mShareService;
-    private CustomShareBoard shareBoard;
-    private DownloadStatusListener statusListener;
-    private ThinDownloadManager dlManager;
     private ImageView iv_serverPic;//只有一张图时显示
     private MCMapManager mapManager;
+    private DownloadProgressRecevier recevier;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
-        map = (Map) getIntent().getSerializableExtra(getString(R.string.Details));
-//        mapManager = MCkuai.getInstance().getMapManager();
+        map = MCkuai.getInstance().getMap();
         options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.background_user_cover_default)
                 .showImageForEmptyUri(R.drawable.background_user_cover_default)
                 .showImageOnFail(R.drawable.background_user_cover_default)
@@ -96,29 +75,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         if (mapManager == null) {
             mapManager = MCkuai.getInstance().getMapManager();
         }
-
-        statusListener = MCkuai.getInstance().downloadStatusListener;
-        if (null == statusListener) {
-            statusListener = new DownloadStatusListener() {
-                @Override
-                public void onDownloadComplete(int i) {
-                    mapManager.addDownloadMap(map);
-                    mapManager.closeDB();
-                }
-
-                @Override
-                public void onDownloadFailed(int i, int i1, String s) {
-
-                }
-
-                @Override
-                public void onProgress(int i, long l, int progress) {
-                    dl.updateProgress(progress);
-                }
-
-            };
-        }
-//        shareBoard = new CustomShareBoard(this, mShareService, map);
     }
 
     @Override
@@ -128,16 +84,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         mLoader = ImageLoader.getInstance();
 
         dl = (com.mckuai.widget.ProgressButton) findViewById(R.id.dl);
-        taskListener = new MCDTListener() {
-            @Override
-            public void onProgress(int progress) {
-                super.onProgress(progress);
-                dl.updateProgress(progress);
-            }
-        };
 
         if (null == imag) {
             initview();
+            initReciver();
         }
         if (null != map) {
             showData();
@@ -151,6 +101,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     protected void onDestroy() {
         super.onDestroy();
         handler.removeMessages(0);
+        if (null != recevier) {
+            unregisterReceiver(recevier);
+            recevier = null;
+        }
     }
 
     public void checkState() {
@@ -166,7 +120,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void initview() {
-//        iv_cover = (ImageView) findViewById(R.id.iv_serverCover);
         imag = (ImageView) findViewById(R.id.image);
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
@@ -189,6 +142,26 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         iv_serverPic = (ImageView) findViewById(R.id.iv_pic);
     }
 
+    private void initReciver() {
+        if (null == recevier) {
+            recevier = new DownloadProgressRecevier() {
+                @Override
+                public void onProgress(String resId, int progress) {
+                    if (resId.equals(map.getResId())) {
+                        dl.updateProgress(progress);
+                        if (100 == progress){
+                            downloadstate = 2;
+                            dl.setText("导入");
+                            unregisterReceiver(recevier);
+                            recevier = null;
+                        }
+                    }
+                }
+            };
+            IntentFilter filter=new IntentFilter("com.mckuai.imc.downloadprogress");
+            registerReceiver(recevier,filter);
+        }
+    }
 
     private void showData() {
         if (null != map.getIcon() && 10 < map.getIcon().length()) {
@@ -256,7 +229,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
             } else {
                 sv_lh.removeAllViews();
                 LayoutInflater inflater = LayoutInflater.from(this);
-//            for (int i = 0; i < 5; i++) {
                 for (String curpic : pic) {
                     ImageView imageView = (ImageView) inflater.inflate(R.layout.item_pic, null);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(213), dp2px(120));
@@ -267,7 +239,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     imageView.setTag(curpic);
                     sv_lh.addView(imageView);
                 }
-//            }
             }
         }
     }
@@ -336,46 +307,18 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 shareMap();
                 break;
             case R.id.dl:
-//                manager = DLManager.getInstance(this);
-//                taskListener = new MCDTListener();
                 String downloadDir = MCkuai.getInstance().getMapDownloadDir();
                 String filename = downloadDir + map.getFileName();
                 switch (downloadstate) {
                     case 0:
-                        if (null == dlManager) {
-                            dlManager = new ThinDownloadManager(3);
-                        }
-                        String url = map.getSavePath();
-                        try {
-                            url = url.substring(0, url.lastIndexOf("/") + 1) + URLEncoder.encode(url.substring(url.lastIndexOf("/") + 1, url.length()), "UTF-8");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        url = url.replaceAll("\\+", "%20");
-                        String downloadDirs = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
-                        DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDirs));
-                        request.setDownloadListener(new DownloadStatusListener() {
-                            @Override
-                            public void onDownloadComplete(int i) {
-                                dl.setText("下载完成");
-                                mapManager.addDownloadMap(map);
-                                mapManager.closeDB();
-                            }
-
-                            @Override
-                            public void onDownloadFailed(int i, int i1, String s) {
-
-                            }
-
-                            @Override
-                            public void onProgress(int i, long l, int progress) {
-                                dl.updateProgress(progress);
-                            }
-                        });
+                        Intent intent = new Intent("com.mckuai.downloadservice");
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("MAP",map);
+                        intent.putExtras(bundle);
+                        startService(intent);
                         break;
                     case 2:
-                        MCMapManager mapManager;
-                        mapManager = new MCMapManager();
+                        MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         mapManager.importMap(filename);
                         showNotification(1, "导入成功", R.id.md_r1);
                         break;
@@ -386,33 +329,12 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-//    class taskListeners extends MCDTListener {
-//        private com.mckuai.widget.ProgressButton btn;
-//
-//        public taskListeners(com.mckuai.widget.ProgressButton btn) {
-//            this.btn = btn;
-//        }
-//
-//        @Override
-//        public void onProgress(int progress) {
-//            super.onProgress(progress);
-//            btn.updateProgress(progress);
-//        }
-//    }
 
     android.os.Handler handler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 0:
-                    dl.updateProgress(map.getDownloadProgress());
-                    dl.postInvalidate();
-                    Log.e("", "progress=" + map.getDownloadProgress());
-                    if (100 != map.getDownloadProgress()) {
-                        handler.sendMessageDelayed(handler.obtainMessage(0), 200);
-                    }
-                    break;
                 case 1:
                     dl.setText("导入");
                     downloadstate = 2;
