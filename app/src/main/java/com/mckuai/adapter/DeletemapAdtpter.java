@@ -31,7 +31,7 @@ public class DeletemapAdtpter extends BaseAdapter {
     private Map map;
 
     public DeletemapAdtpter(Context context, ArrayList<Map> mapBeans) {
-        mapManager = new MCMapManager();
+        mapManager = MCkuai.getInstance().getMapManager();
         mMapBeans = mapBeans;
         this.mContext = context;
         mInflater = LayoutInflater.from(context);

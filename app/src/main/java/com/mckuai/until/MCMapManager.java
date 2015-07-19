@@ -304,8 +304,7 @@ public class MCMapManager {
         downloadMaps = getDownloadMaps();
     }
 
-
-    public void closeDB(){
+    public void saveDB(){
         if (null != newDownloadMaps && !newDownloadMaps.isEmpty()){
             if (!isReady()){
                 return;
@@ -319,7 +318,11 @@ public class MCMapManager {
         catch (Exception e){
 
         }
+    }
 
+
+    public void closeDB(){
+        saveDB();
         try{
             db.close();
         }
@@ -388,37 +391,6 @@ public class MCMapManager {
 
     }
 
-    /*public String getCurMapDir(){
-        if (null == mapDir){
-            if (!isOpen){
-                if (!openDB()){
-                    Log.e(TAG,"getCurMapDir:open db false");
-                    return  null;
-                }
-                byte dir[] = db.get("CURRENT_MAP_DIR".getBytes());
-                if (null != dir){
-                    mapDir = new String(dir);
-                }
-                else {
-                    return  null;
-                }
-            }
-        }
-        return mapDir;
-    }
-
-    public void setCurMapDir(String mapdir){
-        if (null != mapdir && 1 < mapdir.length()){
-            this.mapDir = mapdir;
-            if (!isOpen){
-                openDB();
-            }
-
-            if (isOpen){
-                db.put("CURRENT_MAP_DIR".getBytes(),mapDir.getBytes());
-            }
-        }
-    }*/
 
 
 
