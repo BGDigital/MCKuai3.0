@@ -1,8 +1,8 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
-import android.media.session.MediaSession;
-import android.net.Uri;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,40 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.fabbutton.FabButton;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.thin.downloadmanager.DownloadRequest;
-import com.thin.downloadmanager.DownloadStatusListener;
-import com.thin.downloadmanager.ThinDownloadManager;
-import com.umeng.analytics.MobclickAgent;
 
-import java.io.File;
 import java.io.Serializable;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Zzz on 2015/7/9.
  */
-public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> {
+public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
     private final String TAG = "mapadaptres";
     private ArrayList<Map> maps;
     private ImageLoader loader;
     private OnItemClickListener itemClickListener;
     private OnMapDownloadListener addListener;
-    private ThinDownloadManager dlManager;
     private Context mContext;
-    private Map map;
     private boolean isPaihang = false;
-    private HashMap<Integer, DownloadTask> downloadTask;   //下载任务，第一个参数是下载的token，第二个是包含了其按钮和地图的结构体
-    private DownloadStatusListener statusListener;//下载进度监听
-    private MCMapManager mapManager;
 
 
     public interface OnItemClickListener {
@@ -62,42 +52,14 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         this.addListener = listener;
     }
 
-    public void setData(ArrayList<Map> maplist) {
-        this.maps = maplist;
 
+    public void setData(final ArrayList<Map> maplist) {
+        this.maps = maplist;
         notifyDataSetChanged();
     }
 
     public RankAdapters(Context context) {
         this.mContext = context;
-        if (mapManager == null) {
-            mapManager = MCkuai.getInstance().getMapManager();
-        }
-        statusListener = MCkuai.getInstance().downloadStatusListener;
-        if (null == statusListener) {
-            statusListener = new DownloadStatusListener() {
-                @Override
-                public void onDownloadComplete(int downToken) {
-                    DownloadTask task = downloadTask.get(downToken);
-                    mapManager.addDownloadMap(task.map);
-                    mapManager.closeDB();
-                }
-
-                @Override
-                public void onDownloadFailed(int i, int i1, String s) {
-
-                }
-
-                @Override
-                public void onProgress(int downToken, long l, int progress) {
-                    DownloadTask task = downloadTask.get(downToken);
-                    task.map.setDownloadProgress(progress);
-                    task.button.setProgress(progress);
-                    Log.e("jingdu", "进度" + progress);
-                }
-            };
-            MCkuai.getInstance().downloadStatusListener = statusListener;
-        }
     }
 
     @Override
@@ -118,29 +80,29 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         holder.btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                if (null == dlManager) {
-                    dlManager = new ThinDownloadManager(3);
-                }
-                if (null == downloadTask) {
-                    downloadTask = new HashMap<>();
-                }
 
                 final FabButton button = (FabButton) v.getTag();
-                final Map map = (Map) button.getTag();
-                String url = map.getSavePath();
-                try {
-                    url = url.substring(0, url.lastIndexOf("/") + 1) + URLEncoder.encode(url.substring(url.lastIndexOf("/") + 1, url.length()), "UTF-8");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                int position = (int) button.getTag();
+                final Map map = maps.get(position);
+                switch (map.getDownloadProgress()){
+                    case 0:
+                        Intent intent = new Intent("com.mckuai.downloadservice");
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("MAP",map);
+                        intent.putExtras(bundle);
+                        mContext.startService(intent);
+                        break;
+                    case 100:
+                        String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
+                        MCMapManager mapManager = MCkuai.getInstance().getMapManager();
+                        mapManager.importMap(filename);
+                        Toast.makeText(mContext,"地图导入完成",Toast.LENGTH_SHORT).show();
+                        GameUntil.startGame(mContext);
+                        break;
+                    default:
+                        break;
                 }
-                url = url.replaceAll("\\+", "%20");
-                String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
-                button.resetIcon();
-                DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
-                request.setDownloadListener(statusListener);
-                map.setTasktoken(dlManager.add(request));
-                DownloadTask task = new DownloadTask(button, map);
-                downloadTask.put(map.getTasktoken(), task);
+
             }
         });
         return holder;
@@ -150,16 +112,21 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Map map = maps.get(position);
         if (null != map) {
+            String oldIcon = (String) holder.image.getTag();
+            if (null != oldIcon && oldIcon.equals(map.getIcon())){
+                //只是刷新进度
+                holder.btn_download.setProgress(map.getDownloadProgress());
+                return;
+            }
             holder.itemView.setTag(position);
             if (null == loader) {
                 loader = ImageLoader.getInstance();
             }
             if (null != map.getIcon() && map.getIcon().length() > 10) {
                 loader.displayImage(map.getIcon(), holder.image);
+                holder.image.setTag(map.getIcon());
             }
             holder.tv_name.setText(map.getViewName());
-            Log.e("viewname", "" + map.getViewName());
-            Log.e("DownloadProgress", "" + map.getDownloadProgress());
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
             leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
@@ -182,7 +149,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             else {
                 holder.btn_download.setProgress(map.getDownloadProgress());
             }
-            holder.btn_download.setTag(map);
+            holder.btn_download.setTag(position);
             holder.itemView.setTag(position);
         }
 
