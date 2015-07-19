@@ -11,6 +11,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.InventorySlot;
 import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
+import com.mckuai.bean.Map;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.until.CircleBitmapDisplayer;
 import com.mckuai.until.JsonCache;
@@ -46,6 +47,7 @@ public class MCkuai  extends Application{
     private DisplayImageOptions circleOption;
 
     private MCMapManager mapManager;
+    private Map map;
 
     public MCUser mUser;
     public JsonCache mCache;
@@ -311,5 +313,13 @@ public class MCkuai  extends Application{
 
     public DisplayImageOptions getCircleOption() {
         return circleOption;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 }
