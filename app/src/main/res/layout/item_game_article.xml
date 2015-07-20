@@ -4,12 +4,7 @@
     android:layout_width="111dp" android:layout_height="111dp"
     android:layout_margin="2dp"
     android:background="@drawable/article_background_layerlist">
-    <ImageView
-        android:id="@+id/iv_articleItem"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background ="@drawable/icon_mode_creat"
-        android:layout_centerInParent="true"/>
+
     <TextView
         android:id="@+id/tv_articleName"
         android:layout_width="match_parent"
@@ -20,8 +15,25 @@
         android:textColor="@color/font_black"
         android:gravity="center_horizontal"
         android:text="火把"
-
         />
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_black"
+        android:layout_above="@id/tv_articleName"
+        android:text="数量："
+        android:layout_margin="2dp"
+        android:layout_centerHorizontal="true"
+        />
+
+    <ImageView
+        android:id="@+id/iv_articleItem"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background ="@drawable/icon_mode_creat"
+        android:layout_above="@id/tv_count"
+        android:layout_centerInParent="true"/>
     <ImageView
         android:id="@+id/iv_selected"
         android:background="@drawable/icon_itemselected"
