@@ -127,6 +127,7 @@ public class MCGameEditer {
         return null;
     }
 
+
     public static boolean setGameMode(String worldDir,int mode){
         WorldInfo world = getWorldByDir(worldDir);
         if (null != world){
@@ -189,6 +190,22 @@ public class MCGameEditer {
         }
         return null;
     }
+
+    /*public static Level loadLevelFormDB(WorldInfo worldInfo){
+        File[] subDir = new File(MCkuai.getInstance().getSDPath() + worldRoot + worldInfo.getDir()).listFiles();
+        if (null != subDir){
+            for (File curDir:subDir){
+                //只有一个目录
+                if (curDir.isDirectory()){
+                    Level level = GameDBEditer.getLevel(curDir);
+                    if (null != level){
+                        return level;
+                    }
+                }
+            }
+        }
+        return null;
+    }*/
 
     private static boolean loadLevelFromFile(File worldRoot,WorldInfo worldInfo){
         Level level = null;

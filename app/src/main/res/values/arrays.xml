@@ -18,10 +18,10 @@
         <item>3</item>
     </integer-array>
     <string-array name="server_Type">
-        <item>全部&#160;</item>
-        <item>生存&#160;</item>
-        <item>冒险&#160;</item>
-        <item>创造&#160;</item>
-        <item>混合&#160;</item>
+        <item>全部</item>
+        <item>生存</item>
+        <item>冒险</item>
+        <item>创造</item>
+        <item>混合</item>
     </string-array>
 </resources>

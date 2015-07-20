@@ -8,10 +8,12 @@ import com.mckuai.entity.Player;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.io.LevelDataConverter;
 import com.mckuai.io.db.DB;
+import com.mckuai.io.db.LevelDBConverter;
 import com.mckuai.io.nbt.NBTConverter;
 import com.mckuai.until.GameDBEditer;
 import com.mckuai.until.OptionUntil;
 
+import org.apache.http.conn.routing.RouteInfo;
 import org.spout.nbt.stream.NBTOutputStream;
 
 import java.io.ByteArrayOutputStream;
@@ -20,6 +22,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import slidingmenu.SlidingMenu;
 
 /**
  * Created by kyly on 2015/7/13.
@@ -27,8 +32,9 @@ import java.util.List;
 public class WorldInfo implements Serializable{
     private String dir;                                 //子目录名称
     private Player player;                            //角色信息，优先来自数据库，如果没有再从level.dat中取
-    private Level level;                                 //level.dat中的内容
+    private Level level;                                 //
     private long size;                                   //存档大小
+//    private boolean isSaveInDB;                   //是否是从数据库中获取的
 
     private final String TAG = "WorldInfo";
     private final String worldRoot = "/games/com.mojang/minecraftWorlds/";
@@ -59,21 +65,29 @@ public class WorldInfo implements Serializable{
 
     public boolean setIsCreative(boolean isCreative) {
         if (null != level){
-            level.setGameType(isCreative ? 1:0);
+            level.setGameType(isCreative ? 1:0);                     //level.dat
+
             if (null != level.getPlayer() && null != level.getPlayer().getAbilities()){
-                level.getPlayer().getAbilities().setInvulnerable(true);
-                level.getPlayer().getAbilities().setMayFly(true);
+                //从文件中取出来的,仅写level.dat
+                level.getPlayer().getAbilities().setInvulnerable(isCreative);
+                level.getPlayer().getAbilities().setMayFly(isCreative);
+                return saveLevelData();
             }
             else {
+                //从数据库中读取的，需写level.dat和数据库
                 if (null != player && null != player.getAbilities()){
-                    player.getAbilities().setMayFly(false);
-                    player.getAbilities().setInvulnerable(false);
-                    if (!saveDBData()){
-                        return  false;
-                    }
+                    player.getAbilities().setMayFly(isCreative);
+                    player.getAbilities().setInvulnerable(isCreative);
+//                    level.setPlayer(player);
+//                    if (!saveDBData()){
+//                        return  false;
+//                    }
+                    boolean result = saveDBData();
+                    result = result && saveLevelData();
+                    return result;
                 }
             }
-            return saveLevelData();
+
         }
         return false;
     }
@@ -188,27 +202,9 @@ public class WorldInfo implements Serializable{
     }
 
     public boolean setInventory(List<InventorySlot> inventorySlots){
-        /*if (null != level && null != level.getPlayer() && null != getPlayer().getInventory()){
-            level.getPlayer().setInventory(inventorySlots);
-            return saveLevelData();
-        }
-        if (null != player ){
-            player.setInventory(inventorySlots);
-            return saveDBData();
-        }*/
         if (null != player){
             player.setInventory(inventorySlots);
-            if (null != level){
-                level.setPlayer(player);
-                File file = new File(MCkuai.getInstance().getSDPath()+worldRoot + dir);
-                try {
-                    LevelDataConverter.write(level, file);
-                    return true;
-                }
-                catch (Exception e){
-                    return false;
-                }
-            }
+            return saveDBData();
         }
         return false;
     }
@@ -216,24 +212,7 @@ public class WorldInfo implements Serializable{
 
 
     private boolean saveLevelData() {
-        if (OptionUntil.isSaveInLevelDB()){
 
-            File file = new File(MCkuai.getInstance().getSDPath()+worldRoot + dir);
-            DB db = new DB(file);
-            try{
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                new NBTOutputStream(byteArrayOutputStream, false, true).writeTag(NBTConverter.writePlayer(level.getPlayer(), "", true));
-                db.put(((String)"~local_player").getBytes(), byteArrayOutputStream.toByteArray());
-                byteArrayOutputStream.close();
-            }catch (Exception e){
-                e.printStackTrace();
-                db.close();
-                return false;
-            }
-            db.close();
-            return true;
-        }
-        else {
             String path = MCkuai.getInstance().getSDPath() +worldRoot +dir;
             File file = new File(path,"level.dat");
             if (null != file && !file.exists()) {
@@ -246,19 +225,24 @@ public class WorldInfo implements Serializable{
                 Log.e(TAG, "save false," + e.getLocalizedMessage());
                 return false;
             }
-        }
     }
 
-    private boolean saveDBData(){
-        String path = MCkuai.getInstance().getSDPath() + worldRoot +dir;
+    private boolean saveDBData() {
+        String path = MCkuai.getInstance().getSDPath() + worldRoot + dir;
         File[] dbFiles = new File(path).listFiles();
-        if (null != dbFiles && dbFiles.length > 0){
-            for (File dbFile:dbFiles){
-                if (dbFile.isDirectory()){
-                    return  GameDBEditer.setPlayer(player,dbFile);
+        //boolean isSaveInLevelDB = OptionUntil.isSaveInLevelDB();
+
+        boolean result = false;
+        for (int i = 0; i < dbFiles.length; i++) {
+            if (dbFiles[i].isDirectory()) {
+                try {
+                    result = LevelDBConverter.writeLevel(player, dbFiles[i]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result = false;
                 }
             }
         }
-        return false;
+        return result;
     }
 }

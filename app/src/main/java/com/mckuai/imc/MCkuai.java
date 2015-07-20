@@ -45,6 +45,7 @@ public class MCkuai  extends Application{
     private Spinner spinner;
     private ImageView btn_publish;
     private DisplayImageOptions circleOption;
+    private DisplayImageOptions normalOption;
 
     private MCMapManager mapManager;
     private Map map;
@@ -57,7 +58,6 @@ public class MCkuai  extends Application{
     public AsyncHttpClient mClient;
     public Tencent tencent;
     public WorldInfo world;
-    public DownloadStatusListener downloadStatusListener;
 
 
 
@@ -79,7 +79,6 @@ public class MCkuai  extends Application{
         initTencent();
         initUM();
         getProfile();//获取保存的用户信息
-        circleOption = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
     }
 
     @Override
@@ -312,7 +311,17 @@ public class MCkuai  extends Application{
     }
 
     public DisplayImageOptions getCircleOption() {
+        if (null == circleOption){
+            circleOption = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
+        }
         return circleOption;
+    }
+
+    public DisplayImageOptions getNormalOption() {
+        if (null == normalOption){
+            normalOption = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
+        }
+        return normalOption;
     }
 
     public Map getMap() {

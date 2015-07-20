@@ -100,6 +100,17 @@ public class OptionUntil {
         return false;
     }
 
+    public static int getGameVersion_minor(){
+        if (!hasLoaded){
+            loadFromFile();
+        }
+        return old_game_version_minor;
+    }
+
+    public static int getGameVersion_majo(){
+        return old_game_version_major;
+    }
+
     private static void loadFromFile(){
         File file = new File(MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftpe/options.txt");
         if (null != file && file.exists() && file.isFile()){

@@ -5,7 +5,10 @@
     <string name="channel_360">360</string>
 
 
-    <string name="app_name">MCKuai</string>
+    <string name="app_name">麦块for我的世界盒子</string>
+    <string name="app_nam_BaiDu">麦块</string>
+    <string name="app_name_QQ">麦块</string>
+    <string name="app_name_360">麦块</string>
 
     <string name="hello_world">Hello world!</string>
 

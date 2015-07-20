@@ -294,7 +294,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
 
         ServerBean bean = gson.fromJson(result.data,ServerBean.class);
-        if (null != bean){
+        if (null != bean && null != bean.getPageBean() && null != bean.getData()){
 
             if (bean.getPageBean().getPage() == 1){
                 if (null == serverInfos){

@@ -4,6 +4,7 @@ import android.util.Log;
 
 
 import com.mckuai.InventorySlot;
+import com.mckuai.Level;
 import com.mckuai.entity.Entity;
 import com.mckuai.entity.Player;
 import com.mckuai.io.EntityDataConverter;
@@ -100,6 +101,25 @@ public class GameDBEditer {
         }
         closeDB(db);
         return player;
+    }
+
+    public static Level getLevel(File dbFile){
+        DB db = openDB(dbFile);
+        Level level = null;
+        if (null != db){
+            try{
+                byte[] data =db.get("~local_player".getBytes(Charset.forName("utf-8")));
+                if (null != data) {
+                    level = NBTConverter.readLevel((CompoundTag) new NBTInputStream(new ByteArrayInputStream(data), false, true).readTag());
+                }
+            }
+            catch (Exception e){
+                Log.e(TAG,"读取角色信息时失败，原因："+e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+        closeDB(db);
+        return level;
     }
 
     public static boolean setPlayer(Player player,File dbFile){

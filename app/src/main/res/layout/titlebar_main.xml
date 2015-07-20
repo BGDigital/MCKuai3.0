@@ -32,7 +32,9 @@
         android:clickable="true"
         android:paddingLeft="30dp"
         android:paddingRight="10dp"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:src="@drawable/btn_titlebar_share"
         android:visibility="invisible" />
 

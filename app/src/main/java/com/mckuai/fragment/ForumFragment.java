@@ -124,7 +124,9 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
             @Override
             public void onRefresh() {
                 page.setPage(0);
-                mPosts.clear();
+                if (null != mPosts) {
+                    mPosts.clear();
+                }
                 loadPostList(curForum);
             }
         });

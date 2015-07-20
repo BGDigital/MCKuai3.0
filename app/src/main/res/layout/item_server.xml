@@ -68,6 +68,7 @@
         android:textColor="@color/font_white"
         android:background="@color/background_green"
         android:text="在线"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/tv_serverPlayerCount"
@@ -79,8 +80,22 @@
         android:singleLine="true"
         android:layout_alignBottom="@id/tv_serverState"
         android:layout_marginLeft="10dp"
+        android:visibility="gone"
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/tv_serverState"
+        />
+
+    <TextView
+        android:id="@+id/tv_serverOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_secondary"
+        android:textSize="@dimen/font_dimen_small"
+        android:text="服主：用户名"
+        android:layout_alignBottom="@id/iv_serverCover"
+        android:layout_alignLeft="@id/tv_serverName"
+        android:singleLine="true"
+        android:gravity="center_vertical"
         />
 
     <TextView
@@ -89,28 +104,13 @@
         android:layout_height="wrap_content"
         android:textColor="@color/green"
         android:text="生存"
+        android:layout_above="@id/tv_serverOwner"
         android:textSize="@dimen/font_dimen_small"
-        android:layout_above="@id/tv_serverState"
         android:layout_below="@id/tv_serverName"
         android:layout_alignLeft="@id/tv_serverName"
         android:singleLine="true"
         android:gravity="center_vertical"
         />
 
-    <TextView
-        android:id="@+id/tv_serverOwner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/font_secondary"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textSize="@dimen/font_dimen_small"
-        android:text="服主：用户名"
-        android:layout_alignTop="@id/tv_serverType"
-        android:layout_alignBottom="@id/tv_serverType"
-        android:layout_toLeftOf="@+id/btn_addServer"
-        android:layout_toRightOf="@id/tv_serverType"
-        android:singleLine="true"
-        android:gravity="center_vertical"
-        />
+
 </RelativeLayout>

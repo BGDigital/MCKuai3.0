@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.bean.GameServerInfo;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.ServerEditer;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
     private ImageLoader loader;
     private OnItemClickListener itemClickListener;
     private OnServerAddListener addListener;
+    private DisplayImageOptions options;
 
     public interface OnItemClickListener{
         public void onItemClick(GameServerInfo gameServerInfo);
@@ -47,7 +50,9 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
 
     public void setData(ArrayList<GameServerInfo> serverlist) {
         this.serverInfos = serverlist;
-
+        if (null == options){
+            options = MCkuai.getInstance().getNormalOption();
+        }
         notifyDataSetChanged();
     }
 
@@ -97,7 +102,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
                 loader = ImageLoader.getInstance();
             }
             if (null != serverInfo.getIcon() && serverInfo.getIcon().length() > 10){
-                loader.displayImage(serverInfo.getIcon(),holder.icon);
+                loader.displayImage(serverInfo.getIcon(),holder.icon,options);
             }
 
             holder.name.setText(serverInfo.getViewName());

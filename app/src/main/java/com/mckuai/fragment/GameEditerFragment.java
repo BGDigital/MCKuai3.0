@@ -3,6 +3,7 @@ package com.mckuai.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mckuai.InventorySlot;
+import com.mckuai.Level;
 import com.mckuai.adapter.WorldAdapter;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.imc.GamePackageActivity;
@@ -22,7 +24,12 @@ import com.mckuai.imc.R;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.OptionUntil;
+import com.thin.downloadmanager.DownloadRequest;
+import com.thin.downloadmanager.DownloadStatusListener;
+import com.thin.downloadmanager.ThinDownloadManager;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +61,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ArrayList<WorldInfo> worldInfos;
     private int inventoryTypeCount;         //背包中物品种类数
     private int curWorldIndex;//当前显示的世界的索引
+    private Integer[] res_Map = {R.drawable.background_map_0,R.drawable.background_map_1,R.drawable.background_map_2,R.drawable.background_map_3,R.drawable.background_map_4,R.drawable.background_map_5,R.drawable.background_map_6,R.drawable.background_map_7,R.drawable.background_map_8,R.drawable.background_map_9};
 
 
     private boolean isShowGameRunning = false;
     private boolean isGameInstalled = true;
     private boolean isGameRunning = false;
+    private boolean isGameVersionSupport = false;
 
     private WorldAdapter adapter;
 
@@ -200,6 +209,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         } else {
             tv_packageItemCount.setText("没有物品");
         }
+        //背影
+        int background = (int) (Math.random() *10);
+        iv_map.setBackgroundResource(res_Map[background]);
     }
 
     private void switchGameMode() {
@@ -244,7 +256,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (resultCode == Activity.RESULT_OK) {
             WorldInfo world = MCkuai.getInstance().world;
             if (null != world) {
-                worldInfos.get(curWorldIndex).setInventory(world.getInventory());
+                worldInfos.get(curWorldIndex).getPlayer().setInventory(world.getInventory());
                 updateWorldInfo();
             }
         }
@@ -281,6 +293,14 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     }
                 });
             }
+            int version = OptionUntil.getGameVersion_minor();
+            if (version < 9 || version > 10){
+                isGameVersionSupport = false;
+                showDownloadGame();
+            }
+            else {
+                isGameVersionSupport = true;
+            }
         } else {
             showMessage("警告", "你还未安装游戏，不能修改游戏内容！");
             return;
@@ -309,6 +329,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         switch (v.getId()) {
             case R.id.rl_gameMode:
+                if (!checkGameVersion()){
+                    return;
+                }
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchGameMode();
                 } else {
@@ -316,6 +339,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_gameTime:
+                if (!checkGameVersion()){
+                    return;
+                }
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchGameTime();
                 } else {
@@ -332,6 +358,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.rl_gamePackage:
+                if (!checkGameVersion()){
+                    return;
+                }
                 changePackageItem();
                 break;
             case R.id.btn_startGame:
@@ -345,11 +374,18 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                         selectMap();
                     }
                 } else {
-                    showNotification(3, "没有地图，不能修改当前设置！", R.id.rl_root);
+                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
                 }
 
                 break;
         }
+    }
+
+    private boolean checkGameVersion(){
+        if (!isGameVersionSupport){
+            showNotification(3, "不支持当前的版本！", R.id.fl_root);
+        }
+        return isGameVersionSupport;
     }
 
     @Override
@@ -357,5 +393,43 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         lv_mapList.setVisibility(View.GONE);
         curWorldIndex = (int) id;
         getWorldInfo();
+    }
+
+    private void showDownloadGame(){
+        showAlert("", "", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ThinDownloadManager downloadManager = new ThinDownloadManager(1);
+                String url = "";
+                final String dst = "";
+                DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
+                    @Override
+                    public void onDownloadComplete(int i) {
+                        File file = new File(dst);
+                        if (null != file && file.exists() && file.isFile()){
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+                            getActivity().startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onDownloadFailed(int i, int i1, String s) {
+
+                    }
+
+                    @Override
+                    public void onProgress(int i, long l, int i1) {
+
+                    }
+                }) ;
+                downloadManager.add(request);
+            }
+        });
     }
 }

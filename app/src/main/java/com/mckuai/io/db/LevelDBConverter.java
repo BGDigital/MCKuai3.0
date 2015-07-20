@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.mckuai.Level;
 import com.mckuai.entity.Entity;
+import com.mckuai.entity.Player;
 import com.mckuai.io.EntityDataConverter;
 import com.mckuai.io.nbt.NBTConverter;
 import com.mckuai.tileentity.TileEntity;
@@ -97,17 +98,21 @@ import java.util.List;
 
     }
 
-    public static void writeLevel(Level level,File dbRoot){
+    public static boolean writeLevel(Player player,File dbRoot){
         DB db = openDataBase(dbRoot);
+        boolean result = false;
         try{
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            new NBTOutputStream(byteArrayOutputStream, false, true).writeTag(NBTConverter.writePlayer(level.getPlayer(), "", true));
+            new NBTOutputStream(byteArrayOutputStream, false, true).writeTag(NBTConverter.writePlayer(player, "", true));
             db.put(stringToByte("~local_player"), byteArrayOutputStream.toByteArray());
             byteArrayOutputStream.close();
+            result = true;
         }catch (Exception e){
+            result = false;
             e.printStackTrace();
         }
         db.close();
+        return result;
     }
 
     private static byte[] stringToByte(String string){
