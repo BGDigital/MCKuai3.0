@@ -1,8 +1,10 @@
 package com.mckuai.io;
 
 import com.mckuai.entity.Entity;
+import com.mckuai.io.db.LevelDBConverter;
 import com.mckuai.io.nbt.NBTConverter;
 import com.mckuai.tileentity.TileEntity;
+import com.mckuai.until.OptionUntil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,11 +33,17 @@ public final class EntityDataConverter {
 	}
 
 	public static EntityData read(File file) throws IOException {
-		FileInputStream fis = new FileInputStream(file);
-		BufferedInputStream is = new BufferedInputStream(fis);
-		is.skip(12);
-		EntityData eDat = NBTConverter.readEntities((CompoundTag) new NBTInputStream(is, false, true).readTag());
-		is.close();
+		EntityData eDat = null;
+		if (OptionUntil.isSaveInLevelDB()){
+			return LevelDBConverter.readAllEntities(file);
+		}
+		else {
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream is = new BufferedInputStream(fis);
+			is.skip(12);
+			eDat = NBTConverter.readEntities((CompoundTag) new NBTInputStream(is, false, true).readTag());
+			is.close();
+		}
 		return eDat;
 	}
 
