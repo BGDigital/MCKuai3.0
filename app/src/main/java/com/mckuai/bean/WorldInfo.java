@@ -7,8 +7,14 @@ import com.mckuai.Level;
 import com.mckuai.entity.Player;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.io.LevelDataConverter;
+import com.mckuai.io.db.DB;
+import com.mckuai.io.nbt.NBTConverter;
 import com.mckuai.until.GameDBEditer;
+import com.mckuai.until.OptionUntil;
 
+import org.spout.nbt.stream.NBTOutputStream;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -164,6 +170,9 @@ public class WorldInfo implements Serializable{
         List<Short> type = new ArrayList<>(30);
         boolean result;
         for (InventorySlot item:list){
+            if (item.getContents().getTypeId() == 255){
+                continue;
+            }
             result = true;
             for (Short id:type){
                 if (id == item.getContents().getTypeId()){
@@ -191,7 +200,14 @@ public class WorldInfo implements Serializable{
             player.setInventory(inventorySlots);
             if (null != level){
                 level.setPlayer(player);
-                return saveLevelData();
+                File file = new File(MCkuai.getInstance().getSDPath()+worldRoot + dir);
+                try {
+                    LevelDataConverter.write(level, file);
+                    return true;
+                }
+                catch (Exception e){
+                    return false;
+                }
             }
         }
         return false;
@@ -200,17 +216,36 @@ public class WorldInfo implements Serializable{
 
 
     private boolean saveLevelData() {
-        String path = MCkuai.getInstance().getSDPath() +worldRoot +dir;
-        File file = new File(path,"level.dat");
-        if (null != file && !file.exists()) {
-            return false;
-        }
-        try {
-            LevelDataConverter.write(level, file);
+        if (OptionUntil.isSaveInLevelDB()){
+
+            File file = new File(MCkuai.getInstance().getSDPath()+worldRoot + dir);
+            DB db = new DB(file);
+            try{
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                new NBTOutputStream(byteArrayOutputStream, false, true).writeTag(NBTConverter.writePlayer(level.getPlayer(), "", true));
+                db.put(((String)"~local_player").getBytes(), byteArrayOutputStream.toByteArray());
+                byteArrayOutputStream.close();
+            }catch (Exception e){
+                e.printStackTrace();
+                db.close();
+                return false;
+            }
+            db.close();
             return true;
-        } catch (Exception e) {
-            Log.e(TAG, "save false," + e.getLocalizedMessage());
-            return false;
+        }
+        else {
+            String path = MCkuai.getInstance().getSDPath() +worldRoot +dir;
+            File file = new File(path,"level.dat");
+            if (null != file && !file.exists()) {
+                return false;
+            }
+            try {
+                LevelDataConverter.write(level, file);
+                return true;
+            } catch (Exception e) {
+                Log.e(TAG, "save false," + e.getLocalizedMessage());
+                return false;
+            }
         }
     }
 

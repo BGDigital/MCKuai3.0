@@ -105,9 +105,12 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
             int index = getInventoryIndex(item);
             if (0 > index){
                 holder.iv_selected.setVisibility(View.INVISIBLE);
+                holder.tv_count.setVisibility(View.INVISIBLE);
             }
             else {
                 holder.iv_selected.setVisibility(View.VISIBLE);
+                holder.tv_count.setText("数量："+inventorySlotArrayList.get(index).getContents().getAmount());
+                holder.tv_count.setVisibility(View.VISIBLE);
             }
             holder.itemView.setTag(item);
         }
@@ -119,6 +122,9 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
      * @return
      */
     private int getInventoryIndex(EntityItem item){
+        if (item.getId() == 255){
+            return -1;
+        }
         if (null != inventorySlotArrayList && !inventorySlotArrayList.isEmpty()){
             for (int i = 0;i < inventorySlotArrayList.size();i++){
                 InventorySlot itemSlot = inventorySlotArrayList.get(i);
@@ -174,12 +180,14 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         ImageView iv_icon;
         ImageView iv_selected;
         TextView tv_name;
+        TextView tv_count;
 
         public ViewHolder(View itemView){
             super(itemView);
             iv_icon = (ImageView)itemView.findViewById(R.id.iv_articleItem);
             iv_selected = (ImageView)itemView.findViewById(R.id.iv_selected);
             tv_name = (TextView)itemView.findViewById(R.id.tv_articleName);
+            tv_count = (TextView)itemView.findViewById(R.id.tv_count);
         }
     }
 
@@ -190,6 +198,17 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
      */
     public void setOnItemClickedListener(OnItemClickedListener listener){
         this.mListener = listener;
+    }
+
+    private int getItemCount(int id){
+        if (null != inventorySlotArrayList && !inventorySlotArrayList.isEmpty()){
+            for (InventorySlot slot :inventorySlotArrayList){
+                if (slot.getContents().getTypeId() == id){
+                    return  slot.getContents().getAmount();
+                }
+            }
+        }
+        return 0;
     }
 
 }
