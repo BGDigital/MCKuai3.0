@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private LinearLayout ll4;
 
     private int lastPosition = 0;
-    private MCkuai application;
+    private static MCkuai application;
 
     private static TextView tv_titlebar_title;
     private static ImageView btn_titlebar_left;
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
-    private static Drawable drawable_left_button;
+//    private static Drawable drawable_left_button;
     private static Drawable drawable_right_button;
     private ArrayList<BaseFragment> mList;
     private boolean isFragmentChanged = false;
@@ -140,7 +140,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         changeCheckedButton(0);
     }
 
-    private void showUser() {
+    private static void showUser() {
         if (application.isLogin()) {
             ImageLoader loader = ImageLoader.getInstance();
             String userCover = application.mUser.getHeadImg();
@@ -404,14 +404,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public static void setLeftButtonView(boolean isShowreturns) {
         isShowreturn = isShowreturns;
         if (isShowreturn == true) {
-            if (drawable_left_button == null) {
-                drawable_left_button = btn_titlebar_left.getBackground();
-            }
+//            if (drawable_left_button == null) {
+//                drawable_left_button = btn_titlebar_left.getBackground();
+//            }
             btn_titlebar_left.setBackgroundColor(0x00000000);
             btn_titlebar_left.setImageResource(R.drawable.btn_back);
         } else {
-            btn_titlebar_left.setBackgroundDrawable(drawable_left_button);
+            //btn_titlebar_left.setBackgroundDrawable(drawable_left_button);
             btn_titlebar_left.setImageResource(0x00000000);
+            showUser();
         }
     }
 
