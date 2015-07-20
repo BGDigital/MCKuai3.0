@@ -88,7 +88,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                     case 0:
                         Intent intent = new Intent("com.mckuai.downloadservice");
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("MAP",map);
+                        bundle.putSerializable("MAP", map);
                         intent.putExtras(bundle);
                         mContext.startService(intent);
                         break;
@@ -106,6 +106,19 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             }
         });
         return holder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+       switch (maps.get(position).getDownloadProgress()){
+           case 0:
+               return 0;
+           case 100:
+               return 2;
+           default:
+               return 1;
+       }
+
     }
 
     @Override
@@ -132,7 +145,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             holder.tv_category.setText(leixing);
             holder.tv_size.setText(map.getResSize() + "KB");
             holder.tv_time.setText(map.getInsertTime());
-            if (isPaihang == true) {
+            if (isPaihang) {
                 holder.rk_tv.setVisibility(View.VISIBLE);
                 holder.rk_tv.setText((position + 1) + "");
                 if (position == 0) {
@@ -151,6 +164,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             }
             holder.btn_download.setTag(position);
             holder.itemView.setTag(position);
+            Log.e("name", "" + map.getViewName());
+            Log.e("num",""+position);
+            Log.e("progress",""+map.getDownloadProgress());
         }
 
     }
@@ -193,7 +209,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
 
     public void setpaihang(boolean isChanged) {
         isPaihang = isChanged;
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0,maps.size());
     }
 
 }
