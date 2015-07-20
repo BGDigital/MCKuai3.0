@@ -85,6 +85,21 @@ public class OptionUntil {
         return  false;
     }
 
+    public static boolean isSaveInLevelDB(){
+        if (!hasLoaded){
+            loadFromFile();
+        }
+        if (old_game_version_major > 0){
+            return  true;
+        }
+        else {
+            if (old_game_version_minor > 8){
+                return  true;
+            }
+        }
+        return false;
+    }
+
     private static void loadFromFile(){
         File file = new File(MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftpe/options.txt");
         if (null != file && file.exists() && file.isFile()){
