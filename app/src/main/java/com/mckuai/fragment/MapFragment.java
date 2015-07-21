@@ -152,6 +152,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             return;
         }
         MainActivity.setLeftButtonView(showleftbutton);
+        panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
         if (0 == mapadapters.getItemCount()) {
             mapadapters.setData(mapList.getData());
         } else {
