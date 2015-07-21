@@ -252,7 +252,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                     String result = getData(url,params);
                     if (null != result){
                         parseData(result);
-                        showData();
                         isShowCatche = false;
                         return;
                     }
@@ -317,7 +316,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
 
         ServerBean bean = gson.fromJson(data,ServerBean.class);
-        if (null != bean){
+        if (null != bean && null != bean.getPageBean() && null != bean.getData()){
 
             if (bean.getPageBean().getPage() == 1){
                 if (null == serverInfos){
@@ -327,9 +326,9 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                     serverInfos.clear();
                 }
             }
-
             page =  bean.getPageBean();
             serverInfos.addAll((Collection<? extends GameServerInfo>) bean.getData().clone());
+            showData();
         }
     }
 
