@@ -146,16 +146,15 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             return;
         }
         initReciver();
-        btn_right_view.setOnClickListener(this);
+
         if (null == mapList || null == mapList.getData() || null == page || 0 == page.getPage()) {
             loadData();
             return;
         }
         MainActivity.setLeftButtonView(showleftbutton);
-        if (0 == mapadapters.getItemCount()){
+        if (0 == mapadapters.getItemCount()) {
             mapadapters.setData(mapList.getData());
-        }
-        else {
+        } else {
             mapadapters.notifyDataSetChanged();
         }
 //        mapadapters.setData(mapList.getData());
@@ -217,6 +216,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         cf_l5 = (LinearLayout) view.findViewById(R.id.cf_l5);
         cf_l6 = (LinearLayout) view.findViewById(R.id.cf_l6);
         rb_map.setOnClickListener(this);
+        btn_right_view.setOnClickListener(this);
         rb_classification.setOnClickListener(this);
         rb_mymap.setOnClickListener(this);
         cf_l1.setOnClickListener(this);
@@ -312,7 +312,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 break;
             case R.id.rb_mymap:
                 intent = new Intent(getActivity(), MymapActivity.class);
-                getActivity().startActivity(intent);
+                getActivity().startActivityForResult(intent, 1);
                 break;
             //����
             case R.id.cf_l1:
@@ -347,6 +347,18 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && mapList != null) {
+            if (mapManager == null) {
+                mapManager = MCkuai.getInstance().getMapManager();
+            }
+            panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
+            mapadapters.setData(mapList.getData());
         }
     }
 
@@ -450,7 +462,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         map_ed.setVisibility(View.GONE);
                         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
                         showData();
-//                        notdata();
                         return;
                     } else {
                         showNotification(0, "没找到所选地图", R.id.urv_mapList);
@@ -498,18 +509,17 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             return;
         }
         for (Map curMap : liebiao) {
+            Boolean isDownload = false;
             for (Map xiazaiMap : yixiazai) {
                 if (curMap.getResId().equals(xiazaiMap.getResId())) {
                     curMap.setDownloadProgress(100);
+                    isDownload = true;
                     break;
                 }
             }
-        }
-    }
-
-    protected void notdata() {
-        if (mapList.getData() == null) {
-            mapadapters.notifyDataSetChanged();
+            if (!isDownload && curMap.getDownloadProgress() == 100) {
+                curMap.setDownloadProgress(0);
+            }
         }
     }
 

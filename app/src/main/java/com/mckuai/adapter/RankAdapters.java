@@ -164,9 +164,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             }
             holder.btn_download.setTag(position);
             holder.itemView.setTag(position);
-            Log.e("name", "" + map.getViewName());
-            Log.e("num",""+position);
-            Log.e("progress",""+map.getDownloadProgress());
+//            Log.e("name", "" + map.getViewName());
+//            Log.e("num",""+position);
+//            Log.e("progress",""+map.getDownloadProgress());
         }
 
     }

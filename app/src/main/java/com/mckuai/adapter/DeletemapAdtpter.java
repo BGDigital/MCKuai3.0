@@ -85,7 +85,9 @@ public class DeletemapAdtpter extends BaseAdapter {
         holder.tv_time.setText(map.getInsertTime());
         holder.tv_name.setText(map.getViewName());
         holder.tv_size.setText(map.getResSize());
-        holder.tv_category.setText(map.getResCategroyTwo());
+        String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
+        leixing = leixing.replace("|", " ");
+        holder.tv_category.setText(leixing);
         return convertView;
     }
 

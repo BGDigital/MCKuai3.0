@@ -7,6 +7,7 @@ import com.mckuai.WorldItem;
 import com.mckuai.bean.Map;
 import com.mckuai.io.db.DB;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.io.db.Iterator;
 
 import org.zeroturnaround.zip.ZipUtil;
 
@@ -76,6 +77,7 @@ public class MCMapManager {
                 for (Map map:downloadMaps){
                     if (map.getResId().equalsIgnoreCase(id)){
                         downloadMaps.remove(map);//删除已下载地图中的记录
+                        break;
                     }
                 }
                 return deleteMapfromDb(mapId);  //删除数据库
@@ -87,6 +89,12 @@ public class MCMapManager {
     private boolean deleteMapfromDb(String mapid){
         if (!isReady()){
             return  false;
+        }
+        try{
+            db.open();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
             byte data[] = db.get(mapid.getBytes());
             if (null == data){
@@ -363,7 +371,7 @@ public class MCMapManager {
 
         String data = "";
         for (String curmap:index){
-            data = curmap + ",";
+            data += curmap + ",";
         }
         if (data.length() > 1) {
             data = data.substring(0, data.length() - 1);

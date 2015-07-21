@@ -61,7 +61,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ArrayList<WorldInfo> worldInfos;
     private int inventoryTypeCount;         //背包中物品种类数
     private int curWorldIndex;//当前显示的世界的索引
-    private Integer[] res_Map = {R.drawable.background_map_0,R.drawable.background_map_1,R.drawable.background_map_2,R.drawable.background_map_3,R.drawable.background_map_4,R.drawable.background_map_5,R.drawable.background_map_6,R.drawable.background_map_7,R.drawable.background_map_8,R.drawable.background_map_9};
+    private Integer[] res_Map = {R.drawable.background_map_0, R.drawable.background_map_1, R.drawable.background_map_2, R.drawable.background_map_3, R.drawable.background_map_4, R.drawable.background_map_5, R.drawable.background_map_6, R.drawable.background_map_7, R.drawable.background_map_8, R.drawable.background_map_9};
 
 
     private boolean isShowGameRunning = false;
@@ -210,7 +210,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             tv_packageItemCount.setText("没有物品");
         }
         //背影
-        int background = (int) (Math.random() *10);
+        int background = (int) (Math.random() * 10);
         iv_map.setBackgroundResource(res_Map[background]);
     }
 
@@ -294,11 +294,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 });
             }
             int version = OptionUntil.getGameVersion_minor();
-            if (version < 9 || version > 10){
+            if (version < 9 || version > 10) {
                 isGameVersionSupport = false;
                 showDownloadGame();
-            }
-            else {
+            } else {
                 isGameVersionSupport = true;
             }
         } else {
@@ -329,7 +328,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         switch (v.getId()) {
             case R.id.rl_gameMode:
-                if (!checkGameVersion()){
+                if (!checkGameVersion()) {
                     return;
                 }
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
@@ -339,7 +338,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_gameTime:
-                if (!checkGameVersion()){
+                if (!checkGameVersion()) {
                     return;
                 }
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
@@ -358,7 +357,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.rl_gamePackage:
-                if (!checkGameVersion()){
+                if (!checkGameVersion()) {
                     return;
                 }
                 changePackageItem();
@@ -381,8 +380,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    private boolean checkGameVersion(){
-        if (!isGameVersionSupport){
+    private boolean checkGameVersion() {
+        if (!isGameVersionSupport) {
             showNotification(3, "不支持当前的版本！", R.id.fl_root);
         }
         return isGameVersionSupport;
@@ -395,7 +394,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         getWorldInfo();
     }
 
-    private void showDownloadGame(){
+    private void showDownloadGame() {
         showAlert("", "", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,9 +410,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     @Override
                     public void onDownloadComplete(int i) {
                         File file = new File(dst);
-                        if (null != file && file.exists() && file.isFile()){
+                        if (null != file && file.exists() && file.isFile()) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+                            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
                             getActivity().startActivity(intent);
                         }
                     }
@@ -427,7 +426,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     public void onProgress(int i, long l, int i1) {
 
                     }
-                }) ;
+                });
                 downloadManager.add(request);
             }
         });

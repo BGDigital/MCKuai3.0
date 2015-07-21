@@ -3,6 +3,7 @@ package com.mckuai.imc;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -117,11 +118,12 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 mapManager.closeDB();
                 if (seed == true) {
                     downloadMap.remove(download);
+
                     adapter.setchuancan();
                 } else {
                     showNotification(1, "删除失败，请重新尝试", R.id.rot);
                 }
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.go_map:
                 intent = new Intent(MapdeleteActivity.this, MapimportActivity.class);
