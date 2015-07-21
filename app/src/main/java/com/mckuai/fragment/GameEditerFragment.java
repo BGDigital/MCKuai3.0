@@ -396,7 +396,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showDownloadGame(){
-        showAlert("", "", new View.OnClickListener() {
+        showAlert("警告", "暂时不支持你当前的游戏版本/可偿试升级麦块或者重新下载游戏。点击确定将重新下载我的世界0.10.5.确定下载吗？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -405,8 +405,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 ThinDownloadManager downloadManager = new ThinDownloadManager(1);
-                String url = "";
-                final String dst = "";
+                String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
+                final String dst = MCkuai.getInstance().getSDPath()+"/Download/我的世界.apk";
                 DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
                     @Override
                     public void onDownloadComplete(int i) {

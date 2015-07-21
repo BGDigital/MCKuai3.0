@@ -31,7 +31,7 @@
         android:id="@+id/iv_articleItem"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background ="@drawable/icon_mode_creat"
+        android:background ="@color/background_white"
         android:layout_above="@id/tv_count"
         android:layout_centerInParent="true"/>
     <ImageView

@@ -1,17 +1,23 @@
 package com.mckuai.adapter;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Filter;
 
 import com.mckuai.InventorySlot;
 import com.mckuai.ItemStack;
 import com.mckuai.entity.EntityItem;
 import com.mckuai.imc.R;
+import com.mckuai.material.Material;
+import com.mckuai.material.MaterialKey;
+import com.mckuai.material.icon.MaterialIcon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +25,14 @@ import java.util.List;
 /**
  * Created by kyly on 2015/6/25.
  */
-public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder> {
+public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.ViewHolder>  implements Filterable{
 
     private List<InventorySlot> inventorySlotArrayList;//这个是背包里的东西，最大数量为40
-    private ArrayList<EntityItem> itemList;//这个是所有的物品的列表,显示的就是它
+    private List<Material> itemList;//这个是所有的物品的列表,显示的就是它
     private OnItemClickedListener mListener;
     private int mSlotPosition;//这个是所选的物品的插槽id。-1：新添加物品且插槽已满，需要自己创建。其它情况为对应的插槽位置
+
+    private Filter mFilter;
 
     public interface  OnItemClickedListener{
         public void OnItemClicked(ItemStack item);
@@ -32,7 +40,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     public InventoryAdapter(){
         super();
-        itemList = EntityItem.getAllItem();
+        itemList = Material.materials;
     }
 
 
@@ -82,11 +90,11 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EntityItem entityItem = (EntityItem) holder.itemView.getTag();
-                mSlotPosition = getInventoryIndex(entityItem);
+                Material item= (Material) holder.itemView.getTag();
+                mSlotPosition = getInventoryIndex(item);
                 if (null != mListener) {
                     if (-1 == mSlotPosition) {
-                        mListener.OnItemClicked(new ItemStack(entityItem.getId(), (short) 255, 0));
+                        mListener.OnItemClicked(new ItemStack((short)item.getId(), (short) 255, 0));
                     } else {
                         mListener.OnItemClicked(inventorySlotArrayList.get(mSlotPosition).getContents());
                     }
@@ -98,8 +106,20 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        EntityItem item = itemList.get(position);
+        Material item = itemList.get(position);
         if (null != item){
+            MaterialIcon icon = MaterialIcon.icons.get(new MaterialKey((short)item.getId(),item.getDamage()));
+            if (null == icon){
+                icon = MaterialIcon.icons.get(new MaterialKey((short)item.getId(),(short)0));
+            }
+            if (null != icon){
+                BitmapDrawable drawable = new BitmapDrawable(icon.bitmap);
+                drawable.setDither(false);
+                drawable.setAntiAlias(true);
+                drawable.setFilterBitmap(false);
+                holder.iv_icon.setImageDrawable(drawable);
+                holder.iv_icon.setVisibility(View.VISIBLE);
+            }
             holder.itemView.setTag(item);
             holder.tv_name.setText(item.getName());
             int index = getInventoryIndex(item);
@@ -121,7 +141,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
      * @param item
      * @return
      */
-    private int getInventoryIndex(EntityItem item){
+    private int getInventoryIndex(Material item){
         if (item.getId() == 255){
             return -1;
         }
@@ -211,4 +231,21 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         return 0;
     }
 
+    @Override
+    public Filter getFilter() {
+        if (null == mFilter){
+            mFilter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    return null;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+
+                }
+            } ;
+        }
+        return mFilter;
+    }
 }
