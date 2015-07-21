@@ -87,7 +87,7 @@ public class DownloadService extends Service {
                     }
 
                     mMapManager.addDownloadMap(task.downloadMap);
-                    mMapManager.saveDB();
+                    //mMapManager.saveDB();
                     mDownloadTaskMap.remove(task);
                 }
             }

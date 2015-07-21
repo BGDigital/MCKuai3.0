@@ -1,16 +1,10 @@
 package com.mckuai.imc;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,13 +12,12 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.adapter.DeletemapAdtpter;
-import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
-import com.mckuai.bean.MapBean;
 import com.mckuai.until.MCMapManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class MapdeleteActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -36,7 +29,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private MCkuai application;
     private String mapType = null;
     private String orderFiled = null;
-    private MapBean mapList;
+//    private MapBean mapList;
     private Button map_imp, go_map, leave_map, btn_showOwner;
     private ArrayList<Map> list;
     private MCMapManager mapManager;
@@ -112,7 +105,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
-                files = new File(download);
+               /* files = new File(download);
                 files.delete();
                 boolean seed = mapManager.delDownloadMap(map.getResId());
                 mapManager.closeDB();
@@ -123,7 +116,8 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 } else {
                     showNotification(1, "删除失败，请重新尝试", R.id.rot);
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();*/
+                deleteMap();
                 break;
             case R.id.go_map:
                 intent = new Intent(MapdeleteActivity.this, MapimportActivity.class);
@@ -134,6 +128,43 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 startActivity(intent);
             default:
                 break;
+        }
+    }
+
+    private void deleteMap(){
+        if (null != selectedList && !selectedList.isEmpty() && null != downloadMap && !downloadMap.isEmpty()){
+           /* for (Integer position:selectedList){
+                if (position >= 0 && position < downloadMap.size()) {
+                    Map map = downloadMap.get(position);
+                    if (null != map) {
+                        if (mapManager.delDownloadMap(map.getResId())) {
+                            selectedList.remove(position);
+                            downloadMap.remove(map);
+                        }
+                    }
+                }
+            }*/
+            Iterator iterator = selectedList.iterator();
+            Integer position;
+            while (iterator.hasNext()){
+                position = (Integer) iterator.next();
+                if (position >= 0 && position < downloadMap.size()) {
+                    Map map = downloadMap.get(position);
+                    if (null != map) {
+                        if (mapManager.delDownloadMap(map.getResId())) {
+                            iterator.remove();
+                            downloadMap.remove(map);
+                        }
+                    }
+                }
+            }
+            if (!selectedList.isEmpty()){
+                showNotification(1, "部分地图删除失败，请稍候再试...", R.id.rot);
+            }
+            adapter.setchuancan(downloadMap);
+        }
+        else {
+            showNotification(1, "请先选择地图再删除", R.id.rot);
         }
     }
 

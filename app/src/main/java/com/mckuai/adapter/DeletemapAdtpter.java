@@ -16,6 +16,7 @@ import com.mckuai.imc.R;
 import com.mckuai.until.MCMapManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -108,8 +109,8 @@ public class DeletemapAdtpter extends BaseAdapter {
         public ImageView rbtn_delete;
     }
 
-    public void setchuancan() {
-        mMapBeans = mapManager.getDownloadMaps();
+    public void setchuancan(ArrayList<Map> maps) {
+        mMapBeans = maps;
         notifyDataSetChanged();
     }
 

@@ -58,7 +58,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private MapBean mapList;
     private PageInfo page;
     private LinearLayout l1, cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
-    //    private MapAdapter adapter;
     private RankAdapters mapadapters;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
@@ -244,7 +243,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                 map.setDownloadProgress(progress);
                                 long time = System.currentTimeMillis();
                                 if (time - lastUpdateTime > 500 || progress == 100 || progress == 1) {
-                                    mapadapters.notifyItemChanged(i);
+//                                    mapadapters.notifyItemChanged(i);
+                                    mapadapters.notifyDataSetChanged();
                                     lastUpdateTime = time;
                                 }
                             }
