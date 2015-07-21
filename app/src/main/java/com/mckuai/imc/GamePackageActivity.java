@@ -2,6 +2,8 @@ package com.mckuai.imc;
 
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -19,13 +21,17 @@ import com.mckuai.ItemStack;
 import com.mckuai.adapter.InventoryAdapter;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.entity.EntityItem;
+import com.mckuai.io.xml.MaterialIconLoader;
+import com.mckuai.io.xml.MaterialLoader;
+import com.mckuai.material.Material;
+import com.mckuai.material.icon.MaterialIcon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class GamePackageActivity extends BaseActivity implements View.OnClickListener,InventoryAdapter.OnItemClickedListener {
+public class GamePackageActivity extends BaseActivity implements View.OnClickListener,InventoryAdapter.OnItemClickedListener,TextWatcher {
 
     private UltimateRecyclerView itemListView;
     private SeekBar sb_itemCountPeeker;
@@ -48,6 +54,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.activity_game_package);
         world = MCkuai.getInstance().world;
         setTitle("游戏背包管理");
+        new MaterialLoader(getResources().getXml(R.xml.item_data)).run();
+        new MaterialIconLoader(this).run();
     }
 
     @Override
@@ -169,4 +177,22 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        adapter.getFilter().filter(s);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    private List<Material> getMaterials(){
+        return Material.materials;
+    }
 }
