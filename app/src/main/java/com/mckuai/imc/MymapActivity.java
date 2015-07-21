@@ -99,7 +99,8 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         Intent intent;
         switch (v.getId()) {
             case R.id.btn_left:
-                finish();
+                setResult(RESULT_OK);
+                this.finish();
                 break;
             case R.id.go_map:
                 intent = new Intent(this, MapimportActivity.class);

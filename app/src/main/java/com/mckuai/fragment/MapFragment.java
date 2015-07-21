@@ -191,7 +191,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         urv_mapList.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int i, int i1) {
-                if (!page.EOF()) {
+                if (page == null || !page.EOF()) {
                     loadData();
                 }
             }
@@ -267,11 +267,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     showleftbutton = false;
                     MainActivity.setLeftButtonView(false);
                     map_ed.setVisibility(View.GONE);
-                    mapadapters = new RankAdapters(getActivity());
-                    mapadapters.setData(mapList.getData());
+//                    mapadapters = new RankAdapters(getActivity());
+//                    mapadapters.setData(mapList.getData());
                     mapadapters.setpaihang(false);
-                    urv_mapList.setAdapter(mapadapters);
-                    mapadapters.setOnItemClickListener(MapFragment.this);
+//                    urv_mapList.setAdapter(mapadapters);
+//                    mapadapters.setOnItemClickListener(MapFragment.this);
                     tit.setText("地图");
                     searchContext = null;
                     loadData();
@@ -297,13 +297,14 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图排行");
                 showleftbutton = true;
                 MainActivity.setLeftButtonView(true);
-                mapadapters = new RankAdapters(getActivity());
-                mapadapters.setData(mapList.getData());
+//                mapadapters = new RankAdapters(getActivity());
+//                mapadapters.setData(mapList.getData());
                 mapadapters.setpaihang(true);
-                urv_mapList.setAdapter(mapadapters);
-                mapadapters.setOnItemClickListener(this);
+//                urv_mapList.setAdapter(mapadapters);
+//                mapadapters.setOnItemClickListener(this);
                 mapType = null;
                 mapList.getPageBean().setPage(0);
+                page = null;
                 loadData();
                 break;
             case R.id.rb_classification:
