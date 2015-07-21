@@ -46,7 +46,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private String download;
     private Map map;
     private String downloadDir;
-
+    private ArrayList<Integer> selectedList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,11 +139,18 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        view.setBackgroundResource(R.drawable.btn_cooper_checked);
-        ImageView image;
-        map = (Map) adapter.getItem(position);
-        image = (ImageView) view.findViewById(R.id.rbtn_delete);
-        image.setBackgroundResource(R.drawable.btn_map_detele_checked);
-        download = downloadDir + map.getFileName();
+        if (adapter.getItemViewType(position) == 1) {
+            for (Integer xuanzhong : selectedList) {
+                if (xuanzhong == position) {
+                    selectedList.remove(xuanzhong);
+                }
+            }
+        } else {
+            if (selectedList == null) {
+                selectedList = new ArrayList<>();
+            }
+            selectedList.add(position);
+        }
+        adapter.setSelectedList(selectedList);
     }
 }

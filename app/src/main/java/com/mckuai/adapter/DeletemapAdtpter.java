@@ -29,6 +29,8 @@ public class DeletemapAdtpter extends BaseAdapter {
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
     private Map map;
+    private ArrayList<Integer> selectedList;
+
 
     public DeletemapAdtpter(Context context, ArrayList<Map> mapBeans) {
         mapManager = MCkuai.getInstance().getMapManager();
@@ -68,6 +70,7 @@ public class DeletemapAdtpter extends BaseAdapter {
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.rbtn_delete = (ImageView) convertView.findViewById(R.id.rbtn_delete);
+
 //            holder.rbtn_delete.setBackgroundResource(R.drawable.btn_cooper_normal);
 //            holder.rbtn_delete.setTag(position);
 //            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +91,11 @@ public class DeletemapAdtpter extends BaseAdapter {
         String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
         leixing = leixing.replace("|", " ");
         holder.tv_category.setText(leixing);
+        if (getItemViewType(position) == 1) {
+            holder.rbtn_delete.setImageResource(R.drawable.btn_map_detele_checked);
+        }else {
+            holder.rbtn_delete.setImageResource(R.drawable.btn_map_detele_normal);
+        }
         return convertView;
     }
 
@@ -105,4 +113,26 @@ public class DeletemapAdtpter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (selectedList == null || selectedList.isEmpty()) {
+            return 0;
+        }
+        for (Integer curposition : selectedList) {
+            if (curposition == position) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    public void setSelectedList(ArrayList<Integer> selectedList) {
+        this.selectedList = selectedList;
+        notifyDataSetChanged();
+    }
 }

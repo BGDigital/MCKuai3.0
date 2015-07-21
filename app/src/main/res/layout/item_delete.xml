@@ -18,7 +18,6 @@
         android:layout_height="@dimen/xz_wh"
         android:layout_alignParentRight="true"
         android:background="@drawable/btn_map_detele_normal"
-        android:clickable="true"
         android:gravity="center_horizontal" />
 
     <TextView
