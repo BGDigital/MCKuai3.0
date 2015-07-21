@@ -8,14 +8,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.mckuai.InventorySlot;
 import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.until.CircleBitmapDisplayer;
 import com.mckuai.until.JsonCache;
-import com.mckuai.until.MCDTListener;
 import com.mckuai.until.MCMapManager;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -26,13 +24,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.tencent.tauth.Tencent;
-import com.thin.downloadmanager.DownloadStatusListener;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by kyly on 2015/6/23.
@@ -66,7 +61,6 @@ public class MCkuai  extends Application{
     private static final int TIME_OUT = 30 * 1000;// 超时时间
     private static final int IMAGE_POOL_SIZE = 3;// 线程池数量
 
-    private HashMap<String,MCDTListener> downloadTask;
 
 
     @Override
@@ -275,28 +269,6 @@ public class MCkuai  extends Application{
     public void setBtn_publish(ImageView btn_publish) {
         this.btn_publish = btn_publish;
     }
-
-    public HashMap<String,MCDTListener> getDownloadTask(){
-        if (null == downloadTask){
-            downloadTask = new HashMap<>();
-        }
-        return  downloadTask;
-    }
-
-    public void addDownloadTask(String resId,MCDTListener listener){
-        if (null == downloadTask){
-            downloadTask = new HashMap<>();
-        }
-        downloadTask.put(resId,listener);
-    }
-
-    public MCDTListener getDownloadTask(String resId){
-        if (null != downloadTask){
-            return  downloadTask.get(resId);
-        }
-        else  return null;
-    }
-
 
 
     public MCMapManager getMapManager() {
