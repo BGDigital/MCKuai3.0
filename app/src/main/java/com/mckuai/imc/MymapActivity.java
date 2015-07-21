@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
+import com.mckuai.fragment.MapFragment;
 import com.mckuai.until.MCMapManager;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
     private MCMapManager mapManager;
     private MymapAdapter adapter;
     ArrayList<Map> downloadMap;
+    private Map map;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -56,10 +58,22 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         downloadMap = mapManager.getDownloadMaps();
         if (downloadMap == null) {
             showNotification(1, "请下载地图", R.id.mymaprot);
-        } else {
+        }
+//        else {
+//            for (int i = 0; i < downloadMap.size(); i++) {
+//                if (downloadMap.get(i).getIsSelected()) {
+//                    String zipname = downloadMap.get(i).getSavePath();
+//                    zipname = zipname.substring(map.getSavePath().lastIndexOf(".") + 1, map.getSavePath().length());
+//                    if (!zipname.equalsIgnoreCase("zip")) {
+//                        showNotification(1, "请下载地图", R.id.mymaprot);
+//                    }
+//                }
+        else {
             adapter = new MymapAdapter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);
         }
+//            }
+//        }
     }
 
     private void initView() {
@@ -85,9 +99,9 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         Intent intent;
         switch (v.getId()) {
             case R.id.btn_left:
-                finish();
+                setResult(RESULT_OK);
+                this.finish();
                 break;
-
             case R.id.go_map:
                 intent = new Intent(this, MapimportActivity.class);
                 startActivity(intent);

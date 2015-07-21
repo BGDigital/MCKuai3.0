@@ -110,15 +110,25 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-       switch (maps.get(position).getDownloadProgress()){
-           case 0:
-               return 0;
-           case 100:
-               return 2;
-           default:
-               return 1;
-       }
-
+        if (isPaihang) {
+            switch (maps.get(position).getDownloadProgress()) {
+                case 0:
+                    return 0;
+                case 100:
+                    return 2;
+                default:
+                    return 1;
+            }
+        }else {
+            switch (maps.get(position).getDownloadProgress()){
+                case 0:
+                    return 3;
+                case 100:
+                    return 5;
+                default:
+                    return 4;
+            }
+        }
     }
 
     @Override
@@ -164,9 +174,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             }
             holder.btn_download.setTag(position);
             holder.itemView.setTag(position);
-            Log.e("name", "" + map.getViewName());
-            Log.e("num",""+position);
-            Log.e("progress",""+map.getDownloadProgress());
+//            Log.e("name", "" + map.getViewName());
+//            Log.e("num",""+position);
+//            Log.e("progress",""+map.getDownloadProgress());
         }
 
     }

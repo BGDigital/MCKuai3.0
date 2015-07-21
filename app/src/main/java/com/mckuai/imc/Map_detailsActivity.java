@@ -149,7 +149,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 public void onProgress(String resId, int progress) {
                     if (resId.equals(map.getResId())) {
                         dl.updateProgress(progress);
-                        if (100 == progress){
+                        if (100 == progress) {
                             downloadstate = 2;
                             dl.setText("导入");
                             unregisterReceiver(recevier);
@@ -158,8 +158,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
             };
-            IntentFilter filter=new IntentFilter("com.mckuai.imc.downloadprogress");
-            registerReceiver(recevier,filter);
+            IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
+            registerReceiver(recevier, filter);
         }
     }
 
@@ -181,8 +181,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 dl.setText("导入");
                 break;
             case 1:
+                dl.setText("正在下载");
                 handler.sendMessage(handler.obtainMessage(0));
-
                 break;
             case 0:
                 dl.setText("下载" + "   " + map.getResSize() + "KB");
@@ -313,9 +313,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     case 0:
                         Intent intent = new Intent("com.mckuai.downloadservice");
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("MAP",map);
+                        bundle.putSerializable("MAP", map);
                         intent.putExtras(bundle);
                         startService(intent);
+                        dl.setText("正在下载");
                         break;
                     case 2:
                         MCMapManager mapManager = MCkuai.getInstance().getMapManager();

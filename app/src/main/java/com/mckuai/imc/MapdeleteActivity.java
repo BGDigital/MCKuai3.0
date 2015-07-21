@@ -3,6 +3,7 @@ package com.mckuai.imc;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +46,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private String download;
     private Map map;
     private String downloadDir;
-
+    private ArrayList<Integer> selectedList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,11 +118,12 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 mapManager.closeDB();
                 if (seed == true) {
                     downloadMap.remove(download);
+
                     adapter.setchuancan();
                 } else {
                     showNotification(1, "删除失败，请重新尝试", R.id.rot);
                 }
-//                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.go_map:
                 intent = new Intent(MapdeleteActivity.this, MapimportActivity.class);
@@ -137,11 +139,18 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        view.setBackgroundResource(R.drawable.btn_cooper_checked);
-        ImageView image;
-        map = (Map) adapter.getItem(position);
-        image = (ImageView) view.findViewById(R.id.rbtn_delete);
-        image.setBackgroundResource(R.drawable.btn_map_detele_checked);
-        download = downloadDir + map.getFileName();
+        if (adapter.getItemViewType(position) == 1) {
+            for (Integer xuanzhong : selectedList) {
+                if (xuanzhong == position) {
+                    selectedList.remove(xuanzhong);
+                }
+            }
+        } else {
+            if (selectedList == null) {
+                selectedList = new ArrayList<>();
+            }
+            selectedList.add(position);
+        }
+        adapter.setSelectedList(selectedList);
     }
 }
