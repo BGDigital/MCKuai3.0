@@ -1,6 +1,7 @@
 package com.mckuai.adapter;
 
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Filter;
 
 import com.mckuai.InventorySlot;
 import com.mckuai.ItemStack;
-import com.mckuai.entity.EntityItem;
 import com.mckuai.imc.R;
 import com.mckuai.material.Material;
 import com.mckuai.material.MaterialKey;
@@ -35,7 +34,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
     private Filter mFilter;
 
     public interface  OnItemClickedListener{
-        public void OnItemClicked(ItemStack item);
+        public void OnItemClicked(ItemStack item,Material material,Drawable icon);
     }
 
     public InventoryAdapter(){
@@ -90,13 +89,13 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Material item= (Material) holder.itemView.getTag();
-                mSlotPosition = getInventoryIndex(item);
+                Material material= (Material) holder.itemView.getTag();
+                mSlotPosition = getInventoryIndex(material);
                 if (null != mListener) {
                     if (-1 == mSlotPosition) {
-                        mListener.OnItemClicked(new ItemStack((short)item.getId(), (short) 255, 0));
+                        mListener.OnItemClicked(new ItemStack((short)material.getId(), (short) 255, 0),material,holder.iv_icon.getDrawable());
                     } else {
-                        mListener.OnItemClicked(inventorySlotArrayList.get(mSlotPosition).getContents());
+                        mListener.OnItemClicked(inventorySlotArrayList.get(mSlotPosition).getContents(),material,holder.iv_icon.getDrawable());
                     }
                 }
             }
@@ -119,6 +118,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 drawable.setFilterBitmap(false);
                 holder.iv_icon.setImageDrawable(drawable);
                 holder.iv_icon.setVisibility(View.VISIBLE);
+                holder.iv_icon.setTag(drawable);
             }
             holder.itemView.setTag(item);
             holder.tv_name.setText(item.getName());
