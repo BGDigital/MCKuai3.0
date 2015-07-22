@@ -14,6 +14,7 @@ import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.MCMapManager;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.lang.reflect.Array;
@@ -27,10 +28,12 @@ public class DeletemapAdtpter extends BaseAdapter {
     private MCMapManager mapManager;
     private View view;
     private LayoutInflater mInflater;
+    private ImageLoader loader;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private ImageLoader mLoader;
     private Map map;
     private ArrayList<Integer> selectedList;
+    private DisplayImageOptions options = MCkuai.getInstance().getNormalOption();
 
 
     public DeletemapAdtpter(Context context, ArrayList<Map> mapBeans) {
@@ -92,6 +95,13 @@ public class DeletemapAdtpter extends BaseAdapter {
         String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
         leixing = leixing.replace("|", " ");
         holder.tv_category.setText(leixing);
+        if (null == loader) {
+            loader = ImageLoader.getInstance();
+        }
+        if (null != map.getIcon() && map.getIcon().length() > 10) {
+            loader.displayImage(map.getIcon(), holder.image, options);
+            holder.image.setTag(map.getIcon());
+        }
         if (getItemViewType(position) == 1) {
             holder.rbtn_delete.setImageResource(R.drawable.btn_map_detele_checked);
         } else {
