@@ -186,7 +186,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 handler.sendMessage(handler.obtainMessage(0));
                 break;
             case 0:
-                dl.setText("下载" + "   " + map.getResSize() + "KB");
+                dl.setText("下载" + "   " + (Long.parseLong(map.getResSize()) / 1024) + "KB");
                 break;
             default:
                 break;

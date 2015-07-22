@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -532,6 +533,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
         page = null;
+        searchContext = null;
 //        mapadapters.setpaihang(false);
         loadData();
     }
@@ -542,6 +544,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
         page = null;
+        searchContext = null;
 //        mapadapters.setpaihang(false);
         loadData();
     }
@@ -552,6 +555,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
         page = null;
+        searchContext = null;
 //        mapadapters.setpaihang(false);
         loadData();
     }
@@ -562,6 +566,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
         page = null;
+        searchContext = null;
 //        mapadapters.setpaihang(false);
         loadData();
     }
@@ -572,6 +577,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
         page = null;
+        searchContext = null;
 //        mapadapters.setpaihang(false);
         loadData();
     }

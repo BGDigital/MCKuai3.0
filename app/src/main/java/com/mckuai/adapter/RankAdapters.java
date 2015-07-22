@@ -166,7 +166,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
             leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
-            holder.tv_size.setText(map.getResSize() + "KB");
+            holder.tv_size.setText((Long.parseLong(map.getResSize()) / 1024) + "KB");
             holder.tv_time.setText(map.getInsertTime());
             if (isPaihang) {
                 holder.rk_tv.setVisibility(View.VISIBLE);
