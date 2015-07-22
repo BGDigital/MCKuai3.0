@@ -181,10 +181,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
             }
         });
-
-
-
-
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
     }
@@ -273,6 +269,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                         isCacheEnabled = false;
                     }
                 } else {
+                    cancleLodingToast(false);
                     showNotification(3, result.msg,R.id.rl_serverList_Root);
                 }
             }
@@ -340,17 +337,12 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
         switch (v.getId()){
             case R.id.ll_serverType:
-                    if (null == serverType){
-                        if (rl_serverTypeLayout.getVisibility() == View.GONE) {
-                            showServerType();
-                        }
-                        else {
-                            rl_serverTypeLayout.setVisibility(View.GONE);
-                        }
-                    }
-                    else {
-                        serverType = null;
-                    }
+                if (rl_serverTypeLayout.getVisibility() == View.GONE){
+                    showServerType();
+                }
+                else {
+                    hideServerType();
+                }
                 break;
             case R.id.ll_serverRank:
                 isOrderByDownload = !isOrderByDownload;
