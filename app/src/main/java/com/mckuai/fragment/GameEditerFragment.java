@@ -405,8 +405,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 ThinDownloadManager downloadManager = new ThinDownloadManager(1);
-                String url = "";
-                final String dst = "";
+                String url = "http://softdown.mckuai.com:8081/wodeshijie_v_10_5.apk";
+                final String dst = MCkuai.getInstance().getMapDownloadDir()+"wodeshijie_v_10_5.apk";
                 DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
                     @Override
                     public void onDownloadComplete(int i) {

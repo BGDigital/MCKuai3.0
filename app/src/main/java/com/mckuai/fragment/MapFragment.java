@@ -175,8 +175,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         rb_map = (Button) view.findViewById(R.id.rb_map);
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
-//        map_ls = (ListView) view.findViewById(R.id.map_ls);
-//        map_ls.setOnItemClickListener(this);
         urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         urv_mapList.setLayoutManager(manager);
