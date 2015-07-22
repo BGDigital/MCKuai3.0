@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class MCMapManager {
 
-    private static  final  String TAG = "MCMapManager";
+    private static final String TAG = "MCMapManager";
 
     private ArrayList<String> index;                             //这是所有的下载的地图的resid
     private ArrayList<Map> downloadMaps;                //已经下载了的
@@ -32,27 +32,19 @@ public class MCMapManager {
     private boolean isDBOpened = false;
     private String saveDir; //下载路径
     private String worldRoot;
-    private Gson gson ;
-    private final  String mapIndex = "MAP_INDEX";
-    private final  String mapDownloaded = "DOWNLOAD_MAP";
+    private Gson gson;
+    private final String mapIndex = "MAP_INDEX";
+    private final String mapDownloaded = "DOWNLOAD_MAP";
 
 
-    public MCMapManager(){
+    public MCMapManager() {
         gson = new Gson();
         saveDir = MCkuai.getInstance().getMapDownloadDir();
-        worldRoot = MCkuai.getInstance().getGameProfileDir()+"minecraftWorlds/";
+        worldRoot = MCkuai.getInstance().getGameProfileDir() + "minecraftWorlds/";
         initDB();
-       /* File  file = new File(MCkuai.getInstance().getSDPath(),"games/com.mojang/minecraftWorlds");
-        worldItemList = new ArrayList<>();
-        if (file.exists()){
-            File[] fileList = file.listFiles();
-            for (File curFile:fileList){
-                worldItemList.add(new WorldItem(curFile));
-            }
-        }*/
     }
 
-    public void addDownloadMap(Map map){
+    public void addDownloadMap(Map map) {
         if (null != index && !index.isEmpty()) {
             for (String resId : index) {
                 if (resId.equalsIgnoreCase(map.getResId())) {
@@ -60,20 +52,20 @@ public class MCMapManager {
                     return;
                 }
             }
-        }else {
+        } else {
             index = new ArrayList<>();
         }
         index.add(map.getResId());
 
-        if (null == downloadMaps){
+        if (null == downloadMaps) {
             downloadMaps = new ArrayList<>();
         }
         downloadMaps.add(map);
         saveDB();
     }
 
-    public boolean delDownloadMap(String mapId){
-        if (null == mapId || null == index || index.isEmpty()){
+    public boolean delDownloadMap(String mapId) {
+        if (null == mapId || null == index || index.isEmpty()) {
             return false;
         }
         if (openDB()) {
@@ -99,16 +91,15 @@ public class MCMapManager {
     }
 
 
-
-    public ArrayList<Map> getDownloadMaps(){
-        if (null != downloadMaps){
+    public ArrayList<Map> getDownloadMaps() {
+        if (null != downloadMaps) {
             return downloadMaps;
         }
 
-        if (null == index){
-            if (!getIndex()){
+        if (null == index) {
+            if (!getIndex()) {
                 Log.e(TAG, "no map be downloaded!");
-                return  null;
+                return null;
             }
         }
 
@@ -133,8 +124,8 @@ public class MCMapManager {
         return null;
     }
 
-    public boolean saveDB(){
-        if (null == downloadMaps || downloadMaps.isEmpty() || null == index || index.isEmpty()){
+    public boolean saveDB() {
+        if (null == downloadMaps || downloadMaps.isEmpty() || null == index || index.isEmpty()) {
             return false;
         }
 
@@ -158,7 +149,7 @@ public class MCMapManager {
         return false;
     }
 
-    public boolean closeDB(){
+    public boolean closeDB() {
         if (isDBOpened && null != db) {
             try {
                 db.close();
@@ -173,150 +164,105 @@ public class MCMapManager {
 
     /**
      * 从游戏存档目录获取所有的地图名称
+     *
      * @return
      */
-    public ArrayList<String> getCurrentMapDirList(){
-       //已经有地图
-        if (null != worldItemList){
+    public ArrayList<String> getCurrentMapDirList() {
+        //已经有地图
+        if (null != worldItemList) {
             ArrayList<String> dirs = new ArrayList<>(worldItemList.size());
-            for (WorldItem item:worldItemList){
+            for (WorldItem item : worldItemList) {
                 dirs.add(item.getFolder().toString());
             }
-            return  dirs;
+            return dirs;
         }
         //还未取出地图
         worldItemList = new ArrayList<>();
         File[] files = new File(worldRoot).listFiles();
-        if (null == files || 0 == files.length){
-            return  null;
+        if (null == files || 0 == files.length) {
+            return null;
         }
 
         ArrayList<String> dirs = new ArrayList<>();
-        for (File file:files){
+        for (File file : files) {
             WorldItem item = new WorldItem(file);
             worldItemList.add(item);
         }
         files = null;
-        return  dirs;
+        return dirs;
     }
-
-/*    private long getLastPlayTime(String path){
-        path = path + "/level.dat";
-        File file = new File(path);
-        long time = file.lastModified();
-        file = null;
-        return time;
-    }*/
-
- /*   private void insertNewGameMap(WorldItem world){
-        for (int i = 0; i < worldItemList.size();i++){
-            if (worldItemList.get(i).lastPlayTime > world.lastPlayTime){
-                worldItemList.add(i,world);
-                return;
-            }
-        }
-        worldItemList.add(world);
-    }*/
-
-    /**
-     * 获取当前正在使用的地图目录
-     * 从游戏存档目录中获取最近被修改过的地图,均获取不到则返回空
-     * @return
-     */
- /*   public String getCurrentMapDir(){
-
-        if (null == worldItemList){
-            getCurrentMapDirList();
-        }
-        if (null != worldItemList && !worldItemList.isEmpty()){
-            return  worldItemList.get(0).folder.toString();
-        }
-        else {
-            return  null;
-        }
-    }*/
-
-    /**
-     * 获取当前的游戏地图的名称
-     * 从当前正在使用的游戏存档中获取
-     * @return
-     */
-    /*public String getCurrentMapName(){
-        if (null == worldItemList){
-            getCurrentMapDirList();
-        }
-
-        if (null != worldItemList && !worldItemList.isEmpty()){
-            return  worldItemList.get(0).getName();
-        }
-        else {
-            return null;
-        }
-
-    }*/
 
     /**
      * 获取指定目录下的level.dat文件中读取地图名称
+     *
      * @param mapdir
      * @return
      */
-    public String getMapName(String mapdir){
-        return  MCGameEditer.getWorldName(mapdir);
+    public String getMapName(String mapdir) {
+        return MCGameEditer.getWorldName(mapdir);
     }
 
 
-
-    public void importMap(String mapFileName){
+    public boolean importMap(String mapFileName) {
         File src = new File(mapFileName);
         File dst = new File(worldRoot);
-        if (!dst.exists()){
-            Log.e(TAG,"目标目录不存在，可能是游戏未安装");
-            return;
+        if (!dst.exists() || null == src || !src.exists() || !src.isFile()) {
+            Log.e(TAG, "目标目录不存在或要解压的文件不存在，可能是游戏未安装");
+            return false;
         }
-
-        if (src.exists()){
+        try {
             ZipUtil.unpack(src, dst);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "解压地图时失败，原因：" + e.getLocalizedMessage());
+            return false;
         }
     }
 
     /**
      * 导出地图
      *
-     * @param mapName 要导出的地图名称
+     * @param mapName    要导出的地图名称
      * @param dstFileDir 导出到的目录
      */
-    public void exportMap(String mapName,String dstFileDir){
-        File src = new File(worldRoot,mapName);
-        File dst = new File(dstFileDir,mapName +".zip");
-        Log.e(TAG, "源路径：" + src.getPath());
-        Log.e(TAG, "目标路径：" + dst.getPath());
+    public boolean exportMap(String mapName, String dstFileDir) {
+        File src = new File(worldRoot, mapName);
+        File dst = new File(dstFileDir, mapName + ".zip");
 
-        if (src.exists() && src.isDirectory()){
-            if (dst.exists()){
+        if (src.exists() && src.isDirectory()) {
+            if (dst.exists()) {
                 dst.delete();
             }
-            ZipUtil.pack(src,dst);
-        }
-        else {
+            try {
+                ZipUtil.pack(src, dst);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(TAG, "解压文件时出错，原因：" + e.getLocalizedMessage());
+                return false;
+            }
+        } else {
             Log.e(TAG, "导出地图失败，指定的地图不存在！");
+            return false;
         }
     }
 
-    private void initDB(){
+    private void initDB() {
         Log.w("initDB", "file:" + saveDir);
         File file = new File(saveDir);
-        if (!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
         db = new DB(file);
         db.open();
-        isDBOpened =true;
+        isDBOpened = true;
 
         getIndex();
         getDownloadMaps();
     }
 
-    private boolean deleteMapfromDb(String mapid){
+    private boolean deleteMapfromDb(String mapid) {
         if (openDB()) {
             byte data[] = db.get(mapid.getBytes());
             if (null == data) {
@@ -331,20 +277,20 @@ public class MCMapManager {
         return false;
     }
 
-    private boolean deleteMapfromDisk(Map map){
-        File file = new File(MCkuai.getInstance().getMapDownloadDir(),map.getFileName());
-        if (null != file && file.exists() && file.isFile()){
-            return  file.delete();
+    private boolean deleteMapfromDisk(Map map) {
+        File file = new File(MCkuai.getInstance().getMapDownloadDir(), map.getFileName());
+        if (null != file && file.exists() && file.isFile()) {
+            return file.delete();
         }
-        return  false;
+        return false;
     }
 
-    private boolean openDB(){
-        if (!isDBOpened && null != db){
-            try{
+    private boolean openDB() {
+        if (!isDBOpened && null != db) {
+            try {
                 db.open();
                 isDBOpened = true;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 isDBOpened = false;
             }
@@ -352,7 +298,7 @@ public class MCMapManager {
         return isDBOpened;
     }
 
-    private boolean getIndex(){
+    private boolean getIndex() {
         if (openDB()) {
             index = new ArrayList<>();
             byte data[] = db.get(mapIndex.getBytes());
