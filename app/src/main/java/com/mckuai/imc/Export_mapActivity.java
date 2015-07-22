@@ -26,7 +26,7 @@ import com.mckuai.until.MCMapManager;
 import java.util.ArrayList;
 
 
-public class Export_mapActivity extends BaseActivity implements View.OnClickListener ,AdapterView.OnItemClickListener{
+public class Export_mapActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
@@ -34,7 +34,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private ExportAdapter adapter;
     private MCMapManager mapManager;
     ArrayList<String> downloadMap;
-
+    private ArrayList<Integer> selectedList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +110,18 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+//        if (adapter.getItemViewType(position) == 1) {
+//            for (Integer xuanzhong : selectedList) {
+//                if (xuanzhong == position) {
+//                    selectedList.remove(xuanzhong);
+//                }
+//            }
+//        } else {
+//            if (selectedList == null) {
+//                selectedList = new ArrayList<>();
+//            }
+//            selectedList.add(position);
+//        }
+//        adapter.setSelectedList(selectedList);
     }
 }

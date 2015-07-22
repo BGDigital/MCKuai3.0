@@ -94,7 +94,7 @@ public class ExportAdapter extends BaseAdapter {
         String mapName = "未知地图";
         if (null != world.getLevel()) {
             Date currentTime = new Date(world.getLevel().getLastPlayed() * 1000);
-            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd");//你需要的时间格式
+            SimpleDateFormat formatter = new SimpleDateFormat("MM月dd日");//你需要的时间格式
             dateString = formatter.format(currentTime);//得到字符串类型的时间
             mapName = world.getLevel().getLevelName();
         }
@@ -121,5 +121,27 @@ public class ExportAdapter extends BaseAdapter {
 
     public ArrayList<WorldInfo> chuancan() {
         return worlds;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        if (selectedList == null || selectedList.isEmpty()) {
+            return 0;
+        }
+        for (Integer curposition : selectedList) {
+            if (curposition == position) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    public void setSelectedList(ArrayList<Integer> selectedList) {
+        this.selectedList = selectedList;
+        notifyDataSetChanged();
     }
 }
