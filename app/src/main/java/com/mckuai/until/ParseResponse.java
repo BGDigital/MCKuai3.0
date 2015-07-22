@@ -34,6 +34,10 @@ public class ParseResponse {
         try {
             if (response.getString("state").equalsIgnoreCase("ok")){
                 result.data = response.getString("dataObject");
+                if (result.data == null || result.data.length() < 10) {
+                    result.isSuccess = false;
+                    result.msg = "服务端返回数据不正确";
+                }
                 result.isSuccess = true;
             }
             else{
