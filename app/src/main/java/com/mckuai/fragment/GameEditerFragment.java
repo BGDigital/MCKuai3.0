@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mckuai.InventorySlot;
 import com.mckuai.Level;
@@ -62,9 +63,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private int inventoryTypeCount;         //背包中物品种类数
     private int curWorldIndex;//当前显示的世界的索引
     private Integer[] res_Map = {R.drawable.background_map_0,R.drawable.background_map_1,R.drawable.background_map_2,R.drawable.background_map_3,R.drawable.background_map_4,R.drawable.background_map_5,R.drawable.background_map_6,R.drawable.background_map_7,R.drawable.background_map_8,R.drawable.background_map_9};
+    private int res_Map_index = 0;
 
 
-    private boolean isShowGameRunning = false;
+    private boolean isShowVersionWarning = false;
     private boolean isGameInstalled = true;
     private boolean isGameRunning = false;
     private boolean isGameVersionSupport = false;
@@ -78,7 +80,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        detectionGameInfo();
     }
 
     @Override
@@ -88,6 +89,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_game_editer, container, false);
         }
+        detectionGameInfo();
         return view;
     }
 
@@ -142,6 +144,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
         this.worldInfos = worldList;
         this.thirdPerson = isThirdViewEnable;
+        res_Map_index = (int) (Math.random() *10);
 
         if (!worldList.isEmpty()) {
             curWorldIndex = 0;
@@ -210,8 +213,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             tv_packageItemCount.setText("没有物品");
         }
         //背影
-        int background = (int) (Math.random() *10);
-        iv_map.setBackgroundResource(res_Map[background]);
+        iv_map.setBackgroundResource(res_Map[res_Map_index]);
     }
 
     private void switchGameMode() {
@@ -382,8 +384,14 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private boolean checkGameVersion(){
-        if (!isGameVersionSupport){
-            showNotification(3, "不支持当前的版本！", R.id.fl_root);
+        if (!isGameVersionSupport &&!isShowVersionWarning){
+            //showNotification(3, "暂不支持修改此版本，请下载游戏！", R.id.fl_root);
+            showAlert("提示", "暂时不支持此版本的游戏，请重新下载游戏。", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isShowVersionWarning = true;
+                }
+            },null);
         }
         return isGameVersionSupport;
     }
@@ -392,11 +400,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         lv_mapList.setVisibility(View.GONE);
         curWorldIndex = (int) id;
+        res_Map_index = (int) (Math.random() *10);
         getWorldInfo();
     }
 
     private void showDownloadGame(){
-        showAlert("警告", "暂时不支持你当前的游戏版本/可偿试升级麦块或者重新下载游戏。点击确定将重新下载我的世界0.10.5.确定下载吗？", new View.OnClickListener() {
+        showAlert("提示", "为了更好的体验游戏，请下载《我的世界0.10.5》\n是否立即下载游戏？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -405,8 +414,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 ThinDownloadManager downloadManager = new ThinDownloadManager(1);
-                String url = "http://softdown.mckuai.com:8081/wodeshijie_v_10_5.apk";
-                final String dst = MCkuai.getInstance().getMapDownloadDir()+"wodeshijie_v_10_5.apk";
+                String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
+                final String dst = MCkuai.getInstance().getMapDownloadDir()+"wodeshijie_v_0_10_5.apk";
                 DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
                     @Override
                     public void onDownloadComplete(int i) {
@@ -420,7 +429,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onDownloadFailed(int i, int i1, String s) {
-
+                        Toast.makeText(getActivity(),"下载失败，原因："+s,Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -431,5 +440,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 downloadManager.add(request);
             }
         });
+    }
+
+    private void showNotification(int progress){
+
     }
 }
