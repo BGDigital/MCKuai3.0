@@ -24,20 +24,11 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView map_mymap_lv;
-    private AsyncHttpClient client;
-    private Gson mGson = new Gson();
-    private MCkuai application;
-    private String mapType = null;
-    private String orderFiled = null;
-//    private MapBean mapList;
     private Button map_imp, go_map, leave_map, btn_showOwner;
     private ArrayList<Map> list;
     private MCMapManager mapManager;
     ArrayList<Map> downloadMap;
     private DeletemapAdtpter adapter;
-    private File files;
-    private String download;
-    private Map map;
     private String downloadDir;
     private ArrayList<Integer> selectedList;
 
