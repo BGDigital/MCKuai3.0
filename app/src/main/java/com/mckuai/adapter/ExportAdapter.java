@@ -28,6 +28,7 @@ public class ExportAdapter extends BaseAdapter {
     private ArrayList<Map> mMapBeans;
     private ImageLoader mLoader;
     private ArrayList<WorldInfo> worlds;
+    private ArrayList<Integer> selectedList;
 
     public ExportAdapter(Context context, ArrayList<WorldInfo> mapBeans) {
         worlds = MCGameEditer.getAllWorldLite();
@@ -79,6 +80,11 @@ public class ExportAdapter extends BaseAdapter {
                     worlds.get(index).setIsSelected(true);
                 }
             });
+            if (getItemViewType(position) == 1) {
+                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_checked);
+            } else {
+                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_normal);
+            }
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -94,7 +100,12 @@ public class ExportAdapter extends BaseAdapter {
         }
         holder.tv_time.setText("更新时间：" + dateString);
         holder.tv_name.setText(mapName);
-        holder.tv_size.setText((world.getSize() / 1024) + "KB");
+        Long size = world.getSize()/1024;
+        if (size<1024){
+            holder.tv_size.setText(size + "KB");
+        }else {
+            holder.tv_size.setText((size/1024)+"MB");
+        }
 //        holder.tv_category.setText(map.getResCategroyTwo());
         return convertView;
     }
