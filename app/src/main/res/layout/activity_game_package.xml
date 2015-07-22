@@ -69,9 +69,10 @@
             android:id="@+id/tv_currentCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="7"
             android:layout_alignParentRight="true"
             android:layout_above="@id/btn_submitItem"
+            android:textColor="@color/font_green"
+            android:text="0"
             android:layout_marginLeft="20dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -100,7 +101,6 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_above="@id/sb_countPeeker"
-            android:background="@color/background_orange"
             />
 
         <TextView
@@ -109,7 +109,6 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_big"
             android:textColor="@color/font_primary"
-            android:text="火火火"
             android:layout_alignTop="@id/iv_itemIcon"
             android:layout_toRightOf="@id/iv_itemIcon"
             android:layout_marginLeft="20dp"
