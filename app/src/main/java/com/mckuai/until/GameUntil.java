@@ -8,7 +8,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.List;
@@ -23,6 +27,8 @@ import java.util.List;
  * 杀死游戏
  */
 public class GameUntil {
+
+    private static Context mContext;
 
     public static boolean detectionIsGameRunning(Context context){
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -119,11 +125,30 @@ public class GameUntil {
      * @param context
      */
     public static void startGame(Context context){
-        Intent intent = new Intent();
-        ComponentName name = new ComponentName("com.mojang.minecraftpe","com.mojang.minecraftpe.MainActivity");
-        intent.setComponent(name);
-        intent.setAction(Intent.ACTION_VIEW);
-        context.startActivity(intent);
+        mContext = context;
+
+        showStartHint(context);
+
+        Message msg = new Message();
+        msg.what = 1;
+        handler.sendEmptyMessageDelayed(1, 1000);
+    }
+
+    static Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1){
+                Intent intent = new Intent();
+                ComponentName name = new ComponentName("com.mojang.minecraftpe","com.mojang.minecraftpe.MainActivity");
+                intent.setComponent(name);
+                intent.setAction(Intent.ACTION_VIEW);
+                mContext.startActivity(intent);
+            }
+        }
+    };
+
+    static private void showStartHint(Context context){
+        Toast.makeText(context,"正在启动游戏，请稍候...",Toast.LENGTH_SHORT).show();
     }
 
 
