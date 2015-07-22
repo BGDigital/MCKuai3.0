@@ -1,9 +1,24 @@
 package com.mckuai.entity;
 
 public class LivingEntity extends Entity {
+    /**
+     * 实体的"无敌盾牌"在受到打击后保持的刻形式的时间长度
+     */
+	private short attackTime;
 
-	private short attackTime, deathTime, hurtTime;
+    /**
+     * 生物已死亡的刻数。控制死亡动画
+     */
+	private short deathTime;
 
+    /**
+     * 未知
+     */
+	private short hurtTime;
+
+    /**
+     * 生物拥有的健康值。玩家和敌对生物最高有20点，牲畜最高有10点。
+     */
 	private short health;
 
 	public LivingEntity() {

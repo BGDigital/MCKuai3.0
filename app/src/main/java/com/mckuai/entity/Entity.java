@@ -5,16 +5,49 @@ import com.mckuai.until.Vector3f;
 import java.io.Serializable;
 
 public class Entity implements Serializable {
-    private int typeId = 0;               //类型id:64为item drops
-	private Vector3f location = new Vector3f(0, 0, 0);   //此实体的当前坐标(三维,每个维度为float)
-    private Vector3f motion = new Vector3f(0, 0, 0);     //此实体在三个维度的运动速度(0,0,0为静止)
-    //以下两个数据用于存储实体的旋转度
-	private float pitch;             //俯仰(绕x轴的旋转)
-	private float yaw;               //航向(绕y轴的旋转)
-	private float fallDistance;    //下落高度，值越大在接触陆地时伤害越高
-	private short fire;                //火被扑灭时的刻度值，负值代表该实体可以在火中支撑多久
-	private short air = 300;       //该实体拥有的空气数量。在空气中为300,在水下会减少
-	private boolean onGround = false;                //是否在地面上
+    /**
+     * 实体ID,不同的ID代表不同的类型的实体
+     */
+    private int typeId = 0;
+
+    /**
+     * 此实体的当前坐标(三维,每个维度为float) <维基百科中叫做Pos>
+     */
+	private Vector3f location = new Vector3f(0, 0, 0);
+
+    /**
+     * 此实体在三个维度的运动速度(0,0,0为静止)
+     */
+    private Vector3f motion = new Vector3f(0, 0, 0);
+    //以下两个数据用于存储实体的旋转度  <维基百科中用Rotation这个结构体来封装这两个字段>
+    /**
+     * 俯仰(绕x轴的旋转)
+     */
+	private float pitch;
+    /**
+     * 航向(绕y轴的旋转)
+     */
+	private float yaw;
+
+    /**
+     * 下落高度，值越大在接触陆地时伤害越高
+     */
+	private float fallDistance;
+
+    /**
+     * 火被扑灭时的刻度值，负值代表该实体可以在火中支撑多久
+     */
+	private short fire;
+
+    /**
+     * 该实体拥有的空气数量。在空气中为300,在水下会减少
+     */
+	private short air = 300;
+
+    /**
+     * 是否在地面上,当实体接地时为1
+     */
+	private boolean onGround = false;
 
 	private Entity riding = null;
 
