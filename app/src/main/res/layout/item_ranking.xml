@@ -39,6 +39,14 @@
             app:fbb_showEndBitmap="true"
             app:fbb_showShadow="true" />
 
+        <ImageButton
+            android:id="@+id/map_download_image"
+            android:layout_width="@dimen/xz_wh"
+            android:layout_height="@dimen/xz_wh"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_map_start"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"

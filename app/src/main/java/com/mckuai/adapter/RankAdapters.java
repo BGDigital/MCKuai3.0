@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Zzz on 2015/7/9.
  */
-public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
+public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> {
     private final String TAG = "mapadaptres";
     private ArrayList<Map> maps;
     private ImageLoader loader;
@@ -64,7 +65,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +85,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                 final FabButton button = (FabButton) v.getTag();
                 int position = (int) button.getTag();
                 final Map map = maps.get(position);
-                switch (map.getDownloadProgress()){
+                switch (map.getDownloadProgress()) {
                     case 0:
                         Intent intent = new Intent("com.mckuai.downloadservice");
                         Bundle bundle = new Bundle();
@@ -96,13 +97,25 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                         String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                         MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         mapManager.importMap(filename);
-                        Toast.makeText(mContext,"地图导入完成",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "地图导入完成", Toast.LENGTH_SHORT).show();
                         GameUntil.startGame(mContext);
                         break;
                     default:
                         break;
                 }
 
+            }
+        });
+        holder.btn_download_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                final Map map = maps.get(position);
+                String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
+                MCMapManager mapManager = MCkuai.getInstance().getMapManager();
+                mapManager.importMap(filename);
+                Toast.makeText(mContext, "地图导入完成", Toast.LENGTH_SHORT).show();
+                GameUntil.startGame(mContext);
             }
         });
         return holder;
@@ -119,8 +132,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
                 default:
                     return 1;
             }
-        }else {
-            switch (maps.get(position).getDownloadProgress()){
+        } else {
+            switch (maps.get(position).getDownloadProgress()) {
                 case 0:
                     return 3;
                 case 100:
@@ -136,7 +149,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
         Map map = maps.get(position);
         if (null != map) {
             String oldIcon = (String) holder.image.getTag();
-            if (null != oldIcon && oldIcon.equals(map.getIcon())){
+            if (null != oldIcon && oldIcon.equals(map.getIcon())) {
                 //只是刷新进度
                 holder.btn_download.setProgress(map.getDownloadProgress());
                 return;
@@ -168,12 +181,15 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             }
             if (map.isDownload()) {
                 holder.btn_download.setProgress(100);
-            }
-            else {
+                holder.btn_download_image.setVisibility(View.VISIBLE);
+                holder.btn_download.setVisibility(View.GONE);
+            } else {
+                holder.btn_download_image.setVisibility(View.GONE);
                 holder.btn_download.setProgress(map.getDownloadProgress());
             }
             holder.btn_download.setTag(position);
             holder.itemView.setTag(position);
+            holder.btn_download_image.setTag(position);
 //            Log.e("name", "" + map.getViewName());
 //            Log.e("num",""+position);
 //            Log.e("progress",""+map.getDownloadProgress());
@@ -194,6 +210,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
         public TextView tv_size;
         public TextView rk_tv;
         public FabButton btn_download;
+        public ImageButton btn_download_image;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -204,6 +221,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
             rk_tv = (TextView) itemView.findViewById(R.id.rk_tv);
             btn_download = (FabButton) itemView.findViewById(R.id.download_map);
+            btn_download_image = (ImageButton) itemView.findViewById(R.id.map_download_image);
         }
     }
 
@@ -219,7 +237,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder>{
 
     public void setpaihang(boolean isChanged) {
         isPaihang = isChanged;
-        notifyItemRangeChanged(0,maps.size());
+        notifyItemRangeChanged(0, maps.size());
     }
 
 }
