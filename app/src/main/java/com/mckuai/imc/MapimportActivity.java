@@ -147,11 +147,15 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.bt_go:
-                if(namefile==null){
-                    showNotification(1,"请选择文件",R.id.import_tit);
-                }else {
-                    mapManager.importMap(namefile);
-                    showNotification(1,"导入成功",R.id.import_tit);
+                if (namefile == null) {
+                    showNotification(1, "请选择文件", R.id.import_tit);
+                } else {
+                    if (!mapManager.importMap(namefile)) {
+                        showNotification(1, "游戏导入失败", R.id.import_tit);
+                    } else {
+                        Toast.makeText(this, "游戏导入成功", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 break;
             default:
@@ -169,7 +173,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             }
         } else {
             filename = (String) adapter.getItem(position);
-            namefile= filename;
+            namefile = filename;
 //            mapManager.importMap(filename);
 //            GameUntil.startGame(this);
         }

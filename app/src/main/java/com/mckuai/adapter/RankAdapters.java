@@ -115,9 +115,13 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 final Map map = maps.get(position);
                 String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                 MCMapManager mapManager = MCkuai.getInstance().getMapManager();
-                mapManager.importMap(filename);
-                Toast.makeText(mContext, "地图导入完成", Toast.LENGTH_SHORT).show();
-                GameUntil.startGame(mContext);
+//                mapManager.importMap(filename);
+                if (!mapManager.importMap(filename)) {
+                    Toast.makeText(mContext, "导入失败", Toast.LENGTH_SHORT).show();
+                } else {
+//                Toast.makeText(mContext, "地图导入完成", Toast.LENGTH_SHORT).show();
+                    GameUntil.startGame(mContext);
+                }
             }
         });
         return holder;
