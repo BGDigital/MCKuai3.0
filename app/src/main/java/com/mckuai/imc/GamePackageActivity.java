@@ -1,13 +1,12 @@
 package com.mckuai.imc;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,14 +19,10 @@ import com.mckuai.InventorySlot;
 import com.mckuai.ItemStack;
 import com.mckuai.adapter.InventoryAdapter;
 import com.mckuai.bean.WorldInfo;
-import com.mckuai.entity.EntityItem;
 import com.mckuai.io.xml.MaterialIconLoader;
 import com.mckuai.io.xml.MaterialLoader;
 import com.mckuai.material.Material;
-import com.mckuai.material.icon.MaterialIcon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -168,10 +163,13 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void OnItemClicked(ItemStack item) {
+    public void OnItemClicked(ItemStack item,Material material,Drawable icon) {
         if (null != item){
             sb_itemCountPeeker.setProgress(item.getAmount());
-            tv_itemName.setText(EntityItem.getNameById(item.getId()));
+            tv_itemName.setText(material.getName() + "");
+            if (null != icon){
+                iv_itemIcon.setImageDrawable(icon);
+            }
             changeItemCountView.setVisibility(View.VISIBLE);
             itemStack = item;
         }
