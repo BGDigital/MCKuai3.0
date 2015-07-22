@@ -19,6 +19,7 @@ import com.mckuai.imc.R;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCMapManager;
 import com.mckuai.widget.fabbutton.FabButton;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.Serializable;
@@ -35,6 +36,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
     private OnMapDownloadListener addListener;
     private Context mContext;
     private boolean isPaihang = false;
+    private DisplayImageOptions options = MCkuai.getInstance().getNormalOption();
 
 
     public interface OnItemClickListener {
@@ -159,7 +161,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 loader = ImageLoader.getInstance();
             }
             if (null != map.getIcon() && map.getIcon().length() > 10) {
-                loader.displayImage(map.getIcon(), holder.image);
+                loader.displayImage(map.getIcon(), holder.image, options);
                 holder.image.setTag(map.getIcon());
             }
             holder.tv_name.setText(map.getViewName());

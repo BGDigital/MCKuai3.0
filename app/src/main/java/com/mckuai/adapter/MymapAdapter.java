@@ -14,6 +14,7 @@ import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCMapManager;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -26,9 +27,10 @@ public class MymapAdapter extends BaseAdapter {
     private View view;
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans;
-    private ImageLoader mLoader;
+    private ImageLoader loader;
     private MCkuai app;
     private MCMapManager mcMapManager;
+    private DisplayImageOptions options = MCkuai.getInstance().getNormalOption();
 
     public MymapAdapter(Context context, ArrayList<Map> mapBeans) {
         mMapBeans = mapBeans;
@@ -90,6 +92,13 @@ public class MymapAdapter extends BaseAdapter {
         holder.tv_size.setText(map.getResSize() + "KB");
         String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
         leixing = leixing.replace("|", " ");
+        if (null == loader) {
+            loader = ImageLoader.getInstance();
+        }
+        if (null != map.getIcon() && map.getIcon().length() > 10) {
+            loader.displayImage(map.getIcon(), holder.image, options);
+            holder.image.setTag(map.getIcon());
+        }
         holder.tv_category.setText(leixing);
         return convertView;
     }
