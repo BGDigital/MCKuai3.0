@@ -469,7 +469,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         return;
                     } else {
                         showNotification(0, "没找到所选地图", R.id.urv_mapList);
-                        if (mapType != null && mapList.getData().size() == 0) {
+                        if (mapType == null && mapList.getData().size() == 0) {
                             totle();
                         }
                     }
