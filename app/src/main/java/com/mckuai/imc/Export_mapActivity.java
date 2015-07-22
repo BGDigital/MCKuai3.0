@@ -26,7 +26,7 @@ import com.mckuai.until.MCMapManager;
 import java.util.ArrayList;
 
 
-public class Export_mapActivity extends BaseActivity implements View.OnClickListener {
+public class Export_mapActivity extends BaseActivity implements View.OnClickListener ,AdapterView.OnItemClickListener{
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
@@ -106,5 +106,10 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }

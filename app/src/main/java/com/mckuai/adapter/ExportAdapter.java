@@ -80,11 +80,11 @@ public class ExportAdapter extends BaseAdapter {
                     worlds.get(index).setIsSelected(true);
                 }
             });
-            if (getItemViewType(position) == 1) {
-                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_checked);
-            } else {
-                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_normal);
-            }
+//            if (getItemViewType(position) == 1) {
+//                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_checked);
+//            } else {
+//                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_normal);
+//            }
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
