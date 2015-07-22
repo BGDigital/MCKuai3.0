@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -321,7 +322,8 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     case 2:
                         MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         mapManager.importMap(filename);
-                        showNotification(1, "导入成功", R.id.md_r1);
+                        Toast.makeText(this,"导入成功", Toast.LENGTH_SHORT).show();
+//                        showNotification(1, "导入成功", R.id.md_r1);
                         break;
                 }
                 break;
