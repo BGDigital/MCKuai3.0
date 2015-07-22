@@ -27,22 +27,12 @@ import java.util.ArrayList;
 
 
 public class Export_mapActivity extends BaseActivity implements View.OnClickListener {
-    private Context mContent;
-    private ImageView btn_left, pt_im, btn_right;
+    private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
     private Button bt_go, btn_showOwner;
-    private AsyncHttpClient client;
-    private Gson mGson = new Gson();
-    private MCkuai application;
-    private String mapType = null;
-    private String orderFiled = null;
-    private MapBean mapList;
     private ExportAdapter adapter;
     private MCMapManager mapManager;
-    private ArrayList<Map> mMapBeans;
-    private String data;
-    private Map map;
     ArrayList<String> downloadMap;
 
 
