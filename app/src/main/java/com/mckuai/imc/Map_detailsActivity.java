@@ -322,7 +322,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     case 2:
                         MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         mapManager.importMap(filename);
-                        Toast.makeText(this,"导入成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "游戏导入成功", Toast.LENGTH_SHORT).show();
 //                        showNotification(1, "导入成功", R.id.md_r1);
                         break;
                 }
