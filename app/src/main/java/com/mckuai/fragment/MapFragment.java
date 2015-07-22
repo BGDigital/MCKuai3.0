@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -164,6 +165,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     sousuo();
+
                     return true;
                 }
                 return false;
@@ -621,6 +623,14 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             loadData();
 //            searchContext = null;
             map_ed.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) map_ed.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (imm.isActive()) {
+
+                imm.hideSoftInputFromWindow(map_ed.getApplicationWindowToken(), 0);
+
+            }
+
         } else {
             Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
         }
