@@ -48,11 +48,8 @@ import java.util.ArrayList;
 public class MapFragment extends BaseFragment implements View.OnClickListener, RankAdapters.OnItemClickListener, RankAdapters.OnMapDownloadListener {
     private View view;
     private String searchContext;//输入内容
-    private Context mContent;
-    //    private ImageView btn_left, btn_right;
     private Button rb_map, rb_classification, rb_mymap;
     private EditText map_ed;
-    private TextView tv_titles;
     private UltimateRecyclerView urv_mapList;
     private RelativeLayout mp_r1;
     private MapBean mapList;
@@ -63,11 +60,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private Gson mGson = new Gson();
     private String mapType = null;
     private String orderFiled = null;
-    private ArrayList<Map> downloadmaps;
-    private Map maps;
     private TextView tit;
-    private RelativeLayout hidetitle;
-    private boolean isChanged = false;
     private static final String TAG = "MapFragment";
     private View.OnClickListener leftButtonListener_myMaps;
     private View.OnClickListener rightButtonListener_myMaps;
@@ -77,6 +70,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private DownloadProgressRecevier recevier;
     private long lastUpdateTime;
     private Boolean showleftbutton = false;
+    private String maptype;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -308,7 +302,15 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 break;
             case R.id.rb_classification:
                 tit.setText("地图分类");
-                showTypeLayout();
+                if (null == maptype) {
+                    if (mp_r1.getVisibility() == View.GONE) {
+                        showTypeLayout();
+                    } else {
+                        hideTypeLayout();
+                    }
+                } else {
+                    maptype = null;
+                }
                 break;
             case R.id.rb_mymap:
                 intent = new Intent(getActivity(), MymapActivity.class);
@@ -528,7 +530,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "生存";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
-        mapadapters.setpaihang(false);
+        page = null;
+//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -537,7 +540,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "解密";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
-        mapadapters.setpaihang(false);
+        page = null;
+//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -546,7 +550,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "跑酷";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
-        mapadapters.setpaihang(false);
+        page = null;
+//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -555,7 +560,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "建筑";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
-        mapadapters.setpaihang(false);
+        page = null;
+//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -564,7 +570,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = "pvp竞技";
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
-        mapadapters.setpaihang(false);
+        page = null;
+//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -573,6 +580,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapType = null;
         mapList.getData().clear();
         mapList.getPageBean().setPage(0);
+        page = null;
         searchContext = null;
         loadData();
     }
@@ -603,7 +611,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 mapList.getPageBean().setPage(0);
             }
             loadData();
-            searchContext = null;
+//            searchContext = null;
             map_ed.setVisibility(View.GONE);
         } else {
             Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
