@@ -65,7 +65,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private View.OnClickListener leftButtonListener_myMaps;
     private View.OnClickListener rightButtonListener_myMaps;
     private MCkuai application = MCkuai.getInstance();
-    private ImageView btn_right_view = application.getBtn_publish();
+    private ImageView btn_right_view;
     private MCMapManager mapManager;
     private DownloadProgressRecevier recevier;
     private long lastUpdateTime;
@@ -80,6 +80,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             view = inflater.inflate(R.layout.fragment_map, container, false);
         }
         tit = MainActivity.gettitle();
+        btn_right_view = application.getBtn_publish();
 //        application = MCkuai.getInstance();
 
         return view;
@@ -96,6 +97,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             }
 
         }
+        btn_right_view.setOnClickListener(this);
         showData();
     }
 
@@ -103,6 +105,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            btn_right_view.setOnClickListener(this);
             showData();
         } else {
             cancleLodingToast(false);
@@ -112,7 +115,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 MainActivity.setLeftButtonView(false);
                 mapadapters.setpaihang(false);
                 map_ed.setVisibility(View.GONE);
-
             }
         }
     }
@@ -268,15 +270,14 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     tit.setText("地图");
                     searchContext = null;
                     loadData();
-//                    notdata();
                     break;
-//                case R.id.btn_titlebar_right:
-//                    if (map_ed.getVisibility() == View.GONE) {
-//                        map_ed.setVisibility(View.VISIBLE);
-//                    } else {
-//                        sousuo();
-//                    }
-//                    break;
+                case R.id.btn_titlebar_right:
+                    if (map_ed.getVisibility() == View.GONE) {
+                        map_ed.setVisibility(View.VISIBLE);
+                    } else {
+                        sousuo();
+                    }
+                    break;
             }
         }
     }
@@ -610,6 +611,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             if (mapList != null && mapList.getPageBean() != null) {
                 mapList.getPageBean().setPage(0);
             }
+            page = null;
             loadData();
 //            searchContext = null;
             map_ed.setVisibility(View.GONE);
