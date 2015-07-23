@@ -165,6 +165,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
             for (Integer xuanzhong : selectedList) {
                 if (xuanzhong == position) {
                     selectedList.remove(xuanzhong);
+                    break;
                 }
             }
         } else {
