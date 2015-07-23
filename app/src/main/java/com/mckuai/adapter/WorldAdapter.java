@@ -1,7 +1,6 @@
 package com.mckuai.adapter;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,7 @@ public class WorldAdapter  extends BaseAdapter{
 
         if (null != world && null != world.getLevel()) {
             vh.name.setText(world.getLevel().getLevelName() + "");
-            vh.worldSize.setText((world.getSize() / 1024) + "KB");
+            vh.worldSize.setText(world.getSizeEx()+"");
             java.util.Date date = new Date(world.getLevel().getLastPlayed() *1000);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             vh.lastTime.setText("时间:"+sdf.format(date));

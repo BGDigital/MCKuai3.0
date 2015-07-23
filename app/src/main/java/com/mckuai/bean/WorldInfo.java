@@ -126,6 +126,27 @@ public class WorldInfo implements Serializable{
         return size;
     }
 
+    public String getSizeEx(){
+         int times = 0;
+        long mapSize = new Long(size);
+        while(mapSize > 1024){
+            mapSize = mapSize / 1024;
+            times++;
+        }
+        switch (times){
+            case 0:
+                return "1KB";
+            case 1:
+                return mapSize+"KB";
+            case 2:
+                return mapSize+"MB";
+            case 3:
+                return mapSize+"GB";
+            default:
+                return mapSize+"PB";
+        }
+    }
+
     public void setSize(long size) {
         this.size = size;
     }
