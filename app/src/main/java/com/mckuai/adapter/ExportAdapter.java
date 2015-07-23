@@ -70,21 +70,21 @@ public class ExportAdapter extends BaseAdapter {
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.rbtn_ok = (ImageView) convertView.findViewById(R.id.rbtn_ok);
-            holder.rbtn_ok.setBackgroundResource(R.drawable.btn_map_export_normal);
+//            holder.rbtn_ok.setBackgroundResource(R.drawable.btn_map_export_normal);
             holder.rbtn_ok.setTag(position);
-            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    v.setBackgroundResource(R.drawable.btn_map_export_checked);
-                    int index = (int) v.getTag();
-                    worlds.get(index).setIsSelected(true);
-                }
-            });
-//            if (getItemViewType(position) == 1) {
-//                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_checked);
-//            } else {
-//                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_normal);
-//            }
+//            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    v.setBackgroundResource(R.drawable.btn_map_export_checked);
+//                    int index = (int) v.getTag();
+//                    worlds.get(index).setIsSelected(true);
+//                }
+//            });
+            if (getItemViewType(position) == 1) {
+                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_checked);
+            } else {
+                holder.rbtn_ok.setImageResource(R.drawable.btn_map_export_normal);
+            }
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();

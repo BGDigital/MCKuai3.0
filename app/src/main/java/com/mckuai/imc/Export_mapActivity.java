@@ -87,6 +87,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
         btn_left.setOnClickListener(this);
         btn_right.setVisibility(View.GONE);
         bt_go.setOnClickListener(this);
+        mpt_ls.setOnItemClickListener(this);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
             case R.id.bt_go:
                 intent = new Intent(this, MapexportActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("DELETE", adapter.chuancan());
+                bundle.putSerializable("DELETE", selectedList);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -110,18 +111,19 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        if (adapter.getItemViewType(position) == 1) {
-//            for (Integer xuanzhong : selectedList) {
-//                if (xuanzhong == position) {
-//                    selectedList.remove(xuanzhong);
-//                }
-//            }
-//        } else {
-//            if (selectedList == null) {
-//                selectedList = new ArrayList<>();
-//            }
-//            selectedList.add(position);
-//        }
-//        adapter.setSelectedList(selectedList);
+        if (adapter.getItemViewType(position) == 1) {
+            for (Integer xuanzhong : selectedList) {
+                if (xuanzhong == position) {
+                    selectedList.remove(xuanzhong);
+                    break;
+                }
+            }
+        } else {
+            if (selectedList == null) {
+                selectedList = new ArrayList<>();
+            }
+            selectedList.add(position);
+        }
+        adapter.setSelectedList(selectedList);
     }
 }
