@@ -253,4 +253,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         notifyItemRangeChanged(0, maps.size());
     }
 
+    public boolean getIsPaihang(){
+        return  isPaihang;
+    }
+
 }

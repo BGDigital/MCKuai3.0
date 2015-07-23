@@ -115,7 +115,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 hideTypeLayout();
                 showleftbutton = false;
                 MainActivity.setLeftButtonView(false);
-                mapadapters.setpaihang(false);
+                if (null != mapadapters && mapadapters.getIsPaihang()) {
+                    mapadapters.setpaihang(false);
+                }
                 map_ed.setVisibility(View.GONE);
             }
         }
