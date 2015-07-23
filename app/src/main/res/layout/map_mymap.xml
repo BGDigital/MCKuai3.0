@@ -75,7 +75,7 @@
         <ListView
             android:id="@+id/map_mymap_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:divider="@color/frame_darkgray"
             android:dividerHeight="@dimen/item_height_interval"></ListView>
     </RelativeLayout>
