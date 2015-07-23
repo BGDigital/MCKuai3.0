@@ -140,6 +140,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener,Adapt
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this, Map_detailsActivity.class);
         map = (Map) adapter.getItem(position);
+        map.setDownloadProgress(100);
         Bundle bundle = new Bundle();
         bundle.putSerializable("details", map);
         intent.putExtras(bundle);
