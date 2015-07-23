@@ -33,8 +33,10 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private Button bt_go, btn_showOwner;
     private ExportAdapter adapter;
     private MCMapManager mapManager;
-    ArrayList<String> downloadMap;
+    //    ArrayList<String> downloadMap;
     private ArrayList<Integer> selectedList;
+    private ArrayList<WorldInfo> worlds;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,10 +66,9 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     }
 
     private void showData() {
-        downloadMap = mapManager.getCurrentMapDirList();
-        ArrayList<WorldInfo> worlds = MCGameEditer.getAllWorldLite();
-        if (downloadMap == null) {
-            showNotification(1, "请下载地图", R.id.maproot);
+        worlds = MCGameEditer.getAllWorldLite();
+        if (worlds == null) {
+            showNotification(1, "当前没有地图", R.id.maproot);
         } else {
             adapter = new ExportAdapter(this, worlds);
             mpt_ls.setAdapter(adapter);
@@ -98,14 +99,54 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.bt_go:
-                intent = new Intent(this, MapexportActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("DELETE", selectedList);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                ArrayList<String> worldroot = new ArrayList<>();
+                if (selectedList != null && !selectedList.isEmpty() && worlds != null && !worlds.isEmpty()) {
+                    for (Integer xuanzong : selectedList) {
+                        worldroot.add(worlds.get(xuanzong).getDir());
+                    }
+                    intent = new Intent(this, MapexportActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("DELETE", worldroot);
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, 1);
+                } else {
+                    Toast.makeText(this, "请选择需要导出的地图", Toast.LENGTH_LONG).show();
+                }
+
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ArrayList<WorldInfo> deletedmap = new ArrayList<WorldInfo>();
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+//            if (resultCode == RESULT_OK) {
+//                for (int i = 0; i < selectedList.size(); i++) {
+//                    int location = selectedList.get(i);
+//                    deletedmap.add(worlds.get(location));
+//                }
+//                for (WorldInfo world : deletedmap) {
+//                    worlds.remove(world);
+//                }
+//                adapter.notifyDataSetChanged();
+//            } else {
+//                ArrayList<String> detede = data.getStringArrayListExtra("mapzimulu");
+//                for (String zimu : detede) {
+//                    for (WorldInfo zongliebiao : worlds) {
+//                        if (zimu.equals(zongliebiao.getDir())) {
+//                            worlds.remove(zongliebiao);
+//                            break;
+//                        }
+//                    }
+//                }
+//                adapter.notifyDataSetChanged();
+//            }
+//            selectedList.clear();
         }
     }
 

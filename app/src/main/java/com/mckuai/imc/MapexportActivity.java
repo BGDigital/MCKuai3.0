@@ -2,31 +2,25 @@ package com.mckuai.imc;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.adapter.MapExportAdapter;
-import com.mckuai.adapter.MapImportAdapter;
 import com.mckuai.bean.Map;
-import com.mckuai.bean.WorldInfo;
 import com.mckuai.until.MCMapManager;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 
 public class MapexportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -45,7 +39,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     private String currentDir;
     private String filename;
     private LinearLayout pt_ly;
-    private ArrayList<WorldInfo> chuancan;
+    private ArrayList<String> worldroot;
     private ArrayList<String> getCurrentMaps;
     private String name;
     private String temname;
@@ -54,7 +48,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_leave);
-        chuancan = (ArrayList<WorldInfo>) getIntent().getSerializableExtra("DELETE");
+        worldroot = (ArrayList<String>) getIntent().getSerializableExtra("DELETE");
         initview();
     }
 
@@ -125,18 +119,27 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
         bt_go.setOnClickListener(this);
     }
 
-    public void huoqu() {
-        for (int j = 0; j < chuancan.size(); j++) {
-            if (chuancan.get(j).getIsSelected()) {
-                name = chuancan.get(j).getDir();
-                mapManager.exportMap(name, currentDir);
-            } else {
-                showNotification(1, "没有选中游戏", R.id.import_tit);
+    public void daochumap() {
+        Toast.makeText(this,"正在导出请稍候",Toast.LENGTH_LONG).show();
+        Iterator iterator = worldroot.iterator();
+        String worldRootDir;
+        Intent intent = new Intent();
+        Integer size = worldroot.size();
+        while (iterator.hasNext()) {
+            worldRootDir = (String) iterator.next();
+            if (!mapManager.exportMap(worldRootDir, currentDir)) {
+                iterator.remove();
             }
-
         }
-
-
+        intent.putStringArrayListExtra("mapzimulu", worldroot);
+        if (size == worldroot.size()) {
+            Toast.makeText(this, "地图导出成功", Toast.LENGTH_LONG).show();
+            setResult(RESULT_OK, intent);
+        } else {
+            Toast.makeText(this, "部分地图导出失败", Toast.LENGTH_LONG).show();
+            setResult(RESULT_CANCELED, intent);
+        }
+        finish();
     }
 
     @Override
@@ -146,7 +149,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
-                huoqu();
+                daochumap();
 //                mapManager.exportMap(chuancan.get);
                 break;
             case R.id.pt_ly:
