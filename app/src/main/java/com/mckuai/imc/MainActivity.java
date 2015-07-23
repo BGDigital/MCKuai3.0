@@ -95,6 +95,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onDestroy() {
         super.onDestroy();
         application.mCache.saveCacheFile();
+        Intent intent = new Intent("com.mckuai.downloadservice");
+        stopService(intent);
     }
 
     public static void setOnclickListener(View.OnClickListener leftButtonListener, View.OnClickListener rightButtonListener) {
