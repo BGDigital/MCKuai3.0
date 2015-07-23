@@ -223,12 +223,12 @@ public class MCMapManager {
     /**
      * 导出地图
      *
-     * @param mapName    要导出的地图名称
+     * @param mapDir    要导出的地图的目录
      * @param dstFileDir 导出到的目录
      */
-    public boolean exportMap(String mapName, String dstFileDir) {
-        File src = new File(worldRoot, mapName);
-        File dst = new File(dstFileDir, mapName + ".zip");
+    public boolean exportMap(String mapDir, String dstFileDir) {
+        File src = new File(worldRoot, mapDir);
+        File dst = new File(dstFileDir, mapDir + ".zip");
 
         if (src.exists() && src.isDirectory()) {
             if (dst.exists()) {
