@@ -54,8 +54,6 @@ public class MCkuai  extends Application{
     public Tencent tencent;
     public WorldInfo world;
 
-
-
     private static final int MEM_CACHE_SIZE = 8 * 1024 * 1024;// 内存缓存大小
     private static final int CONNECT_TIME = 15 * 1000;// 连接时间
     private static final int TIME_OUT = 30 * 1000;// 超时时间

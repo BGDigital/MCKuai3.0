@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.mckuai.bean.WorldInfo;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.until.GameUntil;
 import com.mckuai.until.MCGameEditer;
 import com.mckuai.until.OptionUntil;
@@ -45,13 +48,16 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private TextView tv_gameTime;
     private TextView tv_thirdView;
     private TextView tv_packageItemCount;
+    private RelativeLayout rl_notification;
+    private ProgressBar progressBar;
 
     private ImageView iv_gameMode;
     private ImageView iv_gameTime;
     private ImageView iv_thirdView;
     private ImageView iv_packageItem;
-
     private ListView lv_mapList;
+
+    private DownloadProgressRecevier reciver;
 
     private MCGameEditer gameEditer;
     private int mode;//地图模式
@@ -85,11 +91,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_game_editer, container, false);
         }
-        detectionGameInfo();
+
         return view;
     }
 
@@ -100,7 +105,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == tv_gameMode) {
             initView();
         }
-
+        detectionGameInfo();
         if (isGameInstalled && null == worldInfos) {
             gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
                 @Override
@@ -115,6 +120,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            detectionGameInfo();
+        }
         Log.w(TAG, "setUserVisibleHint:" + isVisibleToUser);
     }
 
@@ -131,6 +139,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         iv_thirdView = (ImageView) view.findViewById(R.id.iv_thirdView);
         iv_packageItem = (ImageView) view.findViewById(R.id.iv_gamePackage);
         lv_mapList = (ListView) view.findViewById(R.id.lv_mapList);
+        rl_notification = (RelativeLayout)view.findViewById(R.id.rl_notificationDownloadProgress);
+        progressBar = (ProgressBar)view.findViewById(R.id.pb_downloadProgress);
 
         view.findViewById(R.id.rl_gameMode).setOnClickListener(this);
         view.findViewById(R.id.rl_gameTime).setOnClickListener(this);
@@ -139,6 +149,39 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         view.findViewById(R.id.btn_startGame).setOnClickListener(this);
         view.findViewById(R.id.btn_selectMap).setOnClickListener(this);
         lv_mapList.setOnItemClickListener(this);
+        rl_notification.setOnClickListener(this);
+    }
+
+    private void initReciver(){
+        if (null == reciver){
+            reciver = new DownloadProgressRecevier(){
+                @Override
+                public void onProgress(String resId, int progress) {
+                    switch (progress){
+                        case 0:
+                            if (null != resId && 10 < resId.length()){
+                                rl_notification.setTag(resId);
+                            }
+                            else {
+                                rl_notification.setVisibility(View.INVISIBLE);
+                                showNotification(3, "游戏路径不正确！!", R.id.fl_root);
+                            }
+                            break;
+                        case -1:
+                            //下载失败
+                            rl_notification.setVisibility(View.INVISIBLE);
+                            showNotification(3,"下载游戏失败!",R.id.fl_root);
+                            break;
+                        default:
+                            if (rl_notification.getVisibility() == View.GONE){
+                                rl_notification.setVisibility(View.VISIBLE);
+                            }
+                            progressBar.setProgress(progress);
+                            break;
+                    }
+                }
+            };
+        }
     }
 
     private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
@@ -280,6 +323,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void detectionGameInfo() {
+        if (MCkuai.getInstance().fragmentIndex != 0){
+            return;
+        }
         isGameInstalled = GameUntil.detectionIsGameInstalled(getActivity());
         if (isGameInstalled) {
             isGameRunning = GameUntil.detectionIsGameRunning(getActivity());
@@ -304,7 +350,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 isGameVersionSupport = true;
             }
         } else {
-            showMessage("警告", "你还未安装游戏，不能修改游戏内容！");
+            //showMessage("警告", "你还未安装游戏，不能修改游戏内容！");
+            showDownloadGame();
             return;
         }
 
@@ -330,6 +377,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             return;
         }
         switch (v.getId()) {
+            case R.id.rl_notificationDownloadProgress:
+                installGame((String) v.getTag());
+                break;
             case R.id.rl_gameMode:
                 if (!checkGameVersion()){
                     return;
@@ -378,7 +428,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 } else {
                     showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
                 }
-
                 break;
         }
     }
@@ -391,7 +440,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 public void onClick(View v) {
                     isShowVersionWarning = true;
                 }
-            },null);
+            }, null);
         }
         return isGameVersionSupport;
     }
@@ -415,34 +464,45 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             public void onClick(View v) {
                 ThinDownloadManager downloadManager = new ThinDownloadManager(1);
                 String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
-                final String dst = MCkuai.getInstance().getMapDownloadDir()+"wodeshijie_v_0_10_5.apk";
-                DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
+//                final String dst = MCkuai.getInstance().getMapDownloadDir() + "wodeshijie_v_0_10_5.apk";
+                Intent intent = new Intent("com.mckuai.downloadservice");
+                intent.putExtra("GAME_URL", url);
+                getActivity().startService(intent);
+                /*DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
                     @Override
                     public void onDownloadComplete(int i) {
                         File file = new File(dst);
-                        if (null != file && file.exists() && file.isFile()){
+                        if (null != file && file.exists() && file.isFile()) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(file),"application/vnd.android.package-archive");
+                            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
                             getActivity().startActivity(intent);
                         }
                     }
 
                     @Override
                     public void onDownloadFailed(int i, int i1, String s) {
-                        Toast.makeText(getActivity(),"下载失败，原因："+s,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "下载失败，原因：" + s, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onProgress(int i, long l, int i1) {
 
                     }
-                }) ;
-                downloadManager.add(request);
+                });
+                downloadManager.add(request);*/
             }
         });
     }
 
-    private void showNotification(int progress){
-
+    private void installGame(String file){
+        if (null != file && file.length() > 10) {
+            File apkFile = new File(file);
+            if (null != apkFile && apkFile.exists() && apkFile.isFile()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                getActivity().startActivity(intent);
+            }
+        }
     }
+
 }

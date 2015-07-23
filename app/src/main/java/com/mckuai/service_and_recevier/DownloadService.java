@@ -3,7 +3,9 @@ package com.mckuai.service_and_recevier;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
@@ -42,7 +44,31 @@ public class DownloadService extends Service {
        if (null != map){
            downloadMap(map);
        }
+       else {
+           String downloadUrl = (String)intent.getStringExtra("GAME_URL");
+           if (null != downloadUrl && 10 < downloadUrl.length()) {
+               downloadGame(downloadUrl);
+           }
+       }
         return super.onStartCommand(intent, flags, startId);
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        if (null != mMapManager){
+            mMapManager.closeDB();
+        }
+        if (null != mDlManager){
+            mDlManager.cancelAll();
+            mDlManager.release();
+        }
+        if (null != mDownloadTaskMap){
+            mDownloadTaskMap.clear();
+            mDownloadTaskMap = null;
+        }
+        super.onDestroy();
     }
 
     private int downloadMap(Map map){
@@ -63,6 +89,10 @@ public class DownloadService extends Service {
 
         if (null == mDlManager){
             mDlManager = new ThinDownloadManager(3);
+        }
+        else {
+            //删除可能存在的关闭服务的消息
+            handler.removeMessages(1);
         }
 
         //下载和保存路径
@@ -85,10 +115,11 @@ public class DownloadService extends Service {
                     if (null == mMapManager) {
                         mMapManager = MCkuai.getInstance().getMapManager();
                     }
-
                     mMapManager.addDownloadMap(task.downloadMap);
-                    //mMapManager.saveDB();
                     mDownloadTaskMap.remove(task);
+                    if (mDownloadTaskMap.isEmpty()){
+                        handler.sendEmptyMessageDelayed(1,120000);//延时2分钟关闭服务
+                    }
                 }
             }
 
@@ -96,7 +127,12 @@ public class DownloadService extends Service {
             public void onDownloadFailed(int i, int i1, String s) {
                 DownloadTask task = getDownloadTask(i);
                 if (null != task) {
-                    sendProgressBroadCast(task.downloadMap.getResId(), -2);
+                    if (null != mDownloadTaskMap && !mDownloadTaskMap.isEmpty()){
+                        mDownloadTaskMap.remove(task);
+                        if (mDownloadTaskMap.isEmpty()){
+                            handler.sendEmptyMessageDelayed(1,120000);//延时2分钟关闭服务
+                        }
+                    }
                 }
             }
 
@@ -118,23 +154,47 @@ public class DownloadService extends Service {
         return token;
     }
 
-    @Override
-    public void onDestroy() {
-        if (null != mMapManager){
-            mMapManager.closeDB();
+    /**
+     * 下载游戏，以广播的方式发送进度
+     * 如果开始下载，进度是从1开始的（不可能为0:)）
+     * 如果下载失败，发送的进度为-1
+     * 如果下载完成，发送的进度为0
+     * @param url
+     * @return
+     */
+    private int downloadGame(final String url){
+        handler.removeMessages(1);
+        if (null == mDlManager){
+            mDlManager = new ThinDownloadManager(1);
         }
-        if (null != mDlManager){
-            mDlManager.cancelAll();
-            mDlManager.release();
+        else {
+            //删除可能存在的关闭服务的消息
+            handler.removeMessages(1);
         }
-        if (null != mDownloadTaskMap){
-            mDownloadTaskMap.clear();
-            mDownloadTaskMap = null;
-        }
-        super.onDestroy();
+
+        final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
+        DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
+        request.setDownloadListener(new DownloadStatusListener() {
+            @Override
+            public void onDownloadComplete(int i) {
+                sendProgressBroadCast(downloadDir,0);
+            }
+
+            @Override
+            public void onDownloadFailed(int i, int i1, String s) {
+                sendProgressBroadCast("download Failed:"+s,-1);
+            }
+
+            @Override
+            public void onProgress(int i, long l, int i1) {
+                if (0 == i1){
+                    i1 = 1;
+                }
+                sendProgressBroadCast(null,i1);
+            }
+        }) ;
+        return mDlManager.add(request);
     }
-
-
 
     private DownloadTask getDownloadTask(String resId){
         if (null == mDownloadTaskMap){
@@ -169,10 +229,27 @@ public class DownloadService extends Service {
         sendBroadcast(intent);
     }
 
-
     class DownloadTask{
         public int downloadToken;
         public Map downloadMap;
     }
+
+    /**
+     * 延时关闭服务，下载完成后2分钟后关闭服务
+     */
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what)
+            {
+                case 1:
+                    if (null != mDlManager){
+                        mDlManager.release();
+                    }
+                    stopSelf();
+                    break;
+            }
+        }
+    };
 
 }
