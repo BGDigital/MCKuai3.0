@@ -157,7 +157,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         } else {
             mapadapters.notifyDataSetChanged();
         }
-//        mapadapters.setData(mapList.getData());
     }
 
     protected void initView() {
@@ -245,6 +244,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 //                                    mapadapters.notifyItemChanged(i);
                                     mapadapters.notifyDataSetChanged();
                                     lastUpdateTime = time;
+                                    if (100 == progress){
+                                        String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
+                                        if (!mapManager.importMap(filename)){
+                                            showNotification(0, "地图导入失败", R.id.urv_mapList);
+                                        }
+                                    }
                                 }
                             }
                             i++;
@@ -296,11 +301,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图排行");
                 showleftbutton = true;
                 MainActivity.setLeftButtonView(true);
-//                mapadapters = new RankAdapters(getActivity());
-//                mapadapters.setData(mapList.getData());
                 mapadapters.setpaihang(true);
-//                urv_mapList.setAdapter(mapadapters);
-//                mapadapters.setOnItemClickListener(this);
                 mapType = null;
                 mapList.getPageBean().setPage(0);
                 page = null;
