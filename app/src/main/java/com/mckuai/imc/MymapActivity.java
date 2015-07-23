@@ -5,18 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.mckuai.adapter.ExportAdapter;
 import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
-import com.mckuai.fragment.MapFragment;
 import com.mckuai.until.MCMapManager;
 
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by Zzz on 2015/6/24.
  */
-public class MymapActivity extends BaseActivity implements OnClickListener {
+public class MymapActivity extends BaseActivity implements OnClickListener,AdapterView.OnItemClickListener {
     private String searchContext;//输入内容
     private Context mContent;
     private ListView map_mymap_lv;
@@ -82,7 +78,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         map_ed = (EditText) findViewById(R.id.map_ed);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("我的地图");
-        map_mymap_lv = (ListView) findViewById(R.id.map_mymap_lv);
+        map_mymap_lv = (ListView) findViewById(R.id.map_mymap_list);
         go_map = (Button) findViewById(R.id.go_map);
         leave_map = (Button) findViewById(R.id.leave_map);
         btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
@@ -92,6 +88,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
         go_map.setOnClickListener(this);
         leave_map.setOnClickListener(this);
         delete_map.setOnClickListener(this);
+        map_mymap_lv.setOnItemClickListener(this);
     }
 
     @Override
@@ -127,5 +124,25 @@ public class MymapActivity extends BaseActivity implements OnClickListener {
             }
         }
         return false;
+    }
+
+  /*  @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, Map_detailsActivity.class);
+        map = (Map) adapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("details", map);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }*/
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, Map_detailsActivity.class);
+        map = (Map) adapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("details", map);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

@@ -73,7 +73,7 @@
         android:layout_below="@+id/maproot">
 
         <ListView
-            android:id="@+id/map_mymap_lv"
+            android:id="@+id/map_mymap_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/frame_darkgray"
