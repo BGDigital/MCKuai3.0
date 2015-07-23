@@ -71,13 +71,6 @@
         android:singleLine="true"
         android:visibility="gone" />
 
-    <!--<ListView-->
-    <!--android:id="@+id/map_ls"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:dividerHeight="@dimen/lv_dividerHeight"-->
-    <!--android:visibility="visible"-->
-    <!--android:divider="@color/frame_darkgray"></ListView>-->
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
@@ -87,7 +80,7 @@
     <RelativeLayout
         android:id="@+id/mp_r1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/map_ed"
         android:layout_weight="1"
         android:padding="@dimen/com_margin"
