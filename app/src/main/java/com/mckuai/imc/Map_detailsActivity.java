@@ -68,7 +68,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra("details");
-        map = MCkuai.getInstance().getMap();
+        if (null == map){
+            map = MCkuai.getInstance().getMap();
+        }
+
         options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.background_user_cover_default)
                 .showImageForEmptyUri(R.drawable.background_user_cover_default)
                 .showImageOnFail(R.drawable.background_user_cover_default)
