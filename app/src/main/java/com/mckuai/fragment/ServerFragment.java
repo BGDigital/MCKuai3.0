@@ -264,7 +264,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                     cancleLodingToast(true);
                     parseData(result);
                     showData();
-                    if (page.getPage() == 1){
+                    if (null != page && page.getPage() == 1){
                         cacheData(url,params,result.data);
                         isCacheEnabled = false;
                     }
