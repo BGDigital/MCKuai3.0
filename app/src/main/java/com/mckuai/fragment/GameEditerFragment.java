@@ -77,7 +77,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ThinDownloadManager mDlManager;
 
 
-    private boolean isShowVersionWarning = false;
+//    private boolean isShowVersionWarning = false;
     private boolean isGameInstalled = true;
     private boolean isGameRunning = false;
     private boolean isGameVersionSupport = false;
@@ -423,14 +423,14 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private boolean checkGameVersion(){
-        if (!isGameVersionSupport &&!isShowVersionWarning){
+        if (!isGameVersionSupport ){
             //showNotification(3, "暂不支持修改此版本，请下载游戏！", R.id.fl_root);
-            showAlert("提示", "暂时不支持此版本的游戏，请重新下载游戏。", new View.OnClickListener() {
+           /* showAlert("提示", "暂时不支持此版本的游戏，请重新下载游戏。", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    isShowVersionWarning = true;
                 }
-            }, null);
+            }, null);*/
+            showDownloadGame();
         }
         return isGameVersionSupport;
     }
