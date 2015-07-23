@@ -40,16 +40,17 @@
         android:id="@+id/rl_notificationDownloadProgress"
         android:background="@drawable/background_top_bottom_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="2dp"
         android:clickable="true"
         android:visibility="invisible">
         <ImageView
             android:id="@+id/iv_notificationIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="2.5dp"
             android:background="@drawable/icon_share_default"
-            android:layout_margin="5dp"/>
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/tv_notificationTitle"
@@ -57,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/iv_notificationIcon"
             android:layout_alignTop="@id/iv_notificationIcon"
+            android:textSize="@dimen/font_hint"
             android:text="正在下载《我的世界》"
             android:textColor="@color/font_green"/>
 
@@ -66,7 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/iv_notificationIcon"
             android:layout_marginRight="5dp"
-            android:progress="20"
             android:layout_below="@id/tv_notificationTitle"
             android:layout_alignBottom="@id/iv_notificationIcon"
             style="?android:attr/progressBarStyleHorizontal"
