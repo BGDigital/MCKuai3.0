@@ -244,9 +244,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 //                                    mapadapters.notifyItemChanged(i);
                                     mapadapters.notifyDataSetChanged();
                                     lastUpdateTime = time;
-                                    if (100 == progress){
+                                    if (100 == progress) {
                                         String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
-                                        if (!mapManager.importMap(filename)){
+                                        if (!mapManager.importMap(filename)) {
                                             showNotification(0, "地图导入失败", R.id.urv_mapList);
                                         }
                                     }
@@ -420,12 +420,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             mapList = new MapBean();
         }
 
-//        if (null != mapType) {
-//            params.put("kinds", mapType);
-//        }
-//        if (null != orderFiled) {
-//            params.put("orderField", orderFiled);
-//        }
         Log.e("url:", url + "&" + params.toString());
         client.get(url, params, new JsonHttpResponseHandler() {
 
@@ -453,15 +447,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         if (response.getString("state").equals("ok")) {
                             JSONObject object = response.getJSONObject("dataObject");
                             parseData(url, params, object.toString());
-//                            MapBean bean = mGson.fromJson(object.toString(), MapBean.class);
-//                            if (null == mapList) {
-//                                mapList = new MapBean();
-//                            }
-//                            if (bean.getPageBean().getPage() == 1) {
-//                                mapList.getData().clear();
-//                            }
-//                            mapList.getData().addAll(bean.getData());
-//                            page = bean.getPageBean();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -473,13 +458,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         showData();
                         return;
                     } else {
-                        showNotification(0, "没找到所选地图", R.id.urv_mapList);
-                        if (mapType == null && mapList.getData().size() == 0) {
-                            totle();
-                        }
+                        showNotification(0, null == searchContext ?"此类型下暂无地图，显示所有地图！":"没找到满足条件的地图，显示所有地图！", R.id.urv_mapList);
+                        searchContext = null;
+                        mapadapters.notifyDataSetChanged();
+                        totle();
                     }
                 } else {
-                    showNotification(0, "加载数据错误", R.id.urv_mapList);
+                    showNotification(0, "加载数据错误！", R.id.urv_mapList);
                 }
                 cancleLodingToast(false);
             }
@@ -619,23 +604,23 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     public void sousuo() {
         if (null != map_ed.getText() && 0 < map_ed.getText().toString().trim().length()) {
             searchContext = map_ed.getText().toString();
-            if (mapList != null && mapList.getPageBean() != null) {
+           /* if (mapList != null && mapList.getPageBean() != null) {
                 mapList.getPageBean().setPage(0);
-            }
+            }*/
             page = null;
             loadData();
-//            searchContext = null;
-            map_ed.setVisibility(View.GONE);
-            InputMethodManager imm = (InputMethodManager) map_ed.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            if (imm.isActive()) {
-
-                imm.hideSoftInputFromWindow(map_ed.getApplicationWindowToken(), 0);
-
-            }
-
         } else {
             Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
         }
+        map_ed.setVisibility(View.GONE);
+        InputMethodManager imm = (InputMethodManager) map_ed.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (imm.isActive()) {
+
+            imm.hideSoftInputFromWindow(map_ed.getApplicationWindowToken(), 0);
+
+        }
+
+
     }
 }
