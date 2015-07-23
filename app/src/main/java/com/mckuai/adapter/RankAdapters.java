@@ -172,8 +172,15 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
             leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
-            holder.tv_size.setText((Long.parseLong(map.getResSize()) / 1024) + "KB");
-            holder.tv_time.setText(map.getInsertTime());
+            Long size = Long.parseLong(map.getResSize()) / 1024;
+            if (size < 1024) {
+                holder.tv_size.setText(size + "KB");
+            } else {
+                holder.tv_size.setText((size / 1024) + "MB");
+            }
+            String time = map.getInsertTime().substring(map.getInsertTime().indexOf("-") + 1, map.getInsertTime().indexOf(" "));
+            time = time.replace("-", "月");
+            holder.tv_time.setText("更新时间：" + time + "日");
             if (isPaihang) {
                 holder.rk_tv.setVisibility(View.VISIBLE);
                 holder.rk_tv.setText((position + 1) + "");

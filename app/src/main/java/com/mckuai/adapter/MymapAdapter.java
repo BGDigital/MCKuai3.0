@@ -87,9 +87,16 @@ public class MymapAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_time.setText(map.getInsertTime());
+        String time = map.getInsertTime().substring(map.getInsertTime().indexOf("-") + 1, map.getInsertTime().indexOf(" "));
+        time = time.replace("-", "月");
+        holder.tv_time.setText("更新时间：" + time + "日");
         holder.tv_name.setText(map.getViewName());
-        holder.tv_size.setText(map.getResSize() + "KB");
+        Long size = Long.parseLong(map.getResSize()) / 1024;
+        if (size < 1024) {
+            holder.tv_size.setText(size + "KB");
+        } else {
+            holder.tv_size.setText((size / 1024) + "MB");
+        }
         String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
         leixing = leixing.replace("|", " ");
         if (null == loader) {
