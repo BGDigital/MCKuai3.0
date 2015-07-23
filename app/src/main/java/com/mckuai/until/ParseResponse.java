@@ -38,7 +38,9 @@ public class ParseResponse {
                     result.isSuccess = false;
                     result.msg = "服务端返回数据不正确";
                 }
-                result.isSuccess = true;
+                else {
+                    result.isSuccess = true;
+                }
             }
             else{
                 if (response.has("msg")) {
