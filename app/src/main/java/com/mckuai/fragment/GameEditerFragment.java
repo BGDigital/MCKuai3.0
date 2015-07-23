@@ -3,6 +3,7 @@ package com.mckuai.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,8 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private TextView tv_gameTime;
     private TextView tv_thirdView;
     private TextView tv_packageItemCount;
+    private TextView tv_notification;
     private RelativeLayout rl_notification;
     private ProgressBar progressBar;
 
@@ -57,7 +61,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ImageView iv_packageItem;
     private ListView lv_mapList;
 
-    private DownloadProgressRecevier reciver;
 
     private MCGameEditer gameEditer;
     private int mode;//地图模式
@@ -71,11 +74,14 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private Integer[] res_Map = {R.drawable.background_map_0,R.drawable.background_map_1,R.drawable.background_map_2,R.drawable.background_map_3,R.drawable.background_map_4,R.drawable.background_map_5,R.drawable.background_map_6,R.drawable.background_map_7,R.drawable.background_map_8,R.drawable.background_map_9};
     private int res_Map_index = 0;
 
+    private ThinDownloadManager mDlManager;
+
 
     private boolean isShowVersionWarning = false;
     private boolean isGameInstalled = true;
     private boolean isGameRunning = false;
     private boolean isGameVersionSupport = false;
+    private boolean isDownloadGame = false;
 
     private WorldAdapter adapter;
 
@@ -105,7 +111,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == tv_gameMode) {
             initView();
         }
-        detectionGameInfo();
+        //detectionGameInfo();
         if (isGameInstalled && null == worldInfos) {
             gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
                 @Override
@@ -122,10 +128,19 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
             detectionGameInfo();
+        }else {
+
         }
-        Log.w(TAG, "setUserVisibleHint:" + isVisibleToUser);
     }
 
+    @Override
+    public void onDestroy() {
+        if (null!=mDlManager){
+            mDlManager.cancelAll();
+            mDlManager.release();
+        }
+        super.onDestroy();
+    }
 
     private void initView() {
         tv_gameMode = (TextView) view.findViewById(R.id.tv_gameMode);
@@ -133,6 +148,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         tv_packageItemCount = (TextView) view.findViewById(R.id.tv_curItemCount);
         tv_thirdView = (TextView) view.findViewById(R.id.tv_curView);
         tv_mapName = (TextView) view.findViewById(R.id.tv_mapName);
+        tv_notification = (TextView)view.findViewById(R.id.tv_notificationTitle);
         iv_map = (ImageView) view.findViewById(R.id.iv_map);
         iv_gameMode = (ImageView) view.findViewById(R.id.iv_gameMode);
         iv_gameTime = (ImageView) view.findViewById(R.id.iv_gameTime);
@@ -152,37 +168,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         rl_notification.setOnClickListener(this);
     }
 
-    private void initReciver(){
-        if (null == reciver){
-            reciver = new DownloadProgressRecevier(){
-                @Override
-                public void onProgress(String resId, int progress) {
-                    switch (progress){
-                        case 0:
-                            if (null != resId && 10 < resId.length()){
-                                rl_notification.setTag(resId);
-                            }
-                            else {
-                                rl_notification.setVisibility(View.INVISIBLE);
-                                showNotification(3, "游戏路径不正确！!", R.id.fl_root);
-                            }
-                            break;
-                        case -1:
-                            //下载失败
-                            rl_notification.setVisibility(View.INVISIBLE);
-                            showNotification(3,"下载游戏失败!",R.id.fl_root);
-                            break;
-                        default:
-                            if (rl_notification.getVisibility() == View.GONE){
-                                rl_notification.setVisibility(View.VISIBLE);
-                            }
-                            progressBar.setProgress(progress);
-                            break;
-                    }
-                }
-            };
-        }
-    }
 
     private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
         this.worldInfos = worldList;
@@ -378,7 +363,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         switch (v.getId()) {
             case R.id.rl_notificationDownloadProgress:
-                installGame((String) v.getTag());
+                String file = (String) v.getTag();
+                if (null ==file){
+                    rl_notification.setVisibility(View.INVISIBLE);
+                }else {
+                    installGame((String) v.getTag());
+                }
                 break;
             case R.id.rl_gameMode:
                 if (!checkGameVersion()){
@@ -454,6 +444,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void showDownloadGame(){
+        if (isDownloadGame){
+            return;
+        }
         showAlert("提示", "为了更好的体验游戏，请下载《我的世界0.10.5》\n是否立即下载游戏？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -462,39 +455,39 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ThinDownloadManager downloadManager = new ThinDownloadManager(1);
                 String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
-//                final String dst = MCkuai.getInstance().getMapDownloadDir() + "wodeshijie_v_0_10_5.apk";
-                Intent intent = new Intent("com.mckuai.downloadservice");
-                intent.putExtra("GAME_URL", url);
-                getActivity().startService(intent);
-                /*DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(dst)).setDownloadListener(new DownloadStatusListener() {
+//                url="http://ftp-idc.pconline.com.cn/a38f7ed8d063fabcee153e6907599ff5/5100000637186986209/BaiduPinyinSetup_3.0.2.67/pub/download/201010/maldner.exe";
+                final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
+                mDlManager = new ThinDownloadManager(1);
+                DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
+                request.setDownloadListener(new DownloadStatusListener() {
                     @Override
                     public void onDownloadComplete(int i) {
-                        File file = new File(dst);
-                        if (null != file && file.exists() && file.isFile()) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                            getActivity().startActivity(intent);
-                        }
+                        rl_notification.setTag(downloadDir);
+                        tv_notification.setText("下载完成，点击开始安装！");
                     }
 
                     @Override
                     public void onDownloadFailed(int i, int i1, String s) {
-                        Toast.makeText(getActivity(), "下载失败，原因：" + s, Toast.LENGTH_LONG).show();
+                        tv_notification.setText("下载失败，请稍候再试！");
                     }
 
                     @Override
                     public void onProgress(int i, long l, int i1) {
-
+                        if (rl_notification.getVisibility() != View.VISIBLE){
+                            rl_notification.setVisibility(View.VISIBLE);
+                        }
+                        progressBar.setProgress(i1);
                     }
-                });
-                downloadManager.add(request);*/
+                }) ;
+                mDlManager.add(request);
+                isDownloadGame = true;
             }
         });
     }
 
     private void installGame(String file){
+        isDownloadGame = false;
         if (null != file && file.length() > 10) {
             File apkFile = new File(file);
             if (null != apkFile && apkFile.exists() && apkFile.isFile()) {
@@ -503,6 +496,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 getActivity().startActivity(intent);
             }
         }
+        rl_notification.setVisibility(View.INVISIBLE);
     }
 
 }
