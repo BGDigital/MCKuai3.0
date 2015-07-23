@@ -36,6 +36,45 @@
         android:layout_margin="10dp"
         />
 
+    <RelativeLayout
+        android:id="@+id/rl_notificationDownloadProgress"
+        android:background="@drawable/background_top_bottom_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:clickable="true"
+        android:visibility="invisible">
+        <ImageView
+            android:id="@+id/iv_notificationIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/icon_share_default"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/tv_notificationTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_notificationIcon"
+            android:layout_alignTop="@id/iv_notificationIcon"
+            android:text="正在下载《我的世界》"
+            android:textColor="@color/font_green"/>
+
+        <ProgressBar
+            android:id="@+id/pb_downloadProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_notificationIcon"
+            android:layout_marginRight="5dp"
+            android:progress="20"
+            android:layout_below="@id/tv_notificationTitle"
+            android:layout_alignBottom="@id/iv_notificationIcon"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="@color/background_green"
+            android:progressBackgroundTint="@color/background_white"
+            />
+    </RelativeLayout>
+
 
 
     <Button
@@ -46,7 +85,7 @@
         android:text="选择地图"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/rl_notificationDownloadProgress"
         android:layout_marginLeft="10dp"
         android:layout_height="36dp" />
 
@@ -61,6 +100,8 @@
         android:textColor="@color/font_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+
 
     <LinearLayout
         android:id="@+id/ll_gameEditer"
@@ -273,6 +314,8 @@
         >
 
     </ListView>
+
+
 
 
 
