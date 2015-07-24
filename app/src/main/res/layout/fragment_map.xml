@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/background_Grey"
         android:orientation="horizontal"
-        android:padding="5dp"
-        >
+        android:padding="5dp">
 
         <Button
             android:id="@+id/rb_map"
@@ -76,8 +75,7 @@
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/map_ed"
-        ></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+        android:layout_below="@+id/map_ed"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout
         android:id="@+id/mp_r1"
@@ -85,17 +83,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/map_ed"
         android:layout_weight="1"
-        android:padding="@dimen/com_margin"
         android:background="@drawable/background_white_with_frame"
-        android:visibility="gone"
-        >
+        android:clickable="true"
+        android:paddingBottom="20dp"
+        android:visibility="gone">
+
+        <View
+            android:id="@+id/center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true" />
 
         <LinearLayout
             android:id="@+id/cf_l1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="20dp"
+            android:layout_toLeftOf="@+id/center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -114,11 +118,11 @@
 
         <LinearLayout
             android:id="@+id/cf_l2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="21dp"
+            android:layout_toRightOf="@+id/center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -137,11 +141,11 @@
 
         <LinearLayout
             android:id="@+id/cf_l3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/cf_l1"
-            android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:layout_toLeftOf="@+id/center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -161,12 +165,12 @@
 
         <LinearLayout
             android:id="@+id/cf_l4"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/cf_l2"
-            android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:layout_toRightOf="@+id/center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -186,11 +190,11 @@
 
         <LinearLayout
             android:id="@+id/cf_l5"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/cf_l3"
-            android:layout_marginLeft="@dimen/com_margin"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:layout_toLeftOf="@+id/center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -202,7 +206,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_right_button_left"
                 android:text="@string/pvp"
                 android:textSize="@dimen/font_dimen_title" />
 
@@ -210,12 +213,12 @@
 
         <LinearLayout
             android:id="@+id/cf_l6"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/cf_l4"
-            android:layout_marginRight="@dimen/padding_right_button_left"
             android:layout_marginTop="@dimen/padding_right_button_left"
+            android:layout_toRightOf="@+id/center"
             android:gravity="center"
             android:orientation="horizontal">
 
