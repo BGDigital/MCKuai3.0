@@ -9,12 +9,11 @@ import android.os.Message;
 
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.MCMapManager;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
 
-import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -68,7 +67,7 @@ public class DownloadService extends Service {
     public void onDestroy() {
 
         if (null != mDlManager){
-            mDlManager.release();
+            //mDlManager.release();
         }
         if (null != mDownloadTaskMap){
             mDownloadTaskMap.clear();
@@ -147,6 +146,7 @@ public class DownloadService extends Service {
                 DownloadTask task = getDownloadTask(i);
                 if (null != task) {
                     sendProgressBroadCast(task.downloadMap.getResId(), i1);
+                    handler.removeMessages(1);
                 }
             }
         });
@@ -159,60 +159,6 @@ public class DownloadService extends Service {
         }
         return token;
     }
-
-/*
-     * 下载游戏，以广播的方式发送进度
-     * 如果开始下载，进度是从1开始的（不可能为0:)）
-     * 如果下载失败，发送的进度为-1
-     * 如果下载完成，发送的进度为0
-     * @param url
-     * @return
-     *//*
-    private int downloadGame(final String url){
-        if (null == mDlManager){
-            mDlManager = new ThinDownloadManager(1);
-        }
-        else {
-            //删除可能存在的关闭服务的消息
-            handler.removeMessages(1);
-        }
-
-        final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
-        File file = new File(downloadDir);
-        if (null != file && file.exists()){
-            file.delete();
-        }
-        else {
-            File root = file.getParentFile();
-            if (!root.exists()){
-                root.mkdirs();
-            }
-        }
-        DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
-        request.setDownloadListener(new DownloadStatusListener() {
-            @Override
-            public void onDownloadComplete(int i) {
-                sendProgressBroadCast(downloadDir,0);
-//                handler.sendEmptyMessageDelayed(1, 120000);
-                return;
-            }
-
-            @Override
-            public void onDownloadFailed(int i, int i1, String s) {
-                sendProgressBroadCast("download Failed:"+s,-1);
-//                handler.sendEmptyMessageDelayed(1,120000);
-            }
-
-            @Override
-            public void onProgress(int i, long l, int i1) {
-                if (0 == i1){
-                    i1 = 1;
-                }
-                sendProgressBroadCast(null,i1);
-            }
-        }) ;
-        return mDlManager.add(request);
-    }*/
 
     private DownloadTask getDownloadTask(String resId){
         if (null == mDownloadTaskMap){
@@ -262,7 +208,7 @@ public class DownloadService extends Service {
             {
                 case 1:
                     if (null != mDlManager){
-                        mDlManager.release();
+                        //mDlManager.release();
                     }
                     try{
                     stopSelf();
