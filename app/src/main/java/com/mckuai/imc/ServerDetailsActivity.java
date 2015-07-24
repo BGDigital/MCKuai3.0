@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,18 +32,16 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
     private TextView tv_name;
     private TextView tv_type;
     private TextView tv_owner;
-    private TextView tv_state;
-    private TextView tv_playCount;
     private TextView tv_ip;
     private TextView tv_port;
     private TextView tv_qqGroup;
     private TextView tv_des;
-   //private ImageView btn_left;
     private ImageView btn_right;
     private TextView tv_title;
     private TextView tv_version;
     private LinearLayout ll_pics;
     private ImageView iv_serverPic;//只有一张图时显示
+    private Button btn_qqGroup;
 
     private ImageLoader imageLoader;
     private com.umeng.socialize.controller.UMSocialService mShareService;
@@ -79,9 +78,9 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_name = (TextView) findViewById(R.id.tv_serverName);
         tv_type = (TextView) findViewById(R.id.tv_server_type);
+//        tv_state = (TextView) findViewById(R.id.tv_serverState);
         tv_owner = (TextView) findViewById(R.id.tv_serverOwner);
-        tv_state = (TextView) findViewById(R.id.tv_serverState);
-        tv_playCount = (TextView) findViewById(R.id.tv_serverPlayerCount);
+//        tv_playCount = (TextView) findViewById(R.id.tv_serverPlayerCount);
         tv_ip = (TextView) findViewById(R.id.tv_serverIp);
         tv_port = (TextView) findViewById(R.id.tv_serverPort);
         tv_qqGroup = (TextView) findViewById(R.id.tv_serverQQGroup);
@@ -89,13 +88,14 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         tv_version = (TextView) findViewById(R.id.tv_serverVersion);
         ll_pics = (LinearLayout) findViewById(R.id.ll_serverPic);
         iv_serverPic = (ImageView) findViewById(R.id.iv_pic);
+        btn_qqGroup = (Button)findViewById(R.id.btn_copyQQGroup);
 
         btn_right.setImageResource(R.drawable.btn_titlebar_share);
         btn_right.setVisibility(View.VISIBLE);
 
         btn_right.setOnClickListener(this);
+        btn_qqGroup.setOnClickListener(this);
         findViewById(R.id.btn_left).setOnClickListener(this);
-        findViewById(R.id.btn_copyQQGroup).setOnClickListener(this);
         findViewById(R.id.btn_copyServerIp).setOnClickListener(this);
         findViewById(R.id.btn_copyServerPort).setOnClickListener(this);
         findViewById(R.id.btn_addServer).setOnClickListener(this);
@@ -117,11 +117,16 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
             tv_type.setText("类型："+tag[0]);
         }
 
-
+        if (null != serverInfo.getExchangeQQ()){
+            tv_qqGroup.setText("服务器QQ群："+serverInfo.getExchangeQQ());
+            tv_qqGroup.setVisibility(View.VISIBLE);
+            btn_qqGroup.setVisibility(View.VISIBLE);
+        }
+        else {
+            tv_qqGroup.setVisibility(View.GONE);
+            btn_qqGroup.setVisibility(View.GONE);
+        }
         tv_owner.setText("腐竹：" + (null == serverInfo.getUserName() ? "麦友" : serverInfo.getUserName()));
-        tv_state.setText(true == serverInfo.getIsOnline() ? "在线" : "离线");
-        tv_playCount.setText("人数：" + serverInfo.getOnlineNum() + "/" + serverInfo.getPeopleNum());
-        //tv_qqGroup.setText(serverInfo.get);
         tv_ip.setText("服务器地址：" + serverInfo.getResIp());
         tv_port.setText("服务器端口：" + serverInfo.getServerPort());
         tv_des.setText(Html.fromHtml(serverInfo.getDres() + ""));
