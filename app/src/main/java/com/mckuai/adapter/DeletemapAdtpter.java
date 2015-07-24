@@ -28,7 +28,7 @@ public class DeletemapAdtpter extends BaseAdapter {
     private ImageLoader loader;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
     private Map map;
-    private ArrayList<Integer> selectedList;
+    private ArrayList<String> selectedList;
     private DisplayImageOptions options = MCkuai.getInstance().getNormalOption();
 
 
@@ -130,8 +130,8 @@ public class DeletemapAdtpter extends BaseAdapter {
         if (selectedList == null || selectedList.isEmpty()) {
             return 0;
         }
-        for (Integer curposition : selectedList) {
-            if (curposition == position) {
+        for (String resid : selectedList) {
+            if (resid.equals(((Map)getItem(position)).getResId())) {
                 return 1;
             }
         }
@@ -143,7 +143,7 @@ public class DeletemapAdtpter extends BaseAdapter {
         return 2;
     }
 
-    public void setSelectedList(ArrayList<Integer> selectedList) {
+    public void setSelectedList(ArrayList<String> selectedList) {
         this.selectedList = selectedList;
         notifyDataSetChanged();
     }

@@ -27,7 +27,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     ArrayList<Map> downloadMap;
     private DeletemapAdtpter adapter;
     private String downloadDir;
-    private ArrayList<Integer> selectedList;
+    private ArrayList<String> selectedList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     }
 
     protected void initview() {
-        map_imp = (Button) findViewById(R.id.bt_go);
+        map_imp = (Button) findViewById(R.id.bt_deteled);
         map_imp.setOnClickListener(this);
         btn_left = (ImageView) findViewById(R.id.btn_left);
         btn_left.setOnClickListener(this);
@@ -92,7 +92,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
             case R.id.btn_left:
                 finish();
                 break;
-            case R.id.bt_go:
+            case R.id.bt_deteled:
 
                 deleteMap();
                 break;
@@ -108,11 +108,11 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    private void deleteMap(){
-        if (null != selectedList && !selectedList.isEmpty() && null != downloadMap && !downloadMap.isEmpty()){
+    private void deleteMap() {
+        if (null != selectedList && !selectedList.isEmpty() && null != downloadMap && !downloadMap.isEmpty()) {
             Iterator iterator = selectedList.iterator();
             Integer position;
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 position = (Integer) iterator.next();
                 if (position >= 0 && position < downloadMap.size()) {
                     Map map = downloadMap.get(position);
@@ -124,22 +124,22 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                     }
                 }
             }
-            if (!selectedList.isEmpty()){
-                showNotification(1, "部分地图删除失败，请稍候再试...", R.id.rot);
+//            adapter.setchuancan(downloadMap);
+            if (!selectedList.isEmpty()) {
+                showNotification(1, "部分地图删除失败", R.id.detdleroot);
+                selectedList.clear();
             }
-            adapter.setchuancan(downloadMap);
-        }
-        else {
-            showNotification(1, "请先选择地图再删除", R.id.rot);
+        } else {
+            showNotification(1, "请先选择地图再删除", R.id.detdleroot);
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (adapter.getItemViewType(position) == 1) {
-            for (Integer xuanzhong : selectedList) {
-                if (xuanzhong == position) {
-                    selectedList.remove(xuanzhong);
+            for (String resid : selectedList) {
+                if (resid.equals(((Map)adapter.getItem(position)).getResId())) {
+                    selectedList.remove(resid);
                     break;
                 }
             }
@@ -147,7 +147,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
             if (selectedList == null) {
                 selectedList = new ArrayList<>();
             }
-            selectedList.add(position);
+            selectedList.add(((Map)adapter.getItem(position)).getResId());
         }
         adapter.setSelectedList(selectedList);
     }
