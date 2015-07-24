@@ -16,8 +16,8 @@ import android.widget.Toast;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.until.GameUntil;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.GameUntil;
+import com.mckuai.utils.MCMapManager;
 import com.mckuai.widget.fabbutton.FabButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -89,7 +89,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 final Map map = maps.get(position);
                 switch (map.getDownloadProgress()) {
                     case 0:
-                        Intent intent = new Intent("com.mckuai.downloadservice");
+                        Intent intent = new Intent();
+                        intent.setAction("com.mckuai.downloadservice");
+                        intent.setPackage(mContext.getPackageName());
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("MAP", map);
                         intent.putExtras(bundle);

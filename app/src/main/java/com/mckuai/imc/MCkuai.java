@@ -8,13 +8,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.mckuai.bean.ForumInfo;
 import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.WorldInfo;
-import com.mckuai.until.CircleBitmapDisplayer;
-import com.mckuai.until.JsonCache;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.CircleBitmapDisplayer;
+import com.mckuai.utils.JsonCache;
+import com.mckuai.utils.MCMapManager;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -27,7 +26,6 @@ import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by kyly on 2015/6/23.
@@ -48,7 +46,6 @@ public class MCkuai  extends Application{
     public MCUser mUser;
     public JsonCache mCache;
     public int fragmentIndex = 0;
-    public ArrayList<ForumInfo> forumList;
 
     public AsyncHttpClient mClient;
     public Tencent tencent;
@@ -84,14 +81,6 @@ public class MCkuai  extends Application{
             mClient = new AsyncHttpClient();
         }
         return mClient;
-    }
-
-    public ArrayList<ForumInfo> getForumList() {
-        return forumList;
-    }
-
-    public void setForumList(ArrayList<ForumInfo> forumList) {
-        this.forumList = forumList;
     }
 
     private void initImageLoader(){

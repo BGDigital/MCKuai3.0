@@ -1,7 +1,6 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
 import java.io.File;
-import java.lang.annotation.Retention;
 
 /**
  * Created by kyly on 2015/7/9.

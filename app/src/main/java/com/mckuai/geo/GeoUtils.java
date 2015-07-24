@@ -2,7 +2,7 @@ package com.mckuai.geo;
 
 import com.mckuai.material.MaterialCount;
 import com.mckuai.material.MaterialKey;
-import com.mckuai.until.Vector3f;
+import com.mckuai.utils.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;

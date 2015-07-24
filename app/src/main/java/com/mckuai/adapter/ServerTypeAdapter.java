@@ -5,16 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mckuai.bean.GameServerInfo;
 import com.mckuai.imc.R;
-import com.mckuai.until.ServerEditer;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.ArrayList;
 
 /**
  * Created by kyly on 2015/6/25.

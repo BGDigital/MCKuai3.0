@@ -1,4 +1,4 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -8,7 +8,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;

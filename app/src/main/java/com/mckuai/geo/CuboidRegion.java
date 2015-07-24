@@ -1,6 +1,6 @@
 package com.mckuai.geo;
 
-import com.mckuai.until.Vector3f;
+import com.mckuai.utils.Vector3f;
 
 public class CuboidRegion {
 

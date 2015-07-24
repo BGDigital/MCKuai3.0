@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -39,7 +38,7 @@ import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.MCMapManager;
 
 import org.apache.http.Header;
 import org.json.JSONException;

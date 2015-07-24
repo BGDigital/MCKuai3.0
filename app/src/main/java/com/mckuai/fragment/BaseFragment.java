@@ -15,7 +15,7 @@ import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.until.JsonCache;
+import com.mckuai.utils.JsonCache;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
@@ -251,4 +251,5 @@ public class BaseFragment extends android.support.v4.app.Fragment {
             return mCache.get((url + "&" + params.toString()));
         }
     }
+
 }

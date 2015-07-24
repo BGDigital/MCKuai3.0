@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -31,8 +30,8 @@ import com.mckuai.bean.ServerBean;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
-import com.mckuai.until.GameUntil;
-import com.mckuai.until.ParseResponse;
+import com.mckuai.utils.GameUntil;
+import com.mckuai.utils.ParseResponse;
 
 import org.apache.http.Header;
 import org.json.JSONObject;

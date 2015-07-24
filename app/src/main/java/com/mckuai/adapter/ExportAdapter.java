@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.imc.R;
-import com.mckuai.until.MCGameEditer;
+import com.mckuai.utils.MCWorldUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +31,7 @@ public class ExportAdapter extends BaseAdapter {
     private ArrayList<Integer> selectedList;
 
     public ExportAdapter(Context context, ArrayList<WorldInfo> mapBeans) {
-        worlds = MCGameEditer.getAllWorldLite();
+        worlds = MCWorldUtil.getAllWorldLite();
         worlds = mapBeans;
         this.mContext = context;
         mInflater = LayoutInflater.from(context);

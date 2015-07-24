@@ -19,7 +19,7 @@ import com.mckuai.io.nbt.entity.EntityStoreLookupService;
 import com.mckuai.io.nbt.tileentity.TileEntityStore;
 import com.mckuai.io.nbt.tileentity.TileEntityStoreLookupService;
 import com.mckuai.tileentity.TileEntity;
-import com.mckuai.until.Vector3f;
+import com.mckuai.utils.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collections;

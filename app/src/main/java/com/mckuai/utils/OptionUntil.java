@@ -1,9 +1,7 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.mckuai.entity.Player;
 import com.mckuai.imc.MCkuai;
 
 import java.io.BufferedReader;
@@ -11,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.security.KeyStore;
 
 /**
  * Created by kyly on 2015/7/10.

@@ -1,6 +1,5 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
-import android.support.design.widget.TabLayout;
 import android.util.Log;
 
 import com.mckuai.bean.ResponseParseResult;

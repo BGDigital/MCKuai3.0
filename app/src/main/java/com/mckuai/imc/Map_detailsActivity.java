@@ -24,7 +24,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Map;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.MCMapManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -319,7 +319,9 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 String filename = downloadDir + map.getFileName();
                 switch (downloadstate) {
                     case 0:
-                        Intent intent = new Intent("com.mckuai.downloadservice");
+                        Intent intent = new Intent();
+                        intent.setAction("com.mckuai.downloadservice");
+                        intent.setPackage(mContext.getPackageName());
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("MAP", map);
                         intent.putExtras(bundle);

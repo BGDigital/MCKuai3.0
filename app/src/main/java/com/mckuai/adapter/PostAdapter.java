@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.mckuai.bean.Post;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.PostActivity;
-import com.mckuai.until.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.R;

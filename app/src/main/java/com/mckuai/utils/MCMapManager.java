@@ -1,4 +1,4 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
 import android.util.Log;
 
@@ -78,7 +78,6 @@ public class MCMapManager {
                                 index.remove(id);//删除索引
                                 deleteMapfromDisk(map);//删除文件
                                 saveDB();
-                                closeDB();
                                 return true;
                             }
                         }
@@ -153,11 +152,11 @@ public class MCMapManager {
         if (isDBOpened && null != db) {
             try {
                 db.close();
-                isDBOpened = false;
             } catch (Exception e) {
                 Log.w("closeDB", e.getLocalizedMessage());
                 e.printStackTrace();
             }
+            isDBOpened = false;
         }
         return !isDBOpened;
     }
@@ -199,7 +198,7 @@ public class MCMapManager {
      * @return
      */
     public String getMapName(String mapdir) {
-        return MCGameEditer.getWorldName(mapdir);
+        return MCWorldUtil.getWorldName(mapdir);
     }
 
 
@@ -251,7 +250,7 @@ public class MCMapManager {
     private void initDB() {
         Log.w("initDB", "file:" + saveDir);
         File file = new File(saveDir);
-        if (!file.exists()) {
+        if (null == file || !file.exists() || !file.isDirectory()) {
             file.mkdirs();
         }
         db = new DB(file);
@@ -289,11 +288,10 @@ public class MCMapManager {
         if (!isDBOpened && null != db) {
             try {
                 db.open();
-                isDBOpened = true;
             } catch (Exception e) {
                 e.printStackTrace();
-                isDBOpened = false;
             }
+            isDBOpened = true;
         }
         return isDBOpened;
     }

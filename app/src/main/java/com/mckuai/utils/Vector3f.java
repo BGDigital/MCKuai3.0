@@ -1,4 +1,4 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
 public class Vector3f {
 	

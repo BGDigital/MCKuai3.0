@@ -1,4 +1,4 @@
-package com.mckuai.until;
+package com.mckuai.utils;
 
 import android.util.Log;
 
@@ -8,12 +8,7 @@ import com.mckuai.bean.WorldInfo;
 import com.mckuai.entity.Player;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.io.LevelDataConverter;
-import com.mckuai.io.db.DB;
-import com.mckuai.io.nbt.NBTConverter;
 
-import org.spout.nbt.stream.NBTOutputStream;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +17,9 @@ import java.util.List;
  * Created by kyly on 2015/6/27.
  * 管理已有地图的总入口
  */
-public class MCGameEditer {
+public class MCWorldUtil {
 
-    private static final  String TAG = "MCGameEditer";
+    private static final String TAG = "MCWorldUtil";
     private static final String worldRoot = "/games/com.mojang/minecraftWorlds/";
     private static ArrayList<WorldInfo> worlds;   //所有的地图信息
     private static boolean isThirdViewEnable = false;
@@ -32,29 +27,29 @@ public class MCGameEditer {
 
     private boolean isLevelDatChanged = false;
     private boolean isPlayerInfoChanged = false;
-    private static boolean mIsThirdViewLoaded =false;
+    private static boolean mIsThirdViewLoaded = false;
 
-    public interface OnWorldLoadListener{
-        public void OnComplete(ArrayList<WorldInfo> worldInfos,boolean isThirdView);
+    public interface OnWorldLoadListener {
+        public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView);
     }
 
-    public void setOnWorldLoadListener(OnWorldLoadListener l){
-        if (null != l){
+    public void setOnWorldLoadListener(OnWorldLoadListener l) {
+        if (null != l) {
             this.mListener = l;
         }
     }
 
-    public MCGameEditer(OnWorldLoadListener loadListener,boolean getDetailed ){
+    public MCWorldUtil(OnWorldLoadListener loadListener, boolean getDetailed) {
         this.mListener = loadListener;
         isThirdViewEnable = OptionUntil.isThirdPerson();
         mIsThirdViewLoaded = true;
-        getAllWorld(mListener,getDetailed);
+        getAllWorld(mListener, getDetailed);
 
     }
 
 
-    public static String getWorldName(String path){
-        File file = new File(path,"level.dat");
+    public static String getWorldName(String path) {
+        File file = new File(path, "level.dat");
         if (null != file && file.exists() && file.isFile()) {
             try {
                 Level level = LevelDataConverter.read(file);
@@ -63,14 +58,14 @@ public class MCGameEditer {
                 }
                 return null;
             } catch (Exception e) {
-                Log.e(TAG,"读取level.dat文件时失败，原因："+e.getLocalizedMessage());
+                Log.e(TAG, "读取level.dat文件时失败，原因：" + e.getLocalizedMessage());
             }
         }
         return null;
     }
 
 
-    public static boolean isThirdView(){
+    public static boolean isThirdView() {
         if (!mIsThirdViewLoaded) {
             isThirdViewEnable = OptionUntil.isThirdPerson();
             mIsThirdViewLoaded = true;
@@ -80,71 +75,91 @@ public class MCGameEditer {
 
     /**
      * 获取游戏下所有的世界的信息
+     *
      * @return
      */
-    public static void getAllWorld(OnWorldLoadListener listener,boolean needPlayer){
-         if (null == worlds){
-             File[] subFile = new File(MCkuai.getInstance().getSDPath() +worldRoot).listFiles();
-             if (null != subFile && subFile.length > 0){
-                 if (null == worlds){
-                     worlds = new ArrayList<>(subFile.length);
-                 }
+    public static void getAllWorld(OnWorldLoadListener listener, boolean needPlayer) {
+        if (null == worlds) {
+            File[] subFile = new File(MCkuai.getInstance().getSDPath() + worldRoot).listFiles();
+            if (null != subFile && subFile.length > 0) {
+                if (null == worlds) {
+                    worlds = new ArrayList<>(subFile.length);
+                }
 
-                 for (File curFile:subFile) {
-                     if (curFile.exists() &&curFile.isDirectory()) {
-                         loadData(curFile,needPlayer);      //读取单个世界的完整信息
-                     }
-                 }
-             }
-         }
-        if (null != listener){
+                for (File curFile : subFile) {
+                    if (curFile.exists() && curFile.isDirectory()) {
+                        loadData(curFile, needPlayer);      //读取单个世界的完整信息
+                    }
+                }
+            }
+        }
+        if (null != listener) {
             listener.OnComplete(worlds, isThirdView());
         }
     }
 
-    public static ArrayList<WorldInfo> getAllWorldLite(){
-        if (null == worlds){
-            File [] subFile = new File(MCkuai.getInstance().getSDPath()+worldRoot).listFiles();
-            if (null != subFile && subFile.length >0){
+    public static ArrayList<WorldInfo> getAllWorldLite() {
+        File[] subFile = new File(MCkuai.getInstance().getSDPath() + worldRoot).listFiles();
+        if (null != subFile && subFile.length > 0) {
+            if (null == worlds){
                 worlds = new ArrayList<>(subFile.length);
-                for (File curFile:subFile){
-                     WorldInfo worldInfo = new WorldInfo();
-                     loadData(curFile,false);
-                }
+            }
+            else {
+                worlds.clear();
+            }
+            for (File curFile : subFile) {
+                WorldInfo worldInfo = new WorldInfo();
+                loadData(curFile, false);
             }
         }
         return worlds;
     }
 
-    public static Player getPlayer(String world){
-        if (null != worldRoot && !worldRoot.isEmpty()){
-            File file = new File(MCkuai.getInstance().getSDPath()+worldRoot +world);
-            if (file != null && file.exists() && file.isDirectory()){
+    public ArrayList<WorldInfo> getAllWorlds(){
+        File[] subFile = new File(MCkuai.getInstance().getSDPath() + worldRoot).listFiles();
+        if (null != subFile && subFile.length > 0) {
+            if (null == worlds){
+                worlds = new ArrayList<>(subFile.length);
+            }
+            else {
+                worlds.clear();
+            }
+            for (File curFile : subFile) {
+                WorldInfo worldInfo = new WorldInfo();
+                loadData(curFile, false);
+            }
+        }
+        return worlds;
+    }
+
+    public static Player getPlayer(String world) {
+        if (null != worldRoot && !worldRoot.isEmpty()) {
+            File file = new File(MCkuai.getInstance().getSDPath() + worldRoot + world);
+            if (file != null && file.exists() && file.isDirectory()) {
                 Player player = loadPlayerFromDB(file);
-                return  player;
+                return player;
             }
         }
         return null;
     }
 
 
-    public static boolean setGameMode(String worldDir,int mode){
+    public static boolean setGameMode(String worldDir, int mode) {
         WorldInfo world = getWorldByDir(worldDir);
-        if (null != world){
+        if (null != world) {
             world.getLevel().setGameType(mode);
-            return  saveLevelData(worldDir,world.getLevel());
+            return saveLevelData(worldDir, world.getLevel());
         }
-        return  false;
+        return false;
     }
 
-    public List<InventorySlot> getInventory(String worldDir){
+    public List<InventorySlot> getInventory(String worldDir) {
         WorldInfo world = getWorldByDir(worldDir);
-        if (null != world){
-            if (null != world.getLevel().getPlayer() && null != world.getLevel().getPlayer().getInventory()){
+        if (null != world) {
+            if (null != world.getLevel().getPlayer() && null != world.getLevel().getPlayer().getInventory()) {
                 return world.getLevel().getPlayer().getInventory();
-            }
-            else {
-                if (null != world.getPlayer()){
+            } else {
+                if (null != world.getPlayer()) {
                     return world.getPlayer().getInventory();
                 }
             }
@@ -154,9 +169,10 @@ public class MCGameEditer {
 
     /**
      * 获取单个世界的信息
-     * @param file  要获取信息的世界
+     *
+     * @param file 要获取信息的世界
      */
-    private static void loadData(File file,boolean needPlayer) {
+    private static void loadData(File file, boolean needPlayer) {
         WorldInfo worldInfo = new WorldInfo();
 
         worldInfo.setDir(file.getName());       //文件夹名称
@@ -172,17 +188,18 @@ public class MCGameEditer {
 
     /**
      * 从数据库中获取角色信息
+     *
      * @param worldRoot 游戏世界的根目录
      * @return
      */
-    private static Player loadPlayerFromDB(File worldRoot){
+    private static Player loadPlayerFromDB(File worldRoot) {
         File[] subDir = worldRoot.listFiles();
-        if (null != subDir){
-            for (File curDir:subDir){
+        if (null != subDir) {
+            for (File curDir : subDir) {
                 //只有一个目录
-                if (curDir.isDirectory()){
+                if (curDir.isDirectory()) {
                     Player player = GameDBEditer.getPlayer(curDir);
-                    if (null != player){
+                    if (null != player) {
                         return player;
                     }
                 }
@@ -207,37 +224,34 @@ public class MCGameEditer {
         return null;
     }*/
 
-    private static boolean loadLevelFromFile(File worldRoot,WorldInfo worldInfo){
+    private static boolean loadLevelFromFile(File worldRoot, WorldInfo worldInfo) {
         Level level = null;
-        File levelFile = new File(worldRoot,"level.dat");
-        if (null != levelFile && levelFile.exists() && levelFile.isFile()){
+        File levelFile = new File(worldRoot, "level.dat");
+        if (null != levelFile && levelFile.exists() && levelFile.isFile()) {
             try {
                 level = LevelDataConverter.read(levelFile);
-                if (null != level){
+                if (null != level) {
                     //修改角色信息，由于之前已经尝试过从数据库中读取，则处理为以文件中的为优先
                     worldInfo.setLevel(level);
                     return true;
                 }
-            }
-            catch (Exception e){
-                Log.e(TAG,"读取level.dat文件失败，原因："+e.getLocalizedMessage());
+            } catch (Exception e) {
+                Log.e(TAG, "读取level.dat文件失败，原因：" + e.getLocalizedMessage());
                 e.printStackTrace();
             }
         }
-        return  false;
+        return false;
     }
 
 
-
-    private static long getWorldSize(File file){
+    private static long getWorldSize(File file) {
         Long size = 0l;
         File[] subFiles = file.listFiles();
-        if (null != subFiles && subFiles.length >0){
-            for (File curFile:subFiles){
-                if (curFile.isFile()){
+        if (null != subFiles && subFiles.length > 0) {
+            for (File curFile : subFiles) {
+                if (curFile.isFile()) {
                     size += curFile.length();
-                }
-                else {
+                } else {
                     size += getWorldSize(curFile);
                 }
             }
@@ -245,18 +259,18 @@ public class MCGameEditer {
         return size;
     }
 
-    private static WorldInfo getWorldByDir(String worldDir){
-        for (WorldInfo world:worlds){
-            if (world.getDir().equals(worldDir)){
+    private static WorldInfo getWorldByDir(String worldDir) {
+        for (WorldInfo world : worlds) {
+            if (world.getDir().equals(worldDir)) {
                 return world;
             }
         }
         return null;
     }
 
-    private static boolean saveLevelData(String worldDir,Level level) {
-        String path = MCkuai.getInstance().getSDPath() +worldRoot +worldDir;
-        File file = new File(path,"level.dat");
+    private static boolean saveLevelData(String worldDir, Level level) {
+        String path = MCkuai.getInstance().getSDPath() + worldRoot + worldDir;
+        File file = new File(path, "level.dat");
         if (null != file && !file.exists()) {
             return false;
         }
@@ -387,7 +401,6 @@ public class MCGameEditer {
             return  false;
         }
     }*/
-
 
 
 }

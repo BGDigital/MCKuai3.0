@@ -1,7 +1,7 @@
 package com.mckuai.io.nbt.schematic;
 
 import com.mckuai.geo.CuboidClipboard;
-import com.mckuai.until.Vector3f;
+import com.mckuai.utils.Vector3f;
 
 import java.io.*;
 

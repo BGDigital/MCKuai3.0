@@ -1,27 +1,19 @@
 package com.mckuai.imc;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.adapter.ExportAdapter;
-import com.mckuai.bean.Map;
-import com.mckuai.bean.MapBean;
 import com.mckuai.bean.WorldInfo;
-import com.mckuai.until.MCGameEditer;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.MCWorldUtil;
+import com.mckuai.utils.MCMapManager;
 
 import java.util.ArrayList;
 
@@ -66,7 +58,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     }
 
     private void showData() {
-        worlds = MCGameEditer.getAllWorldLite();
+        worlds = MCWorldUtil.getAllWorldLite();
         if (worlds == null) {
             showNotification(1, "当前没有地图", R.id.maproot);
         } else {

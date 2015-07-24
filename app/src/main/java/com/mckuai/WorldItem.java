@@ -1,6 +1,6 @@
 package com.mckuai;
 
-import com.mckuai.until.FileUtil;
+import com.mckuai.utils.FileUtil;
 
 import java.io.File;
 import java.io.Serializable;

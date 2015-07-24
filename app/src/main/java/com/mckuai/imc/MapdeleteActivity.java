@@ -9,13 +9,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.adapter.DeletemapAdtpter;
 import com.mckuai.bean.Map;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.MCMapManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 

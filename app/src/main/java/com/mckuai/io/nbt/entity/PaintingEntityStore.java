@@ -1,7 +1,7 @@
 package com.mckuai.io.nbt.entity;
 
 import com.mckuai.entity.Painting;
-import com.mckuai.until.Vector3f;
+import com.mckuai.utils.Vector3f;
 
 import java.util.List;
 

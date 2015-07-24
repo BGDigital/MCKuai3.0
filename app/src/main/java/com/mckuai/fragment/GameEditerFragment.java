@@ -3,7 +3,6 @@ package com.mckuai.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,29 +15,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mckuai.InventorySlot;
-import com.mckuai.Level;
 import com.mckuai.adapter.WorldAdapter;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.service_and_recevier.DownloadProgressRecevier;
-import com.mckuai.until.GameUntil;
-import com.mckuai.until.MCGameEditer;
-import com.mckuai.until.OptionUntil;
+import com.mckuai.utils.GameUntil;
+import com.mckuai.utils.MCWorldUtil;
+import com.mckuai.utils.OptionUntil;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class GameEditerFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -62,7 +53,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private ListView lv_mapList;
 
 
-    private MCGameEditer gameEditer;
+    private MCWorldUtil gameEditer;
     private int mode;//地图模式
     private long size;//地图大小
     private String time;//白天黑夜
@@ -92,6 +83,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        detectionGameInfo();
     }
 
     @Override
@@ -113,23 +105,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         //detectionGameInfo();
         if (isGameInstalled && null == worldInfos) {
-            gameEditer = new MCGameEditer(new MCGameEditer.OnWorldLoadListener() {
+            gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
                 public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
                     Log.e(TAG, "地图数目：" + worldInfos.size());
                     setData(worldInfos, isThirdView);
                 }
             }, false);
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
-            detectionGameInfo();
-        }else {
-
         }
     }
 
@@ -141,6 +123,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         super.onDestroy();
     }
+
 
     private void initView() {
         tv_gameMode = (TextView) view.findViewById(R.id.tv_gameMode);
@@ -343,6 +326,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void selectMap() {
+        worldInfos = gameEditer.getAllWorlds();
         if (1 < worldInfos.size()) {
             if (null == adapter) {
                 adapter = new WorldAdapter(getActivity());
@@ -361,8 +345,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             showNotification(3, "游戏正在运行，不能修改当前设置！", R.id.fl_root);
             return;
         }
+        if (!isGameInstalled && v.getId() != R.id.rl_notificationDownloadProgress){
+            showDownloadGame();
+            return;
+        }
         switch (v.getId()) {
             case R.id.rl_notificationDownloadProgress:
+                //安装游戏
                 String file = (String) v.getTag();
                 if (null ==file){
                     rl_notification.setVisibility(View.INVISIBLE);
@@ -371,6 +360,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_gameMode:
+                //修改游戏模式
                 if (!checkGameVersion()){
                     return;
                 }
@@ -381,6 +371,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }
                 break;
             case R.id.rl_gameTime:
+                //切换日夜
                 if (!checkGameVersion()){
                     return;
                 }
@@ -392,6 +383,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.rl_thirdView:
+                //切换第三人称和第一人称
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchView();
                 } else {
@@ -400,15 +392,18 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.rl_gamePackage:
+                //修改背包
                 if (!checkGameVersion()){
                     return;
                 }
                 changePackageItem();
                 break;
             case R.id.btn_startGame:
+                //运行游戏
                 startGame();
                 break;
             case R.id.btn_selectMap:
+                //选择地图
                 if (null != worldInfos && !worldInfos.isEmpty()) {
                     if (View.VISIBLE == lv_mapList.getVisibility()) {
                         lv_mapList.setVisibility(View.GONE);
@@ -474,13 +469,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onProgress(int i, long l, int i1) {
-                        if (rl_notification.getVisibility() != View.VISIBLE){
-                            rl_notification.setVisibility(View.VISIBLE);
-                        }
                         progressBar.setProgress(i1);
                     }
                 }) ;
-                mDlManager.add(request);
+                if(mDlManager.add(request) > 0){
+                    rl_notification.setVisibility(View.VISIBLE);
+                }
                 isDownloadGame = true;
             }
         });

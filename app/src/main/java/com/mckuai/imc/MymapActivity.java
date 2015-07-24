@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
-import com.mckuai.until.MCMapManager;
+import com.mckuai.utils.MCMapManager;
 
 import java.util.ArrayList;
 

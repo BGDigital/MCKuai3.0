@@ -1,18 +1,13 @@
 package com.mckuai.imc;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -25,11 +20,9 @@ import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MCSildingMenu;
 import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ServerFragment;
-import com.mckuai.until.CircleBitmapDisplayer;
+import com.mckuai.utils.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
