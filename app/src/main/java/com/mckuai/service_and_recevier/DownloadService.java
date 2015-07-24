@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.util.Log;
 
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
@@ -25,6 +26,8 @@ public class DownloadService extends Service {
     private MCMapManager mMapManager;
     private ArrayList<DownloadTask> mDownloadTaskMap;
     private final String flag = "com.mckuai.imc.downloadprogress";
+    private final int keepAliveTime = 2*60*1000;
+    private final String TAG = "DownloadService";
 
     @Override
     public void onCreate() {
@@ -65,10 +68,6 @@ public class DownloadService extends Service {
 
     @Override
     public void onDestroy() {
-
-        if (null != mDlManager){
-            //mDlManager.release();
-        }
         if (null != mDownloadTaskMap){
             mDownloadTaskMap.clear();
             mDownloadTaskMap = null;
@@ -123,7 +122,7 @@ public class DownloadService extends Service {
                     mMapManager.addDownloadMap(task.downloadMap);
                     mDownloadTaskMap.remove(task);
                     if (mDownloadTaskMap.isEmpty()){
-                        handler.sendEmptyMessageDelayed(1,120000);//延时2分钟关闭服务
+                        handler.sendEmptyMessageDelayed(1,keepAliveTime);//延时2分钟关闭服务
                     }
                 }
             }
@@ -135,7 +134,7 @@ public class DownloadService extends Service {
                     if (null != mDownloadTaskMap && !mDownloadTaskMap.isEmpty()){
                         mDownloadTaskMap.remove(task);
                         if (mDownloadTaskMap.isEmpty()){
-                            handler.sendEmptyMessageDelayed(1,120000);//延时2分钟关闭服务
+                            handler.sendEmptyMessageDelayed(1,keepAliveTime);//延时2分钟关闭服务
                         }
                     }
                 }
@@ -146,7 +145,6 @@ public class DownloadService extends Service {
                 DownloadTask task = getDownloadTask(i);
                 if (null != task) {
                     sendProgressBroadCast(task.downloadMap.getResId(), i1);
-                    handler.removeMessages(1);
                 }
             }
         });
@@ -156,6 +154,7 @@ public class DownloadService extends Service {
             task.downloadToken = token;
             task.downloadMap = map;
             mDownloadTaskMap.add(task);
+            handler.removeMessages(1);
         }
         return token;
     }
@@ -199,7 +198,7 @@ public class DownloadService extends Service {
     }
 
     /**
-     * 延时关闭服务，下载完成后2分钟后关闭服务
+     * 关闭服务
      */
     Handler handler = new Handler(){
         @Override
