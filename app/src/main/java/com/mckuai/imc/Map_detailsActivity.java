@@ -60,7 +60,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private ImageView iv_serverPic;//只有一张图时显示
     private MCMapManager mapManager;
     private DownloadProgressRecevier recevier;
-    private String tiaozhuan;
 
 
     public void onCreate(Bundle savedInstanceState) {

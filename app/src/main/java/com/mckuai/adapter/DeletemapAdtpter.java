@@ -27,7 +27,6 @@ public class DeletemapAdtpter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ImageLoader loader;
     private ArrayList<Map> mMapBeans = new ArrayList<Map>();
-    private ImageLoader mLoader;
     private Map map;
     private ArrayList<Integer> selectedList;
     private DisplayImageOptions options = MCkuai.getInstance().getNormalOption();

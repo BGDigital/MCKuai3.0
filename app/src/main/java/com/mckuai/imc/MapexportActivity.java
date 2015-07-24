@@ -32,16 +32,12 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     private MCMapManager mapManager;
     private Map map;
     private ArrayList<String> curMaps;
-    private Context mContent;
-    ArrayList<Map> downloadMap;
     private ArrayList<String> dirList;
     private ArrayList<String> fileList;
     private String currentDir;
     private String filename;
     private LinearLayout pt_ly;
     private ArrayList<String> worldroot;
-    private ArrayList<String> getCurrentMaps;
-    private String name;
     private String temname;
 
     @Override

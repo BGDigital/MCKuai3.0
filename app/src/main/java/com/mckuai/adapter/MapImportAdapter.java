@@ -20,10 +20,7 @@ import java.util.ArrayList;
  */
 public class MapImportAdapter extends BaseAdapter {
     private Context mContext;
-    private View view;
     private LayoutInflater mInflater;
-    private ArrayList<Map> mMapBeans;
-    private ImageLoader mLoader;
     private ArrayList<String> dirList;
     private ArrayList<String> fileList;
 

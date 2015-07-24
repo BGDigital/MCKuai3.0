@@ -29,10 +29,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     private MapImportAdapter adapter;
     private MCMapManager mapManager;
     private ArrayList<String> curMaps;
-    private Context mContent;
-    private Map map;
     ArrayList<String> curmap;
-    ArrayList<Map> downloadMap;
     private LinearLayout pt_ly;
     private String currentDir;
     private String filename;
