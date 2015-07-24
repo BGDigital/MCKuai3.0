@@ -20,6 +20,7 @@ public class GameServerInfo implements Serializable {
     private int resCategroyId;
     private int serverPort;
     private int updateVersion;
+    private String exchangeQQ;          //QQ群号
     private int userId;
     private int position;
     private String resIp;                   //服务器地址
@@ -275,5 +276,13 @@ public class GameServerInfo implements Serializable {
 
     public void setQQ(String QQ) {
         this.QQ = QQ;
+    }
+
+    public String getExchangeQQ() {
+        return exchangeQQ;
+    }
+
+    public void setExchangeQQ(String exchangeQQ) {
+        this.exchangeQQ = exchangeQQ;
     }
 }
