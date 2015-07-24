@@ -127,7 +127,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     public void onPause() {
         super.onPause();
         cancleLodingToast(false);
-
+        map_ed.setVisibility(View.GONE);
     }
 
     @Override
@@ -458,7 +458,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         showData();
                         return;
                     } else {
-                        showNotification(0, null == searchContext ?"此类型下暂无地图，显示所有地图！":"没找到满足条件的地图，显示所有地图！", R.id.urv_mapList);
+                        showNotification(0, null == searchContext ? "此类型下暂无地图，显示所有地图！" : "没找到满足条件的地图，显示所有地图！", R.id.urv_mapList);
                         searchContext = null;
                         mapadapters.notifyDataSetChanged();
                         totle();
