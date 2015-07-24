@@ -63,7 +63,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private int inventoryTypeCount;         //背包中物品种类数
     private int curWorldIndex;//当前显示的世界的索引
     private Integer[] res_Map = {R.drawable.background_map_0,R.drawable.background_map_1,R.drawable.background_map_2,R.drawable.background_map_3,R.drawable.background_map_4,R.drawable.background_map_5,R.drawable.background_map_6,R.drawable.background_map_7,R.drawable.background_map_8,R.drawable.background_map_9};
-    private int res_Map_index = 0;
+//    private int res_Map_index = 0;
 
     private ThinDownloadManager mDlManager;
 
@@ -155,8 +155,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
         this.worldInfos = worldList;
         this.thirdPerson = isThirdViewEnable;
-        res_Map_index = (int) (Math.random() *10);
-
         if (!worldList.isEmpty()) {
             curWorldIndex = 0;
             getWorldInfo();
@@ -224,7 +222,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             tv_packageItemCount.setText("没有物品");
         }
         //背影
-        iv_map.setBackgroundResource(res_Map[res_Map_index]);
+        iv_map.setBackgroundResource(res_Map[curWorldIndex % 10]);
     }
 
     private void switchGameMode() {
@@ -434,7 +432,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         lv_mapList.setVisibility(View.GONE);
         curWorldIndex = (int) id;
-        res_Map_index = (int) (Math.random() *10);
         getWorldInfo();
     }
 
@@ -451,7 +448,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
-//                url="http://ftp-idc.pconline.com.cn/a38f7ed8d063fabcee153e6907599ff5/5100000637186986209/BaiduPinyinSetup_3.0.2.67/pub/download/201010/maldner.exe";
                 final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
                 mDlManager = new ThinDownloadManager(1);
                 DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
@@ -493,4 +489,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         rl_notification.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public boolean onBackKeyPressed() {
+        if(lv_mapList.getVisibility() == View.VISIBLE){
+            lv_mapList.setVisibility(View.GONE);
+            return true;
+        }
+        return false;
+    }
 }
