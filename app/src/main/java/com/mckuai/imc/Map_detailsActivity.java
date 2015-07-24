@@ -68,7 +68,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_details);
         map = (Map) getIntent().getSerializableExtra("details");
-        if (null == map){
+        if (null == map) {
             map = MCkuai.getInstance().getMap();
         }
 
@@ -179,7 +179,9 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         String leixing = "类型:" + map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
         leixing = leixing.replace("|", " ");
         tv_category.setText(leixing);
-        tx_times.setText(map.getInsertTime());
+        String time = map.getInsertTime().substring(map.getInsertTime().indexOf("-") + 1, map.getInsertTime().indexOf(" "));
+        time = time.replace("-", "月");
+        tx_times.setText("时间：" + time + "日");
         tv_nm.setText("作者:" + map.getUploadMan());
         tv_tx.setText(Html.fromHtml(map.getDres() + ""));
         switch (downloadstate) {
