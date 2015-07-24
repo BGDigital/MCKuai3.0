@@ -311,7 +311,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图分类");
                 if (null == maptype) {
                     if (mp_r1.getVisibility() == View.GONE) {
-                        showTypeLayout();
+                        mp_r1.setVisibility(View.VISIBLE);
                     } else {
                         hideTypeLayout();
                     }
