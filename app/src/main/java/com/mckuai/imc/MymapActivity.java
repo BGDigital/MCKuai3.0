@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.utils.MCMapManager;
@@ -20,13 +21,10 @@ import java.util.ArrayList;
 /**
  * Created by Zzz on 2015/6/24.
  */
-public class MymapActivity extends BaseActivity implements OnClickListener,AdapterView.OnItemClickListener {
-    private String searchContext;//输入内容
-    private Context mContent;
+public class MymapActivity extends BaseActivity implements OnClickListener, AdapterView.OnItemClickListener {
     private ListView map_mymap_lv;
-    private ImageView btn_left, btn_right;
+    private ImageView btn_left;
     private TextView tv_title;
-    private EditText map_ed;
     private Button go_map, leave_map, delete_map, btn_showOwner;
     private MCMapManager mapManager;
     private MymapAdapter adapter;
@@ -54,28 +52,14 @@ public class MymapActivity extends BaseActivity implements OnClickListener,Adapt
         downloadMap = mapManager.getDownloadMaps();
         if (downloadMap == null) {
             showNotification(1, "请下载地图", R.id.mymaprot);
-        }
-//        else {
-//            for (int i = 0; i < downloadMap.size(); i++) {
-//                if (downloadMap.get(i).getIsSelected()) {
-//                    String zipname = downloadMap.get(i).getSavePath();
-//                    zipname = zipname.substring(map.getSavePath().lastIndexOf(".") + 1, map.getSavePath().length());
-//                    if (!zipname.equalsIgnoreCase("zip")) {
-//                        showNotification(1, "请下载地图", R.id.mymaprot);
-//                    }
-//                }
-        else {
+        } else {
             adapter = new MymapAdapter(this, downloadMap);
             map_mymap_lv.setAdapter(adapter);
         }
-//            }
-//        }
     }
 
     private void initView() {
         btn_left = (ImageView) findViewById(R.id.btn_left);
-        btn_right = (ImageView) findViewById(R.id.btn_right);
-        map_ed = (EditText) findViewById(R.id.map_ed);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_title.setText("我的地图");
         map_mymap_lv = (ListView) findViewById(R.id.map_mymap_list);
@@ -126,15 +110,6 @@ public class MymapActivity extends BaseActivity implements OnClickListener,Adapt
         return false;
     }
 
-  /*  @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, Map_detailsActivity.class);
-        map = (Map) adapter.getItem(position);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("details", map);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }*/
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

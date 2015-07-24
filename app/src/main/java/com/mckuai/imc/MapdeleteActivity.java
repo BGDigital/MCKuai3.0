@@ -93,18 +93,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
-               /* files = new File(download);
-                files.delete();
-                boolean seed = mapManager.delDownloadMap(map.getResId());
-                mapManager.closeDB();
-                if (seed == true) {
-                    downloadMap.remove(download);
 
-                    adapter.setchuancan();
-                } else {
-                    showNotification(1, "删除失败，请重新尝试", R.id.rot);
-                }
-                adapter.notifyDataSetChanged();*/
                 deleteMap();
                 break;
             case R.id.go_map:
@@ -121,17 +110,6 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
 
     private void deleteMap(){
         if (null != selectedList && !selectedList.isEmpty() && null != downloadMap && !downloadMap.isEmpty()){
-           /* for (Integer position:selectedList){
-                if (position >= 0 && position < downloadMap.size()) {
-                    Map map = downloadMap.get(position);
-                    if (null != map) {
-                        if (mapManager.delDownloadMap(map.getResId())) {
-                            selectedList.remove(position);
-                            downloadMap.remove(map);
-                        }
-                    }
-                }
-            }*/
             Iterator iterator = selectedList.iterator();
             Integer position;
             while (iterator.hasNext()){

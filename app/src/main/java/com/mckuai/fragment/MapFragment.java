@@ -76,7 +76,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_map, container, false);
         }
@@ -241,7 +240,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                 map.setDownloadProgress(progress);
                                 long time = System.currentTimeMillis();
                                 if (time - lastUpdateTime > 500 || progress == 100 || progress == 1) {
-//                                    mapadapters.notifyItemChanged(i);
                                     mapadapters.notifyDataSetChanged();
                                     lastUpdateTime = time;
                                     if (100 == progress) {
@@ -524,7 +522,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getPageBean().setPage(0);
         page = null;
         searchContext = null;
-//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -535,7 +532,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getPageBean().setPage(0);
         page = null;
         searchContext = null;
-//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -546,7 +542,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getPageBean().setPage(0);
         page = null;
         searchContext = null;
-//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -557,7 +552,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getPageBean().setPage(0);
         page = null;
         searchContext = null;
-//        mapadapters.setpaihang(false);
         loadData();
     }
 
@@ -568,7 +562,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         mapList.getPageBean().setPage(0);
         page = null;
         searchContext = null;
-//        mapadapters.setpaihang(false);
         loadData();
     }
 

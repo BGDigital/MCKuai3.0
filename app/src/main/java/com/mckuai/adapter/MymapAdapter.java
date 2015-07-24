@@ -24,7 +24,6 @@ import java.util.ArrayList;
  */
 public class MymapAdapter extends BaseAdapter {
     private static Context mContext;
-    private View view;
     private LayoutInflater mInflater;
     private ArrayList<Map> mMapBeans;
     private ImageLoader loader;

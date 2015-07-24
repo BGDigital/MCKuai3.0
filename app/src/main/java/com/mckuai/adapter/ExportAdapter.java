@@ -25,8 +25,6 @@ public class ExportAdapter extends BaseAdapter {
     private Context mContext;
     private View view;
     private LayoutInflater mInflater;
-    private ArrayList<Map> mMapBeans;
-    private ImageLoader mLoader;
     private ArrayList<WorldInfo> worlds;
     private ArrayList<Integer> selectedList;
 
@@ -66,11 +64,9 @@ public class ExportAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
-//            holder.tv_category = (TextView) convertView.findViewById(R.id.tv_category);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.rbtn_ok = (ImageView) convertView.findViewById(R.id.rbtn_ok);
-//            holder.rbtn_ok.setBackgroundResource(R.drawable.btn_map_export_normal);
             holder.rbtn_ok.setTag(position);
 //            holder.rbtn_ok.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -106,14 +102,12 @@ public class ExportAdapter extends BaseAdapter {
         }else {
             holder.tv_size.setText((size/1024)+"MB");
         }
-//        holder.tv_category.setText(map.getResCategroyTwo());
         return convertView;
     }
 
     class ViewHolder {
         public ImageView image;
         public TextView tv_name;
-        //        public TextView tv_category;
         public TextView tv_time;
         public TextView tv_size;
         public ImageView rbtn_ok;
