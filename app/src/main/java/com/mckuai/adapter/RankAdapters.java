@@ -186,8 +186,10 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 holder.rk_tv.setText((position + 1) + "");
                 if (position == 0) {
                     holder.rk_tv.setBackgroundResource(R.drawable.map_one);
-                } else {
+                } else if (position < 9) {
                     holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+                } else {
+                    holder.rk_tv.setVisibility(View.GONE);
                 }
             } else {
                 holder.rk_tv.setVisibility(View.GONE);
@@ -255,8 +257,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         }
     }
 
-    public boolean getIsPaihang(){
-        return  isPaihang;
+    public boolean getIsPaihang() {
+        return isPaihang;
     }
 
 }

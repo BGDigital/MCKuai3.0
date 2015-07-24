@@ -3,7 +3,8 @@
     android:id="@+id/roots"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background_Grey">
 
     <include
         android:id="@+id/tit"
@@ -14,9 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tit"
-        android:background="@color/frame_darkgray"
+        android:background="@color/background_Grey"
         android:orientation="horizontal"
-        android:padding="@dimen/item_divider_height">
+        android:padding="5dp">
 
         <Button
             android:id="@+id/go_map"
@@ -76,7 +77,7 @@
             android:id="@+id/map_mymap_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/frame_darkgray"
+            android:divider="@color/background_Grey"
             android:dividerHeight="@dimen/item_height_interval"></ListView>
     </RelativeLayout>
 </RelativeLayout>

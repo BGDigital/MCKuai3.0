@@ -105,7 +105,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/map_one"
-        android:gravity="top|center|left"
+        android:gravity="top|left"
         android:text="1"
-        android:textColor="@color/font_white" />
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_small"/>
 </RelativeLayout>

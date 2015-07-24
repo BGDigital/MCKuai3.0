@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:background="@color/background_Grey"
         android:orientation="horizontal"
-        android:padding="@dimen/item_divider_height">
+        android:padding="5dp"
+        >
 
         <Button
             android:id="@+id/rb_map"
@@ -75,16 +76,17 @@
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/map_ed"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+        android:layout_below="@+id/map_ed"
+        android:visibility="gone"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout
         android:id="@+id/mp_r1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/map_ed"
         android:layout_weight="1"
         android:padding="@dimen/com_margin"
-        android:visibility="gone">
+        >
 
         <LinearLayout
             android:id="@+id/cf_l1"
