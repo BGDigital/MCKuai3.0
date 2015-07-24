@@ -56,7 +56,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
-//    private static Drawable drawable_left_button;
     private static Drawable drawable_right_button;
     private ArrayList<BaseFragment> mList;
     private boolean isFragmentChanged = false;
@@ -88,7 +87,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onDestroy() {
         super.onDestroy();
         application.mCache.saveCacheFile();
-        Intent intent = new Intent("com.mckuai.downloadservice");
+        Intent intent = new Intent();
+        intent.setAction("com.mckuai.downloadservice");
+        intent.setPackage(this.getPackageName());
         stopService(intent);
     }
 
@@ -226,18 +227,23 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             mySlidingMenu.toggle();
             return true;
         }
-        showAlert("退出", "是否退出麦块？", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (!mList.get(vp.getCurrentItem()).onBackKeyPressed()) {
+            showAlert("退出", "是否退出麦块？", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        }, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        return true;
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            return true;
+        }
+        else {
+            return true;
+        }
     }
 
     @Override

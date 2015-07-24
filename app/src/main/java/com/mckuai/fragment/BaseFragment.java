@@ -252,4 +252,8 @@ public class BaseFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public boolean onBackKeyPressed(){
+        return false;
+    }
+
 }
