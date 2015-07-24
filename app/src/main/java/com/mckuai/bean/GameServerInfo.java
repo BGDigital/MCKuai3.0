@@ -262,7 +262,7 @@ public class GameServerInfo implements Serializable {
     }
 
     public String getUserName() {
-        return userName;
+        return null == userName?"麦友":userName;
     }
 
     public void setUserName(String userName) {
