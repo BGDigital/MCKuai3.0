@@ -47,7 +47,6 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_title, tv_name, tv_nm, tv_category, tx_times, tv_tx;
     private ImageView btn_left, imag, btn_right;
     private com.mckuai.widget.ProgressButton dl;
-    private Context mContext;
     private ScrollView sv_v;
     private HorizontalScrollView sv_h;
     private AsyncHttpClient client;
@@ -321,7 +320,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     case 0:
                         Intent intent = new Intent();
                         intent.setAction("com.mckuai.downloadservice");
-                        intent.setPackage(mContext.getPackageName());
+                        intent.setPackage(this.getPackageName());
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("MAP", map);
                         intent.putExtras(bundle);
