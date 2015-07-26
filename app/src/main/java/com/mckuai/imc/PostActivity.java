@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Post;
 import com.mckuai.fragment.MCSildingMenu;
 import com.mckuai.widget.CustomShareBoard;
@@ -1272,6 +1273,15 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			case 6:
 				addInterface();
 				break;
+				case 7:
+					MCUser user = new MCUser();
+					user.setId(msg.arg1);
+					Intent intent = new Intent(PostActivity.this, UserCenter.class);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable(getString(R.string.user), user);
+					intent.putExtras(bundle);
+					startActivity(intent);
+					break;
 
 			default:
 				break;
