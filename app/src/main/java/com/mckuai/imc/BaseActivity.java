@@ -14,6 +14,8 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
 import com.gitonway.lee.niftynotification.lib.Effects;
 import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
+import com.loopj.android.http.RequestParams;
+import com.mckuai.utils.JsonCache;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
@@ -30,6 +32,7 @@ public class BaseActivity extends FragmentActivity {
     private com.gitonway.lee.niftynotification.lib.Configuration errorCfg;
     private LoadToast mToast;
     private Point mPoint;
+    private JsonCache mCache = MCkuai.getInstance().mCache;
 
     protected void setTitle(String title){
         if (null != title){
@@ -187,7 +190,73 @@ public class BaseActivity extends FragmentActivity {
         }
         mToast.setText(msg);
         mToast.show();
-        _mHander.sendEmptyMessageDelayed(1,15000);
+        _mHander.sendEmptyMessageDelayed(1, 15000);
+    }
+
+    /**
+     * 将数据缓存到缓存中
+     *
+     * @param url
+     *            数据所归属的url
+     * @param data
+     *            要缓存的数据
+     */
+    public void cacheData(String url, String data)
+    {
+        mCache.put(url, data);
+    }
+
+    /**
+     * 将数据缓存到缓存中
+     *
+     * @param url
+     *            数据所归属的url
+     * @param params
+     *            对应的请求参数
+     * @param data
+     *            要缓存的数据
+     */
+    public void cacheData(String url, RequestParams params, String data)
+    {
+        if (null == params)
+        {
+            mCache.put(url, data);
+        } else
+        {
+            mCache.put((url + "&" + params.toString()), data);
+        }
+    }
+
+    /**
+     * 从缓存中获取对应url缓存下来的数据
+     *
+     * @param url
+     *            要获取的数据对应的url
+     * @return 如果对应的url有缓存数据,则返回缓存数据,否则返回空
+     */
+    public String getData(String url)
+    {
+        return mCache.get(url);
+    }
+
+    /**
+     * 从缓存中获取对应url缓存下来的数据
+     *
+     * @param url
+     *            要获取的数据对应的url
+     * @param params
+     *            对应url的参数
+     * @return 如果对应的url有缓存数据,则返回缓存数据,否则返回空
+     */
+    public String getData(String url, RequestParams params)
+    {
+        if (null == params)
+        {
+            return mCache.get(url);
+        } else
+        {
+            return mCache.get((url + "&" + params.toString()));
+        }
     }
 
     protected  void cancleLodingToast(boolean isSuccess){
