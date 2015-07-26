@@ -2,9 +2,11 @@ package com.mckuai.adapter;
 
 import java.util.ArrayList;
 
+import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Post;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.PostActivity;
+import com.mckuai.imc.UserCenter;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.R;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
@@ -68,6 +71,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 				}
 			}
 		});
+        holder.rl_owner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag();
+                Post post = mPostList.get(position);
+                if (null != post){
+                    MCUser user = new MCUser();
+                    user.setId(post.getUserId());
+                    user.setName(post.getUserName());
+                    Intent intent = new Intent(mContext, UserCenter.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(mContext.getString(R.string.user),user);
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
 		return holder;
 	}
 
@@ -95,10 +115,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 
 			 holder.tv_title.setText(post.getTalkTitle()+"");
 			 holder.tv_owner.setText(post.getUserName()+"");
-			 holder.tv_reply.setText(post.getReplyNum()+"");
-			 holder.tv_time.setText(post.getLastReplyTime()+"");
-
+			 holder.tv_reply.setText(post.getReplyNum() + "");
+			 holder.tv_time.setText(post.getLastReplyTime() + "");
 			 holder.itemView.setTag(post);
+			 if (null != post.getHeadImg() && 10 < post.getHeadImg().length()){
+				 mLoader.displayImage(post.getHeadImg(),holder.iv_cover,options);
+			 }
+             holder.rl_owner.setTag(position);
 		 }
 	}
 
@@ -129,6 +152,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 		private ImageView iv_cover;
 		private ImageView iv_top;
 		private ImageView iv_essence;
+        private RelativeLayout rl_owner;
 
 		/**
 		 * @param itemView
@@ -144,8 +168,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>
 			tv_owner = (TextView) itemView.findViewById(R.id.tv_postOwner_bottom);
 			tv_reply = (TextView) itemView.findViewById(R.id.tv_postReply);
 			tv_time = (TextView) itemView.findViewById(R.id.tv_postrepayTime);
-
-
+            rl_owner=(RelativeLayout)itemView.findViewById(R.id.rl_bottom);
 		}
 
 
