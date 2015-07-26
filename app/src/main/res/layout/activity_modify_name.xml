@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_package_gray"
+    android:orientation="vertical"
+    tools:context=".ModifyNameActivity" >
+
+    <include layout="@layout/titlebar_comm" />
+
+    
+    
+    <RelativeLayout
+            android:id="@+id/rl_userNick"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_below="@id/rl_userCover"
+            android:layout_marginTop="@dimen/item_divider_height"
+            android:background="@color/background_white"
+            android:padding="@dimen/group_divider_height" >
+
+            <TextView
+                android:id="@+id/tv_mn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/com_padding"
+                android:paddingTop="@dimen/com_padding"
+                android:text="昵称"
+                android:textColor="@color/font_primary"
+                android:textSize="@dimen/font_dimen_title" />
+
+            <EditText
+                android:id="@+id/et_mn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@id/tv_nick"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_nick"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical|right"
+                android:hint="请输入昵称"
+                android:imeOptions="actionDone"
+                android:maxLength="24"
+                android:minWidth="160dp"
+                android:singleLine="true"
+                android:textColor="@color/font_secondary"
+                android:textSize="@dimen/font_dimen_title" />
+
+        </RelativeLayout>
+
+</LinearLayout>

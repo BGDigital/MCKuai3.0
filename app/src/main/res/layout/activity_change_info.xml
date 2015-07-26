@@ -1,0 +1,162 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_package_gray"
+    android:orientation="vertical"
+    tools:context=".ChangeInfoActivity" >
+
+    <include layout="@layout/titlebar_comm" />
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/item_divider_height"
+        android:layout_marginTop="@dimen/item_divider_height"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/rl_userCover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/background_top_bottom_frame"
+            android:padding="@dimen/group_divider_height" >
+
+            <com.mckuai.widget.CircleImageView
+                android:id="@+id/civ_UserHead"
+                android:layout_width="@dimen/element_usercover_height"
+                android:layout_height="@dimen/element_usercover_height"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/background_user_cover_default" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@id/civ_UserHead"
+                android:layout_alignTop="@id/civ_UserHead"
+                android:gravity="center_vertical"
+                android:text="头像"
+                android:textColor="@color/font_primary"
+                android:textSize="@dimen/font_dimen_title" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_userNick"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_below="@id/rl_userCover"
+            android:background="@color/background_white"
+            android:padding="@dimen/group_divider_height" >
+
+            <TextView
+                android:id="@+id/tv_nick"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:paddingBottom="@dimen/com_padding"
+                android:paddingTop="@dimen/com_padding"
+                android:text="昵称"
+                android:textColor="@color/font_primary"
+                android:textSize="@dimen/font_dimen_title" />
+
+            <EditText
+                android:id="@+id/edt_nick"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@id/tv_nick"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/tv_nick"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical|right"
+                android:hint="请输入昵称"
+                android:imeOptions="actionDone"
+                android:maxLength="24"
+                android:minWidth="160dp"
+                android:singleLine="true"
+                android:textColor="@color/font_secondary"
+                android:textSize="@dimen/font_dimen_title"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_nick_input"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_nick"
+                android:background="@color/background_white"
+                android:clickable="true"
+                android:gravity="center_vertical|right"
+                android:maxLength="24"
+                android:singleLine="true"
+                android:textColor="@color/font_secondary"
+                android:textSize="@dimen/font_dimen_title"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_userLocation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/item_height"
+            android:layout_below="@id/rl_userNick"
+            android:background="@drawable/background_top_bottom_frame"
+            android:padding="@dimen/group_divider_height" >
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="地区"
+                android:textColor="@color/font_primary"
+                android:textSize="@dimen/font_dimen_title" />
+
+            <TextView
+                android:id="@+id/tv_location_input"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_location"
+                android:background="@color/background_white"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="地区"
+                android:textColor="@color/font_secondary"
+                android:textSize="@dimen/font_dimen_title" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:background="@drawable/background_top_bottom_frame"
+        android:padding="@dimen/group_divider_height"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/tv_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="密码"
+            android:textColor="@color/font_primary"
+            android:textSize="@dimen/font_dimen_title" />
+
+        <TextView
+            android:id="@+id/tv_pwd_input"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:text="修改"
+            android:textColor="@color/font_secondary"
+            android:textSize="@dimen/font_dimen_title" />
+    </RelativeLayout>
+
+</LinearLayout>
