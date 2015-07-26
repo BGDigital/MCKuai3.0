@@ -28,6 +28,8 @@
     <dimen name="item_height">89dp</dimen>
     <dimen name="item_height_interval">6dp</dimen>
     <dimen name="item_padTB">12dp</dimen>
+    <dimen name="item_recommend_cove_height">144dp</dimen>
+    <dimen name="item_recommend_height">189dp</dimen>
     <!-- 二级菜单的高度 -->
     <dimen name="menu_height_lv2">53dp</dimen>
     <!-- 图文间距 -->
@@ -74,4 +76,19 @@
     <dimen name="item_ownerinfo_layout_height">33dp</dimen>
     <dimen name="item_ownerinfo_usercover_height">22dp</dimen>
     <dimen name="usercover_recommend_height">40dp</dimen>
+
+    <!-- 个人中心 -->
+    <dimen name="userinfo_usercenter_background_height">255dp</dimen>
+    <dimen name="userinfo_usercenter_layout_margin">40dp</dimen>
+    <dimen name="usercover_usercenter_height">80dp</dimen>
+    <dimen name="button_usercenter_height">43dp</dimen>
+    <dimen name="button_usercenter_weight">86dp</dimen>
+    <dimen name="button_usercenter_radius">21.5dp</dimen>
+    <dimen name="item_usercenter_height">87dp</dimen>
+    <dimen name="leve_usercenter_height">25dp</dimen>
+
+    <!-- 背包 -->
+    <dimen name="item_user_width">106dp</dimen>
+    <dimen name="item_user_height">131dp</dimen>
+    <dimen name="element_usercover_height">48dp</dimen>
 </resources>

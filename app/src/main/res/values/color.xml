@@ -30,6 +30,8 @@
     <color name="background_litegray">#C9C9C9</color>
     <color name="background_orange">#F5C41E</color>
     <color name="background_gray">#EEF0F2</color>
+    <color name="background_blck">#060E12</color>
+    <color name="background_package_gray">#EFF0F2</color>
 
     <!--通用色彩 -->
     <color name="white">#FFFFFF</color>

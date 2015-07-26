@@ -1,0 +1,336 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CircleImage="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/iv_usercenter_above_userinfo"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/background_blck" />
+
+        <ImageView
+            android:id="@+id/btn_Return"
+            android:layout_width="@dimen/button_left_width"
+            android:layout_height="@dimen/titlebar_button_height"
+            android:layout_marginTop="@dimen/com_margin"
+            android:paddingLeft="@dimen/com_margin"
+            android:paddingRight="@dimen/padding_right_button_left"
+            android:scaleType="center"
+            android:src="@drawable/btn_return_selector" />
+
+        <RelativeLayout
+            android:id="@+id/rl_userInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_Return"
+            android:layout_marginLeft="@dimen/com_margin"
+            android:layout_marginRight="@dimen/com_margin"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/btn_ShowSetting"
+                android:layout_width="@dimen/button_usercenter_height"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/userinfo_usercenter_layout_margin"
+                android:background="@drawable/btn_setting_uc" >
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/btn_Share"
+                android:layout_width="@dimen/button_usercenter_height"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/userinfo_usercenter_layout_margin"
+                android:background="@drawable/btn_share_uc" >
+            </ImageButton>
+
+            <com.mckuai.widget.CircleImageView
+                android:id="@+id/prg_UserHead"
+                android:layout_width="@dimen/usercover_usercenter_height"
+                android:layout_height="@dimen/usercover_usercenter_height"
+                android:layout_centerHorizontal="true"
+                CircleImage.text_color="@color/frame_green"
+                CircleImage:border_color="@color/background_white"
+                CircleImage:border_width="2dp"
+                CircleImage:progress_color="@color/frame_green"
+                CircleImage:start_point="-135"
+                CircleImage:text_size="6sp"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/background_user_cover_default" />
+
+            <TextView
+                android:id="@+id/tv_userLevel"
+                android:layout_width="@dimen/leve_usercenter_height"
+                android:layout_height="@dimen/leve_usercenter_height"
+                android:layout_alignLeft="@id/prg_UserHead"
+                android:layout_alignTop="@id/prg_UserHead"
+                android:layout_marginLeft="1.5dp"
+                android:layout_marginTop="1.5dp"
+                android:background="@drawable/background_item_user_level"
+                android:gravity="center"
+                android:text="lv.88"
+                android:textColor="@color/font_white"
+                android:textSize="8dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_userInfo"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/com_margin"
+            android:maxLength="16"
+            android:singleLine="true"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_dimen_big" />
+
+        <TextView
+            android:id="@+id/tv_UserLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_UserName"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/com_margin"
+            android:drawableLeft="@drawable/icon_location_white"
+            android:drawablePadding="@dimen/com_margin"
+            android:gravity="center"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_dimen_small"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_usercenter_height"
+            android:layout_below="@id/tv_UserLocation"
+            android:layout_marginBottom="@dimen/com_padding"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <com.mckuai.widget.MC_RadioButton
+                android:id="@+id/rb_Message"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:layout_weight="1" />
+
+            <View
+                android:id="@+id/v_divi_usercenter"
+                android:layout_width="1px"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:background="@color/frame_darkgray" />
+
+            <com.mckuai.widget.MC_RadioButton
+                android:id="@+id/rb_Dynamic"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:background="@color/frame_darkgray" />
+
+            <com.mckuai.widget.MC_RadioButton
+                android:id="@+id/rb_Post"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_usercenter_height"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_Message_Type"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_height_lv2"
+        android:layout_below="@id/rl_top"
+        android:layout_marginLeft="@dimen/com_margin"
+        android:layout_marginRight="@dimen/com_margin"
+        android:background="@drawable/background_top_bottom_frame"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rb_atMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/atMessage"
+            android:textColor="@color/radio_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/rb_systemMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/systemMessage"
+            android:textColor="@color/radio_textcolor_selector" />
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rg_Message_Type" >
+
+        <ImageView
+            android:id="@+id/v_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_empty" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v_empty"
+            android:gravity="center"
+            android:text="没有内容！" />
+    </RelativeLayout>
+
+    <com.mckuai.widget.XListView
+        android:id="@+id/lv_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/rg_Message_Type"
+        android:background="@color/background_white"
+        android:cacheColorHint="@color/background_white"
+        android:divider="@color/background_package_gray"
+        android:dividerHeight="@dimen/item_divider_height" />
+
+    <LinearLayout
+        android:id="@+id/ll_operator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_usercenter_height"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/background_btn_usercenter_action_layerlist"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/tv_addTopackage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:drawableLeft="@drawable/btn_addto_package"
+                android:drawablePadding="@dimen/com_margin"
+                android:gravity="center"
+                android:text="@string/addtoPackage"
+                android:textColor="@color/font_white"
+                android:textSize="@dimen/font_dimen_big"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/background_btn_usercenter_action_layerlist"
+            android:visibility="gone"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/tv_makechat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:drawableLeft="@drawable/btn_makechat"
+                android:drawablePadding="@dimen/com_margin"
+                android:gravity="center"
+                android:text="@string/makeChat"
+                android:textColor="@color/font_white"
+                android:textSize="@dimen/font_dimen_big"
+                android:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_quickreply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background_package_gray"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/com_padding"
+            android:layout_marginRight="@dimen/com_padding" >
+
+            <Button
+                android:id="@+id/btn_quickreply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:padding="@dimen/com_margin"
+                android:text="回复"
+                android:textColor="@color/font_secondary" />
+
+            <Button
+                android:id="@+id/btn_showpost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:padding="@dimen/com_margin"
+                android:text="显示原帖"
+                android:textColor="@color/font_secondary" />
+
+            <Button
+                android:id="@+id/btn_closereply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:padding="@dimen/com_margin"
+                android:text="取消"
+                android:textColor="@color/font_secondary" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/edt_quickreply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/com_padding"
+            android:layout_marginLeft="@dimen/com_margin"
+            android:layout_marginRight="@dimen/com_margin"
+            android:lines="3" />
+    </LinearLayout>
+
+</RelativeLayout>

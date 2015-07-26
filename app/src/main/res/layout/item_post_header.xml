@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/group_divider_height"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/background_live_div"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/com_margin"
+    android:paddingRight="@dimen/com_margin" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_div_post" />
+
+</RelativeLayout>

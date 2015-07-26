@@ -80,9 +80,25 @@
     <string name="interface_sendpost">interface.do?act=addTalk</string>
     <!-- 是否打赏或收藏 -->
     <string name="interface_getpostmark">interface.do?act=isCollect</string>
+    <!-- 个人中心接口，参数：id=用户id&page=&type=&messageType=    type{message（消息）,dynamic（动态）,work（作品）}; messageType{ system（系统）,reply（@）} -->
+    <string name="interface_userCenter">interface.do?act=center</string>
     <!-- 检查更新 -->
     <string name="interface_checkupgread">interface.do?act=androidUpdate</string>
     <string name="interface_qqlogin">interface.do?act=login</string>
+    <!-- 更新位置，参数：id=&addr= -->
+    <string name="interface_updateLocation">interface.do?act=updateAddr</string>
+    <!-- 更新昵称 -->
+    <string name="interface_update_userinfo">interface.do?act=saveUser</string>
+    <!-- 更新头像 -->
+    <string name="interface_update_cover">interface.do?act=headImg</string>
+    <!-- 关注用户接口，参数：ownerId=当前用户id&otherId=被关注的用户id -->
+    <string name="interface_fellowuser">interface.do?act=attention</string>
+    <!-- 取消关注用户 -->
+    <string name="interface_cancle_fellowuser">/interface.do?act=cancleAttention</string>
+    <!-- 用户是否被关注 -->
+    <string name="interface_getusermark">interface.do?act=isAttention</string>
+    <!-- quick reply -->
+    <string name="interface_quickreply">interface.do?act=addReplyByCenter</string>
 
     <item name="key_USERID" type="id"></item>
     <item name="key_FORUMID" type="id"></item>
@@ -151,9 +167,6 @@
     <string name="loginFail_type">返回的数据格式不正确,</string>
     <string name="loginFail_nouser">登录到QQ上时未能获取取用户信息，请重试!</string>
 
-
-    <string name="addr_hint">请选择</string>
-
     <!-- 更新-->
     <string name="download_failure">下载新版本失败 !</string>
     <string name="is_latest_version_label">你已经拥有最新版的麦块！</string>
@@ -163,4 +176,37 @@
     <string name="later_update_tip">Updating&#8230; (Submited when you\'r NOT on Wifi)</string>
     <string name="update">更新</string>
     <string name="ignore">忽略</string>
+
+    <!-- 上拉下拉 -->
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新</string>
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+    <string name="xlistview_header_last_time">上次更新：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="refreshloading">正在加载...</string>
+
+    <!-- 个人中心 -->
+    <string name="message">消息</string>
+    <string name="dynamic">动态</string>
+    <string name="post">作品</string>
+    <string name="allMessage">全部</string>
+    <string name="atMessage">\@你</string>
+    <string name="systemMessage">系统</string>
+    <string name="replyYou">回复你的帖子</string>
+    <string name="atYou">\@了你</string>
+    <string name="replyPost">回复了</string>
+    <string name="createPost">创造了</string>
+    <string name="userId">USER_ID</string>
+    <string name="user">USER_OBJECT</string>
+    <string name="addtoPackage">加入背包</string>
+    <string name="makeChat">和TA聊天</string>
+    <string name="preservation">保存</string>
+
+    <!-- 定位 -->
+    <string name="addrs">定位</string>
+    <string name="gps_addr">GPS定位城市</string>
+    <string name="addr_city">选择城市</string>
+    <string name="addr_city_start">网络定位</string>
+    <string name="addr_hint">请选择</string>
 </resources>
