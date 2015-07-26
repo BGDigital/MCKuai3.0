@@ -13,6 +13,7 @@ import com.lurencun.service.autoupdate.Version;
 import com.lurencun.service.autoupdate.internal.SimpleJSONParser;
 import com.mckuai.bean.MCUser;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.UserCenter;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -315,6 +316,13 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			if (!MCkuai.getInstance().isLogin())
 			{
 				callLogin();
+			}
+			else {
+				 intent = new Intent(getActivity(), UserCenter.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(getString(R.string.user),MCkuai.getInstance().getUser());
+				intent.putExtras(bundle);
+				getActivity().startActivity(intent);
 			}
 			break;
 
