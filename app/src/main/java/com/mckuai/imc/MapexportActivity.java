@@ -1,6 +1,5 @@
 package com.mckuai.imc;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -83,7 +82,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    protected ArrayList<String> getData(String dar) {
+    private ArrayList<String> getDataEx(String dar) {
         File[] files = new File(dar).listFiles();
         if (null == files || 0 == files.length) {
             return null;

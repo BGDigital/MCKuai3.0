@@ -83,7 +83,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
 
     }
 
-    protected ArrayList<String> getData(String dar) {
+    protected ArrayList<String> getDataEx(String dar) {
         File[] files = new File(dar).listFiles();
         if (null == files || 0 == files.length) {
             return null;

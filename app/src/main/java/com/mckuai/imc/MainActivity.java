@@ -358,7 +358,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         Intent intent = new Intent(this, LoginActivity.class);
                         startActivityForResult(intent, 1);
                     } else {
-                        mySlidingMenu.toggle();
+                        Intent intent = new Intent(this,UserCenter.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(getString(R.string.user),application.getUser());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
                 }
                 break;
