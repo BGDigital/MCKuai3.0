@@ -90,7 +90,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 final Map map = maps.get(position);
                 switch (map.getDownloadProgress()) {
                     case 0:
-                        MobclickAgent.onEvent(mContext,"downloadMap");
+                        MobclickAgent.onEvent(mContext, "downloadMap");
                         Intent intent = new Intent();
                         intent.setAction("com.mckuai.downloadservice");
                         intent.setPackage(mContext.getPackageName());
@@ -100,7 +100,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                         mContext.startService(intent);
                         break;
                     case 100:
-                        MobclickAgent.onEvent(mContext,"startGame_map");
+                        MobclickAgent.onEvent(mContext, "startGame_map");
                         String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                         MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         GameUntil.startGame(mContext);
@@ -114,7 +114,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         holder.btn_download_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MobclickAgent.onEvent(mContext,"startGame_map");
+                MobclickAgent.onEvent(mContext, "startGame_map");
                 int position = (int) v.getTag();
                 final Map map = maps.get(position);
                 String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
@@ -174,12 +174,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
             leixing = leixing.replace("|", " ");
             holder.tv_category.setText(leixing);
-            Long size = Long.parseLong(map.getResSize()) / 1024;
-            if (size < 1024) {
-                holder.tv_size.setText(size + "KB");
-            } else {
-                holder.tv_size.setText((size / 1024) + "MB");
-            }
+            holder.tv_size.setText(map.getResSize() + "MB");
             String time = map.getInsertTime().substring(map.getInsertTime().indexOf("-") + 1, map.getInsertTime().indexOf(" "));
             time = time.replace("-", "月");
             holder.tv_time.setText("更新时间：" + time + "日");
