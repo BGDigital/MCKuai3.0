@@ -163,6 +163,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 return;
             }
             holder.itemView.setTag(position);
+            if (2 == getItemViewType(position)){
+                holder.setIsRecyclable(false);
+            }
             if (null == loader) {
                 loader = ImageLoader.getInstance();
             }
@@ -185,6 +188,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     holder.rk_tv.setBackgroundResource(R.drawable.map_one);
                 } else if (position < 9) {
                     holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+
                 } else {
                     holder.rk_tv.setVisibility(View.GONE);
                 }
