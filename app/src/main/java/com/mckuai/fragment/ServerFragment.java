@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -28,6 +29,7 @@ import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.utils.GameUntil;
@@ -45,6 +47,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private UltimateRecyclerView serverListView;
     private UltimateRecyclerView serverTypeListView;
     private RelativeLayout rl_serverTypeLayout;
+    private LinearLayout ll_filter;
     private Spinner spinner;
     private AsyncHttpClient client;
     private MCkuai application;
@@ -58,6 +61,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private ServerAdapter adapter;
     private ServerTypeAdapter typeAdapter;
     private boolean isLoadmoreAlowed = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,6 +94,12 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             }
             showData();
         }
+        else {
+            isOrderByDownload=false;
+            if (null != ll_filter) {
+                setFiterLayoutView(true);
+            }
+        }
     }
 
     @Override
@@ -102,6 +112,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
         serverTypeListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverTypeList);
         rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
+        ll_filter = (LinearLayout)view.findViewById(R.id.ll_filter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         serverListView.setLayoutManager(manager);
 
@@ -161,13 +172,12 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (0 == position){
+                if (0 == position) {
                     serverType = null;
-                }
-                else {
+                } else {
                     serverType = type[position].trim();
                 }
-                if (null != serverInfos){
+                if (null != serverInfos) {
                     serverInfos.clear();
                 }
                 page = null;
@@ -182,6 +192,23 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         });
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
+        MainActivity.setOnclickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isOrderByDownload = false;
+                setFiterLayoutView(true);
+            }
+        },null);
+    }
+
+    private void  setFiterLayoutView(boolean isVisible){
+        MainActivity.setLeftButtonView(isOrderByDownload);
+        if (isVisible){
+            ll_filter.setVisibility(View.VISIBLE);
+        }
+        else {
+            ll_filter.setVisibility(View.GONE);
+        }
     }
 
     private void showData(){
@@ -207,7 +234,9 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void hideServerType(){
-        rl_serverTypeLayout.setVisibility(View.GONE);
+        if (null != rl_serverTypeLayout) {
+            rl_serverTypeLayout.setVisibility(View.GONE);
+        }
     }
 
     private void loadData(){
@@ -336,6 +365,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
         switch (v.getId()){
             case R.id.ll_serverType:
+                isOrderByDownload = false;
                 if (rl_serverTypeLayout.getVisibility() == View.GONE){
                     showServerType();
                 }
@@ -345,9 +375,11 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.ll_serverRank:
                 isOrderByDownload = !isOrderByDownload;
+                setFiterLayoutView(!isOrderByDownload);
                 if (null != page){
                 page.setPage(0);
                  }
+                serverType = null;
                 loadData();
                 break;
         }

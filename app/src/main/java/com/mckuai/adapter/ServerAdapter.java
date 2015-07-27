@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -138,7 +139,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
         TextView owner;
         //TextView state;
         //TextView userCount;
-        Button addToGame;
+        ImageButton addToGame;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -149,7 +150,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
             owner = (TextView)itemView.findViewById(R.id.tv_serverOwner);
             //state = (TextView)itemView.findViewById(R.id.tv_serverState);
             //userCount = (TextView)itemView.findViewById(R.id.tv_serverPlayerCount);
-            addToGame = (Button)itemView.findViewById(R.id.btn_addServer) ;
+            addToGame = (ImageButton)itemView.findViewById(R.id.btn_addServer) ;
         }
     }
 

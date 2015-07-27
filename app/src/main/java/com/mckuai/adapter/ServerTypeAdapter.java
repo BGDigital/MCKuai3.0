@@ -61,6 +61,23 @@ public class ServerTypeAdapter extends RecyclerView.Adapter<ServerTypeAdapter.Vi
 //            holder.icon.setImageResource();
             holder.name.setText(type);
             holder.itemView.setTag(type);
+            switch (type){
+                case "全部":
+                    holder.icon.setImageResource(R.drawable.icon_type_all);
+                break;
+                case "生存":
+                    holder.icon.setImageResource(R.drawable.icon_type_survival);
+                    break;
+                case "冒险":
+                    holder.icon.setImageResource(R.drawable.icon_type_decrypt);
+                    break;
+                case "创造":
+                    holder.icon.setImageResource(R.drawable.icon_type_create);
+                    break;
+                case "混合":
+                    holder.icon.setImageResource(R.drawable.icon_type_mix);
+                    break;
+            }
         }
     }
 
