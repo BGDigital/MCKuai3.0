@@ -111,11 +111,11 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     private void deleteMap() {
         if (null != selectedList && !selectedList.isEmpty() && null != downloadMap && !downloadMap.isEmpty()) {
             Iterator iterator = selectedList.iterator();
-            Integer position;
+            String resid ;
             while (iterator.hasNext()) {
-                position = (Integer) iterator.next();
-                if (position >= 0 && position < downloadMap.size()) {
-                    Map map = downloadMap.get(position);
+                resid = (String) iterator.next();
+                if (null != resid) {
+                    Map map = getMap(resid);
                     if (null != map) {
                         if (mapManager.delDownloadMap(map.getResId())) {
                             iterator.remove();
@@ -124,7 +124,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                     }
                 }
             }
-//            adapter.setchuancan(downloadMap);
+            adapter.setchuancan(downloadMap);
             if (!selectedList.isEmpty()) {
                 showNotification(1, "部分地图删除失败", R.id.detdleroot);
                 selectedList.clear();
@@ -132,6 +132,17 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
         } else {
             showNotification(1, "请先选择地图再删除", R.id.detdleroot);
         }
+    }
+
+    private Map getMap(String resid){
+        if (null != resid){
+            for (Map map :downloadMap){
+                if (map.getResId().equals(resid)){
+                    return map;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
