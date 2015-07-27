@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static ImageView btn_titlebar_left;
     private static ImageView btn_titlebar_right;
     private static Spinner sp_titlebar_spinner;
+    private static FrameLayout fl_leftBtn_background;
 
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
@@ -116,6 +118,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         ll2 = (LinearLayout) findViewById(R.id.rb2);
         ll3 = (LinearLayout) findViewById(R.id.rb3);
         ll4 = (LinearLayout) findViewById(R.id.rb4);
+        fl_leftBtn_background = (FrameLayout)findViewById(R.id.fl_background_left);
 
         tv_titlebar_title = (TextView) findViewById(R.id.tv_titlebar_title);
         btn_titlebar_left = (ImageView) findViewById(R.id.btn_titlebar_left);
@@ -409,14 +412,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public static void setLeftButtonView(boolean isShowreturns) {
         isShowreturn = isShowreturns;
         if (isShowreturn == true) {
-//            if (drawable_left_button == null) {
-//                drawable_left_button = btn_titlebar_left.getBackground();
-//            }
             btn_titlebar_left.setBackgroundColor(0x00000000);
+            fl_leftBtn_background.setBackgroundColor(0x00000000);
             btn_titlebar_left.setImageResource(R.drawable.btn_back);
         } else {
-            //btn_titlebar_left.setBackgroundDrawable(drawable_left_button);
             btn_titlebar_left.setImageResource(0x00000000);
+            fl_leftBtn_background.setBackgroundResource(R.drawable.background_circle_usericon);
             showUser();
         }
     }
