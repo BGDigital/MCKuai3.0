@@ -159,11 +159,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         MainActivity.setLeftButtonView(showleftbutton);
         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-        if (0 == mapadapters.getItemCount()) {
-            mapadapters.setData(mapList.getData());
-        } else {
-            mapadapters.notifyDataSetChanged();
-        }
+        mapadapters.setData(mapList.getData());
     }
 
     protected void initView() {
@@ -323,7 +319,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
-                MobclickAgent.onEvent(getActivity(),"mapRank");
+                MobclickAgent.onEvent(getActivity(), "mapRank");
                 searchContext = null;
                 l1.setVisibility(View.GONE);
                 tit.setText("地图排行");
@@ -337,7 +333,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 loadData();
                 break;
             case R.id.rb_classification:
-                MobclickAgent.onEvent(getActivity(),"mapType");
+                MobclickAgent.onEvent(getActivity(), "mapType");
                 tit.setText("地图分类");
                 if (null == maptype) {
                     if (mp_r1.getVisibility() == View.GONE) {
@@ -350,7 +346,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 }
                 break;
             case R.id.rb_mymap:
-                MobclickAgent.onEvent(getActivity(),"myMap");
+                MobclickAgent.onEvent(getActivity(), "myMap");
                 intent = new Intent(getActivity(), MymapActivity.class);
                 getActivity().startActivityForResult(intent, 1);
                 break;
@@ -379,7 +375,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图");
                 break;
             case R.id.btn_titlebar_right:
-                MobclickAgent.onEvent(getActivity(),"searchMap");
+                MobclickAgent.onEvent(getActivity(), "searchMap");
                 if (map_ed.getVisibility() == View.GONE) {
                     map_ed.setVisibility(View.VISIBLE);
                 } else {
@@ -433,9 +429,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         } else {
             params.put("kinds", mapType);
             if (listtype) {
-                params.put("orderFiled", orderFiled);
+                params.put("orderField", orderFiled);
             } else {
-                params.put("orderFiled", "DownNum");
+                params.put("orderField", "DownNum");
+                params.put("orderType", 1 + "");
             }
         }
         if (null != page) {
