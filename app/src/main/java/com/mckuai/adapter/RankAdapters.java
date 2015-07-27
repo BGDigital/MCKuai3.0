@@ -162,10 +162,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 holder.btn_download.setProgress(map.getDownloadProgress());
                 return;
             }
-            holder.itemView.setTag(position);
-            if (2 == getItemViewType(position)){
+         /*   if (2 == getItemViewType(position)){
                 holder.setIsRecyclable(false);
-            }
+            }*/
             if (null == loader) {
                 loader = ImageLoader.getInstance();
             }

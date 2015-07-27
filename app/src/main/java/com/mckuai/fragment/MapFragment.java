@@ -159,7 +159,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         MainActivity.setLeftButtonView(showleftbutton);
         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-        mapadapters.setData(mapList.getData());
+        if (0 == mapadapters.getItemCount()){
+            mapadapters.setData(mapList.getData());
+        }
+       else {
+            mapadapters.notifyDataSetChanged();
+        }
     }
 
     protected void initView() {
@@ -494,7 +499,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         showNotification(0, null == searchContext ? "此类型下暂无地图，显示所有地图！" : "没找到满足条件的地图，显示所有地图！", R.id.urv_mapList);
                         searchContext = null;
                         mapadapters.notifyDataSetChanged();
-                        totle();
+                        //totle();
                     }
                 } else {
                     showNotification(0, "加载数据错误！", R.id.urv_mapList);
