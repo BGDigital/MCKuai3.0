@@ -72,6 +72,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private long lastUpdateTime;
     private Boolean showleftbutton = false;
     private String maptype;
+    private Boolean listtype;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -151,6 +152,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         initReciver();
 
         if (null == mapList || null == mapList.getData() || null == page || 0 == page.getPage()) {
+            listtype = true;
             loadData();
             return;
         }
@@ -279,6 +281,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 //                    urv_mapList.setAdapter(mapadapters);
 //                    mapadapters.setOnItemClickListener(MapFragment.this);
                     tit.setText("地图");
+                    listtype = true;
                     searchContext = null;
                     loadData();
                     break;
@@ -306,6 +309,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 mapType = null;
                 mapList.getPageBean().setPage(0);
                 page = null;
+                listtype = false;
                 loadData();
                 break;
             case R.id.rb_classification:
@@ -401,7 +405,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             params.put("key", searchContext);
         } else {
             params.put("kinds", mapType);
-            params.put("orderFiled", "DownNum");
+            if (listtype) {
+                params.put("orderFiled", orderFiled);
+            } else {
+                params.put("orderFiled", "DownNum");
+            }
         }
         if (null != page) {
             params.put("page", page.getNextPage());
