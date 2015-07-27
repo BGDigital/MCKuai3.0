@@ -182,6 +182,13 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         tx_times.setText("时间：" + time + "日");
         tv_nm.setText("作者:" + map.getUploadMan());
         tv_tx.setText(Html.fromHtml(map.getDres() + ""));
+        String sizes;
+        Long size = Long.parseLong(map.getResSize()) / 1024;
+        if (size < 1024) {
+            sizes = size + "KB";
+        } else {
+            sizes = (size / 1024) + "MB";
+        }
         switch (downloadstate) {
             case 2:
                 dl.setText("导入");
@@ -191,7 +198,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 handler.sendMessage(handler.obtainMessage(0));
                 break;
             case 0:
-                dl.setText("下载" + "   " + (Long.parseLong(map.getResSize()) / 1024) + "KB");
+                dl.setText("下载" + "   " + sizes);
                 break;
             default:
                 break;
