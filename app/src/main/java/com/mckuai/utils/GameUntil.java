@@ -124,13 +124,18 @@ public class GameUntil {
      * @param context
      */
     public static void startGame(Context context){
-        mContext = context;
+        if (detectionIsGameInstalled(context)) {
+            mContext = context;
 
-        showStartHint(context);
+            showStartHint(context);
 
-        Message msg = new Message();
-        msg.what = 1;
-        handler.sendEmptyMessageDelayed(1, 1000);
+            Message msg = new Message();
+            msg.what = 1;
+            handler.sendEmptyMessageDelayed(1, 1000);
+        }
+        else {
+            Toast.makeText(context,"你还未安装有游戏，请先下载...",Toast.LENGTH_SHORT).show();
+        }
     }
 
     static Handler handler = new Handler(){
