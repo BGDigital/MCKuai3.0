@@ -62,7 +62,6 @@ public class ExportAdapter extends BaseAdapter {
         if (null == convertView) {
             convertView = mInflater.inflate(R.layout.item_export, null);
             holder = new ViewHolder();
-            holder.image = (ImageView) convertView.findViewById(R.id.image);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
             holder.tv_size = (TextView) convertView.findViewById(R.id.tv_size);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
@@ -106,7 +105,6 @@ public class ExportAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        public ImageView image;
         public TextView tv_name;
         public TextView tv_time;
         public TextView tv_size;
