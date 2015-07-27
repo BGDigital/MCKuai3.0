@@ -163,6 +163,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                     if (resId.equals(map.getResId())) {
                         dl.updateProgress(progress);
                         if (100 == progress) {
+                            updatadownnum(map.getId());
                             downloadstate = 2;
                             dl.setText("导入");
                             unregisterReceiver(recevier);
@@ -176,6 +177,26 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    protected void updatadownnum(int id) {
+        String url = getString(R.string.interface_domainName) + (R.string.interface_map_downnum) + "&" + id;
+        client.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("MapFragment", "" + throwable.getLocalizedMessage());
+            }
+        });
+    }
     private void showData() {
         if (null != map.getIcon() && 10 < map.getIcon().length()) {
             mLoader.displayImage(map.getIcon() + "", imag);
