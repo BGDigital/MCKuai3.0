@@ -587,6 +587,8 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		case R.id.ll_checkedType:
 			mTypeLayout_Checked.setVisibility(View.GONE);
 			mTypeLayout.setVisibility(View.VISIBLE);
+            mTypeLayout_Checked.setFocusable(true);
+            mTypeLayout_Checked.setFocusableInTouchMode(true);
 			break;
 
 		default:
@@ -680,9 +682,13 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				}
 				mSelectFroum = (RadioButton) buttonView;
 				mSelectFroum.setChecked(true);
-				ForumInfo froumInfo = (ForumInfo) mSelectFroum.getTag();
-				mTypeAdapter.show(froumInfo.getIncludeType());
+                ForumInfo forumInfo = (ForumInfo) mSelectFroum.getTag();
+                forumName = forumInfo.getName();
+				mTypeAdapter.show(forumInfo.getIncludeType());
 				((RadioButton) mPostType.getChildAt(0)).setChecked(true);
+                typeName = ((RadioButton) mPostType.getChildAt(0)).getText().toString();
+                tv_selectedForum.setText(forumName);
+                tv_selectedType.setText(typeName);
 				break;
 
 			case R.id.gv_type:
@@ -692,6 +698,10 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 				}
 				mSelectType = (RadioButton) buttonView;
 				mSelectType.setChecked(true);
+				typeName = buttonView.getText().toString();
+                mTypeLayout.setVisibility(View.GONE);
+                mTypeLayout_Checked.setVisibility(View.VISIBLE);
+                tv_selectedType.setText(typeName);
 				break;
 
 			default:
@@ -719,8 +729,8 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	public void onFocusChange(View v, boolean hasFocus)
 	{
 		// TODO Auto-generated method stub
-		tv_selectedForum.setText(forumName);
-		tv_selectedType.setText(typeName);
+		tv_selectedForum.setText(mSelectFroum.getText().toString());
+		tv_selectedType.setText(mSelectType.getText().toString());
 		mTypeLayout.setVisibility(View.GONE);
 		mTypeLayout_Checked.setVisibility(View.VISIBLE);
 	}
