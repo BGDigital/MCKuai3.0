@@ -15,16 +15,13 @@
         android:layout_marginRight="20dp"
         android:scaleType="fitXY"
         />
-    <Button
+    <ImageButton
         android:id="@+id/btn_addServer"
         android:layout_centerVertical="true"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/btn_circle_green_shape"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/font_dimen_small"
-        android:text="进入"
-        android:textColor="@color/green"
+        android:background="@drawable/btn_map_start"
         />
 
     <TextView

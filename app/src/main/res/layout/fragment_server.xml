@@ -7,115 +7,114 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <View
-        android:id="@+id/v_center"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"></View>
-
-    <LinearLayout
-        android:id="@+id/ll_serverRank"
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
-        android:layout_toLeftOf="@id/v_center"
-        android:background="@drawable/background_servarrand_shape"
-        android:clickable="true"
-        android:orientation="horizontal">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_filter"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/map_ranking"
-            android:layout_gravity="center_vertical" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:text="服务器排行"
-            android:textSize="@dimen/font_big"
-            android:textColor="@color/font_white" />
+            <LinearLayout
+                android:id="@+id/ll_serverRank"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/background_servarrand_shape"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:orientation="horizontal">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
-    <LinearLayout
-        android:id="@+id/ll_serverType"
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
-        android:layout_alignParentRight="true"
-        android:layout_margin="5dp"
-        android:layout_toRightOf="@id/v_center"
-        android:background="@drawable/background_servartype_shape"
-        android:clickable="true"
-        android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/map_ranking" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:gravity="center_vertical"
+                    android:text="服务器排行"
+                    android:textColor="@color/font_white"
+                    android:textSize="@dimen/font_big" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/map_classification"
-            android:layout_gravity="center_vertical" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:text="服务器分类"
-            android:textSize="@dimen/font_big"
-            android:textColor="@color/font_white" />
+            <LinearLayout
+                android:id="@+id/ll_serverType"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/background_servartype_shape"
+                android:clickable="true"
+                android:orientation="horizontal">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/map_classification" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center_vertical"
+                    android:text="服务器分类"
+                    android:textColor="@color/font_white"
+                    android:textSize="@dimen/font_big" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_serverList_Root"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/ll_serverRank"
-            android:layout_alignParentBottom="true"
-            >
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_filter">
+
             <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
                 android:id="@+id/urv_serverList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                ></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+                android:layout_height="match_parent">
+            </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
         </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/rl_serverType"
-            android:layout_alignTop="@id/rl_serverList_Root"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="260dp"
+            android:layout_alignTop="@id/rl_serverList_Root"
             android:background="@drawable/background_white_with_frame"
-            android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:paddingTop="20dp"
             android:visibility="gone">
+
             <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
                 android:id="@+id/urv_serverTypeList"
                 android:layout_width="match_parent"
@@ -124,7 +123,6 @@
             </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
         </RelativeLayout>
     </RelativeLayout>
-
 
 
 </FrameLayout>

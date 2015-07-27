@@ -15,6 +15,7 @@
         android:paddingRight="30dp">
 
         <FrameLayout
+            android:id="@+id/fl_background_left"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/background_circle_usericon"
