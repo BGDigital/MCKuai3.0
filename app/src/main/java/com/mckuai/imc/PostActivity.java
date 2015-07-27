@@ -950,6 +950,9 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							{
 								showNotification(1,"图片上传完成!",R.id.root);
 								isPicUpload = true;
+                                picsList.clear();
+                                mpics.removeAllViews();
+                                mpics.postInvalidate();
 								replyPost();
 								return;
 							}
