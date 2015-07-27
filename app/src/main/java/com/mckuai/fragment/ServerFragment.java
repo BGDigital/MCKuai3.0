@@ -192,6 +192,10 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         });
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
+
+    }
+
+    private void setLeftButtonListener(){
         MainActivity.setOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +219,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         if (!isShowCatche &&(isLoading || 2 != application.fragmentIndex)){
             return;
         }
+
+        setLeftButtonListener();
 
         if (null == serverInfos){
             loadData();

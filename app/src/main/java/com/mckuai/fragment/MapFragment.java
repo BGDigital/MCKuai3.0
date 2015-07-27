@@ -138,11 +138,16 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         super.onDestroy();
     }
 
+    private void setTitleBarButtonListener(){
+        MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
+    }
+
     private void showData() {
         if (application.fragmentIndex != 1) {
             Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
+        setTitleBarButtonListener();
         initReciver();
 
         if (null == mapList || null == mapList.getData() || null == page || 0 == page.getPage()) {
@@ -224,8 +229,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         cf_l6.setOnClickListener(this);
         leftButtonListener_myMaps = new onTitleButtonClickListener();
         rightButtonListener_myMaps = new onTitleButtonClickListener();
-        MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
-
     }
 
     private void initReciver() {
