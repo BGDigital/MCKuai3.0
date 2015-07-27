@@ -12,11 +12,7 @@
         android:paddingRight="20dp"
         android:paddingTop="@dimen/item_padTB">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="@dimen/fm_w"
-            android:layout_height="@dimen/fm_h"
-            android:background="@drawable/map_default" />
+
 
         <ImageView
             android:id="@+id/rbtn_ok"
@@ -30,10 +26,8 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/image"
             android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@id/rbtn_delete"
-            android:layout_toRightOf="@id/image"
             android:lines="1"
             android:text="地图名字"
             android:textSize="@dimen/font_big" />
@@ -43,9 +37,8 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/image"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/image"
+            android:layout_alignParentBottom="true"
             android:text="更新时间："
             android:textColor="@color/secondary"
             android:textSize="@dimen/font_small" />
@@ -55,7 +48,7 @@
             android:id="@+id/tv_size"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/image"
+            android:layout_alignBottom="@id/tv_time"
             android:layout_alignLeft="@id/rbtn_ok"
             android:layout_alignParentRight="true"
             android:layout_alignRight="@id/rbtn_ok"
