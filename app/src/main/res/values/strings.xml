@@ -56,6 +56,8 @@
     <string name="interface_map_search">map.do?act=search</string>
     <!-- 地图列表-->
     <string name="interface_map">map.do?act=list</string>
+    <!-- 地图下载次数增加 -->
+    <string name="interface_map_downnum">map.do?act=down</string>
     <!-- 服务器列表-->
     <string name="interface_serverlist">server.do?act=list</string>
     <!-- 服务器详情-->

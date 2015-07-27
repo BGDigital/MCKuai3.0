@@ -139,7 +139,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         super.onDestroy();
     }
 
-    private void setTitleBarButtonListener(){
+    private void setTitleBarButtonListener() {
         MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
     }
 
@@ -248,6 +248,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                     mapadapters.notifyDataSetChanged();
                                     lastUpdateTime = time;
                                     if (100 == progress) {
+                                        updatadownnum(map.getId());
                                         String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                                         if (!mapManager.importMap(filename)) {
                                             showNotification(0, "地图导入失败", R.id.urv_mapList);
@@ -264,6 +265,27 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
             getActivity().registerReceiver(recevier, filter);
         }
+    }
+
+    protected void updatadownnum(int id) {
+        String url = getString(R.string.interface_domainName) + (R.string.interface_map_downnum) + "&" + id;
+        client.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e("MapFragment", "" + throwable.getLocalizedMessage());
+            }
+        });
     }
 
     class onTitleButtonClickListener implements View.OnClickListener {
