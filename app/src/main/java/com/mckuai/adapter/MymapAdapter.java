@@ -90,12 +90,7 @@ public class MymapAdapter extends BaseAdapter {
         time = time.replace("-", "月");
         holder.tv_time.setText("更新时间：" + time + "日");
         holder.tv_name.setText(map.getViewName());
-        Long size = Long.parseLong(map.getResSize()) / 1024;
-        if (size < 1024) {
-            holder.tv_size.setText(size + "KB");
-        } else {
-            holder.tv_size.setText((size / 1024) + "MB");
-        }
+        holder.tv_size.setText(map.getResSize()+"MB");
         String leixing = map.getResCategroyTwo().substring(map.getResCategroyTwo().indexOf("|") + 1, map.getResCategroyTwo().length());
         leixing = leixing.replace("|", " ");
         if (null == loader) {
