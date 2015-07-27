@@ -351,10 +351,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_notificationDownloadProgress:
                 //安装游戏
                 String file = (String) v.getTag();
-                if (null ==file){
-                    rl_notification.setVisibility(View.INVISIBLE);
-                }else {
-                    installGame((String) v.getTag());
+                if (null != file){
+                    if (file.equals("false")){
+                        rl_notification.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        installGame((String) v.getTag());
+                    }
                 }
                 break;
             case R.id.rl_gameMode:
@@ -402,6 +405,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.btn_selectMap:
                 //选择地图
+                if (!checkGameVersion()){
+                    return;
+                }
                 if (null != worldInfos && !worldInfos.isEmpty()) {
                     if (View.VISIBLE == lv_mapList.getVisibility()) {
                         lv_mapList.setVisibility(View.GONE);
@@ -417,12 +423,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private boolean checkGameVersion(){
         if (!isGameVersionSupport ){
-            //showNotification(3, "暂不支持修改此版本，请下载游戏！", R.id.fl_root);
-           /* showAlert("提示", "暂时不支持此版本的游戏，请重新下载游戏。", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            }, null);*/
             showDownloadGame();
         }
         return isGameVersionSupport;
@@ -460,6 +460,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                     @Override
                     public void onDownloadFailed(int i, int i1, String s) {
+                        rl_notification.setTag("false");
                         tv_notification.setText("下载失败，请稍候再试！");
                     }
 
