@@ -506,13 +506,13 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			}
 			break;
 		case R.id.btn_addPic:
-//			MobclickAgent.onEvent(this, "addPic_Reply");
+			MobclickAgent.onEvent(this, "addPic_Reply");
 			Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			startActivityForResult(intent, GETPIC);
 			break;
 
 		case R.id.btn_rewardPost:
-//			MobclickAgent.onEvent(this, "rewardPost");
+			MobclickAgent.onEvent(this, "rewardPost");
 			rewardPost();
 			break;
 
@@ -529,77 +529,67 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			RequestParams params = new RequestParams();
 			params.put("userId", mApplication.getUser().getId());
 			params.put("talkId", post.getId());
-			mClient.post(url, params, new JsonHttpResponseHandler()
-			{
-				@Override
-				public void onStart()
-				{
-					// TODO Auto-generated method stub
-					super.onStart();
-					// showNotification("正在打赏楼主!");
-					popupLoadingToast("正在打赏楼主!");
-				}
+			mClient.post(url, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onStart() {
+                    // TODO Auto-generated method stub
+                    super.onStart();
+                    popupLoadingToast("正在打赏楼主!");
+                }
 
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
-				 * org.apache.http.Header[], org.json.JSONObject)
-				 */
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response)
-				{
-					// TODO Auto-generated method stub
-					super.onSuccess(statusCode, headers, response);
-					try
-					{
-						if (response.has("state") && response.getString("state").equalsIgnoreCase("ok"))
-						{
-							// showNotification("打赏成功！\n楼主获得了1个钻石");
-							Toast.makeText(PostActivity.this, "打赏成功！\n楼主获得了1个钻石", Toast.LENGTH_SHORT).show();
-							cancleLodingToast(true);
-							isReward = true;
-							setButtonFunction();
-							return;
-						} else
-						{
-							// showNotification("打赏失败！原因：" +
-							// response.getString("msg"));
-							Toast.makeText(PostActivity.this, "打赏失败！原因：" + response.getString("msg"),
-									Toast.LENGTH_SHORT).show();
-							cancleLodingToast(false);
-							return;
-						}
-					} catch (Exception e)
-					{
-						// TODO: handle exception
-					}
-					// showNotification("打赏失败！");
-					Toast.makeText(PostActivity.this, "打赏失败！", Toast.LENGTH_SHORT).show();
-					cancleLodingToast(false);
-				}
+                /*
+                 * (non-Javadoc)
+                 *
+                 * @see
+                 * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
+                 * org.apache.http.Header[], org.json.JSONObject)
+                 */
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // TODO Auto-generated method stub
+                    super.onSuccess(statusCode, headers, response);
+                    try {
+                        if (response.has("state") && response.getString("state").equalsIgnoreCase("ok")) {
+                            showNotification(1, "打赏成功！楼主获得了1个钻石", R.id.rl_post);
+//							Toast.makeText(PostActivity.this, "打赏成功！\n楼主获得了1个钻石", Toast.LENGTH_SHORT).show();
+                            cancleLodingToast(true);
+                            isReward = true;
+                            setButtonFunction();
+                            return;
+                        } else {
+                            showNotification(1, "打赏失败！", R.id.rl_post);
+//							Toast.makeText(PostActivity.this, "打赏失败！原因：" + response.getString("msg"),
+//									Toast.LENGTH_SHORT).show();
+                            cancleLodingToast(false);
+                            return;
+                        }
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                        e.printStackTrace();
+                    }
+                    showNotification(1, "打赏失败！", R.id.rl_post);
+//					Toast.makeText(PostActivity.this, "打赏失败！", Toast.LENGTH_SHORT).show();
+                    cancleLodingToast(false);
+                }
 
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * com.loopj.android.http.JsonHttpResponseHandler#onFailure(int,
-				 * org.apache.http.Header[], java.lang.String,
-				 * java.lang.Throwable)
-				 */
-				@Override
-				public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
-				{
-					// TODO Auto-generated method stub
-					super.onFailure(statusCode, headers, responseString, throwable);
-					// showNotification("操作失败！原因：" +
-					// throwable.getLocalizedMessage());
-					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
-							.show();
-					cancleLodingToast(false);
-				}
-			});
+                /*
+                 * (non-Javadoc)
+                 *
+                 * @see
+                 * com.loopj.android.http.JsonHttpResponseHandler#onFailure(int,
+                 * org.apache.http.Header[], java.lang.String,
+                 * java.lang.Throwable)
+                 */
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    // TODO Auto-generated method stub
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                    showNotification(1, "操作失败！", R.id.rl_post);
+//					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
+//							.show();
+                    cancleLodingToast(false);
+                }
+            });
 		} else
 		{
 			callLogin(REWARD_POST);
@@ -667,7 +657,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 								Toast.makeText(PostActivity.this, "操作失败!", Toast.LENGTH_LONG).show();
 								cancleLodingToast(false);
 								return;
-								// showNotification("自动收获机器已经收获过此帖了!");
 							}
 						} catch (JSONException e)
 						{
@@ -675,8 +664,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							e.printStackTrace();
 							cancleLodingToast(false);
 							// showNotification("自动收获机器被熊孩子玩坏了!");
-							Toast.makeText(PostActivity.this, "收割机器被熊孩子玩坏了,OP正在收拾他们!" + e.getLocalizedMessage(),
-									Toast.LENGTH_SHORT).show();
+                            showNotification(1, "操作失败！", R.id.rl_post);
 						}
 					}
 				}
@@ -687,10 +675,9 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					// TODO Auto-generated method stub
 					super.onFailure(statusCode, headers, responseString, throwable);
 					cancleLodingToast(false);
-					// showNotification("惨遭核弹洗礼,服主正在哭泣中!\n" +
-					// throwable.getLocalizedMessage());
-					Toast.makeText(PostActivity.this, "收藏失败，原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
-							.show();
+//					Toast.makeText(PostActivity.this, "收藏失败，原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
+//							.show();
+                    showNotification(1, "收藏失败！", R.id.rl_post);
 				}
 			});
 		} else
@@ -821,8 +808,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 						}
 					}
-					Toast.makeText(PostActivity.this, "发送失败，请重试！", Toast.LENGTH_SHORT).show();
-					// showNotification("发送失败，请重试！");
+                    showNotification(1, "发送失败，请重试！", R.id.rl_post);
+//					Toast.makeText(PostActivity.this, "发送失败，请重试！", Toast.LENGTH_SHORT).show();
 					cancleLodingToast(false);
 				}
 
@@ -839,8 +826,9 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				{
 					// TODO Auto-generated method stub
 					super.onFailure(statusCode, headers, responseString, throwable);
-					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
-							.show();
+                    showNotification(1, "发送失败，请重试！", R.id.rl_post);
+//					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
+//							.show();
 					cancleLodingToast(false);
 				}
 			});
@@ -867,7 +855,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			BitmapFactory.decodeFile(picturePath, opts);
 			opts.inSampleSize = computeSampleSize(opts, -1, 1080 * 700);
 			opts.inJustDecodeBounds = false;
-			Bitmap bmp = null;
+			final Bitmap bmp;
 			try
 			{
 				bmp = BitmapFactory.decodeFile(picturePath, opts);
@@ -882,13 +870,29 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			}
 			picsList.add(bmp);
 
-			ImageView image = new ImageView(PostActivity.this);
+			final ImageView image = new ImageView(PostActivity.this);
 			LayoutParams params = (LayoutParams) btn_pic.getLayoutParams();
 			params.width = btn_pic.getWidth();
 			params.height = btn_pic.getHeight();
 			image.setScaleType(ScaleType.CENTER_CROP);
 			image.setLayoutParams(params);
 			image.setImageBitmap(bmp);
+            image.setClickable(true);
+            image.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (null != mpics && mpics.getChildCount() > 0){
+                        mpics.removeView(image);
+                        picsList.remove(bmp);
+                        mpics.postInvalidate();
+                        if (mpics.getChildCount() < 4){
+                            btn_pic.setVisibility(View.VISIBLE);
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
 			int count = mpics.getChildCount();
 			if (4 == count)
 			{

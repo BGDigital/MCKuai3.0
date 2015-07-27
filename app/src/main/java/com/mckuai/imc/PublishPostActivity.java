@@ -116,7 +116,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 	{
 		// TODO Auto-generated method stub
 		super.onResume();
-//		MobclickAgent.onPageStart("发帖");
+		MobclickAgent.onPageStart("发帖");
 		if (null == mFroums)
 		{
 			initView();
@@ -178,7 +178,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		btn_publish.setVisibility(View.VISIBLE);
 		btn_pic.setOnClickListener(this);
 		tv_Title.setText(getString(R.string.publishpost));
-//		initSlidingMenu();
+		initSlidingMenu();
 	}
 
 	private void initSlidingMenu()
@@ -615,7 +615,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			BitmapFactory.decodeFile(picturePath, opts);
 			opts.inSampleSize = computeSampleSize(opts, -1, 128 * 128);
 			opts.inJustDecodeBounds = false;
-			Bitmap bmp = null;
+			final Bitmap bmp;
 			try
 			{
 				bmp = BitmapFactory.decodeFile(picturePath, opts);
@@ -632,14 +632,29 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 			picsList.add(bmp);
 
 			// 将图片贴到imageview
-			ImageView image = new ImageView(PublishPostActivity.this);
+			final ImageView image = new ImageView(PublishPostActivity.this);
 			LayoutParams params = (LayoutParams) btn_pic.getLayoutParams();
 			params.width = btn_pic.getWidth();
 			params.height = btn_pic.getHeight();
 			image.setScaleType(ScaleType.CENTER_CROP);
 			image.setLayoutParams(params);
 			image.setImageBitmap(bmp);
-
+			image.setClickable(true);
+			image.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					if (null != mpics && mpics.getChildCount() > 0) {
+						mpics.removeView(image);
+						picsList.remove(bmp);
+						mpics.postInvalidate();
+						if (mpics.getChildCount() < 4) {
+							btn_pic.setVisibility(View.VISIBLE);
+						}
+						return true;
+					}
+					return false;
+				}
+			});
 			if (4 == picsList.size())
 			{
 				btn_pic.setVisibility(View.GONE);
