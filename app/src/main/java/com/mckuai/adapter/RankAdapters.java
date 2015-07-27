@@ -21,6 +21,7 @@ import com.mckuai.utils.MCMapManager;
 import com.mckuai.widget.fabbutton.FabButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 final Map map = maps.get(position);
                 switch (map.getDownloadProgress()) {
                     case 0:
+                        MobclickAgent.onEvent(mContext,"downloadMap");
                         Intent intent = new Intent();
                         intent.setAction("com.mckuai.downloadservice");
                         intent.setPackage(mContext.getPackageName());
@@ -98,10 +100,9 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                         mContext.startService(intent);
                         break;
                     case 100:
+                        MobclickAgent.onEvent(mContext,"startGame_map");
                         String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                         MCMapManager mapManager = MCkuai.getInstance().getMapManager();
-//                        mapManager.importMap(filename);
-//                        Toast.makeText(mContext, "地图导入完成", Toast.LENGTH_SHORT).show();
                         GameUntil.startGame(mContext);
                         break;
                     default:
@@ -113,15 +114,14 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         holder.btn_download_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(mContext,"startGame_map");
                 int position = (int) v.getTag();
                 final Map map = maps.get(position);
                 String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                 MCMapManager mapManager = MCkuai.getInstance().getMapManager();
-//                mapManager.importMap(filename);
                 if (!mapManager.importMap(filename)) {
                     Toast.makeText(mContext, "导入失败", Toast.LENGTH_SHORT).show();
                 } else {
-//                Toast.makeText(mContext, "地图导入完成", Toast.LENGTH_SHORT).show();
                     GameUntil.startGame(mContext);
                 }
             }

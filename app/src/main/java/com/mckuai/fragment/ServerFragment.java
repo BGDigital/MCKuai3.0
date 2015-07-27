@@ -34,6 +34,7 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.utils.GameUntil;
 import com.mckuai.utils.ParseResponse;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -71,6 +72,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             view = inflater.inflate(R.layout.fragment_server, container, false);
             //initView();
         }
+        setmTitle("联机");
         application = MCkuai.getInstance();
         type = getResources().getStringArray(R.array.server_Type);
         return view;
@@ -371,6 +373,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
         switch (v.getId()){
             case R.id.ll_serverType:
+                MobclickAgent.onEvent(getActivity(),"serverType");
                 isOrderByDownload = false;
                 if (rl_serverTypeLayout.getVisibility() == View.GONE){
                     showServerType();
@@ -380,6 +383,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 }
                 break;
             case R.id.ll_serverRank:
+                MobclickAgent.onEvent(getActivity(),"serverRank");
                 isOrderByDownload = !isOrderByDownload;
                 setFiterLayoutView(!isOrderByDownload);
                 if (null != page){
@@ -408,6 +412,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void afterServerInfoAdded() {
+        MobclickAgent.onEvent(getActivity(),"startGame_server");
         GameUntil.startGame(getActivity());
     }
 }

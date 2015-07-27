@@ -22,6 +22,7 @@ import com.mckuai.bean.WorldInfo;
 import com.mckuai.io.xml.MaterialIconLoader;
 import com.mckuai.io.xml.MaterialLoader;
 import com.mckuai.material.Material;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -56,10 +57,17 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("游戏背包管理");
         if (null == itemListView){
             initView();
         }
         showData();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("游戏背包管理");
+        super.onPause();
     }
 
     private void showData(){
@@ -145,6 +153,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.btn_submitItem:
+                MobclickAgent.onEvent(this,"changeItem");
                 changeItemCountView.setVisibility(View.GONE);
                 itemStack.setAmount(sb_itemCountPeeker.getProgress());
                 adapter.updateInventory(itemStack);

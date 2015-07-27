@@ -28,6 +28,7 @@ import com.mckuai.bean.PostBaen;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.PublishPostActivity;
 import com.mckuai.imc.R;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -70,11 +71,13 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
             view = inflater.inflate(R.layout.fragment_forum, container, false);
             page = new PageInfo();
         }
+        setmTitle("社区");
         return view;
     }
 
     @Override
     public void onResume() {
+
         super.onResume();
         if (null == mPostListView) {
             initView();
@@ -407,6 +410,7 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
     public void onClick(View v) {
         switch (v.getId()){
             case  R.id.btn_titlebar_right:
+                MobclickAgent.onEvent(getActivity(),"showPublishPost");
                 if (null != mForums && !mForums.isEmpty()) {
                     Intent intent = new Intent(getActivity(), PublishPostActivity.class);
                     Bundle bundle = new Bundle();

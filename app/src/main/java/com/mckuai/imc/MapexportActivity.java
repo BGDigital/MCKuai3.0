@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.mckuai.adapter.MapExportAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.utils.MCMapManager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,11 +51,18 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("导出地图");
         if (null == mapManager) {
             mapManager = MCkuai.getInstance().getMapManager();
             initview();
         }
         showData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("导出地图");
     }
 
     @Override
@@ -144,6 +152,7 @@ public class MapexportActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_go:
+                MobclickAgent.onEvent(this,"exportMaps");
                 daochumap();
 //                mapManager.exportMap(chuancan.get);
                 break;

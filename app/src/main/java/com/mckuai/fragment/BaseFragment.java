@@ -16,6 +16,7 @@ import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.utils.JsonCache;
+import com.umeng.analytics.MobclickAgent;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
@@ -36,6 +37,18 @@ public class BaseFragment extends android.support.v4.app.Fragment {
     private com.gitonway.lee.niftynotification.lib.Configuration warningCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration errorCfg;
     private JsonCache mCache = MCkuai.getInstance().mCache;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(mTitle);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(mTitle);
+    }
 
     /**
      * 显示通知

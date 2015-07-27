@@ -24,11 +24,13 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Map;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
+import com.mckuai.utils.GameUntil;
 import com.mckuai.utils.MCMapManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
@@ -84,6 +86,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("地图详细");
         checkState();
         mLoader = ImageLoader.getInstance();
 
@@ -99,6 +102,12 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         } else {
             showNotification(3, "未获取到地图信息,请返回!", R.id.details);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("地图详细");
     }
 
     @Override
@@ -324,6 +333,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                 String filename = downloadDir + map.getFileName();
                 switch (downloadstate) {
                     case 0:
+                        MobclickAgent.onEvent(this,"downloadMap_mapDetail");
                         Intent intent = new Intent();
                         intent.setAction("com.mckuai.downloadservice");
                         intent.setPackage(this.getPackageName());
@@ -334,12 +344,14 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
                         dl.setText("正在下载");
                         break;
                     case 2:
-                        MCMapManager mapManager = MCkuai.getInstance().getMapManager();
+                        MobclickAgent.onEvent(this,"startGame_mapDetail");
+                        GameUntil.startGame(this);
+                        /*MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         if (!mapManager.importMap(filename)) {
                             Toast.makeText(this, "游戏导入失败", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(this, "游戏导入成功", Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                         break;
                 }
                 break;

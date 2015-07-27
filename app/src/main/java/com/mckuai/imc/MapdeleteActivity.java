@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.mckuai.adapter.DeletemapAdtpter;
 import com.mckuai.bean.Map;
 import com.mckuai.utils.MCMapManager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,12 +40,19 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
     }
 
     protected void onResume() {
+        MobclickAgent.onPageStart("删除地图");
         super.onResume();
         if (null == mapManager) {
             mapManager = MCkuai.getInstance().getMapManager();
             initview();
         }
         showData();
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("删除地图");
+        super.onPause();
     }
 
     @Override
@@ -93,7 +101,7 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.bt_deteled:
-
+                MobclickAgent.onEvent(this,"deleteMaps",null == selectedList ? 0:selectedList.size());
                 deleteMap();
                 break;
             case R.id.go_map:

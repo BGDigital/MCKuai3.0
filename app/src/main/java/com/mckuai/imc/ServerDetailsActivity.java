@@ -19,6 +19,7 @@ import com.mckuai.utils.ServerEditer;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
 
@@ -60,6 +61,7 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("联机详情");
         if (null == iv_cover){
             initView();
         }
@@ -69,6 +71,12 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
         else {
             showNotification(3,"未获取到服务器信息,请返回!",R.id.rl_serverBasicInfo);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        MobclickAgent.onPageEnd("联机详情");
+        super.onPause();
     }
 
     private void initView(){
@@ -222,15 +230,19 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
                 shareService();
                 break;
             case R.id.btn_copyQQGroup:
+                MobclickAgent.onEvent(this,"copyServerGroup");
                 copyServerInfoToClip(0);
                 break;
             case R.id.btn_copyServerIp:
+                MobclickAgent.onEvent(this,"copyServerInfo");
                 copyServerInfoToClip(1);
                 break;
             case R.id.btn_copyServerPort:
+                MobclickAgent.onEvent(this,"copyServerInfo");
                 copyServerInfoToClip(2);
                 break;
             case R.id.btn_addServer:
+                MobclickAgent.onEvent(this,"startGame_serverDetail");
                 addAndRunGame();
                 break;
         }

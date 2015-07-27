@@ -27,6 +27,7 @@ import com.mckuai.utils.OptionUntil;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_game_editer, container, false);
         }
-
+        setmTitle("修改器");
         return view;
     }
 
@@ -350,6 +351,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.rl_notificationDownloadProgress:
                 //安装游戏
+                MobclickAgent.onEvent(getActivity(),"installGame");
                 String file = (String) v.getTag();
                 if (null != file){
                     if (file.equals("false")){
@@ -362,6 +364,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rl_gameMode:
                 //修改游戏模式
+                MobclickAgent.onEvent(getActivity(),"switchGameMode");
                 if (!checkGameVersion()){
                     return;
                 }
@@ -373,6 +376,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rl_gameTime:
                 //切换日夜
+                MobclickAgent.onEvent(getActivity(),"switchTime");
                 if (!checkGameVersion()){
                     return;
                 }
@@ -384,6 +388,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.rl_thirdView:
+                MobclickAgent.onEvent(getActivity(),"switchView");
                 //切换第三人称和第一人称
                 if (worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchView();
@@ -394,6 +399,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rl_gamePackage:
                 //修改背包
+                MobclickAgent.onEvent(getActivity(),"showPackage");
                 if (!checkGameVersion()){
                     return;
                 }
@@ -401,10 +407,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.btn_startGame:
                 //运行游戏
+                MobclickAgent.onEvent(getActivity(),"startGame_tool");
                 startGame();
                 break;
             case R.id.btn_selectMap:
                 //选择地图
+                MobclickAgent.onEvent(getActivity(),"selectMap");
                 if (!checkGameVersion()){
                     return;
                 }
@@ -439,6 +447,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (isDownloadGame){
             return;
         }
+        MobclickAgent.onEvent(getActivity(),"showDownloadGame");
         showAlert("提示", "为了更好的体验游戏，请下载《我的世界0.10.5》\n是否立即下载游戏？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -447,6 +456,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(getActivity(),"downloadGame");
                 String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
                 final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
                 mDlManager = new ThinDownloadManager(1);
@@ -468,8 +478,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     public void onProgress(int i, long l, int i1) {
                         progressBar.setProgress(i1);
                     }
-                }) ;
-                if(mDlManager.add(request) > 0){
+                });
+                if (mDlManager.add(request) > 0) {
                     rl_notification.setVisibility(View.VISIBLE);
                 }
                 isDownloadGame = true;

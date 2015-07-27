@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.mckuai.adapter.MapImportAdapter;
 import com.mckuai.bean.Map;
 import com.mckuai.utils.MCMapManager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("导出地图");
         if (null == mapManager) {
             mapManager = MCkuai.getInstance().getMapManager();
 
@@ -53,6 +55,12 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
 
         showData();
         curmap = mapManager.getCurrentMapDirList();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("导出地图");
     }
 
     @Override
@@ -132,6 +140,7 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.bt_go:
+                MobclickAgent.onEvent(this,"importMaps");
                 if (namefile == null) {
                     showNotification(1, "请选择文件", R.id.import_tit);
                 } else {

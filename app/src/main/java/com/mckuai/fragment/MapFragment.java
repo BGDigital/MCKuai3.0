@@ -39,6 +39,7 @@ import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.utils.MCMapManager;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -83,7 +84,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         tit = MainActivity.gettitle();
         btn_right_view = application.getBtn_publish();
 //        application = MCkuai.getInstance();
-
+        setmTitle("地图");
         return view;
     }
 
@@ -322,6 +323,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
+                MobclickAgent.onEvent(getActivity(),"mapRank");
                 searchContext = null;
                 l1.setVisibility(View.GONE);
                 tit.setText("地图排行");
@@ -335,6 +337,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 loadData();
                 break;
             case R.id.rb_classification:
+                MobclickAgent.onEvent(getActivity(),"mapType");
                 tit.setText("地图分类");
                 if (null == maptype) {
                     if (mp_r1.getVisibility() == View.GONE) {
@@ -347,6 +350,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 }
                 break;
             case R.id.rb_mymap:
+                MobclickAgent.onEvent(getActivity(),"myMap");
                 intent = new Intent(getActivity(), MymapActivity.class);
                 getActivity().startActivityForResult(intent, 1);
                 break;
@@ -375,6 +379,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图");
                 break;
             case R.id.btn_titlebar_right:
+                MobclickAgent.onEvent(getActivity(),"searchMap");
                 if (map_ed.getVisibility() == View.GONE) {
                     map_ed.setVisibility(View.VISIBLE);
                 } else {
