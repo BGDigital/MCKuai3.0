@@ -266,8 +266,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            WorldInfo world = MCkuai.getInstance().world;
-            if (null != world) {
+            WorldInfo world = worldInfos.get(curWorldIndex);
+            if (null != world && null != world.getPlayer()) {
                 worldInfos.get(curWorldIndex).getPlayer().setInventory(world.getInventory());
                 updateWorldInfo();
             }
