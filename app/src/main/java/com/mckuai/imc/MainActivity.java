@@ -24,6 +24,7 @@ import com.mckuai.fragment.ServerFragment;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -77,22 +78,21 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         initPage();
         initSlidingMenu();
         mHandler.sendMessageDelayed(mHandler.obtainMessage(1), 1500);
+        MobclickAgent.updateOnlineConfig(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart(this.getClass().getName());
         showUser();
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        application.mCache.saveCacheFile();
-        Intent intent = new Intent();
-        intent.setAction("com.mckuai.downloadservice");
-        intent.setPackage(this.getPackageName());
-        stopService(intent);
+
     }
 
     public static void setOnclickListener(View.OnClickListener leftButtonListener, View.OnClickListener rightButtonListener) {
@@ -239,7 +239,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             }, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    application.mCache.saveCacheFile();
+                    Intent intent = new Intent();
+                    intent.setAction("com.mckuai.downloadservice");
+                    intent.setPackage(MainActivity.this.getPackageName());
+                    stopService(intent);
+                    MobclickAgent.onKillProcess(MainActivity.this);
+                    System.exit(0);
                 }
             });
             return true;

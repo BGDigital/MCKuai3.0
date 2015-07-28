@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mckuai.imc"
+    android:versionCode="9"
+    android:versionName="3.0"
     >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,11 +29,7 @@
         android:resizeable="true"
         android:smallScreens="true" />
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
+    <!-- 修改渠道的时候，需要同时修改此处的label和友盟统计渠道 -->
     <application
         android:name=".MCkuai"
         android:allowBackup="true"

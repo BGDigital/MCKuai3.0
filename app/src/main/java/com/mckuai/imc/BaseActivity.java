@@ -2,8 +2,10 @@ package com.mckuai.imc;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -16,6 +18,7 @@ import com.gitonway.lee.niftynotification.lib.Effects;
 import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.utils.JsonCache;
+import com.umeng.analytics.MobclickAgent;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
@@ -33,6 +36,24 @@ public class BaseActivity extends FragmentActivity {
     private LoadToast mToast;
     private Point mPoint;
     private JsonCache mCache = MCkuai.getInstance().mCache;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     protected void setTitle(String title){
         if (null != title){
