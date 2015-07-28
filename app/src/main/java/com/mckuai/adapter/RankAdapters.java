@@ -197,7 +197,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             if (map.isDownload()) {
                 holder.btn_download.setProgress(100);
                 holder.btn_download_image.setVisibility(View.VISIBLE);
-                holder.btn_download.setVisibility(View.GONE);
+                holder.btn_download.setVisibility(View.INVISIBLE);
             } else {
                 holder.btn_download_image.setVisibility(View.GONE);
                 holder.btn_download.setProgress(map.getDownloadProgress());
