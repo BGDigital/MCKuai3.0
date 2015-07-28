@@ -159,10 +159,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         MainActivity.setLeftButtonView(showleftbutton);
         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-        if (0 == mapadapters.getItemCount()){
+        if (0 == mapadapters.getItemCount()) {
             mapadapters.setData(mapList.getData());
-        }
-       else {
+        } else {
             mapadapters.notifyDataSetChanged();
         }
     }
@@ -501,6 +500,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         searchContext = null;
                         mapadapters.notifyDataSetChanged();
                         //totle();
+                        whole();
                     }
                 } else {
                     showNotification(0, "加载数据错误！", R.id.urv_mapList);
@@ -616,6 +616,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         loadData();
     }
 
+    protected void whole() {
+        mapType = null;
+        mapList.getData().clear();
+        mapList.getPageBean().setPage(0);
+        page = null;
+        loadData();
+    }
 
     @Override
     public void onItemClick(Map mapinfo) {
