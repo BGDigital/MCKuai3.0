@@ -22,6 +22,7 @@ public class WorldInfo implements Serializable{
     private Player player;                            //角色信息，优先来自数据库，如果没有再从level.dat中取
     private Level level;                                 //
     private long size;                                   //存档大小
+    private int mapVersion;                         //地图版本，如果仅有level.dat则认为是
 //    private boolean isSaveInDB;                   //是否是从数据库中获取的
 
     private final String TAG = "WorldInfo";
