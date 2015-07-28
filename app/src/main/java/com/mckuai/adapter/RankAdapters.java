@@ -180,20 +180,20 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             String time = map.getInsertTime().substring(map.getInsertTime().indexOf("-") + 1, map.getInsertTime().indexOf(" "));
             time = time.replace("-", "月");
             holder.tv_time.setText("更新时间：" + time + "日");
-            if (isPaihang) {
-                holder.rk_tv.setVisibility(View.VISIBLE);
-                holder.rk_tv.setText((position + 1) + "");
-                if (position == 0) {
-                    holder.rk_tv.setBackgroundResource(R.drawable.map_one);
-                } else if (position < 9) {
-                    holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
-
-                } else {
-                    holder.rk_tv.setVisibility(View.GONE);
-                }
-            } else {
-                holder.rk_tv.setVisibility(View.GONE);
-            }
+//            if (isPaihang) {
+//                holder.rk_tv.setVisibility(View.VISIBLE);
+//                holder.rk_tv.setText((position + 1) + "");
+//                if (position == 0) {
+//                    holder.rk_tv.setBackgroundResource(R.drawable.map_one);
+//                } else if (position < 9) {
+//                    holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
+//
+//                } else {
+//                    holder.rk_tv.setVisibility(View.GONE);
+//                }
+//            } else {
+//                holder.rk_tv.setVisibility(View.GONE);
+//            }
             if (map.isDownload()) {
                 holder.btn_download.setProgress(100);
                 holder.btn_download_image.setVisibility(View.VISIBLE);
@@ -223,7 +223,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         public TextView tv_category;
         public TextView tv_time;
         public TextView tv_size;
-        public TextView rk_tv;
+//        public TextView rk_tv;
         public FabButton btn_download;
         public ImageButton btn_download_image;
 
@@ -234,7 +234,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             tv_category = (TextView) itemView.findViewById(R.id.tv_category);
             tv_size = (TextView) itemView.findViewById(R.id.tv_size);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
-            rk_tv = (TextView) itemView.findViewById(R.id.rk_tv);
+//            rk_tv = (TextView) itemView.findViewById(R.id.rk_tv);
             btn_download = (FabButton) itemView.findViewById(R.id.download_map);
             btn_download_image = (ImageButton) itemView.findViewById(R.id.map_download_image);
         }
