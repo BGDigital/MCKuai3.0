@@ -66,8 +66,8 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onPause() {
-        MobclickAgent.onPageEnd("游戏背包管理");
         super.onPause();
+        MobclickAgent.onPageEnd("游戏背包管理");
     }
 
     private void showData(){
