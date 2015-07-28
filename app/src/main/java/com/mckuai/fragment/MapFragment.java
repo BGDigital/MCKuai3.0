@@ -300,12 +300,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     MainActivity.setLeftButtonView(false);
                     map_ed.setVisibility(View.GONE);
 //                    mapadapters = new RankAdapters(getActivity());
-//                    mapadapters.setData(mapList.getData());
+                    mapadapters.setData(mapList.getData());
                     mapadapters.setpaihang(false);
 //                    urv_mapList.setAdapter(mapadapters);
 //                    mapadapters.setOnItemClickListener(MapFragment.this);
                     tit.setText("地图");
                     listtype = true;
+                    page = null;
                     searchContext = null;
                     loadData();
                     break;
