@@ -649,7 +649,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 						mpics.removeView(image);
 						picsList.remove(bmp);
 						mpics.postInvalidate();
-						if (mpics.getChildCount() < 4) {
+						if (mpics.getChildCount() < 5) {
 							btn_pic.setVisibility(View.VISIBLE);
 						}
 						return true;
