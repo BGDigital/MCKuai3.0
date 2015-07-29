@@ -109,7 +109,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
                 public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
-                    Log.e(TAG, "地图数目：" + worldInfos.size());
+                    Log.e(TAG, "地图数目：" + (null == worldInfos ? 0:worldInfos.size()));
                     setData(worldInfos, isThirdView);
                 }
             }, false);
@@ -156,9 +156,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
         this.worldInfos = worldList;
         this.thirdPerson = isThirdViewEnable;
-        if (!worldList.isEmpty()) {
+        if (null != worldList && !worldList.isEmpty()) {
             curWorldIndex = 0;
             getWorldInfo();
+        }
+        else {
+            showNotification(2, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
         }
     }
 
@@ -368,10 +371,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                if (worldInfos.get(curWorldIndex).getLevel() != null) {
+                if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchGameMode();
                 } else {
-                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
+                    showNotification(2, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
                 }
                 break;
             case R.id.rl_gameTime:
@@ -380,20 +383,20 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                if (worldInfos.get(curWorldIndex).getLevel() != null) {
+                if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchGameTime();
                 } else {
-                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
                 }
 
                 break;
             case R.id.rl_thirdView:
                 MobclickAgent.onEvent(getActivity(),"switchView");
                 //切换第三人称和第一人称
-                if (worldInfos.get(curWorldIndex).getLevel() != null) {
+                if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchView();
                 } else {
-                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
                 }
 
                 break;
@@ -403,12 +406,19 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                changePackageItem();
+                if (null != worldInfos && null !=worldInfos.get(curWorldIndex)) {
+                    changePackageItem();
+                }
+                else {
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
+                }
                 break;
             case R.id.btn_startGame:
                 //运行游戏
-                MobclickAgent.onEvent(getActivity(),"startGame_tool");
-                startGame();
+                MobclickAgent.onEvent(getActivity(), "startGame_tool");
+                if (isGameInstalled) {
+                    startGame();
+                }
                 break;
             case R.id.btn_selectMap:
                 //选择地图
@@ -423,7 +433,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                         selectMap();
                     }
                 } else {
-                    showNotification(3, "没有地图，不能修改当前设置！", R.id.fl_root);
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
                 }
                 break;
         }
