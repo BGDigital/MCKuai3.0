@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.mckuai.adapter.MapExportAdapter;
 import com.mckuai.bean.Map;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;

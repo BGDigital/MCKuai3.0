@@ -1,20 +1,18 @@
 package com.mckuai.imc;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mckuai.adapter.MymapAdapter;
 import com.mckuai.bean.Map;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 
 import java.util.ArrayList;
 

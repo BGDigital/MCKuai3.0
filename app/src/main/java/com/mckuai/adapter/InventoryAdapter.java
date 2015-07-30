@@ -11,12 +11,12 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mckuai.InventorySlot;
-import com.mckuai.ItemStack;
+import com.mckuai.mctools.InventorySlot;
+import com.mckuai.mctools.ItemStack;
 import com.mckuai.imc.R;
-import com.mckuai.material.Material;
-import com.mckuai.material.MaterialKey;
-import com.mckuai.material.icon.MaterialIcon;
+import com.mckuai.mctools.material.Material;
+import com.mckuai.mctools.material.MaterialKey;
+import com.mckuai.mctools.material.icon.MaterialIcon;
 
 import java.util.ArrayList;
 import java.util.List;

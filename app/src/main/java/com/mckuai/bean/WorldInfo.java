@@ -2,12 +2,12 @@ package com.mckuai.bean;
 
 import android.util.Log;
 
-import com.mckuai.InventorySlot;
-import com.mckuai.Level;
+import com.mckuai.mctools.InventorySlot;
+import com.mckuai.mctools.Level;
 import com.mckuai.entity.Player;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.io.LevelDataConverter;
-import com.mckuai.io.db.LevelDBConverter;
+import com.mckuai.mctools.io.LevelDataConverter;
+import com.mckuai.mctools.io.db.LevelDBConverter;
 
 import java.io.File;
 import java.io.Serializable;

@@ -13,7 +13,7 @@ import com.mckuai.bean.Map;
 import com.mckuai.bean.WorldInfo;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.mckuai.utils.JsonCache;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;

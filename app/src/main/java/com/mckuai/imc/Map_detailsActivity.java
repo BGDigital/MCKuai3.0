@@ -1,6 +1,5 @@
 package com.mckuai.imc;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -24,8 +22,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.Map;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
-import com.mckuai.utils.GameUntil;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.GameUntil;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;

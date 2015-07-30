@@ -6,11 +6,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
 
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;

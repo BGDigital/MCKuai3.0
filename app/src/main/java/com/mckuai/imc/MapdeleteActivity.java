@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.mckuai.adapter.DeletemapAdtpter;
 import com.mckuai.bean.Map;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;

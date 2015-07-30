@@ -32,7 +32,7 @@ import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
-import com.mckuai.utils.GameUntil;
+import com.mckuai.mctools.WorldUtil.GameUntil;
 import com.mckuai.utils.ParseResponse;
 import com.umeng.analytics.MobclickAgent;
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.mckuai.bean.Map;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

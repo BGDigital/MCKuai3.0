@@ -38,7 +38,7 @@ import com.mckuai.imc.Map_detailsActivity;
 import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
-import com.mckuai.utils.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;

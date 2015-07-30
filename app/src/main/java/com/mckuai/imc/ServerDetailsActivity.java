@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mckuai.bean.GameServerInfo;
-import com.mckuai.utils.GameUntil;
-import com.mckuai.utils.ServerEditer;
+import com.mckuai.mctools.WorldUtil.GameUntil;
+import com.mckuai.mctools.WorldUtil.ServerEditer;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
