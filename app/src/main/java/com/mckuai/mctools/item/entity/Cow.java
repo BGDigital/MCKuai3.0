@@ -1,6 +1,6 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.entity.Animal;
+import com.mckuai.mctools.item.entity.Animal;
 
 public class Cow extends com.mckuai.mctools.item.entity.Animal {
 

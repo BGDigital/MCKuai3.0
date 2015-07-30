@@ -1,6 +1,6 @@
 package com.mckuai.mctools.item;
 
-import com.mckuai.entity.EntityType;
+import com.mckuai.mctools.item.entity.EntityType;
 
 import java.io.Serializable;
 import java.util.ArrayList;

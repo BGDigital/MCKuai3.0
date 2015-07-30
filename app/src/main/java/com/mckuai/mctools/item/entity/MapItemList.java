@@ -1,6 +1,5 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.entity.MapResourceItem;
 
 import java.io.Serializable;
 import java.util.ArrayList;

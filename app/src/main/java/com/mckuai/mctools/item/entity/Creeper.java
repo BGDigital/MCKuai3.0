@@ -1,7 +1,6 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.entity.*;
-import com.mckuai.entity.Monster;
+import com.mckuai.mctools.item.entity.Monster;
 
 /*
  *  爬行者（Creeper）是一种常见的，接近玩家后爆炸的敌对生物。

@@ -1,8 +1,8 @@
 package com.mckuai.mctools;
 
-import com.mckuai.entity.Entity;
-import com.mckuai.entity.Player;
+import com.mckuai.mctools.item.entity.Player;
 import com.mckuai.mctools.item.tileentity.TileEntity;
+import com.mckuai.mctools.item.entity.Entity;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,8 +1,7 @@
 package com.mckuai.mctools.item.entity;
 
 import com.mckuai.mctools.ItemStack;
-import com.mckuai.entity.*;
-import com.mckuai.entity.Entity;
+
 
 /**
  * 物品

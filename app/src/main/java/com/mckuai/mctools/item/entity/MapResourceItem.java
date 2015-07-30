@@ -1,11 +1,12 @@
 package com.mckuai.mctools.item.entity;
 
 import java.io.Serializable;
+import com.mckuai.mctools.item.entity.MapResourceItem;
 
 /**
  * Created by kyly on 2015/7/8.
  */
-public class MapResourceItem implements Serializable,Comparable<com.mckuai.entity.MapResourceItem> {
+public class MapResourceItem implements Serializable,Comparable<MapResourceItem> {
     private String briefDesc;
     private String detail;
     private String downloadUrl;
@@ -27,7 +28,7 @@ public class MapResourceItem implements Serializable,Comparable<com.mckuai.entit
         this.downloadUrl = paramString6;
     }
 
-    public int compareTo(com.mckuai.entity.MapResourceItem paramMapResourceItem)
+    public int compareTo(com.mckuai.mctools.item.entity.MapResourceItem paramMapResourceItem)
     {
         return paramMapResourceItem.getId() - getId();
     }

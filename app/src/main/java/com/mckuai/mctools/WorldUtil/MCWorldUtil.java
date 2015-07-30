@@ -5,9 +5,9 @@ import android.util.Log;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.Level;
 import com.mckuai.bean.WorldInfo;
-import com.mckuai.entity.Player;
+import com.mckuai.mctools.item.entity.Player;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.mctools.io.LevelDataConverter;
+import com.mckuai.io.LevelDataConverter;
 
 import java.io.File;
 import java.util.ArrayList;

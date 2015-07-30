@@ -1,8 +1,7 @@
 package com.mckuai.mctools.item.entity;
 
 
-import com.mckuai.entity.*;
-import com.mckuai.entity.Entity;
+
 
 public class Projectile extends Entity {
 

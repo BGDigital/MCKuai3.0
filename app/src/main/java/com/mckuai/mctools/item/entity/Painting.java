@@ -1,8 +1,7 @@
 package com.mckuai.mctools.item.entity;
 
 
-import com.mckuai.entity.*;
-import com.mckuai.entity.Entity;
+
 import com.mckuai.mctools.item.Vector3f;
 
 public class Painting extends Entity {

@@ -1,6 +1,6 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.entity.LivingEntity;
+import com.mckuai.mctools.item.entity.LivingEntity;
 
 public class Monster extends LivingEntity {
 }

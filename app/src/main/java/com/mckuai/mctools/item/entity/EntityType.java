@@ -1,24 +1,24 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.entity.Arrow;
-import com.mckuai.entity.Chicken;
-import com.mckuai.entity.Cow;
-import com.mckuai.entity.Creeper;
-import com.mckuai.entity.Egg;
-import com.mckuai.entity.Entity;
-import com.mckuai.entity.FallingBlock;
-import com.mckuai.entity.Item;
-import com.mckuai.entity.Minecart;
-import com.mckuai.entity.Painting;
-import com.mckuai.entity.Pig;
-import com.mckuai.entity.PigZombie;
-import com.mckuai.entity.Player;
-import com.mckuai.entity.Sheep;
-import com.mckuai.entity.Skeleton;
-import com.mckuai.entity.Snowball;
-import com.mckuai.entity.Spider;
-import com.mckuai.entity.TNTPrimed;
-import com.mckuai.entity.Zombie;
+import com.mckuai.mctools.item.entity.Arrow;
+import com.mckuai.mctools.item.entity.Chicken;
+import com.mckuai.mctools.item.entity.Cow;
+import com.mckuai.mctools.item.entity.Creeper;
+import com.mckuai.mctools.item.entity.Egg;
+import com.mckuai.mctools.item.entity.Entity;
+import com.mckuai.mctools.item.entity.FallingBlock;
+import com.mckuai.mctools.item.entity.Item;
+import com.mckuai.mctools.item.entity.Minecart;
+import com.mckuai.mctools.item.entity.Painting;
+import com.mckuai.mctools.item.entity.Pig;
+import com.mckuai.mctools.item.entity.PigZombie;
+import com.mckuai.mctools.item.entity.Player;
+import com.mckuai.mctools.item.entity.Sheep;
+import com.mckuai.mctools.item.entity.Skeleton;
+import com.mckuai.mctools.item.entity.Snowball;
+import com.mckuai.mctools.item.entity.Spider;
+import com.mckuai.mctools.item.entity.TNTPrimed;
+import com.mckuai.mctools.item.entity.Zombie;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,9 +44,9 @@ public enum EntityType {
 	UNKNOWN(-1, null),
 	PLAYER(-2, Player.class);
 
-	private static Map<Integer, com.mckuai.entity.EntityType> idMap = new HashMap<Integer, com.mckuai.entity.EntityType>();
+	private static Map<Integer, com.mckuai.mctools.item.entity.EntityType> idMap = new HashMap<Integer, com.mckuai.mctools.item.entity.EntityType>();
 
-	private static Map<Class<? extends Entity>, com.mckuai.entity.EntityType> classMap = new HashMap<Class<? extends Entity>, com.mckuai.entity.EntityType>();
+	private static Map<Class<? extends Entity>, com.mckuai.mctools.item.entity.EntityType> classMap = new HashMap<Class<? extends Entity>, com.mckuai.mctools.item.entity.EntityType>();
 
 	private int id;
 
@@ -65,21 +65,21 @@ public enum EntityType {
 		return entityClass;
 	}
 
-	public static com.mckuai.entity.EntityType getById(int id) {
-		com.mckuai.entity.EntityType type = idMap.get(id);
-		if (type == null) return com.mckuai.entity.EntityType.UNKNOWN;
+	public static com.mckuai.mctools.item.entity.EntityType getById(int id) {
+		com.mckuai.mctools.item.entity.EntityType type = idMap.get(id);
+		if (type == null) return com.mckuai.mctools.item.entity.EntityType.UNKNOWN;
 		return type;
 	}
 
-	public static com.mckuai.entity.EntityType getByClass(Class<? extends Entity> clazz) {
-		com.mckuai.entity.EntityType type = classMap.get(clazz);
-		if (type == null) return com.mckuai.entity.EntityType.UNKNOWN;
+	public static com.mckuai.mctools.item.entity.EntityType getByClass(Class<? extends Entity> clazz) {
+		com.mckuai.mctools.item.entity.EntityType type = classMap.get(clazz);
+		if (type == null) return com.mckuai.mctools.item.entity.EntityType.UNKNOWN;
 		return type;
 	}
 
 
 	static {
-		for (com.mckuai.entity.EntityType type : com.mckuai.entity.EntityType.values()) {
+		for (com.mckuai.mctools.item.entity.EntityType type : com.mckuai.mctools.item.entity.EntityType.values()) {
 			idMap.put(type.getId(), type);
 			if (type.getEntityClass() != null) {
 				classMap.put(type.getEntityClass(), type);

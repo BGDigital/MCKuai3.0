@@ -4,13 +4,13 @@ import android.util.Log;
 
 
 import com.mckuai.mctools.Level;
-import com.mckuai.entity.Entity;
-import com.mckuai.entity.Player;
-import com.mckuai.mctools.io.EntityDataConverter;
-import com.mckuai.mctools.io.db.DB;
-import com.mckuai.mctools.io.db.DBKey;
-import com.mckuai.mctools.io.db.Iterator;
-import com.mckuai.mctools.io.nbt.NBTConverter;
+import com.mckuai.mctools.item.entity.Entity;
+import com.mckuai.mctools.item.entity.Player;
+import com.mckuai.io.EntityDataConverter;
+import com.mckuai.io.db.DB;
+import com.mckuai.io.db.DBKey;
+import com.mckuai.io.db.Iterator;
+import com.mckuai.io.nbt.NBTConverter;
 import com.mckuai.mctools.item.tileentity.TileEntity;
 
 import org.spout.nbt.CompoundTag;
@@ -83,7 +83,7 @@ public class GameDBEditer {
 
 
     public static Player getPlayer(File dbFile){
-        DB db = openDB(dbFile);
+        com.mckuai.io.db.DB db = openDB(dbFile);
         Player player = null;
          if (null != db){
             try{

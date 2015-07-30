@@ -1,6 +1,6 @@
 package com.mckuai.mctools.geo;
 
-import com.mckuai.mctools.io.region.RegionFile;
+import com.mckuai.io.region.RegionFile;
 
 import java.io.File;
 import java.io.IOException;

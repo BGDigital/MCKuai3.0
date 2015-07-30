@@ -1,6 +1,6 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.entity.Entity;
+import com.mckuai.mctools.item.entity.Entity;
 
 public class TNTPrimed extends Entity {
 

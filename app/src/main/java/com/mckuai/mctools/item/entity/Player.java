@@ -2,129 +2,128 @@ package com.mckuai.mctools.item.entity;
 
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.ItemStack;
-import com.mckuai.entity.*;
-import com.mckuai.entity.EntityType;
 
 import java.io.Serializable;
 import java.util.List;
 
 
 public class Player extends LivingEntity implements Serializable {
-	private List<InventorySlot> inventory;
-	private List<ItemStack> armorSlots;
-	private PlayerAbilities abilities = new PlayerAbilities();
-	private int score;
-	private int dimension;
-	private int bedPositionX = 0, bedPositionY = 0, bedPositionZ = 0;
-	private int spawnX = 0, spawnY = 64, spawnZ = 0;
-	private short sleepTimer = 0;
-	private boolean sleeping = false;
+    private List<InventorySlot> inventory;
+    private List<ItemStack> armorSlots;
+    private PlayerAbilities abilities = new PlayerAbilities();
+    private int score;
+    private int dimension;
+    private int bedPositionX = 0, bedPositionY = 0, bedPositionZ = 0;
+    private int spawnX = 0, spawnY = 64, spawnZ = 0;
+    private short sleepTimer = 0;
+    private boolean sleeping = false;
 
-	public List<InventorySlot> getInventory() {
-		return inventory;
-	}
-	public void setInventory(List<InventorySlot> inventory) {
-		this.inventory = inventory;
-	}
+    public List<InventorySlot> getInventory() {
+        return inventory;
+    }
 
-	public int getScore() {
-		return score;
-	}
+    public void setInventory(List<InventorySlot> inventory) {
+        this.inventory = inventory;
+    }
 
-	public void setScore(int score) {
-		this.score = score;
-	}
+    public int getScore() {
+        return score;
+    }
 
-	public int getDimension() {
-		return dimension;
-	}
+    public void setScore(int score) {
+        this.score = score;
+    }
 
-	public void setDimension(int dimension) {
-		this.dimension = dimension;
-	}
+    public int getDimension() {
+        return dimension;
+    }
 
-	public int getBedPositionX() {
-		return bedPositionX;
-	}
+    public void setDimension(int dimension) {
+        this.dimension = dimension;
+    }
 
-	public void setBedPositionX(int bedPositionX) {
-		this.bedPositionX = bedPositionX;
-	}
+    public int getBedPositionX() {
+        return bedPositionX;
+    }
 
-	public int getBedPositionY() {
-		return bedPositionY;
-	}
+    public void setBedPositionX(int bedPositionX) {
+        this.bedPositionX = bedPositionX;
+    }
 
-	public void setBedPositionY(int bedPositionY) {
-		this.bedPositionY = bedPositionY;
-	}
+    public int getBedPositionY() {
+        return bedPositionY;
+    }
 
-	public int getBedPositionZ() {
-		return bedPositionZ;
-	}
+    public void setBedPositionY(int bedPositionY) {
+        this.bedPositionY = bedPositionY;
+    }
 
-	public void setBedPositionZ(int bedPositionZ) {
-		this.bedPositionZ = bedPositionZ;
-	}
+    public int getBedPositionZ() {
+        return bedPositionZ;
+    }
 
-	public int getSpawnX() {
-		return spawnX;
-	}
+    public void setBedPositionZ(int bedPositionZ) {
+        this.bedPositionZ = bedPositionZ;
+    }
 
-	public void setSpawnX(int spawnX) {
-		this.spawnX = spawnX;
-	}
+    public int getSpawnX() {
+        return spawnX;
+    }
 
-	public int getSpawnY() {
-		return spawnY;
-	}
+    public void setSpawnX(int spawnX) {
+        this.spawnX = spawnX;
+    }
 
-	public void setSpawnY(int spawnY) {
-		this.spawnY = spawnY;
-	}
+    public int getSpawnY() {
+        return spawnY;
+    }
 
-	public int getSpawnZ() {
-		return spawnZ;
-	}
+    public void setSpawnY(int spawnY) {
+        this.spawnY = spawnY;
+    }
 
-	public void setSpawnZ(int spawnZ) {
-		this.spawnZ = spawnZ;
-	}
+    public int getSpawnZ() {
+        return spawnZ;
+    }
 
-	public boolean isSleeping() {
-		return sleeping;
-	}
+    public void setSpawnZ(int spawnZ) {
+        this.spawnZ = spawnZ;
+    }
 
-	public void setSleeping(boolean sleeping) {
-		this.sleeping = sleeping;
-	}
+    public boolean isSleeping() {
+        return sleeping;
+    }
 
-	public short getSleepTimer() {
-		return sleepTimer;
-	}
+    public void setSleeping(boolean sleeping) {
+        this.sleeping = sleeping;
+    }
 
-	public void setSleepTimer(short sleepTimer) {
-		this.sleepTimer = sleepTimer;
-	}
+    public short getSleepTimer() {
+        return sleepTimer;
+    }
 
-	public List<ItemStack> getArmor() {
-		return armorSlots;
-	}
+    public void setSleepTimer(short sleepTimer) {
+        this.sleepTimer = sleepTimer;
+    }
 
-	public void setArmor(List<ItemStack> armorSlots) {
-		this.armorSlots = armorSlots;
-	}
+    public List<ItemStack> getArmor() {
+        return armorSlots;
+    }
 
-	public PlayerAbilities getAbilities() {
-		return this.abilities;
-	}
+    public void setArmor(List<ItemStack> armorSlots) {
+        this.armorSlots = armorSlots;
+    }
 
-	public void setAbilities(PlayerAbilities abilities) {
-		this.abilities = abilities;
-	}
+    public PlayerAbilities getAbilities() {
+        return this.abilities;
+    }
 
-	public com.mckuai.entity.EntityType getEntityType() {
-		return EntityType.PLAYER;
-	}
+    public void setAbilities(PlayerAbilities abilities) {
+        this.abilities = abilities;
+    }
+
+    public com.mckuai.mctools.item.entity.EntityType getEntityType() {
+        return EntityType.PLAYER;
+    }
 
 }

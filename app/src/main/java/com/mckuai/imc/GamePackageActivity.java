@@ -19,8 +19,8 @@ import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.ItemStack;
 import com.mckuai.adapter.InventoryAdapter;
 import com.mckuai.bean.WorldInfo;
-import com.mckuai.mctools.io.xml.MaterialIconLoader;
-import com.mckuai.mctools.io.xml.MaterialLoader;
+import com.mckuai.io.xml.MaterialIconLoader;
+import com.mckuai.io.xml.MaterialLoader;
 import com.mckuai.mctools.material.Material;
 import com.umeng.analytics.MobclickAgent;
 
