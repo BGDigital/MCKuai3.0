@@ -68,17 +68,35 @@ public class GameUntil {
         }
     }
 
-    public static  String detectionGameVersion(Context context){
+    public static  int detectionGameVersion(Context context){
         PackageManager pm = context.getPackageManager();
         List<PackageInfo> packagelist = pm.getInstalledPackages(0);
         if (null != packagelist && !packagelist.isEmpty()){
             for (PackageInfo curpackage:packagelist){
                 if (curpackage.packageName.equalsIgnoreCase("com.mojang.minecraftpe")){
-                    return  curpackage.versionName;
+                    String code = curpackage.versionName;
+                    String[] version = code.split("\\.");
+                    if (null != version && version.length == 3){
+                        return  Integer.parseInt(version[1]) ;
+                    }
+                    return  0;
                 }
             }
         }
-        return  null;
+        return  0;
+    }
+
+    public static int  detectionGameVersionCode(Context context){
+        PackageManager pm = context.getPackageManager();
+        List<PackageInfo> packagelist = pm.getInstalledPackages(0);
+        if (null != packagelist && !packagelist.isEmpty()){
+            for (PackageInfo curpackage:packagelist){
+                if (curpackage.packageName.equalsIgnoreCase("com.mojang.minecraftpe")){
+                    return  curpackage.versionCode;
+                }
+            }
+        }
+        return  0;
     }
 
     public static  boolean killGameTask(Context context){
