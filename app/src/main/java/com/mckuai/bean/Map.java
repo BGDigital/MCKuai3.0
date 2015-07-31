@@ -58,7 +58,7 @@ public class Map implements Serializable {
     }
 
     public String getIcon() {
-        return icon;
+        return icon.replaceAll("\\\\","/");
     }
 
     public void setIcon(String icon) {
