@@ -2,6 +2,7 @@ package com.mckuai.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -56,6 +57,13 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         this.addListener = listener;
     }
 
+    public ImageLoader getLoader(){
+        if (null == loader){
+            loader = ImageLoader.getInstance();
+        }
+        return loader;
+    }
+
 
     public void setData(final ArrayList<Map> maplist) {
         this.maps = maplist;
@@ -108,7 +116,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     default:
                         break;
                 }
-
             }
         });
         holder.btn_download_image.setOnClickListener(new View.OnClickListener() {
@@ -126,10 +133,11 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 }
             }
         });
+        holder.setIsRecyclable(false);
         return holder;
     }
 
-    @Override
+   /* @Override
     public int getItemViewType(int position) {
         if (isPaihang) {
             switch (maps.get(position).getDownloadProgress()) {
@@ -150,7 +158,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     return 4;
             }
         }
-    }
+    }*/
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -205,9 +213,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             holder.btn_download.setTag(position);
             holder.itemView.setTag(position);
             holder.btn_download_image.setTag(position);
-//            Log.e("name", "" + map.getViewName());
-//            Log.e("num",""+position);
-//            Log.e("progress",""+map.getDownloadProgress());
         }
 
     }
