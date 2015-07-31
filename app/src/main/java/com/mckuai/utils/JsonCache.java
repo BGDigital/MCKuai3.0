@@ -133,14 +133,15 @@ public class JsonCache {
 		if (!file.exists()) {
 			try {
 				makeRootDir(file.getParent());
-
-				//file.createNewFile();
 				Log.e(TAG, "创建文件:"+file.getPath());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return;
 			}
+		}
+		else {
+			file.delete();
 		}
 		try {
 			OutputStreamWriter streamWriter = new OutputStreamWriter(
