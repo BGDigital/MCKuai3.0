@@ -68,9 +68,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private ThinDownloadManager mDlManager;
 
-
-//    private boolean isShowVersionWarning = false;
-    private boolean isGameInstalled = true;
+    private boolean isShowUninstallAlert = true;
+    private boolean isGameInstalled = false;
     private boolean isGameRunning = false;
     private boolean isGameVersionSupport = false;
     private boolean isDownloadGame = false;
@@ -84,7 +83,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        detectionGameInfo();
     }
 
     @Override
@@ -100,11 +98,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        Log.w(TAG, "onResume");
         if (null == tv_gameMode) {
             initView();
         }
-        //detectionGameInfo();
+        if (!isGameInstalled) {
+            detectionGameInfo();
+        }
         if (isGameInstalled && null == worldInfos) {
             gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
@@ -115,6 +114,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             }, false);
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -311,17 +311,19 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     }
                 });
             }
-            int version = OptionUntil.getGameVersion_minor();
+//            int version = OptionUntil.getGameVersion_minor();
+
+            int version = GameUntil.detectionGameVersion(getActivity());
             if (version < 9 || version > 10){
                 isGameVersionSupport = false;
-                showDownloadGame();
+                showDownloadGame(false);
             }
             else {
                 isGameVersionSupport = true;
             }
         } else {
             //showMessage("警告", "你还未安装游戏，不能修改游戏内容！");
-            showDownloadGame();
+            showDownloadGame(false);
             return;
         }
 
@@ -347,8 +349,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             showNotification(3, "游戏正在运行，不能修改当前设置！", R.id.fl_root);
             return;
         }
-        if (!isGameInstalled && v.getId() != R.id.rl_notificationDownloadProgress){
-            showDownloadGame();
+
+        if (!isGameInstalled && rl_notification.getVisibility() != View.VISIBLE){
+            showDownloadGame(true);
             return;
         }
         switch (v.getId()) {
@@ -368,6 +371,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_gameMode:
                 //修改游戏模式
                 MobclickAgent.onEvent(getActivity(),"switchGameMode");
+                if (rl_notification.getVisibility() == View.VISIBLE){
+                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
+                    return;
+                }
                 if (!checkGameVersion()){
                     return;
                 }
@@ -380,6 +387,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_gameTime:
                 //切换日夜
                 MobclickAgent.onEvent(getActivity(),"switchTime");
+                if (rl_notification.getVisibility() == View.VISIBLE){
+                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
+                    return;
+                }
                 if (!checkGameVersion()){
                     return;
                 }
@@ -392,6 +403,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 break;
             case R.id.rl_thirdView:
                 MobclickAgent.onEvent(getActivity(),"switchView");
+                if (rl_notification.getVisibility() == View.VISIBLE){
+                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
+                    return;
+                }
                 //切换第三人称和第一人称
                 if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
                     switchView();
@@ -403,6 +418,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_gamePackage:
                 //修改背包
                 MobclickAgent.onEvent(getActivity(),"showPackage");
+                if (rl_notification.getVisibility() == View.VISIBLE){
+                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
+                    return;
+                }
                 if (!checkGameVersion()){
                     return;
                 }
@@ -416,6 +435,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             case R.id.btn_startGame:
                 //运行游戏
                 MobclickAgent.onEvent(getActivity(), "startGame_tool");
+                if (rl_notification.getVisibility() == View.VISIBLE){
+                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
+                    return;
+                }
                 if (isGameInstalled) {
                     startGame();
                 }
@@ -423,6 +446,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             case R.id.btn_selectMap:
                 //选择地图
                 MobclickAgent.onEvent(getActivity(),"selectMap");
+                if (rl_notification.getVisibility() == View.VISIBLE){
+                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
+                    return;
+                }
                 if (!checkGameVersion()){
                     return;
                 }
@@ -441,7 +468,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private boolean checkGameVersion(){
         if (!isGameVersionSupport ){
-            showDownloadGame();
+            showDownloadGame(true);
         }
         return isGameVersionSupport;
     }
@@ -453,10 +480,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         getWorldInfo();
     }
 
-    private void showDownloadGame(){
-        if (isDownloadGame){
+    private void showDownloadGame(boolean showAlert){
+        if (!showAlert && (isDownloadGame || !isShowUninstallAlert)){
             return;
         }
+        isShowUninstallAlert = false;
         MobclickAgent.onEvent(getActivity(),"showDownloadGame");
         showAlert("提示", "为了更好的体验游戏，请下载《我的世界0.10.5》\n是否立即下载游戏？", new View.OnClickListener() {
             @Override
