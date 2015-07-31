@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -39,6 +40,7 @@ import com.mckuai.imc.MymapActivity;
 import com.mckuai.imc.R;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.mctools.WorldUtil.MCMapManager;
+import com.mckuai.widget.fabbutton.FabButton;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
@@ -74,6 +76,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private Boolean showleftbutton = false;
     private String maptype;
     private Boolean listtype;
+    private RecyclerView.LayoutManager manager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -194,7 +197,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
         urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        manager = new LinearLayoutManager(getActivity());
         urv_mapList.setLayoutManager(manager);
         /*mapadapters = new RankAdapters(getActivity());
         mapadapters.setOnItemClickListener(this);
@@ -257,15 +260,35 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                 map.setDownloadProgress(progress);
                                 long time = System.currentTimeMillis();
                                 if (time - lastUpdateTime > 500 || progress == 100 || progress == 1) {
-                                    mapadapters.notifyDataSetChanged();
+
+                                    //mapadapters.notifyDataSetChanged();
+                                   int count = urv_mapList.getChildCount();
+                                    ViewGroup itemView =(ViewGroup)manager.findViewByPosition(i);
+                                    if (null != itemView){
+                                        FabButton progressBtn =(FabButton)((ViewGroup) itemView.getChildAt(0)).getChildAt(1);
+                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
+                                        if (100 ==progress){
+                                             progressBtn.setVisibility(View.INVISIBLE);
+                                            downloadedBtn.setVisibility(View.VISIBLE);
+                                            updatadownnum(map.getId());
+                                            String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
+                                            if (!mapManager.importMap(filename)) {
+                                                showNotification(0, "地图导入失败", R.id.urv_mapList);
+                                            }
+                                        }
+                                        else {
+                                            progressBtn.setProgress(progress);
+                                        }
+                                    }
+//                                    mapadapters.notifyItemChanged(i);
                                     lastUpdateTime = time;
-                                    if (100 == progress) {
+                                    /*if (100 == progress) {
                                         updatadownnum(map.getId());
                                         String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                                         if (!mapManager.importMap(filename)) {
                                             showNotification(0, "地图导入失败", R.id.urv_mapList);
                                         }
-                                    }
+                                    }*/
                                 }
                             }
                             i++;

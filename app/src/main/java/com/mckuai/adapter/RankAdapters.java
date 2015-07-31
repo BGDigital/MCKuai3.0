@@ -133,11 +133,11 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 }
             }
         });
-        holder.setIsRecyclable(false);
+//        holder.setIsRecyclable(false);
         return holder;
     }
 
-   /* @Override
+    @Override
     public int getItemViewType(int position) {
         if (isPaihang) {
             switch (maps.get(position).getDownloadProgress()) {
@@ -158,7 +158,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     return 4;
             }
         }
-    }*/
+    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -188,26 +188,14 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             String time = map.getInsertTime().substring(map.getInsertTime().indexOf("-") + 1, map.getInsertTime().indexOf(" "));
             time = time.replace("-", "月");
             holder.tv_time.setText("更新时间：" + time + "日");
-//            if (isPaihang) {
-//                holder.rk_tv.setVisibility(View.VISIBLE);
-//                holder.rk_tv.setText((position + 1) + "");
-//                if (position == 0) {
-//                    holder.rk_tv.setBackgroundResource(R.drawable.map_one);
-//                } else if (position < 9) {
-//                    holder.rk_tv.setBackgroundResource(R.drawable.map_tow);
-//
-//                } else {
-//                    holder.rk_tv.setVisibility(View.GONE);
-//                }
-//            } else {
-//                holder.rk_tv.setVisibility(View.GONE);
-//            }
+
             if (map.isDownload()) {
                 holder.btn_download.setProgress(100);
                 holder.btn_download_image.setVisibility(View.VISIBLE);
                 holder.btn_download.setVisibility(View.INVISIBLE);
             } else {
                 holder.btn_download_image.setVisibility(View.GONE);
+                holder.btn_download.setVisibility(View.VISIBLE);
                 holder.btn_download.setProgress(map.getDownloadProgress());
             }
             holder.btn_download.setTag(position);
