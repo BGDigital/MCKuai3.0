@@ -159,10 +159,21 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         MainActivity.setLeftButtonView(showleftbutton);
         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-        if (0 == mapadapters.getItemCount()) {
+        /*if (0 == mapadapters.getItemCount()) {
             mapadapters.setData(mapList.getData());
         } else {
             mapadapters.notifyDataSetChanged();
+        }*/
+
+        if (null == mapadapters){
+            mapadapters = new RankAdapters(getActivity());
+            mapadapters.setOnItemClickListener(this);
+            mapadapters.setData(mapList.getData());
+            mapadapters.setOnMapDownloadListener(this);
+            urv_mapList.setAdapter(mapadapters);
+        }
+        else {
+            mapadapters.setData(mapList.getData());
         }
     }
 
@@ -185,10 +196,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         urv_mapList.setLayoutManager(manager);
-        mapadapters = new RankAdapters(getActivity());
+        /*mapadapters = new RankAdapters(getActivity());
         mapadapters.setOnItemClickListener(this);
         mapadapters.setOnMapDownloadListener(this);
-        urv_mapList.setAdapter(mapadapters);
+        urv_mapList.setAdapter(mapadapters);*/
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
         urv_mapList.addItemDecoration(dividerItemDecoration);
         urv_mapList.setHasFixedSize(true);
