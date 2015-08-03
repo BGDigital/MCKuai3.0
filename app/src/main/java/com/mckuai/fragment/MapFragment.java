@@ -366,6 +366,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 MainActivity.setLeftButtonView(true);
                 mapadapters.setpaihang(true);
                 mapType = null;
+                mapList.getData().clear();
                 mapList.getPageBean().setPage(0);
                 page = null;
                 listtype = false;
