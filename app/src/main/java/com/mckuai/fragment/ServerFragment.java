@@ -99,7 +99,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         else {
             isOrderByDownload=false;
             if (null != ll_filter) {
-                setFiterLayoutView(true);
+                setFiterLayoutView(!isOrderByDownload);
             }
         }
     }
@@ -223,6 +223,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
 
         setLeftButtonListener();
+        setFiterLayoutView(!isOrderByDownload);
 
         if (null == serverInfos){
             loadData();
