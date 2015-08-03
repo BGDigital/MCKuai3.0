@@ -15,32 +15,33 @@ import java.io.InputStreamReader;
  */
 public class OptionUntil {
     private static int gfx_gamma = 0;
-    private static int ctrl_usetouchjoypad = 0;
-    private static int old_game_version_beta = 0;
-    private static int old_game_version_major = 0;
-    private static int ctrl_invertmouse = 0;
-    private static String mp_username;
-    private static float gfx_pixeldensity;
-    private static int audio_sound=1;
     private static int gfx_fancyskies = 1;
-    private static int old_game_version_minor =10;
-    private static int ctrl_usetouchscreen = 1;
-    private static int game_limitworldsize =0;
+    private static float gfx_pixeldensity;
     private static int gfx_animatetextures =1;
     private static int gfx_hidegui = 0;
-    private static float ctrl_sensitivity = 0.5f;
-    private static int game_thirdperson =0;
     private static int  gfx_renderdistance_new;
+    private static int gfx_fancygraphics = 1;
+    private static int old_game_version_major = 0;
+    private static int old_game_version_minor =10;
+    private static int old_game_version_patch = 5;
+    private static int old_game_version_beta = 0;
+    private static int ctrl_invertmouse = 0;
+    private static int ctrl_usetouchscreen = 1;
+    private static int ctrl_usetouchjoypad = 0;
+    private static float ctrl_sensitivity = 0.5f;
+    private static int ctrl_islefthanded = 0;
+    private static int game_limitworldsize =0;
+    private static int game_thirdperson =0;
+    private static int game_difficulty=2;
+    private static String game_language = null;    //此为0.11.x新增
     private static String game_flatworldlayers;
     private static int dev_autoloadlevel = 0;
     private static int mp_server_visible =1;
-    private static int gfx_fancygraphics = 1;
+    private static String mp_username;
     private static int dev_showchunkmap = 0;
     private static int dev_disablefilesystem =0;
-    private static int game_difficulty=2;
-    private static int ctrl_islefthanded = 0;
-    private static int old_game_version_patch = 5;
     private static int feedback_vibration =1;
+    private static int audio_sound=1;
 
     private static final String TAG = "OptionUntil";
     private static boolean hasLoaded = false;
@@ -158,6 +159,9 @@ public class OptionUntil {
                 case "mp_username":
                     mp_username = array[1];
                     break;
+                case "game_language":
+                    game_language = array[1];
+                    break;
                 case "gfx_pixeldensity":
                     gfx_pixeldensity = Float.parseFloat(array[1]);
                     break;
@@ -258,6 +262,9 @@ public class OptionUntil {
         data = data+"ctrl_islefthanded:" +ctrl_islefthanded +"\n";
         data = data+"old_game_version_patch:" +old_game_version_patch +"\n";
         data = data+"feedback_vibration:" +feedback_vibration;
+        if (null != game_language && 1 < game_language.length()){
+            data += "game_language:"+game_language;
+        }
         return  data;
     }
 }
