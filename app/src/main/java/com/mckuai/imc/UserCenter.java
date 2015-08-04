@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -525,7 +526,12 @@ public class UserCenter extends BaseActivity implements OnCheckedChangeListener,
 						}
 						Bitmap tag = FastBlur.fastblur(arg2, 4);
 						BitmapDrawable drawable = new BitmapDrawable(tag);
-						rl_top.setBackground(drawable);
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+							rl_top.setBackground(drawable);
+						}
+						else {
+							rl_top.setBackgroundDrawable(drawable); //对api16以前版本的支持
+						}
 						RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(rl_top.getWidth(), rl_top
 								.getHeight());
 						iv_background_layer.setLayoutParams(params);
