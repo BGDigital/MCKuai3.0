@@ -83,7 +83,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		mLoader = ImageLoader.getInstance();
 		mTencent = Tencent.createInstance("101155101", getActivity().getApplicationContext());
-		Log.e(TAG, "onCreate");
+//		Log.e(TAG, "onCreate");
 		isMainActivity = getActivity().getClass().getName().equalsIgnoreCase("com.mckuai.imc.MainActivity");
 		initShare();
 	}
@@ -150,7 +150,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 	{
 		// TODO Auto-generated method stub
 		super.onResume();
-		Log.e(TAG, "onResume");
+//		Log.e(TAG, "onResume");
 		if (null != view && null == btn_CheckUpgread)
 		{
 			initView();
@@ -175,7 +175,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		if (null == appUpdate)
 		{
 			appUpdate = AppUpdateService.getAppUpdate(getActivity());
-			Log.e(TAG, "init appupdate," + getActivity().getClass().getName());
+//			Log.e(TAG, "init appupdate," + getActivity().getClass().getName());
 		}
 		appUpdate.callOnResume();
 	}
