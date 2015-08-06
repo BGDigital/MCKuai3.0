@@ -173,17 +173,22 @@ public class MCWorldUtil {
      * @param file 要获取信息的世界
      */
     private static void loadData(File file, boolean needPlayer) {
-        WorldInfo worldInfo = new WorldInfo();
-
-        worldInfo.setDir(file.getName());       //文件夹名称
-        worldInfo.setSize(getWorldSize(file)); //大小
-        if (needPlayer) {
-            worldInfo.setPlayer(loadPlayerFromDB(file));
+        File featureFile = new File(file.getName(),"level.dat");
+        if (null != featureFile && featureFile.exists() && featureFile.isFile()){
+            featureFile = new File(file.getName(),"db");
+            if (null != featureFile && featureFile.exists() && featureFile.isDirectory()){
+                WorldInfo worldInfo = new WorldInfo();
+                worldInfo.setDir(file.getName());       //文件夹名称
+                worldInfo.setSize(getWorldSize(file)); //大小
+                if (needPlayer) {
+                    worldInfo.setPlayer(loadPlayerFromDB(file));
+                }
+                //从level.dat文件中获取level信息（必有信息包括显示名，）
+                loadLevelFromFile(file, worldInfo);
+                worlds.add(worldInfo);
+            }
         }
-        //从level.dat文件中获取level信息（必有信息包括显示名，）
-        loadLevelFromFile(file, worldInfo);
 
-        worlds.add(worldInfo);
     }
 
     /**

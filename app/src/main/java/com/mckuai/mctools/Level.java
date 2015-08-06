@@ -25,12 +25,13 @@ public class Level implements Serializable{
 	private long sizeOnDisk;
 	//玩家出生点坐标
 	private int spawnX, spawnY, spawnZ;
-	//存档版本（0.9-0.10为4,0.2-0.8为3）
+	//存档版本（0.81及之前版本为3,其后为4）
 	private int storageVersion;
 	//以刻的形式保存的当天时间（游戏里的一天有14400刻，0为白天的开始，7200为日落，8280是夜晚的开始，13320是日出，）
 	private long time;
 
-	private long dayCycleStopTime = -1;
+    private long  DayCycleStopTime;//0.11
+	private long dayCycleStopTime = -1;  //0.9
 	//是否启用spawnMobs
 	private boolean spawnMobs = true;
 	//玩家所在的维度，0为主世界
@@ -41,6 +42,10 @@ public class Level implements Serializable{
 	private int limitedworldoriginy = 0;
 	private int limitedworldoriginx = 0;
 	private int limitedworldoriginz = 0;
+	//0.11版本新加入的新内容
+	private long cureationTime;
+	private long currentTick;
+    private long worldStartCount;
 	//
 	private List<Entity> entities;
 
@@ -142,13 +147,39 @@ public class Level implements Serializable{
 		this.time = time;
 	}
 
+    /**
+     * 获取地图的dayCycleStopTime
+     * @return  dayCycleStopTime
+     * 如果是0.11版，则使用getDayCycleStopTimeNewVer
+     */
 	public long getDayCycleStopTime() {
 		return dayCycleStopTime;
 	}
 
+    /**
+     * 设置地图的dayCycleStopTime
+     * 如果是0.11版，则使用setDayCycleStopTimeNewVer
+     */
 	public void setDayCycleStopTime(long dayCycleStopTime) {
 		this.dayCycleStopTime = dayCycleStopTime;
 	}
+
+    /**
+     * 获取地图的DayCycleStopTime
+     * @return  DayCycleStopTime
+     * 如果是0.10以前的版本，则使用getDayCycleStopTime
+     */
+    public long getDayCycleStopTimeNewVer(){
+        return DayCycleStopTime;
+    }
+
+    /**
+     * 设置地图的DayCycleStopTime
+     * 如果是0.10以前的版本，则使用setDayCycleStopTime
+     */
+    public void setDayCycleStopTimeNewVer(long dayCycleStopTime){
+        this.DayCycleStopTime = dayCycleStopTime;
+    }
 
 	public boolean getSpawnMobs() {
 		return spawnMobs;
@@ -218,6 +249,27 @@ public class Level implements Serializable{
         this.limitedworldoriginz = limitedworldoriginz;
     }
 
+    public long getCureationTime() {
+        return cureationTime;
+    }
 
+    public void setCureationTime(long cureationTime) {
+        this.cureationTime = cureationTime;
+    }
 
+    public long getCurrentTick() {
+        return currentTick;
+    }
+
+    public void setCurrentTick(long currentTick) {
+        this.currentTick = currentTick;
+    }
+
+    public long getWorldStartCount() {
+        return worldStartCount;
+    }
+
+    public void setWorldStartCount(long worldStartCount) {
+        this.worldStartCount = worldStartCount;
+    }
 }

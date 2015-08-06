@@ -2,6 +2,7 @@ package com.mckuai.bean;
 
 import android.util.Log;
 
+import com.mckuai.io.db.DB;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.Level;
 import com.mckuai.imc.MCkuai;
@@ -19,32 +20,51 @@ import java.util.List;
  */
 public class WorldInfo implements Serializable{
     private String dir;                                 //子目录名称
-    private Player player;                            //角色信息，优先来自数据库，如果没有再从level.dat中取
-    private Level level;                                 //
+    private Level level;                                 //level信息
     private long size;                                   //存档大小
-    private int mapVersion;                         //地图版本，如果仅有level.dat则认为是
-//    private boolean isSaveInDB;                   //是否是从数据库中获取的
 
     private final String TAG = "WorldInfo";
-    private final String worldRoot = "/games/com.mojang/minecraftWorlds/";
+    private final String worldRoot = MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftWorlds/";
     private boolean isSelected = false;
 
+    /**
+     * 获取存档目录名称
+     * @return 存档目录名称
+     */
     public String getDir() {
         return dir;
     }
 
+    /**
+     * 设置存档目录
+     * @param dir
+     */
     public void setDir(String dir) {
         this.dir = dir;
     }
 
+    /**
+     * 获取玩家角色信息
+     * @return  获取玩家角色信息
+     */
     public Player getPlayer() {
-        return player;
+        return null != level ? level.getPlayer():null;
     }
 
+    /**
+     * 设置玩家角色信息
+     * @param player  获取玩家角色信息
+     */
     public void setPlayer(Player player) {
-        this.player = player;
+        if (null != level){
+            level.setPlayer(player);
+        }
     }
 
+    /**
+     * 获取游戏模式模式
+     * @return 如果是创造模式则返回真，否则返回假
+     */
     public boolean isCreative() {
         if (null != level) {
             return level.getGameType() == 1;
@@ -52,31 +72,27 @@ public class WorldInfo implements Serializable{
         return false;
     }
 
-    public boolean setIsCreative(boolean isCreative) {
+    /**
+     * 设置游戏模式
+     * @param isCreative
+     * @return
+     */
+    public boolean setGameMod(boolean isCreative) {
         if (null != level){
-            level.setGameType(isCreative ? 1:0);                     //level.dat
-
+            level.setGameType(isCreative ? 1:0);
             if (null != level.getPlayer() && null != level.getPlayer().getAbilities()){
-                //从文件中取出来的,仅写level.dat
                 level.getPlayer().getAbilities().setInvulnerable(isCreative);
                 level.getPlayer().getAbilities().setMayFly(isCreative);
-                return saveLevelData();
-            }
-            else {
-                //从数据库中读取的，需写level.dat和数据库
-                if (null != player && null != player.getAbilities()){
-                    player.getAbilities().setMayFly(isCreative);
-                    player.getAbilities().setInvulnerable(isCreative);
-//                    level.setPlayer(player);
-//                    if (!saveDBData()){
-//                        return  false;
-//                    }
-                    boolean result = saveDBData();
-                    result = result && saveLevelData();
-                    return result;
+                switch (level.getStorageVersion()){
+                    case 4:
+                        saveLevelData();
+                        saveDBData(); //player中相关部分存储于数据库中
+                        break;
+                    default:
+                        saveLevelData();
+                        break;
                 }
             }
-
         }
         return false;
     }
@@ -219,13 +235,33 @@ public class WorldInfo implements Serializable{
         return false;
     }
 
+    private boolean saveData(){
+        String path = worldRoot + dir;
+        File levelFile = null;
+        try {
+            levelFile =new File(path,"level.dat");
+            if (null == levelFile || !levelFile.exists() || !levelFile.isFile()){
+                return false;
+            }
+            LevelDataConverter.write(level,levelFile);
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e(TAG,"打开level文件时失败，原因："+e.getLocalizedMessage());
+        }
+        //处理0.81以后版本
+        if (3 < level.getStorageVersion()){
+
+        }
+
+    }
+
 
 
     private boolean saveLevelData() {
 
-            String path = MCkuai.getInstance().getSDPath() +worldRoot +dir;
+            String path = worldRoot +dir;
             File file = new File(path,"level.dat");
-            if (null != file && !file.exists()) {
+            if (null == file || !file.exists()) {
                 return false;
             }
             try {
@@ -238,9 +274,8 @@ public class WorldInfo implements Serializable{
     }
 
     private boolean saveDBData() {
-        String path = MCkuai.getInstance().getSDPath() + worldRoot + dir;
+        String path = worldRoot + dir;
         File[] dbFiles = new File(path).listFiles();
-        //boolean isSaveInLevelDB = OptionUntil.isSaveInLevelDB();
 
         boolean result = false;
         for (int i = 0; i < dbFiles.length; i++) {

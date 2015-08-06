@@ -497,6 +497,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 MobclickAgent.onEvent(getActivity(),"downloadGame");
                 String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
                 final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
+                File file = new File(downloadDir);
+                if (null != file && (!file.exists() || !file.isDirectory())){
+                    file.mkdirs();
+                }
                 mDlManager = new ThinDownloadManager(1);
                 DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
                 request.setDownloadListener(new DownloadStatusListener() {

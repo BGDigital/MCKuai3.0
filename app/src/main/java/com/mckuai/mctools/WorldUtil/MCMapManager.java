@@ -248,17 +248,19 @@ public class MCMapManager {
     }
 
     private void initDB() {
-        Log.w("initDB", "file:" + saveDir);
+        //Log.w("initDB", "file:" + saveDir);
         File file = new File(saveDir);
+        boolean result = true;
         if (null == file || !file.exists() || !file.isDirectory()) {
-            file.mkdirs();
+            result = file.mkdirs();
         }
-        db = new DB(file);
-        db.open();
-        isDBOpened = true;
-
-        getIndex();
-        getDownloadMaps();
+        if (result) {
+            db = new DB(file);
+            db.open();
+            isDBOpened = true;
+            getIndex();
+            getDownloadMaps();
+        }
     }
 
     private boolean deleteMapfromDb(String mapid) {

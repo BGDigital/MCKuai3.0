@@ -1,23 +1,41 @@
 package com.mckuai.mctools.item.entity;
 
+/**
+ *  玩家属性，用于存储玩家自身的一些特性
+ */
+
 import java.io.Serializable;
 
-public class PlayerAbilities implements Serializable{
+public class PlayerAbilities implements Serializable {
+	/**
+	 * 是否可以飞行
+	 */
 	public boolean mayFly = false;
+
+	/**
+	 * 是否正在飞行
+	 */
 	public boolean flying = false;
+
+	/**
+	 * 是否
+	 */
 	public boolean instabuild = false;
+
+	/**
+	 * 是否无敌
+	 */
 	public boolean invulnerable = false;
 
-	public void initForGameType(int gameType) {
-		boolean creative = gameType == 1;
-		mayFly = instabuild = invulnerable = creative;
-		flying = flying && creative;
-	}
 
 	public boolean isMayFly() {
 		return mayFly;
 	}
 
+    /**
+     * 设置是否可以飞行
+     * @param mayFly 为真则可以飞行，否则不能飞行
+     */
 	public void setMayFly(boolean mayFly) {
 		this.mayFly = mayFly;
 	}
@@ -42,6 +60,10 @@ public class PlayerAbilities implements Serializable{
 		return invulnerable;
 	}
 
+    /**
+     * 设置是否无敌
+     * @param invulnerable 为真时无敌，否则非无敌
+     */
 	public void setInvulnerable(boolean invulnerable) {
 		this.invulnerable = invulnerable;
 	}

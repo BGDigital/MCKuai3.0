@@ -1,14 +1,12 @@
 <resources>
-    <string name="channel_Owner">官方</string>
-    <string name="channel_BaiDu">百度</string>
-    <string name="channel_QQ">腾讯</string>
-    <string name="channel_360">360</string>
+    <string name="channel">MCKuaiBox</string>
+    <!--MCKuaiBox -->
+    <!--MCKuai -->
 
 
-    <string name="app_name">麦块for我的世界盒子</string>
-    <string name="app_nam_BaiDu">麦块</string>
-    <string name="app_name_QQ">麦块</string>
-    <string name="app_name_360">麦块</string>
+    <string name="app_name">麦块我的世界盒子</string>
+    <!--麦块我的世界盒子 -->
+    <!--麦块 -->
 
     <string name="hello_world">Hello world!</string>
 

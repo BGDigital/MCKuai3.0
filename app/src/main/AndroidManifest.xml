@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mckuai.imc"
-    android:versionCode="9"
+    android:versionCode="10"
     android:versionName="3.0"
     >
 
@@ -169,7 +169,7 @@
         <!-- 友盟统计渠道-->
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="@string/channel_Owner" />
+            android:value="@string/channel" />
         <!-- 百度定位 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

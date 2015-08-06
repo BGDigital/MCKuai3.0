@@ -153,6 +153,7 @@ public final class NBTConverter {
 				player.setSpawnZ(((IntTag) tag).getValue());
 			} else if (name.equals("abilities")) {
 				readAbilities((CompoundTag) tag, player.getAbilities());
+//                player.setAbilities(read);
 			} else if (name.equals("Riding")) {
 				player.setRiding(readSingleEntity((CompoundTag) tag));
 			} else {
@@ -243,13 +244,27 @@ public final class NBTConverter {
 		List<Tag> tags = compoundTag.getValue();
 		for (Tag tag: tags) {
 			String name = tag.getName();
+            switch (name){
+                case "DayCycleStopTime":
+                    break;
+                case "GameType":
+                    break;
+            }
+
+
 			if (name.equals("GameType")) {
 				level.setGameType(((IntTag) tag).getValue());
 			} else if (name.equals("LastPlayed")) {
 				level.setLastPlayed(((LongTag) tag).getValue());
 			} else if (name.equals("LevelName")) {
 				level.setLevelName(((StringTag) tag).getValue());
-			} else if (name.equals("Platform")) {
+			} else if (name.equals("LimitedWorldOriginX")){
+                level.setLimitedworldoriginx(((IntTag) tag).getValue());
+            } else if (name.equals("LimitedWorldOriginY")){
+                level.setLimitedworldoriginx(((IntTag) tag).getValue());
+            } else if (name.equals("LimitedWorldOriginZ")){
+                level.setLimitedworldoriginx(((IntTag) tag).getValue());
+            } else if (name.equals("Platform")) {
 				level.setPlatform(((IntTag) tag).getValue());
 			} else if (name.equals("Player")) {
 				level.setPlayer(readPlayer((CompoundTag) tag));
@@ -275,12 +290,6 @@ public final class NBTConverter {
 				level.setDimension(((IntTag) tag).getValue());
 			} else if (name.equals("Generator")) {
                 level.setGenerator(((IntTag) tag).getValue());
-            } else if (name.equals("LimitedWorldOriginX")){
-                level.setLimitedworldoriginx(((IntTag) tag).getValue());
-            } else if (name.equals("LimitedWorldOriginY")){
-                level.setLimitedworldoriginx(((IntTag) tag).getValue());
-            } else if (name.equals("LimitedWorldOriginZ")){
-                level.setLimitedworldoriginx(((IntTag) tag).getValue());
             } else {
 				System.out.println("Unhandled level tag: " + name + ":" + tag);
 			}
@@ -289,36 +298,56 @@ public final class NBTConverter {
 	}
 
 	public static CompoundTag writeLevel(Level level) {
-		List<Tag> tags = new ArrayList<Tag>(15);
-		/* tags should be sorted alphabetically */
-		tags.add(new IntTag("GameType", level.getGameType()));
-        tags.add(new IntTag("Generator",level.getGenerator()));
-		tags.add(new LongTag("LastPlayed", level.getLastPlayed()));
-		tags.add(new StringTag("LevelName", level.getLevelName()));
-        tags.add(new IntTag("LimitedWorldOriginX",level.getLimitedworldoriginx()));
-        tags.add(new IntTag("LimitedWorldOriginY",level.getLimitedworldoriginy()));
-        tags.add(new IntTag("LimitedWorldOriginZ",level.getLimitedworldoriginz()));
-		tags.add(new IntTag("Platform", level.getPlatform()));
-        if (null != level.getPlayer()) {
-            tags.add(writePlayer(level.getPlayer(), "Player",true));
+        List<Tag> tags;
+		/* tags 应该按字母顺序排列*/
+        switch (level.getStorageVersion()){
+            case 4:
+                tags = new ArrayList<Tag>(18);
+                tags.add(new IntTag("Dimension", level.getDimension()));
+                tags.add(new IntTag("GameType", level.getGameType()));
+                tags.add(new IntTag("Generator",level.getGenerator()));
+                tags.add(new LongTag("LastPlayed", level.getLastPlayed()));
+                tags.add(new StringTag("LevelName", level.getLevelName()));
+                tags.add(new IntTag("LimitedWorldOriginX",level.getLimitedworldoriginx()));
+                tags.add(new IntTag("LimitedWorldOriginY",level.getLimitedworldoriginy()));
+                tags.add(new IntTag("LimitedWorldOriginZ",level.getLimitedworldoriginz()));
+                tags.add(new IntTag("Platform", level.getPlatform()));
+                tags.add(new LongTag("RandomSeed", level.getRandomSeed()));
+                tags.add(new LongTag("SizeOnDisk", level.getSizeOnDisk()));
+                tags.add(new IntTag("SpawnX", level.getSpawnX()));
+                tags.add(new IntTag("SpawnY", level.getSpawnY()));
+                tags.add(new IntTag("SpawnZ", level.getSpawnZ()));
+                tags.add(new IntTag("StorageVersion", level.getStorageVersion()));
+                tags.add(new LongTag("Time", level.getTime()));
+                if (0 < level.getDayCycleStopTime()) {
+                    tags.add(new LongTag("dayCycleStopTime", level.getDayCycleStopTime()));
+                }
+                tags.add(new ByteTag("spawnMobs", level.getSpawnMobs() ? (byte) 1: (byte) 0));
+                break;
+            default:
+                tags = new ArrayList<>(12);
+                tags.add(new IntTag("GameType", level.getGameType()));
+                tags.add(new LongTag("LastPlayed", level.getLastPlayed()));
+                tags.add(new StringTag("LevelName", level.getLevelName()));
+                tags.add(new IntTag("Platform", level.getPlatform()));
+                tags.add(writePlayer(level.getPlayer(), "Player",true));
+                tags.add(new LongTag("RandomSeed", level.getRandomSeed()));
+                tags.add(new LongTag("SizeOnDisk", level.getSizeOnDisk()));
+                tags.add(new IntTag("SpawnX", level.getSpawnX()));
+                tags.add(new IntTag("SpawnY", level.getSpawnY()));
+                tags.add(new IntTag("SpawnZ", level.getSpawnZ()));
+                tags.add(new IntTag("StorageVersion", level.getStorageVersion()));
+                tags.add(new LongTag("Time", level.getTime()));
+                break;
         }
-		tags.add(new LongTag("RandomSeed", level.getRandomSeed()));
-		tags.add(new LongTag("SizeOnDisk", level.getSizeOnDisk()));
-		tags.add(new IntTag("SpawnX", level.getSpawnX()));
-		tags.add(new IntTag("SpawnY", level.getSpawnY()));
-		tags.add(new IntTag("SpawnZ", level.getSpawnZ()));
-		tags.add(new IntTag("StorageVersion", level.getStorageVersion()));
-		tags.add(new LongTag("Time", level.getTime()));
-		tags.add(new LongTag("dayCycleStopTime", level.getDayCycleStopTime()));
-		tags.add(new ByteTag("spawnMobs", level.getSpawnMobs() ? (byte) 1: (byte) 0));
 		return new CompoundTag("", tags);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static EntityDataConverter.EntityData readEntities(CompoundTag tag) {
-		List<Entity> entities = null;
+        List<Entity> entities = null;
 		List<TileEntity> tileEntities = null;
-		for (Tag t: tag.getValue()) {
+        for (Tag t : tag.getValue()) {
 			if (t.getName().equals("Entities")) {
 				entities = readEntitiesPart(((ListTag<CompoundTag>) t).getValue());
 			} else if (t.getName().equals("TileEntities")) {

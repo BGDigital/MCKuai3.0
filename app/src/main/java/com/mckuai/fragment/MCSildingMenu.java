@@ -13,12 +13,12 @@ import com.lurencun.service.autoupdate.Version;
 import com.lurencun.service.autoupdate.internal.SimpleJSONParser;
 import com.mckuai.bean.MCUser;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.R;
 import com.mckuai.imc.UserCenter;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.LoginActivity;
-import com.mckuai.imc.R;
 import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -342,7 +342,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			appUpdate = AppUpdateService.getAppUpdate(getActivity());
 		}
 		String url = getString(R.string.interface_domainName) + getString(R.string.interface_checkupgread);
-		url = url + "&pushMan=" + URLEncoder.encode(getString(R.string.channel_Owner));
+		url = url + "&pushMan=" + URLEncoder.encode(getString(R.string.channel));
 		if (isQuiet)
 		{
 			appUpdate.checkLatestVersionQuiet(url, new MyJsonParser());

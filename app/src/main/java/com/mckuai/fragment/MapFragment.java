@@ -364,7 +364,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 tit.setText("地图排行");
                 showleftbutton = true;
                 MainActivity.setLeftButtonView(true);
-                mapadapters.setpaihang(true);
+                if (null != mapadapters) {
+                    mapadapters.setpaihang(true);
+                }
                 mapType = null;
                 mapList.getData().clear();
                 mapList.getPageBean().setPage(0);

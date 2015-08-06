@@ -8,9 +8,16 @@ import java.util.List;
 
 
 public class Player extends LivingEntity implements Serializable {
+    /**
+     * 玩家正在携带或手持的物品
+     */
     private List<InventorySlot> inventory;
+
+    /**
+     *这是一个长度4的列表。对应着头盔、胸甲、护腿和靴子
+     */
     private List<ItemStack> armorSlots;
-    private PlayerAbilities abilities = new PlayerAbilities();
+    private PlayerAbilities abilities;
     private int score;
     private int dimension;
     private int bedPositionX = 0, bedPositionY = 0, bedPositionZ = 0;
