@@ -183,9 +183,6 @@ public class WorldInfo implements Serializable{
         if (null != level && null != level.getPlayer() && null != level.getPlayer().getInventory()){
             return level.getPlayer().getInventory();
         }
-        if (null != player && null != player.getInventory()){
-            return player.getInventory();
-        }
         return null;
     }
 
@@ -228,18 +225,17 @@ public class WorldInfo implements Serializable{
     }
 
     public boolean setInventory(List<InventorySlot> inventorySlots){
-        if (null != player){
-            player.setInventory(inventorySlots);
+        if (null != level && null != level.getPlayer()){
+            level.getPlayer().setInventory(inventorySlots);
             return saveDBData();
         }
         return false;
     }
 
     private boolean saveData(){
-        String path = worldRoot + dir;
         File levelFile = null;
         try {
-            levelFile =new File(path,"level.dat");
+            levelFile =new File(worldRoot + dir,"level.dat");
             if (null == levelFile || !levelFile.exists() || !levelFile.isFile()){
                 return false;
             }
@@ -250,9 +246,34 @@ public class WorldInfo implements Serializable{
         }
         //处理0.81以后版本
         if (3 < level.getStorageVersion()){
-
+            File[] dbFile = new File(worldRoot + dir).listFiles();
+            for (File curFile :dbFile){
+                if (curFile.isDirectory()){
+                        File[] d = curFile.listFiles();
+                        if (d.length > 0){
+                            for (File file:d){
+                                if (file.getName().equalsIgnoreCase("LOCK")){
+                                    return LevelDBConverter.writeLevel(level.getPlayer(),curFile);
+                                }
+                            }
+                        }
+                }
+            }
         }
+        return false;
+    }
 
+    public Player readPlayer(){
+        Player player = new Player();
+        switch (level.getStorageVersion()){
+            case 3: //0.81及以前版本
+                break;
+            case 4://0.9-0.10
+                break;
+            case 5: //0.11
+                break;
+        }
+        return player;
     }
 
 
@@ -281,7 +302,7 @@ public class WorldInfo implements Serializable{
         for (int i = 0; i < dbFiles.length; i++) {
             if (dbFiles[i].isDirectory()) {
                 try {
-                    result = LevelDBConverter.writeLevel(player, dbFiles[i]);
+                    result = LevelDBConverter.writeLevel(level.getPlayer(), dbFiles[i]);
                 } catch (Exception e) {
                     e.printStackTrace();
                     result = false;

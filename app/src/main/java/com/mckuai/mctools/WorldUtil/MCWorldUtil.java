@@ -173,9 +173,12 @@ public class MCWorldUtil {
      * @param file 要获取信息的世界
      */
     private static void loadData(File file, boolean needPlayer) {
-        File featureFile = new File(file.getName(),"level.dat");
+        File featureFile = new File(file.getPath(),"level.dat");
+        boolean result = null != featureFile;
+        result = featureFile.exists();
+        result = featureFile.isFile();
         if (null != featureFile && featureFile.exists() && featureFile.isFile()){
-            featureFile = new File(file.getName(),"db");
+            featureFile = new File(file.getPath(),"db");
             if (null != featureFile && featureFile.exists() && featureFile.isDirectory()){
                 WorldInfo worldInfo = new WorldInfo();
                 worldInfo.setDir(file.getName());       //文件夹名称
@@ -184,8 +187,11 @@ public class MCWorldUtil {
                     worldInfo.setPlayer(loadPlayerFromDB(file));
                 }
                 //从level.dat文件中获取level信息（必有信息包括显示名，）
-                loadLevelFromFile(file, worldInfo);
-                worlds.add(worldInfo);
+                if (loadLevelFromFile(file, worldInfo)) {
+                    if (4 == worldInfo.getLevel().getStorageVersion()) {
+                        worlds.add(worldInfo);
+                    }
+                }
             }
         }
 
@@ -236,7 +242,6 @@ public class MCWorldUtil {
             try {
                 level = LevelDataConverter.read(levelFile);
                 if (null != level) {
-                    //修改角色信息，由于之前已经尝试过从数据库中读取，则处理为以文件中的为优先
                     worldInfo.setLevel(level);
                     return true;
                 }

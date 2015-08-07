@@ -94,12 +94,18 @@ import java.util.List;
 
     }
 
+    public static Player readPlayer(String worldRoot){
+        Player player = new Player();
+        return player;
+    }
+
     public static boolean writeLevel(Player player,File dbRoot){
         DB db = openDataBase(dbRoot);
         boolean result = false;
         try{
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            new NBTOutputStream(byteArrayOutputStream, false, true).writeTag(NBTConverter.writePlayer(player, "", true));
+            NBTOutputStream nbtOutputStream = new NBTOutputStream(byteArrayOutputStream,false,true);
+            nbtOutputStream.writeTag(NBTConverter.writePlayer(player, "", true));
             db.put(stringToByte("~local_player"), byteArrayOutputStream.toByteArray());
             byteArrayOutputStream.close();
             result = true;

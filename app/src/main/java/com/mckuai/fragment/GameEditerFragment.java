@@ -232,7 +232,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private void switchGameMode() {
         mode = Math.abs(mode - 1);
 
-        if (!worldInfos.get(curWorldIndex).setIsCreative(1 == mode)) {
+        if (!worldInfos.get(curWorldIndex).setGameMod(1 == mode)) {
             mode = Math.abs(mode - 1);
         }
 

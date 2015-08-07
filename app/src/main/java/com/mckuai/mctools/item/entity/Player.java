@@ -17,6 +17,9 @@ public class Player extends LivingEntity implements Serializable {
      *这是一个长度4的列表。对应着头盔、胸甲、护腿和靴子
      */
     private List<ItemStack> armorSlots;
+    /**
+     * 玩家属性
+     */
     private PlayerAbilities abilities;
     private int score;
     private int dimension;

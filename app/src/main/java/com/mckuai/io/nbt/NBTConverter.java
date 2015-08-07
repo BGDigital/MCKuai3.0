@@ -1,5 +1,6 @@
 package com.mckuai.io.nbt;
 
+import com.marshalchen.ultimaterecyclerview.UltimateDifferentViewTypeAdapter;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.ItemStack;
 import com.mckuai.mctools.Level;
@@ -96,7 +97,6 @@ public final class NBTConverter {
 		return slots;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Player readPlayer(CompoundTag compoundTag) {
 		/* todo: separate this out to another class like Glowstone's loading system */
 		List<Tag> tags = compoundTag.getValue();
@@ -153,7 +153,6 @@ public final class NBTConverter {
 				player.setSpawnZ(((IntTag) tag).getValue());
 			} else if (name.equals("abilities")) {
 				readAbilities((CompoundTag) tag, player.getAbilities());
-//                player.setAbilities(read);
 			} else if (name.equals("Riding")) {
 				player.setRiding(readSingleEntity((CompoundTag) tag));
 			} else {
@@ -238,62 +237,93 @@ public final class NBTConverter {
 		return new ListTag<FloatTag>(tagName, FloatTag.class, tags);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Level readLevel(CompoundTag compoundTag) {
 		Level level = new Level();
 		List<Tag> tags = compoundTag.getValue();
+		boolean isNeedFixVersion = false;
 		for (Tag tag: tags) {
-			String name = tag.getName();
-            switch (name){
+            switch (tag.getName()){
                 case "DayCycleStopTime":
+					level.setDayCycleStopTimeNewVer(((LongTag) tag).getValue());
+					isNeedFixVersion = true;
+                    break;
+                case "Dimension":
+                    level.setDimension(((IntTag) tag).getValue());
                     break;
                 case "GameType":
+					level.setGameType(((IntTag) tag).getValue());
+                    break;
+                case "Generator":
+                    level.setGenerator(((IntTag) tag).getValue());
+                    break;
+				case "LastPlayed":
+					level.setLastPlayed(((LongTag) tag).getValue());
+					break;
+				case "LevelName":
+					level.setLevelName(((StringTag) tag).getValue());
+					break;
+                case "LimitedWorldOriginX":
+                    level.setLimitedworldoriginx(((IntTag) tag).getValue());
+                    break;
+                case "LimitedWorldOriginY":
+                    level.setLimitedworldoriginy(((IntTag) tag).getValue());
+                    break;
+                case "LimitedWorldOriginZ":
+                    level.setLimitedworldoriginz(((IntTag) tag).getValue());
+                    break;
+                case "Platform":
+                    level.setPlatform(((IntTag) tag).getValue());
+                    break;
+                case "Player":
+                    level.setPlayer(readPlayer((CompoundTag) tag));
+                    break;
+                case "RandomSeed":
+                    level.setRandomSeed(((LongTag) tag).getValue());
+                    break;
+                case "SizeOnDisk":
+                    level.setSizeOnDisk(((LongTag) tag).getValue());
+                    break;
+                case "SpawnX":
+                    level.setSpawnX(((IntTag) tag).getValue());
+                    break;
+                case "SpawnY":
+                    level.setSpawnY(((IntTag) tag).getValue());
+                    break;
+                case "SpawnZ":
+                    level.setSpawnZ(((IntTag) tag).getValue());
+                    break;
+                case "StorageVersion":
+                    level.setStorageVersion(((IntTag) tag).getValue());
+                    break;
+                case "Time":
+                    level.setTime(((LongTag) tag).getValue());
+                    break;
+                case "creationTime":
+                    level.setCureationTime(((LongTag) tag).getValue());
+                    isNeedFixVersion = true;
+                    break;
+                case "currentTick":
+                    level.setCurrentTick(((LongTag) tag).getValue());
+                    isNeedFixVersion = true;
+                    break;
+                case "dayCycleStopTime":
+                    level.setDayCycleStopTime(((LongTag) tag).getValue());
+                    isNeedFixVersion = true;
+                    break;
+                case "spawnMobs":
+                    level.setSpawnMobs(((ByteTag) tag).getValue() != 0);
+                    break;
+                case "worldStartCount":
+                    level.setWorldStartCount(((LongTag) tag).getValue());
+                    break;
+                default:
+                    System.out.println("Unhandled level tag: " + tag.getName() + ":" + tag);
                     break;
             }
-
-
-			if (name.equals("GameType")) {
-				level.setGameType(((IntTag) tag).getValue());
-			} else if (name.equals("LastPlayed")) {
-				level.setLastPlayed(((LongTag) tag).getValue());
-			} else if (name.equals("LevelName")) {
-				level.setLevelName(((StringTag) tag).getValue());
-			} else if (name.equals("LimitedWorldOriginX")){
-                level.setLimitedworldoriginx(((IntTag) tag).getValue());
-            } else if (name.equals("LimitedWorldOriginY")){
-                level.setLimitedworldoriginx(((IntTag) tag).getValue());
-            } else if (name.equals("LimitedWorldOriginZ")){
-                level.setLimitedworldoriginx(((IntTag) tag).getValue());
-            } else if (name.equals("Platform")) {
-				level.setPlatform(((IntTag) tag).getValue());
-			} else if (name.equals("Player")) {
-				level.setPlayer(readPlayer((CompoundTag) tag));
-			} else if (name.equals("RandomSeed")) {
-				level.setRandomSeed(((LongTag) tag).getValue());
-			} else if (name.equals("SizeOnDisk")) {
-				level.setSizeOnDisk(((LongTag) tag).getValue());
-			} else if (name.equals("SpawnX")) {
-				level.setSpawnX(((IntTag) tag).getValue());
-			} else if (name.equals("SpawnY")) {
-				level.setSpawnY(((IntTag) tag).getValue());
-			} else if (name.equals("SpawnZ")) {
-				level.setSpawnZ(((IntTag) tag).getValue());
-			} else if (name.equals("StorageVersion")) {
-				level.setStorageVersion(((IntTag) tag).getValue());
-			} else if (name.equals("Time")) {
-				level.setTime(((LongTag) tag).getValue());
-			} else if (name.equals("dayCycleStopTime")) {
-				level.setDayCycleStopTime(((LongTag) tag).getValue());
-			} else if (name.equals("spawnMobs")) {
-				level.setSpawnMobs(((ByteTag) tag).getValue() != 0);
-			} else if (name.equals("Dimension")) {
-				level.setDimension(((IntTag) tag).getValue());
-			} else if (name.equals("Generator")) {
-                level.setGenerator(((IntTag) tag).getValue());
-            } else {
-				System.out.println("Unhandled level tag: " + name + ":" + tag);
-			}
 		}
+        if (isNeedFixVersion){
+            level.setStorageVersion(5);
+        }
 		return level;
 	}
 
@@ -558,6 +588,9 @@ public final class NBTConverter {
 	}
 
 	public static void readAbilities(CompoundTag tag, PlayerAbilities abilities) {
+        if (null == abilities){
+            abilities = new PlayerAbilities();
+        }
 		List<Tag> tags = tag.getValue();
 		for (Tag t: tags) {
 			String n = t.getName();
