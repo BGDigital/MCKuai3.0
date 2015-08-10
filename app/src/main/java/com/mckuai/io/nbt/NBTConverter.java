@@ -199,7 +199,9 @@ public final class NBTConverter {
             tags.add(new IntTag("SpawnX", player.getSpawnX()));
             tags.add(new IntTag("SpawnY", player.getSpawnY()));
             tags.add(new IntTag("SpawnZ", player.getSpawnZ()));
-            tags.add(writeAbilities(player.getAbilities(), "abilities"));
+			if (null != player.getAbilities()) {
+				tags.add(writeAbilities(player.getAbilities(), "abilities"));
+			}
             if (player.getRiding() != null) {
                 tags.add(writeEntity(player.getRiding(), "Riding"));
             }

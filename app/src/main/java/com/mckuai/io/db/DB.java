@@ -43,7 +43,6 @@ public class DB extends NativeObject {
         if (value == null) {
             throw new NullPointerException("value");
         }
-
         nativePut(mPtr, key, value);
     }
 

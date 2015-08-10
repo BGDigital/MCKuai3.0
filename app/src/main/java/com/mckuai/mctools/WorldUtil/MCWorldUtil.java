@@ -24,9 +24,6 @@ public class MCWorldUtil {
     private static ArrayList<WorldInfo> worlds;   //所有的地图信息
     private static boolean isThirdViewEnable = false;
     private static OnWorldLoadListener mListener;
-
-    private boolean isLevelDatChanged = false;
-    private boolean isPlayerInfoChanged = false;
     private static boolean mIsThirdViewLoaded = false;
 
     public interface OnWorldLoadListener {
@@ -188,10 +185,11 @@ public class MCWorldUtil {
                 }
                 //从level.dat文件中获取level信息（必有信息包括显示名，）
                 if (loadLevelFromFile(file, worldInfo)) {
-                    if (4 == worldInfo.getLevel().getStorageVersion()) {
+                    if (4 == worldInfo.getLevel().getStorageVersion() || 5 == worldInfo.getLevel().getStorageVersion()) {
                         worlds.add(worldInfo);
                     }
                 }
+
             }
         }
 
@@ -293,124 +291,4 @@ public class MCWorldUtil {
         }
 
     }
-
-
-
-   /* public void setMapDir(String mapDir){
-        fileName = mapDir + "/level.dat";
-        loadData();
-        optionUntil = new OptionUntil("/storage/sdcard0/games/com.mojang/minecraftpe/");
-    }
-
-    public boolean hasProfile(){
-        return  null != level;
-    }
-
-    public int getGameMode(){
-        if (null != level){
-            return  level.getGameType();
-        }
-        return  -1;
-    }
-
-    public boolean setGameMode(int mode){
-        if (null != level){
-            level.setGameType(mode);
-            saveData();
-            return  true;
-        }
-        return  false;
-    }
-
-    public String getMapName(){
-        if (null != level){
-            return  level.getLevelName();
-        }
-        return  null;
-    }
-
-
-
-    public void setTimeToMorning(){
-        long dayCount = (level.getTime() / DAY_LENGTH);
-        if (level.getTime() % DAY_LENGTH > 0){
-            dayCount++;
-        }
-        level.setTime(dayCount * DAY_LENGTH);
-        saveData();
-    }
-
-    public void setTimeToNight(){
-        level.setTime(((level.getTime() / DAY_LENGTH) * DAY_LENGTH) + (2 * DAY_LENGTH / 3));
-        saveData();
-    }
-
-    public String getTime(){
-        Log.e(TAG, "time:" + level.getTime());
-        long timeInDay = level.getTime() % DAY_LENGTH;
-        if (timeInDay > (DAY_LENGTH / 2)){
-            return "黑夜";
-        }
-        else {
-            return "白天";
-        }
-    }
-
-    public Long getLastModified(){
-        if (null != level) {
-            return level.getLastPlayed();
-        }
-        else {
-            return null;
-        }
-    }
-
-    public List<InventorySlot> getInventory(){
-        if (null != level && null != level.getPlayer()){
-            return  level.getPlayer().getInventory();
-        }
-        return  null;
-    }
-
-    public void setInventory(List<InventorySlot> inventorySlotList){
-
-    }
-
-    public void setThirdPerson(boolean enable){
-        optionUntil.setThirdPerson(enable);
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public boolean isThirdPerson(){
-        if (null != optionUntil && optionUntil.isValid()){
-            return optionUntil.isThirdPerson();
-        }
-        else {
-            return false;
-        }
-    }
-
-
-
-   private boolean saveData(){
-        File file = new File(fileName);
-        if (!file.exists()){
-            return false;
-        }
-        try {
-            LevelDataConverter.write(level,file);
-            file = null;
-            return  true;
-        }
-        catch (Exception e){
-            Log.e(TAG,"save false,"+e.getLocalizedMessage());
-            file = null;
-            return  false;
-        }
-    }*/
-
-
 }

@@ -14,6 +14,7 @@ import org.spout.nbt.stream.NBTOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,8 +95,35 @@ import java.util.List;
 
     }
 
+    /**
+     * 从数据库中读取player信息
+     * @param worldRoot
+     * @return 如果获取到player信息则返回，否则返回空
+     */
     public static Player readPlayer(String worldRoot){
-        Player player = new Player();
+        if (null == worldRoot || worldRoot.isEmpty()){
+            return null;
+        }
+
+        File dbFile = new File(worldRoot);
+        if (null == dbFile || !dbFile.exists() || !dbFile.isDirectory()){
+            return null;
+        }
+        com.mckuai.io.db.DB db = openDataBase(dbFile);
+        Player player = null;
+        if (null != db){
+            try{
+                byte[] data =db.get("~local_player".getBytes(Charset.forName("utf-8")));
+                if (null != data) {
+                    player = NBTConverter.readPlayer((CompoundTag) new NBTInputStream(new ByteArrayInputStream(data), false, true).readTag());
+                }
+            }
+            catch (Exception e){
+                Log.e(TAG,"读取角色信息时失败，原因："+e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+        db.close();
         return player;
     }
 
