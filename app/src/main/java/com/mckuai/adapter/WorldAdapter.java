@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.mckuai.bean.WorldInfo;
+import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.imc.R;
 
 import java.text.SimpleDateFormat;
@@ -18,26 +18,26 @@ import java.util.List;
  * Created by kyly on 2015/7/15.
  */
 public class WorldAdapter  extends BaseAdapter{
-    private List<WorldInfo> worldInfos;
+    private List<WorldItem> worldItems;
     private Context mContext;
 
     public WorldAdapter(Context context){
          this.mContext = context;
     }
 
-    public void setData(List<WorldInfo> list){
-        this.worldInfos = list;
+    public void setData(List<WorldItem> list){
+        this.worldItems = list;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return null == worldInfos ? 0:worldInfos.size();
+        return null == worldItems ? 0: worldItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null == worldInfos ? null:worldInfos.get(position);
+        return null == worldItems ? null: worldItems.get(position);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class WorldAdapter  extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolde vh;
-        WorldInfo world = (WorldInfo)getItem(position);
+        WorldItem world = (WorldItem)getItem(position);
         if (null == convertView){
             vh  = new ViewHolde();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_world,parent,false);

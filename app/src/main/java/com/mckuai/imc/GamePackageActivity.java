@@ -18,7 +18,7 @@ import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.ItemStack;
 import com.mckuai.adapter.InventoryAdapter;
-import com.mckuai.bean.WorldInfo;
+import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.io.xml.MaterialIconLoader;
 import com.mckuai.io.xml.MaterialLoader;
 import com.mckuai.mctools.material.Material;
@@ -32,7 +32,7 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
     private UltimateRecyclerView itemListView;
     private SeekBar sb_itemCountPeeker;
     private InventoryAdapter adapter;
-    private WorldInfo world;
+    private WorldItem world;
     private ItemStack itemStack;
 
     private EditText edt_search;

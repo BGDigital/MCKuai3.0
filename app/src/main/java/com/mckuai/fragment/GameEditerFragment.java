@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mckuai.adapter.WorldAdapter;
-import com.mckuai.bean.WorldInfo;
+import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
@@ -60,7 +60,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private String time;//白天黑夜
     private String viewName; //地图名字
     private boolean thirdPerson = false; //是否启用第三人称
-    private ArrayList<WorldInfo> worldInfos;
+    private ArrayList<WorldItem> worldItems;
     private int inventoryTypeCount;         //背包中物品种类数
     private int curWorldIndex;//当前显示的世界的索引
     private Integer[] res_Map = {R.drawable.background_map_0,R.drawable.background_map_1,R.drawable.background_map_2,R.drawable.background_map_3,R.drawable.background_map_4,R.drawable.background_map_5,R.drawable.background_map_6,R.drawable.background_map_7,R.drawable.background_map_8,R.drawable.background_map_9};
@@ -104,12 +104,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (!isGameInstalled) {
             detectionGameInfo();
         }
-        if (isGameInstalled && null == worldInfos) {
+        if (isGameInstalled && null == worldItems) {
             gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
-                public void OnComplete(ArrayList<WorldInfo> worldInfos, boolean isThirdView) {
-                    Log.e(TAG, "地图数目：" + (null == worldInfos ? 0:worldInfos.size()));
-                    setData(worldInfos, isThirdView);
+                public void OnComplete(ArrayList<WorldItem> worldItems, boolean isThirdView) {
+                    Log.e(TAG, "地图数目：" + (null == worldItems ? 0: worldItems.size()));
+                    setData(worldItems, isThirdView);
                 }
             }, false);
         }
@@ -153,8 +153,8 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
 
-    private void setData(ArrayList<WorldInfo> worldList, boolean isThirdViewEnable) {
-        this.worldInfos = worldList;
+    private void setData(ArrayList<WorldItem> worldList, boolean isThirdViewEnable) {
+        this.worldItems = worldList;
         this.thirdPerson = isThirdViewEnable;
         if (null != worldList && !worldList.isEmpty()) {
             curWorldIndex = 0;
@@ -166,7 +166,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void getWorldInfo() {
-        WorldInfo world = worldInfos.get(curWorldIndex);
+        WorldItem world = worldItems.get(curWorldIndex);
         if (!isGameInstalled) {
             return;
         }
@@ -232,7 +232,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private void switchGameMode() {
         mode = Math.abs(mode - 1);
 
-        if (!worldInfos.get(curWorldIndex).setGameMod(1 == mode)) {
+        if (!worldItems.get(curWorldIndex).setGameMod(1 == mode)) {
             mode = Math.abs(mode - 1);
         }
 
@@ -242,11 +242,11 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void switchGameTime() {
         if (time.equals("白天")) {
-            if (worldInfos.get(curWorldIndex).setIsDay(false)) {
+            if (worldItems.get(curWorldIndex).setIsDay(false)) {
                 time = "黑夜";
             }
         } else {
-            if (worldInfos.get(curWorldIndex).setIsDay(true)) {
+            if (worldItems.get(curWorldIndex).setIsDay(true)) {
                 time = "白天";
             }
         }
@@ -262,16 +262,16 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void changePackageItem() {
         Intent intent = new Intent(getActivity(), GamePackageActivity.class);
-        MCkuai.getInstance().world = worldInfos.get(curWorldIndex);
+        MCkuai.getInstance().world = worldItems.get(curWorldIndex);
         startActivityForResult(intent, 999);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            WorldInfo world = worldInfos.get(curWorldIndex);
+            WorldItem world = worldItems.get(curWorldIndex);
             if (null != world && null != world.getPlayer()) {
-                worldInfos.get(curWorldIndex).getPlayer().setInventory(world.getInventory());
+                worldItems.get(curWorldIndex).getPlayer().setInventory(world.getInventory());
                 updateWorldInfo();
             }
         }
@@ -330,13 +330,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     }
 
     private void selectMap() {
-        worldInfos = gameEditer.getAllWorlds();
-        if (1 < worldInfos.size()) {
+        worldItems = gameEditer.getAllWorlds();
+        if (1 < worldItems.size()) {
             if (null == adapter) {
                 adapter = new WorldAdapter(getActivity());
                 lv_mapList.setAdapter(adapter);
             }
-            adapter.setData(worldInfos);
+            adapter.setData(worldItems);
             lv_mapList.setVisibility(View.VISIBLE);
         } else {
             showNotification(1, "当前只有一张地图！", R.id.fl_root);
@@ -378,7 +378,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
+                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
                     switchGameMode();
                 } else {
                     showNotification(2, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
@@ -394,7 +394,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
+                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
                     switchGameTime();
                 } else {
                     showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
@@ -408,7 +408,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     return;
                 }
                 //切换第三人称和第一人称
-                if (null != worldInfos && worldInfos.get(curWorldIndex).getLevel() != null) {
+                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
                     switchView();
                 } else {
                     showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
@@ -425,7 +425,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                if (null != worldInfos && null !=worldInfos.get(curWorldIndex)) {
+                if (null != worldItems && null != worldItems.get(curWorldIndex)) {
                     changePackageItem();
                 }
                 else {
@@ -453,7 +453,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 if (!checkGameVersion()){
                     return;
                 }
-                if (null != worldInfos && !worldInfos.isEmpty()) {
+                if (null != worldItems && !worldItems.isEmpty()) {
                     if (View.VISIBLE == lv_mapList.getVisibility()) {
                         lv_mapList.setVisibility(View.GONE);
                     } else {

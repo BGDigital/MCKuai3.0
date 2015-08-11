@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mckuai.bean.WorldInfo;
+import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.imc.R;
 import com.mckuai.mctools.WorldUtil.MCWorldUtil;
 
@@ -23,10 +23,10 @@ public class ExportAdapter extends BaseAdapter {
     private Context mContext;
     private View view;
     private LayoutInflater mInflater;
-    private ArrayList<WorldInfo> worlds;
+    private ArrayList<WorldItem> worlds;
     private ArrayList<Integer> selectedList;
 
-    public ExportAdapter(Context context, ArrayList<WorldInfo> mapBeans) {
+    public ExportAdapter(Context context, ArrayList<WorldItem> mapBeans) {
         worlds = MCWorldUtil.getAllWorldLite();
         worlds = mapBeans;
         this.mContext = context;
@@ -53,7 +53,7 @@ public class ExportAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 //        Map map = (Map) getItem(position);
-        WorldInfo world = (WorldInfo) getItem(position);
+        WorldItem world = (WorldItem) getItem(position);
         if (null == world) {
             return null;
         }
@@ -109,7 +109,7 @@ public class ExportAdapter extends BaseAdapter {
         public ImageView rbtn_ok;
     }
 
-    public ArrayList<WorldInfo> chuancan() {
+    public ArrayList<WorldItem> chuancan() {
         return worlds;
     }
     @Override

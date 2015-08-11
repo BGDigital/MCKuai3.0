@@ -11,9 +11,15 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.mckuai.mctools.item.GameItem;
+
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,12 +35,39 @@ public class GameUntil {
 
     private static Context mContext;
 
+    public static ArrayList<GameItem> detectionGame(Context context){
+        ArrayList<GameItem> gameItems = detectionGameInstalled(context);
+        if (null != gameItems && !gameItems.isEmpty()){
+            detectionGameRunning(gameItems);
+            return gameItems;
+        }
+        return null;
+    }
+
+    private static ArrayList<GameItem> detectionGameInstalled(Context context){
+        ArrayList<GameItem> games = new ArrayList<>(3);
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> applist = pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
+        if (null != applist && !applist.isEmpty()){
+            for (ApplicationInfo app:applist){
+                if ((0 != (app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE)) && app.packageName.equalsIgnoreCase("com.mojang.minecraftpe")){
+                }
+            }
+        }
+        return games;
+    }
+
+    private static void detectionGameRunning(ArrayList<GameItem> items){
+
+    }
+
+
     public static boolean detectionIsGameRunning(Context context){
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> run = activityManager.getRunningAppProcesses();
         if (null != run && !run.isEmpty()){
             for (ActivityManager.RunningAppProcessInfo info:run){
-                if (info.processName.equalsIgnoreCase("com.mojang.minecraftpe")){
+                if (info.processName.indexOf("com.mojang.minecraftpe") > -1){
                     return true;
                 }
             }
@@ -45,9 +78,15 @@ public class GameUntil {
     public static boolean detectionIsGameInstalled(Context context){
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> applist = pm.getInstalledApplications(0);
+        List<PackageInfo>packageInfoList = pm.getInstalledPackages(0);
+        for (PackageInfo packageInfo:packageInfoList){
+            if (null != packageInfo&& null != packageInfo.versionName && packageInfo.versionName.equalsIgnoreCase("0.11.0")){
+                Log.e("111111","packageName:"+packageInfo.packageName);
+            }
+        }
         if (null != applist && !applist.isEmpty()){
             for (ApplicationInfo app:applist){
-                if (app.packageName.equalsIgnoreCase("com.mojang.minecraftpe")){
+                if ((0 != (app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE)) && app.packageName.indexOf("com.mojang.minecraftpe") > -1){
                     return  true;
                 }
             }

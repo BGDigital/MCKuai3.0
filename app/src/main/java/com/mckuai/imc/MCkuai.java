@@ -10,7 +10,7 @@ import android.widget.Spinner;
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Map;
-import com.mckuai.bean.WorldInfo;
+import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.mckuai.utils.JsonCache;
 import com.mckuai.mctools.WorldUtil.MCMapManager;
@@ -49,7 +49,7 @@ public class MCkuai  extends Application{
 
     public AsyncHttpClient mClient;
     public Tencent tencent;
-    public WorldInfo world;
+    public WorldItem world;
 
     private static final int MEM_CACHE_SIZE = 8 * 1024 * 1024;// 内存缓存大小
     private static final int CONNECT_TIME = 15 * 1000;// 连接时间

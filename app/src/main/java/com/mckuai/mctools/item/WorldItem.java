@@ -1,4 +1,4 @@
-package com.mckuai.bean;
+package com.mckuai.mctools.item;
 
 import android.util.Log;
 
@@ -18,12 +18,12 @@ import java.util.List;
 /**
  * Created by kyly on 2015/7/13.
  */
-public class WorldInfo implements Serializable{
+public class WorldItem implements Serializable{
     private String dir;                                 //子目录名称
     private Level level;                                 //level信息
     private long size;                                   //存档大小
 
-    private final String TAG = "WorldInfo";
+    private final String TAG = "WorldItem";
     private final String worldRoot = MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftWorlds/";
     private boolean isSelected = false;
 

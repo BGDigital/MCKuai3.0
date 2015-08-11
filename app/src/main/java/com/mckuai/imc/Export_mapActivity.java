@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mckuai.adapter.ExportAdapter;
-import com.mckuai.bean.WorldInfo;
+import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.mctools.WorldUtil.MCWorldUtil;
 import com.mckuai.mctools.WorldUtil.MCMapManager;
 
@@ -27,7 +27,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     private MCMapManager mapManager;
     //    ArrayList<String> downloadMap;
     private ArrayList<Integer> selectedList;
-    private ArrayList<WorldInfo> worlds;
+    private ArrayList<WorldItem> worlds;
 
 
     @Override
@@ -113,7 +113,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ArrayList<WorldInfo> deletedmap = new ArrayList<WorldInfo>();
+        ArrayList<WorldItem> deletedmap = new ArrayList<WorldItem>();
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
@@ -122,14 +122,14 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
 //                    int location = selectedList.get(i);
 //                    deletedmap.add(worlds.get(location));
 //                }
-//                for (WorldInfo world : deletedmap) {
+//                for (WorldItem world : deletedmap) {
 //                    worlds.remove(world);
 //                }
 //                adapter.notifyDataSetChanged();
 //            } else {
 //                ArrayList<String> detede = data.getStringArrayListExtra("mapzimulu");
 //                for (String zimu : detede) {
-//                    for (WorldInfo zongliebiao : worlds) {
+//                    for (WorldItem zongliebiao : worlds) {
 //                        if (zimu.equals(zongliebiao.getDir())) {
 //                            worlds.remove(zongliebiao);
 //                            break;
