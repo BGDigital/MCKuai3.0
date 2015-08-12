@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mckuai.imc"
     android:versionCode="11"
-    android:versionName="3.0.1"
-    >
+    android:versionName="3.0.1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -39,7 +38,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,38 +48,37 @@
         <activity
             android:name=".GamePackageActivity"
             android:label="@string/title_activity_game_package"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Map_detailsActivity"
             android:label="@string/delete_map"
             android:screenOrientation="portrait" >
-
         </activity>
         <activity
             android:name=".MymapActivity"
             android:label="@string/mymap"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Export_mapActivity"
             android:label="@string/title_activity_export_map"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mckuai.imc.UserCenter"
+            android:name=".UserCenter"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.mckuai.imc.LocationActivity"
+            android:name=".LocationActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-            android:name="com.mckuai.imc.ChangeInfoActivity"
+            android:name=".ChangeInfoActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -88,22 +86,22 @@
         <activity
             android:name=".ServerDetailsActivity"
             android:label="@string/title_activity_server_details"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MapdeleteActivity"
             android:label="@string/title_activity_mapdetele"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MapimportActivity"
             android:label="@string/title_activity_mapimport"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".MapexportActivity"
             android:label="@string/title_activity_mapexport"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".PostActivity"
@@ -120,10 +118,10 @@
         <activity
             android:name=".LoginActivity"
             android:label="登录"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name="com.mckuai.imc.ModifyNameActivity"
+            android:name=".ModifyNameActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -162,11 +160,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        <!-- 友盟统计 key-->
+        <!-- 友盟统计 key -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="55127cc0fd98c5421700098f" />
-        <!-- 友盟统计渠道-->
+        <!-- 友盟统计渠道 -->
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="@string/channel" />
@@ -175,20 +173,20 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="8BeV0Eu1X94jbXQgFckSaL8L" />
 
-        <service android:name="com.mckuai.service_and_recevier.DownloadService">
+        <service android:name="com.mckuai.service_and_recevier.DownloadService" >
             <intent-filter>
-                <action android:name="com.mckuai.downloadservice"></action>
-                <category android:name="android.intent.category.DEFAULT"></category>
+                <action android:name="com.mckuai.downloadservice" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 
-        <receiver android:name="com.mckuai.service_and_recevier.DownloadProgressRecevier">
+        <receiver android:name="com.mckuai.service_and_recevier.DownloadProgressRecevier" >
             <intent-filter>
-                <action android:name="com.mckuai.imc.downloadprogress">
+                <action android:name="com.mckuai.imc.downloadprogress" >
                 </action>
             </intent-filter>
         </receiver>
     </application>
-
 
 </manifest>

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mckuai.adapter.WorldAdapter;
+import com.mckuai.mctools.item.GameItem;
 import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.imc.GamePackageActivity;
 import com.mckuai.imc.MCkuai;
@@ -296,6 +297,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (MCkuai.getInstance().fragmentIndex != 0){
             return;
         }
+        ArrayList<GameItem> games = GameUntil.detectionGame(getActivity());
         isGameInstalled = GameUntil.detectionIsGameInstalled(getActivity());
         if (isGameInstalled) {
             isGameRunning = GameUntil.detectionIsGameRunning(getActivity());

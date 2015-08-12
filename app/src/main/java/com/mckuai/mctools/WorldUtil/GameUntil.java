@@ -47,11 +47,14 @@ public class GameUntil {
     private static ArrayList<GameItem> detectionGameInstalled(Context context){
         ArrayList<GameItem> games = new ArrayList<>(3);
         PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> applist = pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
-        if (null != applist && !applist.isEmpty()){
-            for (ApplicationInfo app:applist){
-                if ((0 != (app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE)) && app.packageName.equalsIgnoreCase("com.mojang.minecraftpe")){
-                }
+
+        List<PackageInfo>packageInfoList = pm.getInstalledPackages(0);
+        for (PackageInfo packageInfo:packageInfoList){
+            if (null != packageInfo&& null != packageInfo.packageName && (packageInfo.packageName.indexOf("com.mojang.minecraftpe") > -1)){
+                GameItem item = new GameItem();
+                item.setPackageName(packageInfo.packageName);
+                item.setVersionName(packageInfo.versionName);
+                games.add(item);
             }
         }
         return games;
@@ -78,12 +81,7 @@ public class GameUntil {
     public static boolean detectionIsGameInstalled(Context context){
         PackageManager pm = context.getPackageManager();
         List<ApplicationInfo> applist = pm.getInstalledApplications(0);
-        List<PackageInfo>packageInfoList = pm.getInstalledPackages(0);
-        for (PackageInfo packageInfo:packageInfoList){
-            if (null != packageInfo&& null != packageInfo.versionName && packageInfo.versionName.equalsIgnoreCase("0.11.0")){
-                Log.e("111111","packageName:"+packageInfo.packageName);
-            }
-        }
+
         if (null != applist && !applist.isEmpty()){
             for (ApplicationInfo app:applist){
                 if ((0 != (app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE)) && app.packageName.indexOf("com.mojang.minecraftpe") > -1){
