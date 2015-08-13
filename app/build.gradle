@@ -54,4 +54,5 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:support-v4:22.2.0'
+    compile files('src/libs/umeng-analytics-v5.5.3.jar')
 }
