@@ -26,7 +26,15 @@ public class GameItem {
         this.versionName = versionName;
     }
 
-    private  int getMinorVersion(){
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setIsRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
+    public  int getMinorVersion(){
         if (null != versionName && !versionName.isEmpty()){
             String[] version = versionName.split("\\.");
             if (null != version && 3 == version.length){
