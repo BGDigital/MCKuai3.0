@@ -412,8 +412,14 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     }
 
     @Override
-    public void afterServerInfoAdded() {
-        MobclickAgent.onEvent(getActivity(),"startGame_server");
-        GameUntil.startGame(getActivity());
+    public void afterServerInfoAdded(int version) {
+        MobclickAgent.onEvent(getActivity(), "startGame_server");
+        if (0 < version){
+            GameUntil.startGame(getActivity(),version);
+        }
+        else {
+            GameUntil.startGame(getActivity());
+        }
+
     }
 }

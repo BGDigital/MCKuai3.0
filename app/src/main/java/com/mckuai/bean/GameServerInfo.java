@@ -285,4 +285,14 @@ public class GameServerInfo implements Serializable {
     public void setExchangeQQ(String exchangeQQ) {
         this.exchangeQQ = exchangeQQ;
     }
+
+    public int getResVersionEx(){
+        if (null != resVersion){
+            String[] version = resVersion.split("\\.");
+            if (null != version && 3 == version.length){
+                return Integer.parseInt(version[1]);
+            }
+        }
+        return 0;
+    }
 }

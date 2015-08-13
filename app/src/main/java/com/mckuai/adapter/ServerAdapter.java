@@ -36,7 +36,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
     }
 
     public interface OnServerAddListener{
-        public void afterServerInfoAdded();
+        public void afterServerInfoAdded(int version);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -82,7 +82,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder
                     editer.addServer(infos);
                     editer.save();
                     if (null != addListener){
-                        addListener.afterServerInfoAdded();
+                        addListener.afterServerInfoAdded(infos.getResVersionEx());
                     }
                 }
                 else {
