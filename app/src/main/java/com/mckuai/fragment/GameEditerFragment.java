@@ -299,6 +299,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         ArrayList<GameItem> games = GameUntil.detectionGame(getActivity());
         isGameInstalled = GameUntil.detectionIsGameInstalled(getActivity());
+        if (null != games && !games.isEmpty()){
+            isGameInstalled = true;
+        }
         if (isGameInstalled) {
             isGameRunning = GameUntil.detectionIsGameRunning(getActivity());
             if (isGameRunning) {
