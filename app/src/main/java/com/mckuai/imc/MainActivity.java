@@ -21,6 +21,7 @@ import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MCSildingMenu;
 import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ServerFragment;
+import com.mckuai.fragment.SkinFragment;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -158,7 +159,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mList.add(new MapFragment());
         mList.add(new ServerFragment());
         mList.add(new ForumFragment());
-        vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
+        mList.add(new SkinFragment());
+//        vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
         vp.setOnPageChangeListener(this);
     }
 
