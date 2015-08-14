@@ -187,6 +187,11 @@
                 </action>
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".SkinDetailedActivity"
+            android:label="@string/title_activity_skin_detailed" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mckuai.imc.ServerDetailsActivity">
 
@@ -9,67 +10,68 @@
 
     <RelativeLayout
         android:id="@+id/rl_serverBasicInfo"
-        android:layout_below="@id/layout_serverDetails_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_top_and_bottom_white"
-        >
+        android:layout_below="@id/layout_serverDetails_title"
+        android:background="@drawable/frame_top_and_bottom_white">
+
         <ImageView
             android:id="@+id/iv_serverCover"
-            android:layout_margin="10dp"
             android:layout_width="115dp"
-            android:layout_height="66dp" />
+            android:layout_height="66dp"
+            android:layout_margin="10dp" />
+
         <TextView
             android:id="@+id/tv_serverVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@id/iv_serverCover"
             android:layout_alignTop="@id/iv_serverCover"
-            android:textColor="@color/font_white"
-            android:textSize="@dimen/font_small"
             android:background="@color/background_orange"
-            android:text="0.10.5"
+            android:paddingBottom="3dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:paddingBottom="3dp"
             android:paddingTop="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="0.10.5"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_small" />
 
         <TextView
             android:id="@+id/tv_serverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/iv_serverCover"
+            android:layout_toRightOf="@id/iv_serverCover"
+            android:singleLine="true"
+            android:text="服务器名字"
             android:textColor="@color/font_primary"
             android:textSize="@dimen/font_big"
-            android:textStyle="bold"
-            android:text="服务器名字"
-            android:singleLine="true"
-            android:layout_toRightOf="@id/iv_serverCover"
-            android:layout_alignTop="@id/iv_serverCover"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />'
+            android:textStyle="bold" />'
 
         <TextView
             android:id="@+id/tv_serverOwner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/font_secondary"
-            android:textSize="@dimen/font_dimen_small"
-            android:layout_alignLeft="@id/tv_serverName"
-            android:singleLine="true"
             android:layout_alignBottom="@id/iv_serverCover"
+            android:layout_alignLeft="@id/tv_serverName"
             android:gravity="center_vertical"
-            android:text="腐主："/>
+            android:singleLine="true"
+            android:text="腐主："
+            android:textColor="@color/font_secondary"
+            android:textSize="@dimen/font_dimen_small" />
 
         <TextView
             android:id="@+id/tv_server_type"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:textColor="@color/font_secondary"
-            android:layout_alignLeft="@id/tv_serverName"
-            android:singleLine="true"
-            android:textSize="@dimen/font_dimen_small"
             android:layout_above="@id/tv_serverOwner"
+            android:layout_alignLeft="@id/tv_serverName"
             android:layout_below="@id/tv_serverName"
             android:gravity="center_vertical"
-            android:text="类型："/>
+            android:singleLine="true"
+            android:text="类型："
+            android:textColor="@color/font_secondary"
+            android:textSize="@dimen/font_dimen_small" />
 
     </RelativeLayout>
 
@@ -77,18 +79,18 @@
         android:id="@+id/btn_addServer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="加入游戏"
+        android:layout_alignParentBottom="true"
         android:background="@color/background_green"
-        android:textColor="@color/font_white"
-        android:layout_alignParentBottom="true"/>
+        android:text="加入游戏"
+        android:textColor="@color/font_white" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/rl_serverBasicInfo"
         android:layout_above="@id/btn_addServer"
-        android:fillViewport="true"
-        >
+        android:layout_below="@id/rl_serverBasicInfo"
+        android:fillViewport="true">
+
         <LinearLayout
 
             android:layout_width="match_parent"
@@ -98,84 +100,90 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fillViewport="true"
-                android:scrollbars="none"
-                >
-                <LinearLayout
-                    android:id="@+id/ll_serverPic"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
 
-                </LinearLayout>
-            </HorizontalScrollView>
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/ll_serverPic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
                 <ImageView
                     android:id="@+id/iv_pic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="center"/>
+                    android:scaleType="center" />
             </FrameLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/background_gray"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:background="@color/background_gray">
+                android:paddingRight="10dp">
+
                 <TextView
 
                     android:id="@+id/tv_addServer_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="加入服务器"
                     android:textColor="@color/green"
-                    android:textStyle="bold"
-                    android:text="加入服务器"/>
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/btn_copyQQGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_addServer_hint"
+                    android:background="@drawable/btn_green_shape"
                     android:text="复制"
                     android:textColor="@color/font_white"
                     android:textSize="@dimen/font_dimen_small"
-                    android:layout_below="@+id/tv_addServer_hint"
-                    android:layout_alignParentRight="true"
-                    android:visibility="visible"
-                    android:background="@drawable/btn_green_shape"/>
+                    android:visibility="visible" />
+
                 <Button
                     android:id="@+id/btn_copyServerIp"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:textSize="@dimen/font_dimen_small"
-                    android:text="复制"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@color/font_white"
-                    android:layout_below="@+id/btn_copyQQGroup"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/btn_green_shape"/>
+                    android:layout_below="@+id/btn_copyQQGroup"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/btn_green_shape"
+                    android:text="复制"
+                    android:textColor="@color/font_white"
+                    android:textSize="@dimen/font_dimen_small" />
+
                 <Button
                     android:id="@+id/btn_copyServerPort"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:textSize="@dimen/font_dimen_small"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/btn_copyServerIp"
+                    android:background="@drawable/btn_green_shape"
                     android:text="复制"
                     android:textColor="@color/font_white"
-                    android:layout_below="@+id/btn_copyServerIp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/btn_green_shape"/>
+                    android:textSize="@dimen/font_dimen_small" />
 
                 <TextView
                     android:id="@+id/tv_serverQQGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:singleLine="true"
-                    android:text="1.服务器QQ群:"
-                    android:gravity="center_vertical"
                     android:layout_alignBottom="@id/btn_copyQQGroup"
                     android:layout_alignTop="@id/btn_copyQQGroup"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="1.服务器QQ群:"
 
                     />
 
@@ -183,23 +191,21 @@
                     android:id="@+id/tv_serverIp"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:singleLine="true"
-                    android:text="2.服务器地址:"
-                    android:gravity="center_vertical"
                     android:layout_alignBottom="@id/btn_copyServerIp"
                     android:layout_alignTop="@id/btn_copyServerIp"
-                    />
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="2.服务器地址:" />
 
                 <TextView
                     android:id="@+id/tv_serverPort"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:singleLine="true"
-                    android:text="3.服务器端口:"
-                    android:gravity="center_vertical"
                     android:layout_alignBottom="@id/btn_copyServerPort"
                     android:layout_alignTop="@id/btn_copyServerPort"
-                    />
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="3.服务器端口:" />
 
 
             </RelativeLayout>
@@ -207,27 +213,26 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/frame_darkgray"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                />
+                android:layout_marginTop="10dp"
+                android:background="@color/frame_darkgray" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
                 android:paddingLeft="10dp"
-                android:textStyle="bold"
-                android:text="介绍"/>
+                android:text="介绍"
+                android:textColor="@color/green"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_serverDes"
-                android:textColor="@color/font_primary"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_gray"
                 android:padding="10dp"
                 android:text="服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍服务器介绍"
-                android:background="@color/background_gray"
-                android:layout_height="wrap_content" />
+                android:textColor="@color/font_primary" />
 
         </LinearLayout>
     </ScrollView>

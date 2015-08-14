@@ -213,4 +213,5 @@
     <string name="addr_city">选择城市</string>
     <string name="addr_city_start">网络定位</string>
     <string name="addr_hint">请选择</string>
+    <string name="title_activity_skin_detailed">SkinDetailedActivity</string>
 </resources>

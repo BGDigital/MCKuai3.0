@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="@drawable/frame_top_and_bottom_white"
-    >
+    android:background="@drawable/frame_top_and_bottom_white">
     <ImageView
         android:id="@+id/iv_skinCover"
         android:layout_centerVertical="true"
@@ -15,14 +15,27 @@
         android:layout_marginRight="20dp"
         android:scaleType="centerInside"
         />
-    <ImageButton
+
+    <com.mckuai.widget.fabbutton.FabButton
         android:id="@+id/btn_addSkin"
         android:layout_centerVertical="true"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:background="@drawable/btn_map_start"
-        />
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:color="@color/white"
+        android:indeterminate="false"
+        android:max="100"
+        android:src="@drawable/download"
+        app:fbb_autoStart="true"
+        app:fbb_hideProgressOnComplete="true"
+        app:fbb_progressColor="#34d152"
+        app:fbb_progressWidthRatio="0.2"
+        app:fbb_showEndBitmap="true"
+        app:fbb_endBitmap="@drawable/btn_map_start"
+        app:fbb_showShadow="true" />
+
     
 
     <TextView

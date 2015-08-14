@@ -1,10 +1,12 @@
 package com.mckuai.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by kyly on 2015/8/12.
  * 皮肤的bean文件
  */
-public class SkinItem {
+public class SkinItem implements Serializable{
     private int id;
     private String viewName;
     private String uploadMan;
@@ -14,6 +16,7 @@ public class SkinItem {
     private String pics;
     private String desc;
     private String savePath;
+
 
     public int getId() {
         return id;

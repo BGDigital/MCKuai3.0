@@ -1,6 +1,7 @@
 package com.mckuai.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,7 +24,10 @@ import com.mckuai.bean.SkinBean;
 import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.imc.ServerDetailsActivity;
+import com.mckuai.imc.SkinDetailedActivity;
 import com.mckuai.utils.ParseResponse;
+import com.thin.downloadmanager.ThinDownloadManager;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -211,7 +215,13 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     @Override
     public void onItemClicked(SkinItem item) {
-
+        if (null != item) {
+            Intent intent = new Intent(getActivity(), SkinDetailedActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("SKIN_ITEM", item);
+            intent.putExtras(bundle);
+            getActivity().startActivity(intent);
+        }
     }
 
     @Override

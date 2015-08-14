@@ -158,9 +158,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mList.add(new GameEditerFragment());
         mList.add(new MapFragment());
         mList.add(new ServerFragment());
-        mList.add(new ForumFragment());
+//        mList.add(new ForumFragment());
         mList.add(new SkinFragment());
-//        vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
+        vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
         vp.setOnPageChangeListener(this);
     }
 
