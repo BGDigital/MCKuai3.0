@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_skinRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+    android:id="@+id/urv_skinList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+</com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+
+</RelativeLayout>

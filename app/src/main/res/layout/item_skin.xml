@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/frame_top_and_bottom_white"
+    >
+    <ImageView
+        android:id="@+id/iv_skinCover"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_width="116dp"
+        android:layout_height="65dp"
+        android:layout_marginRight="20dp"
+        android:scaleType="centerInside"
+        />
+    <ImageButton
+        android:id="@+id/btn_addSkin"
+        android:layout_centerVertical="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_map_start"
+        />
+    
+
+    <TextView
+        android:id="@+id/tv_skinName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textColor="@color/font_primary"
+        android:textSize="@dimen/font_big"
+        android:layout_alignTop="@id/iv_skinCover"
+        android:layout_toRightOf="@id/iv_skinCover"
+        android:layout_toLeftOf="@id/btn_addSkin"
+        android:text="皮肤名称"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_skinOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/font_secondary"
+        android:textSize="@dimen/font_dimen_small"
+        android:text="上传：用户名"
+        android:layout_alignBottom="@id/iv_skinCover"
+        android:layout_alignLeft="@id/tv_skinName"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/tv_skinType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:text="生存"
+        android:layout_above="@id/tv_skinOwner"
+        android:textSize="@dimen/font_dimen_small"
+        android:layout_below="@id/tv_skinName"
+        android:layout_alignLeft="@id/tv_skinName"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        />
+
+
+</RelativeLayout>
