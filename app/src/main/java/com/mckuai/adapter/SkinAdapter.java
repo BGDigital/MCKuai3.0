@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mckuai.bean.SkinItem;
+import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
     private ArrayList<SkinItem> mSkins;
     private ImageLoader mLoader;
     private OnItemClickListener l;
+    private DisplayImageOptions options;
 
     public interface OnItemClickListener{
         public void onItemClicked(SkinItem item);
@@ -54,7 +57,10 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
                 mLoader = ImageLoader.getInstance();
             }
             if (null != item.getIcon() && 10 < item.getIcon().length()){
-                mLoader.displayImage(item.getIcon(),holder.iv_skinCover);
+                if (null == options){
+                    options = MCkuai.getInstance().getNormalOption();
+                }
+                mLoader.displayImage(item.getIcon(),holder.iv_skinCover,options);
             }
             holder.tv_skinName.setText(item.getViewName()+"");
             holder.tv_skinType.setText(item.getVersion()+"");
