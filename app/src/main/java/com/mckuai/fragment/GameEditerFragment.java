@@ -25,13 +25,13 @@ import com.mckuai.imc.R;
 import com.mckuai.mctools.WorldUtil.GameUntil;
 import com.mckuai.mctools.WorldUtil.MCWorldUtil;
 import com.mckuai.mctools.WorldUtil.OptionUntil;
-import com.thin.downloadmanager.DownloadRequest;
-import com.thin.downloadmanager.DownloadStatusListener;
-import com.thin.downloadmanager.ThinDownloadManager;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import cn.aigestudio.downloader.bizs.DLManager;
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 
 public class GameEditerFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -67,7 +67,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private int curWorldIndex;//当前显示的世界的索引
     private Integer[] res_Map = {R.drawable.background_map_0, R.drawable.background_map_1, R.drawable.background_map_2, R.drawable.background_map_3, R.drawable.background_map_4, R.drawable.background_map_5, R.drawable.background_map_6, R.drawable.background_map_7, R.drawable.background_map_8, R.drawable.background_map_9};
 
-    private ThinDownloadManager mDlManager;
 
     private boolean isShowUninstallAlert = true;
     private boolean isGameInstalled = false;
@@ -104,6 +103,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (!isGameInstalled) {
             detectionGameInfo();
         }
+        showDownloadGame(false);
         if (isGameInstalled && null == worldItems) {
             gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
@@ -113,16 +113,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }
             }, false);
         }
-    }
-
-
-    @Override
-    public void onDestroy() {
-        if (null != mDlManager) {
-            mDlManager.cancelAll();
-            mDlManager.release();
-        }
-        super.onDestroy();
     }
 
 
@@ -492,35 +482,65 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             public void onClick(View v) {
                 MobclickAgent.onEvent(getActivity(), "downloadGame");
                 String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
-                final String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
+                final String downloadDir = MCkuai.getInstance().getGameDownloadDir();
                 File file = new File(downloadDir);
                 if (null != file && (!file.exists() || !file.isDirectory())) {
                     file.mkdirs();
                 }
-                mDlManager = new ThinDownloadManager(1);
-                DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
-                request.setDownloadListener(new DownloadStatusListener() {
+
+                DLManager.getInstance(getActivity()).dlStart(url,downloadDir,new DLTaskListener(){
                     @Override
-                    public void onDownloadComplete(int i) {
-                        rl_notification.setTag(downloadDir);
-                        tv_notification.setText("下载完成，点击开始安装！");
+                    public void onStart(String fileName, String url) {
+                        super.onStart(fileName, url);
+                        isDownloadGame = true;
                     }
 
                     @Override
-                    public void onDownloadFailed(int i, int i1, String s) {
-                        rl_notification.setTag("false");
-                        tv_notification.setText("下载失败，请稍候再试！");
+                    public boolean onConnect(int type, String msg) {
+                        return super.onConnect(type, msg);
                     }
 
                     @Override
-                    public void onProgress(int i, long l, int i1) {
-                        progressBar.setProgress(i1);
+                    public void onProgress(final int progress) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e(TAG,"progress="+progress);
+                                progressBar.setProgress(progress);
+                            }
+                        });
+                        super.onProgress(progress);
+                    }
+
+                    @Override
+                    public void onFinish(final File file) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                rl_notification.setTag(file.getPath());
+                                tv_notification.setText("下载完成，点击开始安装！");
+                                progressBar.setProgress(100);
+                            }
+                        });
+                        isDownloadGame = false;
+                        super.onFinish(file);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                rl_notification.setTag("false");
+                                tv_notification.setText("下载失败，请稍候再试！");
+                            }
+                        });
+
+                        isDownloadGame = false;
+                        super.onError(error);
                     }
                 });
-                if (mDlManager.add(request) > 0) {
-                    rl_notification.setVisibility(View.VISIBLE);
-                }
-                isDownloadGame = true;
+                rl_notification.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -529,6 +549,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         isDownloadGame = false;
         if (null != file && file.length() > 10) {
             File apkFile = new File(file);
+            boolean result = null != apkFile;
+            result = result && apkFile.exists();
+            result = result && apkFile.isFile();
             if (null != apkFile && apkFile.exists() && apkFile.isFile()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
