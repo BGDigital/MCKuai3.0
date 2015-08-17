@@ -30,22 +30,22 @@ public class Level implements Serializable{
 	//以刻的形式保存的当天时间（游戏里的一天有14400刻，0为白天的开始，7200为日落，8280是夜晚的开始，13320是日出，）
 	private long time;
 
-    private long  DayCycleStopTime;//0.11
-	private long dayCycleStopTime = -1;  //0.9
+    private int  DayCycleStopTime = -1;//0.11
+	private int dayCycleStopTime = -1;  //0.9
 	//是否启用spawnMobs
 	private boolean spawnMobs = true;
 	//玩家所在的维度，0为主世界
 	private int dimension = 0;
 	//世界类型，0.9及之后的版本支持，,包括old(旧的世界格式，有长宽高限制),infinite(默认格式，没有长宽高限制)或者flat（超平坦）
-	private int generator = 0;
+	private int generator = -1;
 	//当世界类型为旧世界时，世界的大小限制
-	private int limitedworldoriginy = 0;
-	private int limitedworldoriginx = 0;
-	private int limitedworldoriginz = 0;
+	private int limitedworldoriginy = -1;
+	private int limitedworldoriginx = -1;
+	private int limitedworldoriginz = -1;
 	//0.11版本新加入的新内容
-	private long cureationTime;
-	private long currentTick;
-    private long worldStartCount;
+	private long cureationTime = -1;
+	private long currentTick = -1;
+    private long worldStartCount = -1;
 	//
 	private List<Entity> entities;
 
@@ -152,7 +152,7 @@ public class Level implements Serializable{
      * @return  dayCycleStopTime
      * 如果是0.11版，则使用getDayCycleStopTimeNewVer
      */
-	public long getDayCycleStopTime() {
+	public int getDayCycleStopTime() {
 		return dayCycleStopTime;
 	}
 
@@ -160,7 +160,7 @@ public class Level implements Serializable{
      * 设置地图的dayCycleStopTime
      * 如果是0.11版，则使用setDayCycleStopTimeNewVer
      */
-	public void setDayCycleStopTime(long dayCycleStopTime) {
+	public void setDayCycleStopTime(int dayCycleStopTime) {
 		this.dayCycleStopTime = dayCycleStopTime;
 	}
 
@@ -169,7 +169,7 @@ public class Level implements Serializable{
      * @return  DayCycleStopTime
      * 如果是0.10以前的版本，则使用getDayCycleStopTime
      */
-    public long getDayCycleStopTimeNewVer(){
+    public int getDayCycleStopTimeNewVer(){
         return DayCycleStopTime;
     }
 
@@ -177,7 +177,7 @@ public class Level implements Serializable{
      * 设置地图的DayCycleStopTime
      * 如果是0.10以前的版本，则使用setDayCycleStopTime
      */
-    public void setDayCycleStopTimeNewVer(long dayCycleStopTime){
+    public void setDayCycleStopTimeNewVer(int dayCycleStopTime){
         this.DayCycleStopTime = dayCycleStopTime;
     }
 
