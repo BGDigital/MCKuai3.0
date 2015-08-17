@@ -2,6 +2,7 @@ package com.mckuai.fragment;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,6 +20,7 @@ import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.SkinAdapter;
+import com.mckuai.bean.Map;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.SkinBean;
@@ -26,12 +29,15 @@ import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.imc.SkinDetailedActivity;
+import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.utils.ParseResponse;
+import com.mckuai.widget.fabbutton.FabButton;
 import com.thin.downloadmanager.ThinDownloadManager;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -45,13 +51,17 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     private String[] fileds = {"InsertTime","DownNum"};
     private String mOrderFiled = fileds[0];
     private int mOrderType = 1;
+    private long lastUpdateTime = 0;
 
     private UltimateRecyclerView urv_list;
     private SkinAdapter mAdapter;
+    private RecyclerView.LayoutManager manager;
 
     private MCkuai app = MCkuai.getInstance();
     private AsyncHttpClient mClient;
     private Gson mGson;
+
+    private DownloadProgressRecevier recevier;
 
     public SkinFragment(){
         setmTitle("皮肤");
@@ -70,7 +80,32 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
-        showData();
+        if (getUserVisibleHint()) {
+            showData();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            if (null != view){
+                showData();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != recevier) {
+            try {
+                getActivity().unregisterReceiver(recevier);
+                recevier = null;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -81,9 +116,9 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     private void initView(){
         if (null == urv_list){
             urv_list = (UltimateRecyclerView) view.findViewById(R.id.urv_skinList);
-            RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+            manager = new LinearLayoutManager(getActivity());
             urv_list.setLayoutManager(manager);
-            mAdapter = new SkinAdapter();
+            mAdapter = new SkinAdapter(getActivity());
             mAdapter.setOnItemClickListener(this);DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
             urv_list.addItemDecoration(dividerItemDecoration);
             urv_list.enableLoadmore();
@@ -91,7 +126,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             urv_list.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
                 @Override
                 public void loadMore(int i, int i1) {
-                    if (null != mPage && !mPage.EOF()){
+                    if (null != mPage && !mPage.EOF()) {
                         loadData();
                         showData();
                     }
@@ -102,7 +137,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         urv_list.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (null != mPage){
+                if (null != mPage) {
                     mPage.setPage(0);
                     skins.clear();
                     loadData();
@@ -112,7 +147,51 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         });
     }
 
+    private void initReciver() {
+        if (null == recevier) {
+            recevier = new DownloadProgressRecevier() {
+                @Override
+                public void onProgress(int resType,String resId, int progress) {
+                    if (resType != 2){
+                        return;
+                    }
+                    if (null != skins  && !skins.isEmpty()) {
+                        int i = 0;
+                        for (SkinItem item:skins){
+                            if (item.getId() == Integer.parseInt(resId)){
+                                item.setProgress(progress);
+                                long time = System.currentTimeMillis();
+                                if (time - lastUpdateTime > 500 || progress == 100){
+                                    int count = urv_list.getChildCount();
+                                    ViewGroup itemView = (ViewGroup)manager.findViewByPosition(i);
+                                    if (null != itemView){
+                                        FabButton progressBtn =(FabButton)((ViewGroup) itemView.getChildAt(0)).getChildAt(1);
+                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
+                                        progressBtn.setProgress(progress);
+                                        if (100 == progress){
+                                            //
+                                        }
+                                    }
+                                }
+                            }
+                            i++;
+                        }
+
+                    }
+                }
+
+            };
+            IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
+            try {
+                getActivity().registerReceiver(recevier, filter);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void showData(){
+
         if (null == urv_list){
             initView();
         }
