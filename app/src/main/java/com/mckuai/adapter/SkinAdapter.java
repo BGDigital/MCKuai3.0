@@ -81,37 +81,26 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             holder.tv_skinName.setText(item.getViewName() + "");
             holder.tv_skinType.setText(item.getVersion() + "");
             holder.tv_skinOwner.setText(item.getUploadMan() + "");
-
-
-            switch (item.getProgress()){
-                case -1:
-                    //未下载
-                    MobclickAgent.onEvent(mContext, "downloadSkin");
-                    Intent intent = new Intent();
-                    intent.setAction("com.mckuai.downloadservice");
-                    intent.setPackage(mContext.getPackageName());
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("SKIN", item);
-                    intent.putExtras(bundle);
-                    mContext.startService(intent);
-                    break;
-                case 100:
-                    //下载完成
-                    MobclickAgent.onEvent(mContext, "startGame_skin");
-                    GameUntil.startGame(mContext);
-                    break;
-                default:
-
-                    //下载中
-                    break;
-            }
             holder.btn_operation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (null != l) {
-                        l.onAddButtonClicked(item);
-                        holder.btn_operation.resetIcon();
-                        holder.btn_operation.showProgress(true);
+                    switch (item.getProgress()){
+                        case -1:
+                            MobclickAgent.onEvent(mContext, "downloadSkin");
+                            Intent intent = new Intent();
+                            intent.setAction("com.mckuai.downloadservice");
+                            intent.setPackage(mContext.getPackageName());
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("SKIN", item);
+                            intent.putExtras(bundle);
+                            mContext.startService(intent);
+                            break;
+                        case 100:
+                            MobclickAgent.onEvent(mContext, "startGame_skin");
+                            GameUntil.startGame(mContext);
+                            break;
+                        default:
+                            break;
                     }
                 }
             });
