@@ -25,8 +25,16 @@ proguard/
  # Log Files
  *.log
 
-
+/*.iml
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/.name
+/.idea/encodings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/scopes/scope_settings.xml
+/.idea/vcs.xml
 .DS_Store
 /captures
