@@ -20,6 +20,7 @@ import com.mckuai.fragment.ForumFragment;
 import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MCSildingMenu;
 import com.mckuai.fragment.MapFragment;
+import com.mckuai.fragment.ResourceFragment;
 import com.mckuai.fragment.ServerFragment;
 import com.mckuai.fragment.SkinFragment;
 import com.mckuai.utils.CircleBitmapDisplayer;
@@ -156,10 +157,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private void initPage() {
         mList = new ArrayList<>(4);
         mList.add(new GameEditerFragment());
-        mList.add(new MapFragment());
+        mList.add(new ResourceFragment());
         mList.add(new ServerFragment());
-//        mList.add(new ForumFragment());
-        mList.add(new SkinFragment());
+        mList.add(new ForumFragment());
+//        mList.add(new SkinFragment());
         vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
         vp.setOnPageChangeListener(this);
     }
