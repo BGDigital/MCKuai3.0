@@ -31,10 +31,10 @@ import java.io.File;
 /**
  * Created by kyly on 2015/6/23.
  */
-public class MCkuai  extends Application{
+public class MCkuai extends Application {
 
 
-    private static  MCkuai  instance;
+    private static MCkuai instance;
     private String mCacheDir;
     private Spinner spinner;
     private ImageView btn_publish;
@@ -59,7 +59,6 @@ public class MCkuai  extends Application{
     private static final int IMAGE_POOL_SIZE = 3;// 线程池数量
 
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -78,14 +77,14 @@ public class MCkuai  extends Application{
         super.onTerminate();
     }
 
-    public AsyncHttpClient getHttpClient(){
-        if (null == mClient){
+    public AsyncHttpClient getHttpClient() {
+        if (null == mClient) {
             mClient = new AsyncHttpClient();
         }
         return mClient;
     }
 
-    private void initImageLoader(){
+    private void initImageLoader() {
 
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .memoryCacheExtraOptions(750, 480)
@@ -102,12 +101,11 @@ public class MCkuai  extends Application{
         ImageLoader.getInstance().init(configuration);
     }
 
-    private void initUM()
-    {
+    private void initUM() {
         MobclickAgent.openActivityDurationTrack(false);// 禁止默认的页面统计方式，不会再自动统计Activity
     }
 
-    private void initTencent(){
+    private void initTencent() {
         tencent = Tencent.createInstance("101155101", getApplicationContext());
     }
 
@@ -116,62 +114,62 @@ public class MCkuai  extends Application{
     }
 
 
-
-    public String getJsonFile(){
-        return  getCacheRoot() + File.separator + getString(R.string.jsoncache_dir) + File.separator + getString(R.string.jsoncache_file);
+    public String getJsonFile() {
+        return getCacheRoot() + File.separator + getString(R.string.jsoncache_dir) + File.separator + getString(R.string.jsoncache_file);
     }
 
     public String getImageCacheDir() {
-        return getCacheRoot() + File.separator + getString(R.string.imagecache_dir)+File.separator;
+        return getCacheRoot() + File.separator + getString(R.string.imagecache_dir) + File.separator;
     }
 
-    public String getMapDownloadDir(){
+    public String getMapDownloadDir() {
         String path = getSDPath();
-        if (null != path){
-            return path + "/Download/麦块/Maps/";
+        if (null != path) {
+            return path + "/Download/麦块我的世界盒子/Maps/";
         }
-    else {
-        return getFilesDir() + "/麦块/Maps/";
+        return getFilesDir() + "/麦块我的世界盒子/Maps/";
     }
-}
 
-    public String getSkinDownloadDir(){
+    public String getSkinDownloadDir() {
         String path = getSDPath();
-        if (null != path){
-            return path + "/Download/麦块/Skins/";
+        if (null != path) {
+            return path + "/Download/麦块我的世界盒子/Skins/";
         }
-        else {
-            return getFilesDir() +"麦块/Skins/";
-        }
+        return getFilesDir() + "麦块我的世界盒子/Skins/";
     }
 
-    public String getGameProfileDir(){
+    public String getGameDownloadDir() {
+        String path = getSDPath();
+        if (null != path) {
+            return path + "/Download/麦块我的世界盒子/Games/";
+        }
+        return getFilesDir() + "麦块我的世界盒子/Games/";
+    }
+
+    public String getGameProfileDir() {
         String dir = getSDPath();
-        if (null != dir){
+        if (null != dir) {
             dir += "/games/com.mojang/";
         }
-        return  dir;
+        return dir;
     }
 
-    public String getSDPath(){
+    public String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
                 .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
-        if   (sdCardExist)
-        {
+        if (sdCardExist) {
             sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
-        return null == sdDir ? "":sdDir.toString();
+        return null == sdDir ? "" : sdDir.toString();
     }
 
-    public boolean isFirstBoot()
-    {
+    public boolean isFirstBoot() {
         SharedPreferences preferences = this.getSharedPreferences(getString(R.string.preferences_file), 0);
         return preferences.getBoolean("FirstBoot", true);
     }
 
-    public void setFirstBoot()
-    {
+    public void setFirstBoot() {
         SharedPreferences preferences = this.getSharedPreferences(getString(R.string.preferences_file), 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("FirstBoot", false);
@@ -186,38 +184,31 @@ public class MCkuai  extends Application{
         this.spinner = spinner;
     }
 
-    private String getCacheRoot()
-    {
-        if (null == mCacheDir)
-        {
+    private String getCacheRoot() {
+        if (null == mCacheDir) {
             if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                    || !Environment.isExternalStorageRemovable())
-            {
-                if (null != getExternalCacheDir())
-                {
-                    mCacheDir = getExternalCacheDir().getPath() ;
-                } else
-                {
+                    || !Environment.isExternalStorageRemovable()) {
+                if (null != getExternalCacheDir()) {
+                    mCacheDir = getExternalCacheDir().getPath();
+                } else {
                     mCacheDir = getCacheDir().getPath();
                 }
-            } else
-            {
+            } else {
                 mCacheDir = getCacheDir().getPath();
             }
         }
         return mCacheDir;
     }
 
-    public boolean isLogin(){
-        if (mUser != null && 0 < mUser.getId()){
-            return  true;
-        }
-        else {
-            return  false;
+    public boolean isLogin() {
+        if (mUser != null && 0 < mUser.getId()) {
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public boolean LogOut(){
+    public boolean LogOut() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_file), 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putLong(getString(R.string.tokenExpires), 0);
@@ -226,22 +217,20 @@ public class MCkuai  extends Application{
         return true;
     }
 
-    public void  setUser(MCUser user){
+    public void setUser(MCUser user) {
         this.mUser = user;
     }
 
-    public MCUser getUser(){
-        return  mUser;
+    public MCUser getUser() {
+        return mUser;
     }
 
-    public void getProfile()
-    {
+    public void getProfile() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_file), 0);
         long mQQToken_Birthday = preferences.getLong(getString(R.string.tokenTime), 0);
         long mQQToken_Expires = preferences.getLong(getString(R.string.tokenExpires), 0);
         // 检查qq的token是否有效如果在有效期内则获取qqtoken
-        if (verificationTokenLife(mQQToken_Birthday, mQQToken_Expires))
-        {
+        if (verificationTokenLife(mQQToken_Birthday, mQQToken_Expires)) {
             mUser = new MCUser();
             mUser.setLevel(preferences.getInt("MC_LEVEL", 0));
             mUser.setProcess(preferences.getFloat("MC_PROCESS", 0f));
@@ -252,12 +241,11 @@ public class MCkuai  extends Application{
             mUser.setNike(preferences.getString(getString(R.string.mc_nick), null));// 显示名
             mUser.setGender(preferences.getString(getString(R.string.mc_gender), null));// 性别
 //            mUser.setToken(preferences.getString(getString(R.string.rcToken), null));// 融云令牌
-            mUser.setProcess(preferences.getFloat("USER_PROCESS",0f));
+            mUser.setProcess(preferences.getFloat("USER_PROCESS", 0f));
         }
     }
 
-    private boolean verificationTokenLife(Long birthday, long expires)
-    {
+    private boolean verificationTokenLife(Long birthday, long expires) {
         return (System.currentTimeMillis() - birthday) < expires * 1000;
     }
 
@@ -271,28 +259,28 @@ public class MCkuai  extends Application{
 
 
     public MCMapManager getMapManager() {
-        if (null == mapManager){
+        if (null == mapManager) {
             mapManager = new MCMapManager();
         }
         return mapManager;
     }
 
-    public MCSkinManager getSkinManager(){
-        if (null == skinManager){
+    public MCSkinManager getSkinManager() {
+        if (null == skinManager) {
             skinManager = new MCSkinManager();
         }
         return skinManager;
     }
 
     public DisplayImageOptions getCircleOption() {
-        if (null == circleOption){
+        if (null == circleOption) {
             circleOption = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
         }
         return circleOption;
     }
 
     public DisplayImageOptions getNormalOption() {
-        if (null == normalOption){
+        if (null == normalOption) {
             normalOption = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
         }
         return normalOption;
