@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/rg_resource"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/rb_resource_map"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:button="@null"
+            android:gravity="center"
+            android:checked="true"
+            android:text="地图"
+            android:textColor="@color/radio_textcolor_selector"
+            android:background="@drawable/background_radio_resource_selector"
+            android:layout_weight="1"/>
+        <RadioButton
+            android:id="@+id/rb_resource_skin"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:button="@null"
+            android:gravity="center"
+            android:text="皮肤"
+            android:textColor="@color/radio_textcolor_selector"
+            android:background="@drawable/background_radio_resource_selector"
+            android:layout_weight="1"/>
+    </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_resource"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        ></android.support.v4.view.ViewPager>
+
+
+</LinearLayout>
