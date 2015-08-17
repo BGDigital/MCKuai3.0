@@ -185,7 +185,7 @@ public class MCWorldUtil {
                 }
                 //从level.dat文件中获取level信息（必有信息包括显示名，）
                 if (loadLevelFromFile(file, worldItem)) {
-                    if (4 == worldItem.getLevel().getStorageVersion() || 5 == worldItem.getLevel().getStorageVersion()) {
+                    if (3 == worldItem.getLevel().getStorageVersion() || 4 == worldItem.getLevel().getStorageVersion()) {
                         worlds.add(worldItem);
                     }
                 }
