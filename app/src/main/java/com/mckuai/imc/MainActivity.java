@@ -19,14 +19,13 @@ import com.mckuai.fragment.BaseFragment;
 import com.mckuai.fragment.ForumFragment;
 import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MCSildingMenu;
-import com.mckuai.fragment.MapFragment;
 import com.mckuai.fragment.ResourceFragment;
 import com.mckuai.fragment.ServerFragment;
-import com.mckuai.fragment.SkinFragment;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 
@@ -73,6 +72,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
 
     public void onCreate(Bundle savedInstanceState) {
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.enable();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         application = MCkuai.getInstance();
