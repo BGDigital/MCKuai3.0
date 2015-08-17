@@ -2,7 +2,6 @@ package com.mckuai.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
