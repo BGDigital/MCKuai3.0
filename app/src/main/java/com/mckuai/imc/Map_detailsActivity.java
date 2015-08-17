@@ -157,7 +157,10 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
         if (null == recevier) {
             recevier = new DownloadProgressRecevier() {
                 @Override
-                public void onProgress(String resId, int progress) {
+                public void onProgress(int resType,String resId, int progress) {
+                    if (1 != resType){
+                        return;
+                    }
                     if (resId.equals(map.getResId())) {
                         dl.updateProgress(progress);
                         if (100 == progress) {
