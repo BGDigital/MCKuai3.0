@@ -242,12 +242,11 @@ public final class NBTConverter {
 	public static Level readLevel(CompoundTag compoundTag) {
 		Level level = new Level();
 		List<Tag> tags = compoundTag.getValue();
-		boolean isNeedFixVersion = false;
+//		boolean isNeedFixVersion = false;
 		for (Tag tag: tags) {
             switch (tag.getName()){
                 case "DayCycleStopTime":
-					level.setDayCycleStopTimeNewVer(((LongTag) tag).getValue());
-					isNeedFixVersion = true;
+					level.setDayCycleStopTimeNewVer(((IntTag) tag).getValue());
                     break;
                 case "Dimension":
                     level.setDimension(((IntTag) tag).getValue());
@@ -302,15 +301,12 @@ public final class NBTConverter {
                     break;
                 case "creationTime":
                     level.setCureationTime(((LongTag) tag).getValue());
-                    isNeedFixVersion = true;
                     break;
                 case "currentTick":
                     level.setCurrentTick(((LongTag) tag).getValue());
-                    isNeedFixVersion = true;
                     break;
                 case "dayCycleStopTime":
-                    level.setDayCycleStopTime(((LongTag) tag).getValue());
-                    isNeedFixVersion = true;
+                    level.setDayCycleStopTime(((IntTag) tag).getValue());
                     break;
                 case "spawnMobs":
                     level.setSpawnMobs(((ByteTag) tag).getValue() != 0);
@@ -323,9 +319,6 @@ public final class NBTConverter {
                     break;
             }
 		}
-        if (isNeedFixVersion){
-            level.setStorageVersion(5);
-        }
 		return level;
 	}
 
@@ -335,6 +328,9 @@ public final class NBTConverter {
         switch (level.getStorageVersion()){
             case 4:
                 tags = new ArrayList<Tag>(18);
+				if (-1 != level.getDayCycleStopTimeNewVer()){
+					tags.add(new IntTag("DayCycleStopTime", level.getDayCycleStopTimeNewVer()));
+				}
                 tags.add(new IntTag("Dimension", level.getDimension()));
                 tags.add(new IntTag("GameType", level.getGameType()));
                 tags.add(new IntTag("Generator",level.getGenerator()));
@@ -351,10 +347,19 @@ public final class NBTConverter {
                 tags.add(new IntTag("SpawnZ", level.getSpawnZ()));
                 tags.add(new IntTag("StorageVersion", level.getStorageVersion()));
                 tags.add(new LongTag("Time", level.getTime()));
-                if (0 < level.getDayCycleStopTime()) {
-                    tags.add(new LongTag("dayCycleStopTime", level.getDayCycleStopTime()));
+				if (-1 != level.getCureationTime()){
+					tags.add(new LongTag("creationTime", level.getCureationTime()));
+				}
+                if (-1 != level.getCurrentTick()){
+                    tags.add(new LongTag("currentTick", level.getCurrentTick()));
+                }
+                if (-1 != level.getDayCycleStopTime()) {
+                    tags.add(new IntTag("dayCycleStopTime", level.getDayCycleStopTime()));
                 }
                 tags.add(new ByteTag("spawnMobs", level.getSpawnMobs() ? (byte) 1: (byte) 0));
+                if (-1 != level.getWorldStartCount()){
+                    tags.add(new LongTag("worldStartCount", level.getCurrentTick()));
+                }
                 break;
             default:
                 tags = new ArrayList<>(12);
