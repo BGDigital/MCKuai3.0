@@ -55,11 +55,11 @@
                 android:id="@+id/btn_2"
                 android:layout_width="@dimen/btn_navigation_icon_width"
                 android:layout_height="@dimen/btn_navigation_icon_width"
-                android:background="@drawable/btn_map_selector"
+                android:background="@drawable/btn_resource_selector"
                 android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/tv_2"
-                android:text="地图"
+                android:text="资源"
                 android:textColor="@drawable/item_tab_font_selector"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center_horizontal"
