@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import com.loopj.android.http.AsyncHttpClient;
 import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Map;
+import com.mckuai.mctools.WorldUtil.MCSkinManager;
 import com.mckuai.mctools.item.WorldItem;
 import com.mckuai.utils.CircleBitmapDisplayer;
 import com.mckuai.utils.JsonCache;
@@ -41,6 +42,7 @@ public class MCkuai  extends Application{
     private DisplayImageOptions normalOption;
 
     private MCMapManager mapManager;
+    private MCSkinManager skinManager;
     private Map map;
 
     public MCUser mUser;
@@ -126,12 +128,22 @@ public class MCkuai  extends Application{
     public String getMapDownloadDir(){
         String path = getSDPath();
         if (null != path){
-            return path + "/Download/MCPEMaps/";
+            return path + "/Download/麦块/Maps/";
         }
     else {
-        return getFilesDir() + File.separator + "MCPEMaps" + File.separator;
+        return getFilesDir() + "/麦块/Maps/";
     }
 }
+
+    public String getSkinDownloadDir(){
+        String path = getSDPath();
+        if (null != path){
+            return path + "/Download/麦块/Skins/";
+        }
+        else {
+            return getFilesDir() +"麦块/Skins/";
+        }
+    }
 
     public String getGameProfileDir(){
         String dir = getSDPath();
@@ -265,8 +277,11 @@ public class MCkuai  extends Application{
         return mapManager;
     }
 
-    public void setMapManager(MCMapManager mapManager) {
-        this.mapManager = mapManager;
+    public MCSkinManager getSkinManager(){
+        if (null == skinManager){
+            skinManager = new MCSkinManager();
+        }
+        return skinManager;
     }
 
     public DisplayImageOptions getCircleOption() {
