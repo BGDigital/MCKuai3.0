@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -20,19 +19,16 @@ import com.loopj.android.http.RequestParams;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.ui.DividerItemDecoration;
 import com.mckuai.adapter.SkinAdapter;
-import com.mckuai.bean.Map;
 import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.SkinBean;
 import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
-import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.imc.SkinDetailedActivity;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.utils.ParseResponse;
 import com.mckuai.widget.fabbutton.FabButton;
-import com.thin.downloadmanager.ThinDownloadManager;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -165,8 +161,8 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                                     int count = urv_list.getChildCount();
                                     ViewGroup itemView = (ViewGroup)manager.findViewByPosition(i);
                                     if (null != itemView){
-                                        FabButton progressBtn =(FabButton)((ViewGroup) itemView.getChildAt(0)).getChildAt(1);
-                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
+                                        FabButton progressBtn =(FabButton)((ViewGroup) itemView.getChildAt(1));
+//                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
                                         progressBtn.setProgress(progress);
                                         if (100 == progress){
                                             //
@@ -199,6 +195,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             loadData();
             return;
         }
+        initReciver();
         mAdapter.setData(skins);
     }
 
