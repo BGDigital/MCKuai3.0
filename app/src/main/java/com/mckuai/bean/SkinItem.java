@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class SkinItem implements Serializable{
     private int id;
     private int progress = -1;
+    private int downNum;
     private String viewName;
     private String uploadMan;
     private String version;
@@ -97,5 +98,13 @@ public class SkinItem implements Serializable{
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public int getDownNum() {
+        return downNum;
+    }
+
+    public void setDownNum(int downNum) {
+        this.downNum = downNum;
     }
 }
