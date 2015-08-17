@@ -19,6 +19,7 @@ import com.gitonway.lee.niftynotification.lib.NiftyNotificationView;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.utils.JsonCache;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import net.steamcrafted.loadtoast.LoadToast;
 
@@ -40,7 +41,7 @@ public class BaseActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-
+        PushAgent.getInstance(this).onAppStart();
     }
 
     @Override
