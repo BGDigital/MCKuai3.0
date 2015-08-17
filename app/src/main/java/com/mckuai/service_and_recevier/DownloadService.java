@@ -8,14 +8,17 @@ import android.os.IBinder;
 import android.os.Message;
 
 import com.mckuai.bean.Map;
+import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.mctools.WorldUtil.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCSkinManager;
 import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListener;
 import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by kyly on 2015/7/20.
@@ -23,10 +26,14 @@ import java.util.ArrayList;
 public class DownloadService extends Service {
     private ThinDownloadManager mDlManager;
     private MCMapManager mMapManager;
+    private MCSkinManager mSkinManager;
     private ArrayList<DownloadTask> mDownloadTaskMap;
     private final String flag = "com.mckuai.imc.downloadprogress";
     private final int keepAliveTime = 2*60*1000;
     private final String TAG = "DownloadService";
+    private static final int RES_UNKNOW = 0;
+    private static final int RES_MAP = 1;
+    private static final int RES_SKIN=2;
 
     @Override
     public void onCreate() {
@@ -42,15 +49,14 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Map map = (Map) intent.getSerializableExtra("MAP");
+        SkinItem skin = (SkinItem) intent.getSerializableExtra("SKIN");
        if (null != map){
-           downloadMap(map);
+           download(RES_MAP, map);
        }
-    /*   else {
-           String downloadUrl = (String)intent.getStringExtra("GAME_URL");
-           if (null != downloadUrl && 10 < downloadUrl.length()) {
-               downloadGame(downloadUrl);
-           }
-       }*/
+        if (null != skin){
+            download(RES_SKIN,skin);
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -74,16 +80,37 @@ public class DownloadService extends Service {
         super.onDestroy();
     }
 
-    private int downloadMap(Map map){
-        if (null == map){
+    private int download(final int type,Object downloadItem){
+        Map map = null;
+        SkinItem skin =null;
+        String downloadUrl = null;
+        String savePath = null;
+        if (null == downloadItem || 0 == type || 2 < type){
             return  -1;
         }
         else {
+            switch (type){
+                case RES_MAP:
+                    map = (Map) downloadItem;
+                    break;
+                case RES_SKIN:
+                    skin = (SkinItem) downloadItem;
+                    break;
+            }
             if (null == mDownloadTaskMap){
                 mDownloadTaskMap = new ArrayList<>();
             }
             else{
-                DownloadTask task = getDownloadTask(map.getResId());
+                DownloadTask task = null;
+                switch (type){
+                    case RES_MAP:
+                        task = getDownloadTask(map.getResId());
+                        break;
+
+                    case RES_SKIN:
+                        task = getDownloadTask(skin.getId()+"");
+                        break;
+                }
                 if (null != task){
                     return task.downloadToken;
                 }
@@ -99,26 +126,49 @@ public class DownloadService extends Service {
         }
 
         //下载和保存路径
-        String url = map.getSavePath();
-        try {
-            url = url.substring(0, url.lastIndexOf("/") + 1) + URLEncoder.encode(url.substring(url.lastIndexOf("/") + 1, url.length()), "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        url = url.replaceAll("\\+", "%20");
-        String downloadDir = MCkuai.getInstance().getMapDownloadDir() + url.substring(url.lastIndexOf("/") + 1, url.length());
+        switch (type){
+            case RES_MAP:
+                downloadUrl = map.getSavePath();
+                try {
+                    downloadUrl = downloadUrl.substring(0, downloadUrl.lastIndexOf("/") + 1) + URLEncoder.encode(downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1, downloadUrl.length()), "UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                downloadUrl = downloadUrl.replaceAll("\\+", "%20");
+                savePath = MCkuai.getInstance().getMapDownloadDir() + downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1, downloadUrl.length());
+                break;
 
-        DownloadRequest request = new DownloadRequest(Uri.parse(url)).setDestinationURI(Uri.parse(downloadDir));
+            case RES_SKIN:
+                downloadUrl = skin.getSavePath();
+                savePath = MCkuai.getInstance().getSkinDownloadDir() + skin.getViewName()+".png";
+                break;
+        }
+
+
+
+        DownloadRequest request = new DownloadRequest(Uri.parse(downloadUrl)).setDestinationURI(Uri.parse(savePath));
         request.setDownloadListener(new DownloadStatusListener() {
 
             @Override
             public void onDownloadComplete(int i) {
                 DownloadTask task = getDownloadTask(i);
                 if (null != task) {
-                    if (null == mMapManager) {
-                        mMapManager = MCkuai.getInstance().getMapManager();
+                    switch (type){
+                        case RES_MAP:
+                            if (null == mMapManager) {
+                                mMapManager = MCkuai.getInstance().getMapManager();
+                            }
+                            mMapManager.addDownloadMap((Map)task.downloadItem);
+                            break;
+
+                        case RES_SKIN:
+                            if (null == mSkinManager){
+                                mSkinManager = MCkuai.getInstance().getSkinManager();
+                            }
+                            mSkinManager.addSkin(((SkinItem)task.downloadItem));
+                            break;
                     }
-                    mMapManager.addDownloadMap(task.downloadMap);
+
                     mDownloadTaskMap.remove(task);
                     if (mDownloadTaskMap.isEmpty()){
                         handler.sendEmptyMessageDelayed(1,keepAliveTime);//延时2分钟关闭服务
@@ -143,7 +193,7 @@ public class DownloadService extends Service {
             public void onProgress(int i, long l, int i1) {
                 DownloadTask task = getDownloadTask(i);
                 if (null != task) {
-                    sendProgressBroadCast(task.downloadMap.getResId(), i1);
+                    sendProgressBroadCast(task, i1);
                 }
             }
         });
@@ -151,20 +201,34 @@ public class DownloadService extends Service {
         if (token > 0){
             DownloadTask task = new DownloadTask();
             task.downloadToken = token;
-            task.downloadMap = map;
+            task.downloadItem = downloadItem;
+            task.resType = type;
             mDownloadTaskMap.add(task);
             handler.removeMessages(1);
+            sendProgressBroadCast(task,1);
         }
         return token;
     }
+
+
 
     private DownloadTask getDownloadTask(String resId){
         if (null == mDownloadTaskMap){
             return null;
         }
         for (DownloadTask task:mDownloadTaskMap){
-            if (task.downloadMap.getResId().equals(resId)){
-                return task;
+            switch (task.resType){
+                case RES_MAP:
+                    if (((Map)task.downloadItem).getResId().equals(resId)){
+                        return task;
+                    }
+                    break;
+
+                case RES_SKIN:
+                    if (resId.equals(((SkinItem)task.downloadItem).getId()+"")){
+                        return task;
+                    }
+                    break;
             }
         }
         return null;
@@ -183,17 +247,31 @@ public class DownloadService extends Service {
         return null;
     }
 
-    private void sendProgressBroadCast(String resId,int progress){
+    private void sendProgressBroadCast(DownloadTask task,int progress){
         Intent intent = new Intent();
-        intent.putExtra("MAP_RESID",resId);
-        intent.putExtra("MAP_PROGRESS", progress);
+        switch (task.resType){
+            case RES_MAP:
+                intent.putExtra("RES_TYPE","MAP");
+                intent.putExtra("RESID", ((Map)task.downloadItem).getResId());
+                intent.putExtra("PROGRESS", progress);
+                break;
+
+            case RES_SKIN:
+                intent.putExtra("RES_TYPE","SKIN");
+                intent.putExtra("RESID", ((SkinItem)task.downloadItem).getId()+"");
+                intent.putExtra("PROGRESS", progress);
+                break;
+        }
         intent.setAction(flag);
         sendBroadcast(intent);
     }
 
+
+
     class DownloadTask{
         public int downloadToken;
-        public Map downloadMap;
+        public int resType;
+        public Object downloadItem;
     }
 
     /**
