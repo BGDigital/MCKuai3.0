@@ -108,7 +108,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
+       /* super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             btn_right_view.setOnClickListener(this);
             showData();
@@ -123,7 +123,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 }
                 map_ed.setVisibility(View.GONE);
             }
-        }
+        }*/
     }
 
     @Override
@@ -137,8 +137,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     @Override
     public void onDestroy() {
         if (null != recevier) {
-            getActivity().unregisterReceiver(recevier);
-            recevier = null;
+            try {
+                getActivity().unregisterReceiver(recevier);
+                recevier = null;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         super.onDestroy();
     }
@@ -149,7 +153,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
     private void showData() {
         if (application.fragmentIndex != 1) {
-            Log.w(TAG, "当前页面不是可显示页面,返回");
+//            Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
         setTitleBarButtonListener();
@@ -252,7 +256,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         if (null == recevier) {
             recevier = new DownloadProgressRecevier() {
                 @Override
-                public void onProgress(String resId, int progress) {
+                public void onProgress(int resType,String resId, int progress) {
+                    if (resType != 1){
+                        return;
+                    }
                     if (null != mapList && null != mapList.getData() && !mapList.getData().isEmpty()) {
                         int i = 0;
                         for (Map map : mapList.getData()) {
@@ -298,7 +305,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
             };
             IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
-            getActivity().registerReceiver(recevier, filter);
+            try {
+                getActivity().registerReceiver(recevier, filter);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
