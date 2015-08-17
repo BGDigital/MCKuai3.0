@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class SkinItem implements Serializable{
     private int id;
+    private int progress = -1;
     private String viewName;
     private String uploadMan;
     private String version;
@@ -88,5 +89,13 @@ public class SkinItem implements Serializable{
 
     public void setSavePath(String savePath) {
         this.savePath = savePath;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }

@@ -1,6 +1,9 @@
 package com.mckuai.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,20 +16,29 @@ import android.widget.TextView;
 import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.mctools.WorldUtil.GameUntil;
+import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.mckuai.widget.fabbutton.FabButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by kyly on 2015/8/14.
  */
 public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
+    private Context mContext;
     private ArrayList<SkinItem> mSkins;
     private ImageLoader mLoader;
     private OnItemClickListener l;
     private DisplayImageOptions options;
+
+    public SkinAdapter(Context context){
+        this.mContext = context;
+    }
 
     public interface OnItemClickListener {
         public void onItemClicked(SkinItem item);
@@ -59,7 +71,8 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             if (null == mLoader) {
                 mLoader = ImageLoader.getInstance();
             }
-            if (null != item.getIcon() && 10 < item.getIcon().length()) {
+
+            if (null != item.getIcon() && 10 < item.getIcon().length() && (null == holder.iv_skinCover.getTag() ||!((String)holder.iv_skinCover.getTag()).equals(item.getIcon()))) {
                 if (null == options) {
                     options = MCkuai.getInstance().getNormalOption();
                 }
@@ -68,6 +81,30 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             holder.tv_skinName.setText(item.getViewName() + "");
             holder.tv_skinType.setText(item.getVersion() + "");
             holder.tv_skinOwner.setText(item.getUploadMan() + "");
+
+
+            switch (item.getProgress()){
+                case -1:
+                    //未下载
+                    MobclickAgent.onEvent(mContext, "downloadSkin");
+                    Intent intent = new Intent();
+                    intent.setAction("com.mckuai.downloadservice");
+                    intent.setPackage(mContext.getPackageName());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("SKIN", item);
+                    intent.putExtras(bundle);
+                    mContext.startService(intent);
+                    break;
+                case 100:
+                    //下载完成
+                    MobclickAgent.onEvent(mContext, "startGame_skin");
+                    GameUntil.startGame(mContext);
+                    break;
+                default:
+
+                    //下载中
+                    break;
+            }
             holder.btn_operation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -75,7 +112,6 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
                         l.onAddButtonClicked(item);
                         holder.btn_operation.resetIcon();
                         holder.btn_operation.showProgress(true);
-                        setProgress(holder.btn_operation, 0);
                     }
                 }
             });
@@ -88,6 +124,7 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
                 }
             });
         }
+        holder.iv_skinCover.setTag(item.getIcon());
     }
 
     @Override
@@ -95,35 +132,6 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
         return null == mSkins ? 0 : mSkins.size();
     }
 
-
-    private void setProgress(FabButton button, int progress) {
-          genProgress(button,progress);
-    }
-
-
-    private Runnable genProgress(final FabButton button,final int progress) {
-        Log.e("000000","progress="+progress);
-        return new Runnable() {
-            @Override
-            public void run() {
-                Log.e("11111","progress="+progress);
-                final int p = progress+1;
-                if (100 >= p){
-                    Activity activity = (Activity)button.getContext();
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            button.setProgress(p);
-                            Log.e("222222","progress="+p);
-                        }
-                    });
-                    Handler handler = new Handler();
-                    handler.postDelayed(genProgress(button,p),50);
-                }
-
-            }
-        };
-    }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
