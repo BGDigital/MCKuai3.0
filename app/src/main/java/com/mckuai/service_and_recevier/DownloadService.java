@@ -127,7 +127,6 @@ public class DownloadService extends Service {
         DLManager.getInstance(MCkuai.getInstance()).dlStart(downloadUrl, savePath, new DLTaskListener() {
             @Override
             public void onStart(String fileName, String url) {
-                fileName = skin.getViewName() + ".png";
                 super.onStart(fileName, url);
                 sendProgressBroadCast(RES_SKIN, skin.getId() + "", 1);
             }
@@ -148,9 +147,8 @@ public class DownloadService extends Service {
             @Override
             public void onFinish(File file) {
                 super.onFinish(file);
-                String name = MCkuai.getInstance().getSkinDownloadDir() + skin.getViewName() + ".png";
-                File newFile = new File(name);
-                file.renameTo(newFile);
+                File skinFile = new File(MCkuai.getInstance().getSkinDownloadDir(),skin.getViewName()+".png");
+                file.renameTo(skinFile);
                 sendProgressBroadCast(RES_SKIN, skin.getId() + "", 100);
             }
 
