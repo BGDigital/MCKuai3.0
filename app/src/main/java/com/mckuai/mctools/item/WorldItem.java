@@ -24,7 +24,7 @@ public class WorldItem implements Serializable{
     private long size;                                   //存档大小
 
     private final String TAG = "WorldItem";
-    private final String worldRoot = MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftWorlds/";
+    public final String worldRoot = MCkuai.getInstance().getSDPath()+"/games/com.mojang/minecraftWorlds/";
     private boolean isSelected = false;
 
     /**
