@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,7 +172,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 //                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
                                         progressBtn.setProgress(progress);
                                         if (100 == progress){
-                                            //
+                                            updateDownloadCount(resId);
                                         }
                                     }
                                 }
@@ -323,6 +324,29 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     @Override
     public void onAddButtonClicked(SkinItem item) {
+
+    }
+
+    private void updateDownloadCount(String id){
+        String url = getString(R.string.interface_domainName)+getString(R.string.interface_skinupdatecount)+"&id="+id;
+        AsyncHttpClient client = MCkuai.getInstance().mClient;
+        client.post(url,new JsonHttpResponseHandler(){
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("", "更新下载计数失败，原因：" + throwable.getLocalizedMessage());
+            }
+        });
 
     }
 }

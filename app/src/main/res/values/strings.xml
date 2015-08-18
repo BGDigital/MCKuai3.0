@@ -102,7 +102,7 @@
     <!-- 皮肤-->
     <string name="interface_skinlist">skin.do?act=list</string>
     <!-- 皮肤下载 计数-->
-    <string name="interface_skincount">skin.do?act=down</string>
+    <string name="interface_skinupdatecount">skin.do?act=down</string>
 
     <item name="key_USERID" type="id"></item>
     <item name="key_FORUMID" type="id"></item>

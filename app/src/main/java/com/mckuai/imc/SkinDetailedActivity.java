@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mckuai.bean.SkinItem;
 import com.mckuai.mctools.WorldUtil.GameUntil;
 import com.mckuai.mctools.WorldUtil.MCSkinManager;
@@ -22,6 +25,10 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class SkinDetailedActivity extends BaseActivity implements View.OnClickListener {
     private SkinItem item;
@@ -149,6 +156,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
                         item.setProgress(progress);
                         updateProgress();
                         if (100 == progress) {
+                            updateDownloadCount();
                             unregisterReceiver(recevier);
                             recevier = null;
                         }
@@ -220,5 +228,28 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
             }
             mShareService.openShare(this,false);
         }
+    }
+
+    private void updateDownloadCount(){
+        String url = getString(R.string.interface_domainName)+getString(R.string.interface_skinupdatecount)+"&id="+item.getId();
+        AsyncHttpClient client = MCkuai.getInstance().mClient;
+        client.post(url,new JsonHttpResponseHandler(){
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("","更新下载计数失败，原因："+throwable.getLocalizedMessage());
+            }
+        });
+
     }
 }
