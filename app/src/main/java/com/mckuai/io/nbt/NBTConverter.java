@@ -306,7 +306,7 @@ public final class NBTConverter {
                     level.setCurrentTick(((LongTag) tag).getValue());
                     break;
                 case "dayCycleStopTime":
-                    level.setDayCycleStopTime(((IntTag) tag).getValue());
+                    level.setDayCycleStopTime(((LongTag) tag).getValue());
                     break;
                 case "spawnMobs":
                     level.setSpawnMobs(((ByteTag) tag).getValue() != 0);
@@ -354,7 +354,7 @@ public final class NBTConverter {
                     tags.add(new LongTag("currentTick", level.getCurrentTick()));
                 }
                 if (-1 != level.getDayCycleStopTime()) {
-                    tags.add(new IntTag("dayCycleStopTime", level.getDayCycleStopTime()));
+                    tags.add(new LongTag("dayCycleStopTime", level.getDayCycleStopTime()));
                 }
                 tags.add(new ByteTag("spawnMobs", level.getSpawnMobs() ? (byte) 1: (byte) 0));
                 if (-1 != level.getWorldStartCount()){
@@ -453,21 +453,23 @@ public final class NBTConverter {
 	}
 
 	public static CompoundTag writeEntities(List<Entity> entities, List<TileEntity> tileEntities) {
-		List<CompoundTag> entitiesTags = new ArrayList<CompoundTag>(entities.size());
-		for (Entity entity : entities) {
-			entitiesTags.add(writeEntity(entity));
-		}
-		ListTag<CompoundTag> entitiesListTag = new ListTag<CompoundTag>("Entities", CompoundTag.class, entitiesTags);
-
-		List<CompoundTag> tileEntitiesTags = new ArrayList<CompoundTag>(tileEntities.size());
-		for (TileEntity entity : tileEntities) {
-			tileEntitiesTags.add(writeTileEntity(entity));
-		}
-		ListTag<CompoundTag> tileEntitiesListTag = new ListTag<CompoundTag>("TileEntities", CompoundTag.class, tileEntitiesTags);
-
 		List<Tag> compoundTagList = new ArrayList<Tag>(2);
-		compoundTagList.add(entitiesListTag);
-		compoundTagList.add(tileEntitiesListTag);
+		if (null != entities && !entities.isEmpty()) {
+			List<CompoundTag> entitiesTags = new ArrayList<CompoundTag>(entities.size());
+			for (Entity entity : entities) {
+				entitiesTags.add(writeEntity(entity));
+			}
+			ListTag<CompoundTag> entitiesListTag = new ListTag<CompoundTag>("Entities", CompoundTag.class, entitiesTags);
+			compoundTagList.add(entitiesListTag);
+		}
+
+		if (null != tileEntities && !tileEntities.isEmpty()) {
+			List<CompoundTag> tileEntitiesTags = new ArrayList<CompoundTag>(tileEntities.size());
+			for (TileEntity entity : tileEntities) {
+				tileEntitiesTags.add(writeTileEntity(entity));
+			}
+			ListTag<CompoundTag> tileEntitiesListTag = new ListTag<CompoundTag>("TileEntities", CompoundTag.class, tileEntitiesTags);
+		}
 		CompoundTag compoundTag = new CompoundTag("", compoundTagList);
 		return compoundTag;
 	}
