@@ -39,8 +39,12 @@ import com.umeng.analytics.MobclickAgent;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import cn.aigestudio.downloader.bizs.DLManager;
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 public class ServerFragment extends BaseFragment implements View.OnClickListener,ServerAdapter.OnItemClickListener,ServerAdapter.OnServerAddListener {
 
@@ -369,7 +373,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (isLoading){
-            showNotification(1,"正在获取数据，请稍候！",R.id.rl_serverList_Root);
+            showNotification(1, "正在获取数据，请稍候！", R.id.rl_serverList_Root);
             return;
         }
         switch (v.getId()){
@@ -415,11 +419,87 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     public void afterServerInfoAdded(int version) {
         MobclickAgent.onEvent(getActivity(), "startGame_server");
         if (0 < version){
-            GameUntil.startGame(getActivity(),version);
+            if(!GameUntil.startGame(getActivity(),version)){
+                downloadGame(version);
+            }
         }
         else {
             GameUntil.startGame(getActivity());
         }
+
+    }
+
+    private void downloadGame(final int version){
+        String url = "";
+        String msgText = null;
+        switch (version){
+            case 10:
+                url = "http://softdown.mckuai.com:8081/mcpe0.10.5.apk";
+                msgText = "此服务器需要安装0.10版我的世界。\n是否下载安装？";
+                break;
+            case 11:
+                url = "http://softdown.mckuai.com:8081/mcpe0.11.1.apk";
+                msgText = "此服务器需要安装0.11版我的世界。\n是否下载安装？";
+                break;
+        }
+        final String downloadUrl = url;
+        showAlert("提示", msgText, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DLManager.getInstance(getActivity()).dlStart(downloadUrl, MCkuai.getInstance().getGameDownloadDir(), new DLTaskListener() {
+                    @Override
+                    public void onStart(String fileName, String url) {
+                        super.onStart(fileName, url);
+                    }
+
+                    @Override
+                    public void onFinish(File file) {
+                        super.onFinish(file);
+                        installGame(file);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        super.onError(error);
+
+                        showError(version, error);
+                    }
+                });
+            }
+        });
+    }
+
+    private void showError(final int version,String msg){
+        showAlert("下载失败", "下载游戏失败，原因：" + msg + "\n是否重新下载？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadGame(version);
+            }
+        });
+    }
+
+    private void installGame(final File file){
+        showAlert("安装游戏", "游戏下载完成，是否立即安装？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameUntil.installGame(getActivity(), file.getPath());
+            }
+        });
 
     }
 }
