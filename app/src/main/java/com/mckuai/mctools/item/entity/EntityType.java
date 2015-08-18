@@ -1,31 +1,13 @@
 package com.mckuai.mctools.item.entity;
 
-import com.mckuai.mctools.item.entity.Arrow;
-import com.mckuai.mctools.item.entity.Chicken;
-import com.mckuai.mctools.item.entity.Cow;
-import com.mckuai.mctools.item.entity.Creeper;
-import com.mckuai.mctools.item.entity.Egg;
-import com.mckuai.mctools.item.entity.Entity;
-import com.mckuai.mctools.item.entity.FallingBlock;
-import com.mckuai.mctools.item.entity.Item;
-import com.mckuai.mctools.item.entity.Minecart;
-import com.mckuai.mctools.item.entity.Painting;
-import com.mckuai.mctools.item.entity.Pig;
-import com.mckuai.mctools.item.entity.PigZombie;
-import com.mckuai.mctools.item.entity.Player;
-import com.mckuai.mctools.item.entity.Sheep;
-import com.mckuai.mctools.item.entity.Skeleton;
-import com.mckuai.mctools.item.entity.Snowball;
-import com.mckuai.mctools.item.entity.Spider;
-import com.mckuai.mctools.item.entity.TNTPrimed;
-import com.mckuai.mctools.item.entity.Zombie;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum EntityType {
+    VILLAGER(15,Villager.class),
 	CHICKEN(10, Chicken.class),
-	COW(11, Cow.class),
+	COW(16, Cow.class),
 	PIG(12, Pig.class),
 	SHEEP(13, Sheep.class),
 	ZOMBIE(32, Zombie.class),
@@ -33,6 +15,9 @@ public enum EntityType {
 	SKELETON(34, Skeleton.class),
 	SPIDER(35, Spider.class),
 	PIG_ZOMBIE(36, PigZombie.class),
+    SLIME(37,Slime.class),
+    ENDERMAN(38,Enderman.class),
+    SILVERFISH(39,Silverfish.class),
 	ITEM(64, Item.class),
 	PRIMED_TNT(65, TNTPrimed.class),
 	FALLING_BLOCK(66, FallingBlock.class),
@@ -42,7 +27,7 @@ public enum EntityType {
 	PAINTING(83, Painting.class),
 	MINECART(84, Minecart.class),
 	UNKNOWN(-1, null),
-	PLAYER(-2, Player.class);
+	PLAYER(63, Player.class);
 
 	private static Map<Integer, com.mckuai.mctools.item.entity.EntityType> idMap = new HashMap<Integer, com.mckuai.mctools.item.entity.EntityType>();
 
