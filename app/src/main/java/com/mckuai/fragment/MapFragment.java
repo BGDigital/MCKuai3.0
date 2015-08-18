@@ -124,6 +124,9 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 map_ed.setVisibility(View.GONE);
             }
         }*/
+        if (isVisibleToUser && null != view){
+            showData();
+        }
     }
 
     @Override
@@ -149,6 +152,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
     private void setTitleBarButtonListener() {
         MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
+
     }
 
     private void showData() {
@@ -156,6 +160,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 //            Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
+        MainActivity.setRightButtonView(true);
         setTitleBarButtonListener();
         initReciver();
 
