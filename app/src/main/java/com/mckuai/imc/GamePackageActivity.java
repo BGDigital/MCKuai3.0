@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.mckuai.io.EntityDataConverter;
+import com.mckuai.io.db.LevelDBConverter;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.ItemStack;
 import com.mckuai.adapter.InventoryAdapter;
@@ -24,6 +26,7 @@ import com.mckuai.io.xml.MaterialLoader;
 import com.mckuai.mctools.material.Material;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -49,6 +52,11 @@ public class GamePackageActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_package);
         world = MCkuai.getInstance().world;
+       /* File dbFile = new File(world.worldRoot+world.getDir(),"db");
+        EntityDataConverter.EntityData data;
+        if (null != dbFile && dbFile.exists() && dbFile.isDirectory()) {
+            data = LevelDBConverter.readAllEntities(dbFile);
+        }*/
         setTitle("游戏背包管理");
         new MaterialLoader(getResources().getXml(R.xml.item_data)).run();
         new MaterialIconLoader(this).run();
