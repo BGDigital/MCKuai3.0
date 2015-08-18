@@ -106,7 +106,7 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
                             OptionUntil.setSkin(2);//配置成自定义皮肤
                             manager.moveToGame(item);
                             MobclickAgent.onEvent(mContext, "startGame_skin");
-                            GameUntil.startGame(mContext);
+                            GameUntil.startGame(mContext,11);
                             break;
                         default:
                             break;

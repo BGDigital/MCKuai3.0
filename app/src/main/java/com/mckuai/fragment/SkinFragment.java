@@ -25,6 +25,7 @@ import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.SkinBean;
 import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.mckuai.imc.SkinDetailedActivity;
 import com.mckuai.mctools.WorldUtil.MCSkinManager;
@@ -46,7 +47,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     private View view;
     private ArrayList<SkinItem> skins;
     private PageInfo mPage;
-    private String[] fileds = {"InsertTime","DownNum"};
+    private String[] fileds = {"InsertTime", "DownNum"};
     private String mOrderFiled = fileds[0];
     private int mOrderType = 1;
     private long lastUpdateTime = 0;
@@ -63,7 +64,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     private DownloadProgressRecevier recevier;
 
-    public SkinFragment(){
+    public SkinFragment() {
         setmTitle("皮肤");
     }
 
@@ -71,10 +72,10 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (null == view){
-            view =inflater.inflate(R.layout.fragment_skin, container, false);
+        if (null == view) {
+            view = inflater.inflate(R.layout.fragment_skin, container, false);
         }
-        if (null == mSkinManager){
+        if (null == mSkinManager) {
             mSkinManager = MCkuai.getInstance().getSkinManager();
         }
         return view;
@@ -91,8 +92,8 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
-            if (null != view){
+        if (isVisibleToUser) {
+            if (null != view) {
                 showData();
             }
         }
@@ -104,7 +105,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             try {
                 getActivity().unregisterReceiver(recevier);
                 recevier = null;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -116,13 +117,14 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         super.onPause();
     }
 
-    private void initView(){
-        if (null == urv_list){
+    private void initView() {
+        if (null == urv_list) {
             urv_list = (UltimateRecyclerView) view.findViewById(R.id.urv_skinList);
             manager = new LinearLayoutManager(getActivity());
             urv_list.setLayoutManager(manager);
             mAdapter = new SkinAdapter(getActivity());
-            mAdapter.setOnItemClickListener(this);DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+            mAdapter.setOnItemClickListener(this);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
             urv_list.addItemDecoration(dividerItemDecoration);
             urv_list.enableLoadmore();
             urv_list.setAdapter(mAdapter);
@@ -154,26 +156,21 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         if (null == recevier) {
             recevier = new DownloadProgressRecevier() {
                 @Override
-                public void onProgress(int resType,String resId, int progress) {
-                    if (resType != 2){
+                public void onProgress(int resType, String resId, int progress) {
+                    if (resType != 2) {
                         return;
                     }
-                    if (null != skins  && !skins.isEmpty()) {
+                    if (null != skins && !skins.isEmpty()) {
                         int i = 0;
-                        for (SkinItem item:skins){
-                            if (item.getId() == Integer.parseInt(resId)){
+                        for (SkinItem item : skins) {
+                            if (item.getId() == Integer.parseInt(resId)) {
                                 item.setProgress(progress);
-                                long time = System.currentTimeMillis();
-                                if (time - lastUpdateTime > 500 || progress == 100){
-                                    int count = urv_list.getChildCount();
-                                    ViewGroup itemView = (ViewGroup)manager.findViewByPosition(i);
-                                    if (null != itemView){
-                                        FabButton progressBtn =(FabButton)((ViewGroup) itemView.getChildAt(1));
-//                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
-                                        progressBtn.setProgress(progress);
-                                        if (100 == progress){
-                                            updateDownloadCount(resId);
-                                        }
+                                ViewGroup itemView = (ViewGroup) manager.findViewByPosition(i);
+                                if (null != itemView) {
+                                    FabButton progressBtn = (FabButton) (itemView.getChildAt(1));
+                                    progressBtn.setProgress(progress);
+                                    if (100 == progress) {
+                                        updateDownloadCount(resId);
                                     }
                                 }
                             }
@@ -187,18 +184,19 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
             try {
                 getActivity().registerReceiver(recevier, filter);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void showData(){
+    private void showData() {
 
-        if (null == urv_list){
+        if (null == urv_list) {
             initView();
         }
-        if (null == skins || null == mPage){
+        MainActivity.setRightButtonView(false);
+        if (null == skins || null == mPage) {
             loadData();
             return;
         }
@@ -207,12 +205,12 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         mAdapter.setData(skins);
     }
 
-    private void mergeData(){
+    private void mergeData() {
         ArrayList<SkinItem> downloadSkins = mSkinManager.getDownloadSkins();
-        if (null != downloadSkins && !downloadSkins.isEmpty() && null != skins && !skins.isEmpty()){
-            for (SkinItem item:downloadSkins){
-                for (SkinItem skin:skins){
-                    if (skin.getId() == item.getId()){
+        if (null != downloadSkins && !downloadSkins.isEmpty() && null != skins && !skins.isEmpty()) {
+            for (SkinItem item : downloadSkins) {
+                for (SkinItem skin : skins) {
+                    if (skin.getId() == item.getId()) {
                         skin.setProgress(100);
                         break;
                     }
@@ -221,37 +219,36 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         }
     }
 
-    private void loadData(){
-        if (isLoading){
+    private void loadData() {
+        if (isLoading) {
             return;
         }
 
-        if (null == mClient){
+        if (null == mClient) {
             mClient = app.mClient;
         }
 
         final RequestParams params = new RequestParams();
-        params.add("orderField",mOrderFiled);
-        params.add("orderType",mOrderType+"");
+        params.add("orderField", mOrderFiled);
+        params.add("orderType", mOrderType + "");
 
-        if (null != mPage){
-            params.add("page",mPage.getNextPage()+"");
+        if (null != mPage) {
+            params.add("page", mPage.getNextPage() + "");
         }
 
         final String url = getString(R.string.interface_domainName) + getString(R.string.interface_skinlist);
 
-        mClient.post(url,params,new JsonHttpResponseHandler(){
+        mClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-                if (isCacheEnabled && null!= mPage && 1 == mPage.getNextPage()){
-                    String data = getData(url,params);
-                    if (null != data && 10 < data.length()){
+                if (isCacheEnabled && null != mPage && 1 == mPage.getNextPage()) {
+                    String data = getData(url, params);
+                    if (null != data && 10 < data.length()) {
                         parseData(data);
                         showData();
                     }
-                }
-                else {
+                } else {
                     isLoading = true;
                     popupLoadingToast("正在加载列表！");
                 }
@@ -262,18 +259,17 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                 super.onSuccess(statusCode, headers, response);
                 ParseResponse parse = new ParseResponse();
                 ResponseParseResult result = parse.parse(response);
-                if (result.isSuccess){
+                if (result.isSuccess) {
                     cancleLodingToast(true);
                     parseData(result.data);
                     showData();
-                    if (null != mPage && 1 == mPage.getPage()){
+                    if (null != mPage && 1 == mPage.getPage()) {
                         cacheData(url, params, result.data);
                         isCacheEnabled = false;
                     }
-                }
-                else {
+                } else {
                     cancleLodingToast(false);
-                    showNotification(3,result.msg,R.id.rl_skinRoot);
+                    showNotification(3, result.msg, R.id.rl_skinRoot);
                 }
                 isLoading = false;
 
@@ -289,19 +285,18 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         });
     }
 
-    private void parseData(String data){
-        if (null != data && 10 < data.length()){
-            if (null == mGson){
+    private void parseData(String data) {
+        if (null != data && 10 < data.length()) {
+            if (null == mGson) {
                 mGson = new Gson();
             }
 
-            SkinBean bean = mGson.fromJson(data,SkinBean.class);
-            if (null != bean &&null != bean.getData() && null != bean.getPageBean()){
-                if (1==bean.getPageBean().getPage()){
-                    if (null == skins){
-                        skins = new ArrayList<>(bean.getData().size()+1);
-                    }
-                    else {
+            SkinBean bean = mGson.fromJson(data, SkinBean.class);
+            if (null != bean && null != bean.getData() && null != bean.getPageBean()) {
+                if (1 == bean.getPageBean().getPage()) {
+                    if (null == skins) {
+                        skins = new ArrayList<>(bean.getData().size() + 1);
+                    } else {
                         skins.clear();
                     }
                 }
@@ -327,10 +322,10 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     }
 
-    private void updateDownloadCount(String id){
-        String url = getString(R.string.interface_domainName)+getString(R.string.interface_skinupdatecount)+"&id="+id;
+    private void updateDownloadCount(String id) {
+        String url = getString(R.string.interface_domainName) + getString(R.string.interface_skinupdatecount) + "&id=" + id;
         AsyncHttpClient client = MCkuai.getInstance().mClient;
-        client.post(url,new JsonHttpResponseHandler(){
+        client.post(url, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -339,6 +334,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                Log.e("","更新成功！");
             }
 
             @Override
