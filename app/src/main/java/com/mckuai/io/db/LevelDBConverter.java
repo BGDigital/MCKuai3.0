@@ -1,6 +1,8 @@
 package com.mckuai.io.db;
 
 import android.util.Log;
+
+import com.mckuai.mctools.item.Vector3f;
 import com.mckuai.mctools.item.entity.Entity;
 import com.mckuai.io.EntityDataConverter;
 import com.mckuai.io.nbt.NBTConverter;
@@ -14,8 +16,10 @@ import org.spout.nbt.stream.NBTOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -91,8 +95,29 @@ import java.util.List;
         return new EntityDataConverter.EntityData(entities,tileEntities);
     }
 
-    public static void writeAllEntities(List<Entity> entities,List<TileEntity> tileEntities,File dbRoot){
-
+    public static void writeAllEntities(List<Entity> entities,File dbRoot){
+          DB db;
+          DBKey dbKey;
+        try {
+            db = openDataBase(dbRoot);
+            HashMap<DBKey,Entity> items = new HashMap<>(entities.size());
+            dbKey = new DBKey();
+            dbKey.setType(50);
+            java.util.Iterator iterator = entities.iterator();
+            while (iterator.hasNext()){
+                Entity entity = (Entity) iterator.next();
+                CompoundTag tag = NBTConverter.writeEntity(entity);
+                Vector3f position = entity.getLocation();
+                dbKey.setX((int)position.getX() >> 4).setZ((int)position.getZ() >> 4);
+                if (null == items.get(dbKey)){
+                   items.put(dbKey,entity);
+                }
+                NBTOutputStream outputStream = new NBTOutputStream(new FileOutputStream(dbRoot),false,true);
+                outputStream.writeTag(tag);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
