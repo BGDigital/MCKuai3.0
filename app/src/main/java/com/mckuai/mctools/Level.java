@@ -31,7 +31,7 @@ public class Level implements Serializable{
 	private long time;
 
     private int  DayCycleStopTime = -1;//0.11
-	private int dayCycleStopTime = -1;  //0.9
+	private long dayCycleStopTime = -1;  //0.9
 	//是否启用spawnMobs
 	private boolean spawnMobs = true;
 	//玩家所在的维度，0为主世界
@@ -152,7 +152,7 @@ public class Level implements Serializable{
      * @return  dayCycleStopTime
      * 如果是0.11版，则使用getDayCycleStopTimeNewVer
      */
-	public int getDayCycleStopTime() {
+	public Long getDayCycleStopTime() {
 		return dayCycleStopTime;
 	}
 
@@ -160,7 +160,7 @@ public class Level implements Serializable{
      * 设置地图的dayCycleStopTime
      * 如果是0.11版，则使用setDayCycleStopTimeNewVer
      */
-	public void setDayCycleStopTime(int dayCycleStopTime) {
+	public void setDayCycleStopTime(long dayCycleStopTime) {
 		this.dayCycleStopTime = dayCycleStopTime;
 	}
 
