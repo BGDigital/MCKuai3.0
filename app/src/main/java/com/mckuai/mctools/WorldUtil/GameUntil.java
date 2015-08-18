@@ -8,19 +8,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.mckuai.mctools.item.GameItem;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -126,7 +123,7 @@ public class GameUntil {
     public static boolean installGame(Context context, String gameFile) {
         File file = new File(gameFile);
         if (file.exists() && file.isFile()) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
             context.startActivity(intent);
             return true;
@@ -223,17 +220,6 @@ public class GameUntil {
      * @param context
      */
     public static boolean startGame(Context context) {
-        /*if (detectionIsGameInstalled(context)) {
-            mContext = context;
-
-            showStartHint(context);
-
-            Message msg = new Message();
-            msg.what = 1;
-            handler.sendEmptyMessageDelayed(1, 1000);
-        } else {
-            Toast.makeText(context, "你还未安装有游戏，请先下载...", Toast.LENGTH_SHORT).show();
-        }*/
         if (null != context ){
             mContext = context;
             ArrayList<GameItem> gameItems = detectionGame(context);
@@ -261,6 +247,7 @@ public class GameUntil {
      */
     public static boolean startGame(Context context,int version){
         if (null != context) {
+            mContext = context;
             ArrayList<GameItem> gameItems = detectionGame(context);
             if (null != gameItems && !gameItems.isEmpty()){
                 for (GameItem item:gameItems){
@@ -280,7 +267,6 @@ public class GameUntil {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-
                 Intent intent = new Intent();
                 ComponentName name = new ComponentName(packageName, "com.mojang.minecraftpe.MainActivity");
                 intent.setComponent(name);
