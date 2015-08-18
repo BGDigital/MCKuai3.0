@@ -8,6 +8,9 @@ import com.mckuai.imc.MCkuai;
 import com.mckuai.io.db.DB;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -77,6 +80,31 @@ public class MCSkinManager {
             if (id.equals(skinId)){
                 Log.e(TAG,"ID为"+skinId+"的皮肤已经存在！");
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean moveToGame(SkinItem item) {
+        if (null != item){
+            File srcfile = new File(MCkuai.getInstance().getSkinDownloadDir(),item.getViewName()+".png");
+            if (null != srcfile && srcfile.exists() && srcfile.isFile()){
+                File dstFile = new File(MCkuai.getInstance().getGameProfileDir()+"minecraftpe","custom.png");
+                if (null != dstFile&& dstFile.exists()){
+                    dstFile.delete();
+                }
+                try {
+                    InputStream inputStream = new FileInputStream(srcfile);
+                    FileOutputStream outputStream = new FileOutputStream(dstFile);
+                    byte[] srcData= new byte[(int)srcfile.length()+1];
+                    inputStream.read(srcData);
+                    outputStream.write(srcData);
+                    inputStream.close();
+                    outputStream.close();
+                    return true;
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         return false;
@@ -180,6 +208,7 @@ public class MCSkinManager {
         if (isDBOpened){
             try {
                 db.close();
+                isDBOpened = false;
                 return true;
             }catch (Exception e){
                 e.printStackTrace();
