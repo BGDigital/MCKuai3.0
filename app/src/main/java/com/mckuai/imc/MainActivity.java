@@ -314,7 +314,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         lastPosition = position;
         switch (position) {
             case 1:
-                tv_titlebar_title.setText("地图");
+                tv_titlebar_title.setText("资源");
                 tv2.setEnabled(false);
                 img2.setEnabled(false);
                 ll2.setEnabled(false);
