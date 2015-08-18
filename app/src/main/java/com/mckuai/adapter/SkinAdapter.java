@@ -85,6 +85,9 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             if (0 < item.getProgress()){
                 holder.btn_operation.setProgress(item.getProgress());
             }
+            else {
+                holder.btn_operation.resetIcon();
+            }
             holder.btn_operation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
