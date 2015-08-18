@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.mctools.WorldUtil.GameUntil;
 import com.mckuai.mctools.WorldUtil.MCSkinManager;
 import com.mckuai.mctools.WorldUtil.OptionUntil;
@@ -21,7 +22,11 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import cn.aigestudio.downloader.bizs.DLManager;
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 /**
  * Created by kyly on 2015/8/14.
@@ -43,7 +48,6 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         public void onItemClicked(SkinItem item);
-
         public void onAddButtonClicked(SkinItem item);
     }
 
@@ -91,26 +95,10 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             holder.btn_operation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch (item.getProgress()){
-                        case -1:
-                            MobclickAgent.onEvent(mContext, "downloadSkin");
-                            Intent intent = new Intent();
-                            intent.setAction("com.mckuai.downloadservice");
-                            intent.setPackage(mContext.getPackageName());
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("SKIN", item);
-                            intent.putExtras(bundle);
-                            mContext.startService(intent);
-                            break;
-                        case 100:
-                            OptionUntil.setSkin(2);//配置成自定义皮肤
-                            manager.moveToGame(item);
-                            MobclickAgent.onEvent(mContext, "startGame_skin");
-                            GameUntil.startGame(mContext,11);
-                            break;
-                        default:
-                            break;
+                    if (null != l){
+                        l.onAddButtonClicked(item);
                     }
+
                 }
             });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -148,4 +136,6 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             btn_operation = (FabButton) itemView.findViewById(R.id.btn_addSkin);
         }
     }
+
+
 }

@@ -27,18 +27,26 @@ import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
+import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.imc.SkinDetailedActivity;
+import com.mckuai.mctools.WorldUtil.GameUntil;
 import com.mckuai.mctools.WorldUtil.MCSkinManager;
+import com.mckuai.mctools.WorldUtil.OptionUntil;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.utils.ParseResponse;
 import com.mckuai.widget.fabbutton.FabButton;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import cn.aigestudio.downloader.bizs.DLManager;
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -319,7 +327,33 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     @Override
     public void onAddButtonClicked(SkinItem item) {
-
+        if (null != item){
+            switch (item.getProgress()){
+                case -1:
+                    MobclickAgent.onEvent(getActivity(), "downloadSkin");
+                    Intent intent = new Intent();
+                    intent.setAction("com.mckuai.downloadservice");
+                    intent.setPackage(getActivity().getPackageName());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("SKIN", item);
+                    intent.putExtras(bundle);
+                    getActivity().startService(intent);
+                    break;
+                case 100:
+                    OptionUntil.setSkin(2);//配置成自定义皮肤
+                    if (null == mSkinManager){
+                        mSkinManager = MCkuai.getInstance().getSkinManager();
+                    }
+                    mSkinManager.moveToGame(item);
+                    MobclickAgent.onEvent(getActivity(), "startGame_skin");
+                    if(!GameUntil.startGame(getActivity(),11)){
+                        downloadGame(11);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void updateDownloadCount(String id) {
@@ -344,5 +378,78 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             }
         });
 
+    }
+
+    private void downloadGame(final int version){
+        String url = "";
+        String msgText = null;
+        switch (version){
+            case 10:
+                url = "http://softdown.mckuai.com:8081/mcpe0.10.5.apk";
+                msgText = "此服务器需要安装0.10版我的世界。\n是否下载安装？";
+                break;
+            case 11:
+                url = "http://softdown.mckuai.com:8081/mcpe0.11.1.apk";
+                msgText = "此服务器需要安装0.11版我的世界。\n是否下载安装？";
+                break;
+        }
+        final String downloadUrl = url;
+        showAlert("提示", msgText, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DLManager.getInstance(getActivity()).dlStart(downloadUrl, MCkuai.getInstance().getGameDownloadDir(), new DLTaskListener() {
+                    @Override
+                    public void onStart(String fileName, String url) {
+                        super.onStart(fileName, url);
+                    }
+
+                    @Override
+                    public void onFinish(File file) {
+                        super.onFinish(file);
+                        installGame(file);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        super.onError(error);
+
+                        showError(version, error);
+                    }
+                });
+            }
+        });
+    }
+
+    private void showError(final int version,String msg){
+        showAlert("下载失败", "下载游戏失败，原因：" + msg + "\n是否重新下载？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadGame(version);
+            }
+        });
+    }
+
+    private void installGame(final File file){
+        showAlert("安装游戏", "游戏下载完成，是否立即安装？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameUntil.installGame(getActivity(), file.getPath());
+            }
+        });
     }
 }
