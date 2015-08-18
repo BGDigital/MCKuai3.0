@@ -1,0 +1,186 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/titlebar_comm" />
+
+    <ImageButton
+        android:id="@+id/btn_search"
+        android:layout_width="@dimen/titlebar_button_height"
+        android:layout_height="@dimen/titlebar_button_height"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/title_layout"
+        android:layout_margin="@dimen/com_margin"
+        android:background="@drawable/btn_search"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/edt_search"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/titlebar_button_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/btn_search"
+        android:layout_marginLeft="@dimen/com_margin"
+        android:layout_toLeftOf="@id/btn_search"
+        android:background="@drawable/edt_search_top"
+        android:hint="搜索"
+        android:imeOptions="actionSearch"
+        android:paddingLeft="@dimen/com_padding"
+        android:singleLine="true"
+        android:textColor="@color/font_secondary"
+        android:textSize="@dimen/font_dimen_big"
+        android:visibility="visible" />
+
+    <RadioGroup
+        android:id="@+id/rg_switch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_height_lv2"
+        android:layout_below="@id/btn_search"
+        android:background="@drawable/background_top_bottom_frame"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/rb_searchPost"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="4"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/postlist"
+            android:textColor="@color/radio_textcolor_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:id="@+id/rb_searchUser"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/menu_height_lv2"
+            android:layout_weight="4"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/friendlist"
+            android:textColor="@color/radio_textcolor_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/rg_switch"
+        android:background="@color/background_white" >
+
+        <RelativeLayout
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/v_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/icon_empty" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_empty"
+                android:gravity="center"
+                android:text="没有内容！" />
+        </RelativeLayout>
+
+        <GridView
+            android:id="@+id/gv_userList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/background_package_gray"
+            android:cacheColorHint="@color/background_white"
+            android:columnWidth="@dimen/item_user_width"
+            android:gravity="center_horizontal"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="auto_fit"
+            android:paddingBottom="@dimen/com_margin"
+            android:paddingLeft="@dimen/com_margin"
+            android:paddingTop="@dimen/com_margin"
+            android:stretchMode="columnWidth" >
+        </GridView>
+
+        <com.mckuai.imc.widget.XListView
+            android:id="@+id/lv_postList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_collectPost"
+            android:layout_alignParentTop="true"
+            android:background="@color/background_white"
+            android:cacheColorHint="@color/background_white"
+            android:divider="@color/background_package_gray"
+            android:dividerHeight="@dimen/item_divider_height" />
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:filterTouchesWhenObscured="true"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/background_btn_usercenter_action_layerlist"
+                android:gravity="center" >
+
+                <Button
+                    android:id="@+id/btn_collectUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/btn_gohome"
+                    android:text="@string/gohome"
+                    android:textColor="@color/font_white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/background_btn_usercenter_action_layerlist"
+                android:gravity="center" >
+
+                <Button
+                    android:id="@+id/btn_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/btn_chat"
+                    android:text="@string/chat"
+                    android:textColor="@color/font_white" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

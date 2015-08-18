@@ -214,4 +214,13 @@
     <string name="addr_city_start">网络定位</string>
     <string name="addr_hint">请选择</string>
     <string name="title_activity_skin_detailed">SkinDetailedActivity</string>
+
+    <!-- 背包和搜索 -->
+    <string name="backpack">背包 </string>
+    <string name="postlist">帖子</string>
+    <string name="friendlist">麦友</string>
+    <string name="search_contxt">SEARCH_CONTEXT</string>
+    <!-- 麦友 -->
+    <string name="gohome">去TA的家</string>
+    <string name="chat">和TA聊天</string>
 </resources>
