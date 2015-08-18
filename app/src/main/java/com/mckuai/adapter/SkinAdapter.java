@@ -1,12 +1,9 @@
 package com.mckuai.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +14,14 @@ import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.mctools.WorldUtil.GameUntil;
-import com.mckuai.mctools.WorldUtil.MCMapManager;
+import com.mckuai.mctools.WorldUtil.MCSkinManager;
+import com.mckuai.mctools.WorldUtil.OptionUntil;
 import com.mckuai.widget.fabbutton.FabButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by kyly on 2015/8/14.
@@ -35,9 +32,13 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
     private ImageLoader mLoader;
     private OnItemClickListener l;
     private DisplayImageOptions options;
+    private MCSkinManager manager;
 
     public SkinAdapter(Context context){
         this.mContext = context;
+        if (null == manager){
+            manager = MCkuai.getInstance().getSkinManager();
+        }
     }
 
     public interface OnItemClickListener {
@@ -81,6 +82,9 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             holder.tv_skinName.setText(item.getViewName() + "");
             holder.tv_skinType.setText(item.getVersion() + "");
             holder.tv_skinOwner.setText(item.getUploadMan() + "");
+            if (0 < item.getProgress()){
+                holder.btn_operation.setProgress(item.getProgress());
+            }
             holder.btn_operation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -96,6 +100,8 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
                             mContext.startService(intent);
                             break;
                         case 100:
+                            OptionUntil.setSkin(2);//配置成自定义皮肤
+                            manager.moveToGame(item);
                             MobclickAgent.onEvent(mContext, "startGame_skin");
                             GameUntil.startGame(mContext);
                             break;
