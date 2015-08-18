@@ -103,7 +103,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (!isGameInstalled) {
             detectionGameInfo();
         }
-        showDownloadGame(false);
         if (isGameInstalled && null == worldItems) {
             gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
@@ -472,7 +471,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
         isShowUninstallAlert = false;
         MobclickAgent.onEvent(getActivity(), "showDownloadGame");
-        showAlert("提示", "为了更好的体验游戏，请下载《我的世界0.10.5》\n是否立即下载游戏？", new View.OnClickListener() {
+        showAlert("提示", "为了更好的体验游戏，请下载《我的世界》\n是否立即下载游戏？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -481,7 +480,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             @Override
             public void onClick(View v) {
                 MobclickAgent.onEvent(getActivity(), "downloadGame");
-                String url = "http://softdown.mckuai.com:8081/wodeshijie_v_0_10_5.apk";
+                String url = "http://softdown.mckuai.com:8081/mcpe0.11.1.apk";
                 final String downloadDir = MCkuai.getInstance().getGameDownloadDir();
                 File file = new File(downloadDir);
                 if (null != file && (!file.exists() || !file.isDirectory())) {
