@@ -128,32 +128,38 @@ public class BaseFragment extends android.support.v4.app.Fragment {
 
 
 
-    protected  void showAlert(String title,String msg, final View.OnClickListener onCancle, final View.OnClickListener onOk){
-        final NiftyDialogBuilder mAlertDialogBuilder = NiftyDialogBuilder.getInstance(getActivity());
-        mAlertDialogBuilder.withTitle(title+"")
-                .withMessage(msg+"")
-                .withEffect(Effectstype.Newspager);
-        if (null != onCancle){
-            mAlertDialogBuilder.withButton2Text("取消")
-                    .setButton2Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onCancle.onClick(v);
-                            mAlertDialogBuilder.dismiss();
-                        }
-                    });
-        }
-        if (null != onOk){
-            mAlertDialogBuilder.withButton1Text("确定")
-                    .setButton1Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onOk.onClick(v);
-                            mAlertDialogBuilder.dismiss();
-                        }
-                    });
-        }
-        mAlertDialogBuilder.show();
+    protected  void showAlert(final String title,final String msg, final View.OnClickListener onCancle, final View.OnClickListener onOk){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final NiftyDialogBuilder mAlertDialogBuilder = NiftyDialogBuilder.getInstance(getActivity());
+                mAlertDialogBuilder.withTitle(title + "")
+                        .withMessage(msg + "")
+                        .withEffect(Effectstype.Newspager);
+                if (null != onCancle) {
+                    mAlertDialogBuilder.withButton2Text("取消")
+                            .setButton2Click(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onCancle.onClick(v);
+                                    mAlertDialogBuilder.dismiss();
+                                }
+                            });
+                }
+                if (null != onOk) {
+                    mAlertDialogBuilder.withButton1Text("确定")
+                            .setButton1Click(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onOk.onClick(v);
+                                    mAlertDialogBuilder.dismiss();
+                                }
+                            });
+                }
+                mAlertDialogBuilder.show();
+            }
+        });
+
     }
 
     protected void popupLoadingToast(String msg){
