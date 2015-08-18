@@ -1,29 +1,29 @@
 package com.mckuai.imc;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mckuai.bean.SkinItem;
+import com.mckuai.mctools.WorldUtil.GameUntil;
+import com.mckuai.mctools.WorldUtil.MCSkinManager;
+import com.mckuai.mctools.WorldUtil.OptionUntil;
+import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.widget.ProgressButton;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.media.UMImage;
 
-import java.nio.channels.NonWritableChannelException;
-
-public class SkinDetailedActivity extends BaseActivity {
+public class SkinDetailedActivity extends BaseActivity implements View.OnClickListener {
     private SkinItem item;
 
     private ProgressButton btn_operation;
@@ -39,11 +39,15 @@ public class SkinDetailedActivity extends BaseActivity {
     private ImageLoader mLoader;
     private DisplayImageOptions mOptions;
 
+    private DownloadProgressRecevier recevier;
+    private com.umeng.socialize.controller.UMSocialService mShareService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skin_detailed);
+        mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
         setTitle("皮肤详情");
     }
 
@@ -68,12 +72,15 @@ public class SkinDetailedActivity extends BaseActivity {
             mOptions = MCkuai.getInstance().getNormalOption();
             initView();
         }
+        initReciver();
         showPics();
-        mLoader.displayImage(item.getIcon(),iv_skinCover);
+        mLoader.displayImage(item.getIcon(), iv_skinCover);
         tv_skinNmae.setText(item.getViewName() + "");
         tv_skinOwner.setText(item.getUploadMan() + "");
         tv_skinRank.setText("下载：0");
-        tv_desc.setText(item.getDesc()+"");
+        tv_desc.setText(item.getDesc() + "");
+        updateProgress();
+
     }
 
     private void showPics() {
@@ -103,11 +110,6 @@ public class SkinDetailedActivity extends BaseActivity {
 
                     }
                 });
-                /*LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0,20,0,20);
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imageView.setLayoutParams(params);
-                mLoader.displayImage(item.getPics(),imageView);*/
                 ll_pics.removeAllViews();
                 ll_pics.addView(imageView);
             } else {
@@ -129,5 +131,94 @@ public class SkinDetailedActivity extends BaseActivity {
         btn_share = (ImageView) findViewById(R.id.btn_right);
         btn_share.setImageResource(R.drawable.btn_titlebar_share);
         btn_share.setVisibility(View.VISIBLE);
+
+        btn_return.setOnClickListener(this);
+        btn_share.setOnClickListener(this);
+        btn_operation.setOnClickListener(this);
+    }
+
+    private void initReciver() {
+        if (null == recevier) {
+            recevier = new DownloadProgressRecevier() {
+                @Override
+                public void onProgress(int resType,String resId,final int progress) {
+                    if (2 != resType){
+                        return;
+                    }
+                    if (resId.equals((item.getId()+""))) {
+                        item.setProgress(progress);
+                        updateProgress();
+                        if (100 == progress) {
+                            unregisterReceiver(recevier);
+                            recevier = null;
+                        }
+                    }
+                }
+            };
+            IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
+            registerReceiver(recevier, filter);
+        }
+    }
+
+    private void updateProgress(){
+        switch (item.getProgress()){
+            case -1:
+                btn_operation.setText("下载皮肤");
+                break;
+            case 100:
+                btn_operation.updateProgress(item.getProgress());
+                btn_operation.setText("启动游戏");
+                break;
+            default:
+                btn_operation.updateProgress(item.getProgress());
+                btn_operation.setText("正在下载");
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_left:
+                this.finish();
+                break;
+            case R.id.btn_right:
+                shareSkin();
+                break;
+            case R.id.btn_operation:
+                switch (item.getProgress()) {
+                    case -1:
+                        MobclickAgent.onEvent(SkinDetailedActivity.this, "downloadSkin");
+                        Intent intent = new Intent();
+                        intent.setAction("com.mckuai.downloadservice");
+                        intent.setPackage(getPackageName());
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("SKIN", item);
+                        intent.putExtras(bundle);
+                        startService(intent);
+                        break;
+                    case 100:
+                        OptionUntil.setSkin(2);//配置成自定义皮肤
+                        MCSkinManager manager = MCkuai.getInstance().getSkinManager();
+                        manager.moveToGame(item);
+                        MobclickAgent.onEvent(SkinDetailedActivity.this, "startGame_skin");
+                        GameUntil.startGame(SkinDetailedActivity.this);
+                        break;
+                    default:
+
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void shareSkin(){
+        if (null != item){
+            mShareService.setShareContent(item.getViewName());
+            if (null != item.getIcon() && 10 < item.getIcon().length()){
+                mShareService.setShareMedia(new UMImage(this,item.getIcon()));
+            }
+            mShareService.openShare(this,false);
+        }
     }
 }

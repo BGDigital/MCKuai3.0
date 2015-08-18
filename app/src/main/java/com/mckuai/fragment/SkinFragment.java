@@ -26,6 +26,7 @@ import com.mckuai.bean.SkinItem;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
 import com.mckuai.imc.SkinDetailedActivity;
+import com.mckuai.mctools.WorldUtil.MCSkinManager;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.utils.ParseResponse;
 import com.mckuai.widget.fabbutton.FabButton;
@@ -53,6 +54,8 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     private SkinAdapter mAdapter;
     private RecyclerView.LayoutManager manager;
 
+    private MCSkinManager mSkinManager;
+
     private MCkuai app = MCkuai.getInstance();
     private AsyncHttpClient mClient;
     private Gson mGson;
@@ -69,6 +72,9 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         // Inflate the layout for this fragment
         if (null == view){
             view =inflater.inflate(R.layout.fragment_skin, container, false);
+        }
+        if (null == mSkinManager){
+            mSkinManager = MCkuai.getInstance().getSkinManager();
         }
         return view;
     }
@@ -196,7 +202,22 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             return;
         }
         initReciver();
+        mergeData();
         mAdapter.setData(skins);
+    }
+
+    private void mergeData(){
+        ArrayList<SkinItem> downloadSkins = mSkinManager.getDownloadSkins();
+        if (null != downloadSkins && !downloadSkins.isEmpty() && null != skins && !skins.isEmpty()){
+            for (SkinItem item:downloadSkins){
+                for (SkinItem skin:skins){
+                    if (skin.getId() == item.getId()){
+                        skin.setProgress(100);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private void loadData(){

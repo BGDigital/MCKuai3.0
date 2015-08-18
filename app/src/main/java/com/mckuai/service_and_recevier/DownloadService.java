@@ -150,6 +150,10 @@ public class DownloadService extends Service {
                 File skinFile = new File(MCkuai.getInstance().getSkinDownloadDir(),skin.getViewName()+".png");
                 file.renameTo(skinFile);
                 sendProgressBroadCast(RES_SKIN, skin.getId() + "", 100);
+                if (null == mSkinManager){
+                    mSkinManager = MCkuai.getInstance().getSkinManager();
+                }
+                mSkinManager.addSkin(skin);
             }
 
             @Override
