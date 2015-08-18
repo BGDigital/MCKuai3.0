@@ -140,7 +140,6 @@ public class DownloadService extends Service {
             @Override
             public void onProgress(int progress) {
                 super.onProgress(progress);
-                Log.e(TAG, "progress=" + progress);
                 sendProgressBroadCast(RES_SKIN, skin.getId() + "", progress);
             }
 
