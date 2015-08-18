@@ -23,6 +23,11 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.media.UMImage;
 
+import java.io.File;
+
+import cn.aigestudio.downloader.bizs.DLManager;
+import cn.aigestudio.downloader.interfaces.DLTaskListener;
+
 
 public class ServerDetailsActivity extends BaseActivity implements View.OnClickListener {
     private GameServerInfo serverInfo;
@@ -210,14 +215,16 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
                 clip.setText("服务器名称："+serverInfo.getViewName()+"\n服务器IP:"+serverInfo.getResIp()+"\n服务器端口:"+serverInfo.getServerPort()+"\n更多精彩尽在《麦块我的世界盒子》马上登录www.mckuai.com感受吧！");
                 break;
         }
-        showNotification(1,"已复制!",R.id.rl_serverBasicInfo);
+        showNotification(1, "已复制!", R.id.rl_serverBasicInfo);
     }
 
     private void addAndRunGame(){
         ServerEditer editer = new ServerEditer();
         editer.addServer(serverInfo);
         editer.save();
-        GameUntil.startGame(this);
+        if (!GameUntil.startGame(this,serverInfo.getResVersionEx())){
+            downloadGame(serverInfo.getResVersionEx());
+        }
     }
 
     @Override
@@ -260,5 +267,79 @@ public class ServerDetailsActivity extends BaseActivity implements View.OnClickL
             mShareService.setShareMedia(new UMImage(this,serverInfo.getIcon()));
         }
         mShareService.openShare(this, false);
+    }
+
+    private void downloadGame(final int version){
+        String url = "";
+        String msgText = null;
+        switch (version){
+            case 10:
+                url = "http://softdown.mckuai.com:8081/mcpe0.10.5.apk";
+                msgText = "此服务器需要安装0.10版我的世界。\n是否下载安装？";
+                break;
+            case 11:
+                url = "http://softdown.mckuai.com:8081/mcpe0.11.1.apk";
+                msgText = "此服务器需要安装0.11版我的世界。\n是否下载安装？";
+                break;
+        }
+        final String downloadUrl = url;
+        showAlert("提示", msgText, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DLManager.getInstance(ServerDetailsActivity.this).dlStart(downloadUrl, MCkuai.getInstance().getGameDownloadDir(), new DLTaskListener() {
+                    @Override
+                    public void onStart(String fileName, String url) {
+                        super.onStart(fileName, url);
+                    }
+
+                    @Override
+                    public void onFinish(File file) {
+                        super.onFinish(file);
+                        installGame(file);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        super.onError(error);
+
+                        showError(version, error);
+                    }
+                });
+            }
+        });
+    }
+
+    private void showError(final int version,String msg){
+        showAlert("下载失败", "下载游戏失败，原因：" + msg + "\n是否重新下载？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadGame(version);
+            }
+        });
+    }
+
+    private void installGame(final File file){
+        showAlert("安装游戏", "游戏下载完成，是否立即安装？", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GameUntil.installGame(ServerDetailsActivity.this, file.getPath());
+            }
+        });
+
     }
 }
