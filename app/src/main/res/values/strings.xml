@@ -60,8 +60,8 @@
     <string name="interface_serverlist">server.do?act=list</string>
     <!-- 服务器详情-->
     <string name="interface_serverDetails">server.do?act=one</string>
-    <!-- 搜索服务器或地图-->
-    <string name="interface_search">map.do?act=search</string>
+    <!-- 搜索-->
+    <string name="interface_search">interface.do?act=search</string>
     <string name="interface_forumList">interface.do?act=forumList</string>
     <string name="interface_postList">interface.do?act=talkList</string>
     <string name="interface_showPost">interface.do?act=talkOne</string>
@@ -69,6 +69,8 @@
     <string name="interface_reward">interface.do?act=daShang</string>
     <!-- 收藏帖子interface.do?act=toCollect&userId=&talkId= // -->
     <string name="interface_collectpost">interface.do?act=toCollect</string>
+    <!-- 收藏的帖子接口，参数：id=userid,page=页数 -->
+    <string name="interface_collectpostlist">interface.do?act=collectTalk</string>
     <!-- 取消收藏帖子interface.do?act=cancleCollect&userId=&talkId= -->
     <string name="interface_cancle_collectpost">interface.do?act=cancleCollect</string>
     <!-- 跟帖，跟帖前取参数window.interface.setparameters(),window.interface.getParameters() -->
@@ -91,6 +93,8 @@
     <string name="interface_update_userinfo">interface.do?act=saveUser</string>
     <!-- 更新头像 -->
     <string name="interface_update_cover">interface.do?act=headImg</string>
+    <!-- 关注的用户列表接口，参数：id=用户id&page=页数 -->
+    <string name="interface_fellowuserlist">interface.do?act=attentionUser</string>
     <!-- 关注用户接口，参数：ownerId=当前用户id&otherId=被关注的用户id -->
     <string name="interface_fellowuser">interface.do?act=attention</string>
     <!-- 取消关注用户 -->
@@ -174,7 +178,7 @@
     <!-- 更新-->
     <string name="download_failure">下载新版本失败 !</string>
     <string name="is_latest_version_label">你已经拥有最新版的麦块！</string>
-    <string name="latest_version_title">发现新版本(%1$s)</string>
+    <string name="latest_version_title">发现新版本</string>
     <string name="update_latest_version_title">发现新版本(%1$s), 升级中&#8230;</string>
     <string name="later_on_wifi">在wifi网络下自动升级！</string>
     <string name="later_update_tip">Updating&#8230; (Submited when you\'r NOT on Wifi)</string>
