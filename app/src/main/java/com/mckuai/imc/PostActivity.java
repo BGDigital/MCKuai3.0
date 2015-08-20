@@ -16,7 +16,6 @@ import com.loopj.android.http.RequestParams;
 import com.mckuai.bean.MCUser;
 import com.mckuai.bean.Post;
 import com.mckuai.fragment.MCSildingMenu;
-import com.mckuai.widget.CustomShareBoard;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -59,7 +58,7 @@ import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
 
-import slidingmenu.SlidingMenu;
+import com.mckuai.widget.slidingmenu.SlidingMenu;
 
 public class PostActivity extends BaseActivity implements OnClickListener, TextWatcher
 {
@@ -86,8 +85,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private String url;
 	private String[] type = { "admin", "all" };// admin:只显示楼主；all:显示所有
 	private String key = type[1];
-
-//	private CustomShareBoard shareBoard;// 自定义分享框
 
 	// 回复时所要用的一些东西，由web部分通过java接口传值
 	private int mUserId;// 当前用户的id
@@ -375,8 +372,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			}
 			tv_title.setText(getString(R.string.post_title));
 			url = getString(R.string.interface_domainName) + getString(R.string.interface_showPost);
-			// url = "http://192.168.99.116/" +
-			// getString(R.string.interface_showPost);
 			url += "&id=" + post.getId();
 			webView.loadUrl(url);
 		} else
@@ -393,11 +388,11 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		showKeyboard(null);
 		if (isReplyPost)
 		{
-//			MobclickAgent.onEvent(this, "replyPost");
+			MobclickAgent.onEvent(this, "replyPost");
 			tv_title.setText("跟帖");
 		} else
 		{
-//			MobclickAgent.onEvent(this, "replyFoolr");
+			MobclickAgent.onEvent(this, "replyFoolr");
 			tv_title.setText("回复");
 		}
 		post_layout.setVisibility(View.GONE);
@@ -478,10 +473,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			// 分享帖子
 			MobclickAgent.onEvent(this, "sharePost");
 			sharePost();
-			// CustomShareBoard shareBoard = new
-			// CustomShareBoard(this,mShareService,post);
-			// shareBoard.showAtLocation(this.getWindow().getDecorView(),
-			// Gravity.BOTTOM, 0, 0);
 			break;
 		case R.id.btn_replyPost:
 			isReplyPost = true;

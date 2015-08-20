@@ -60,7 +60,7 @@ import  com.mckuai.adapter.UserCentPostAdapter;
 
 import java.util.Collection;
 
-import slidingmenu.SlidingMenu;
+import com.mckuai.widget.slidingmenu.SlidingMenu;
 
 public class UserCenter extends BaseActivity implements OnCheckedChangeListener, MC_RadioButton.OnCheckChangeListener,
 		OnClickListener, OnItemClickListener, XListView.IXListViewListener

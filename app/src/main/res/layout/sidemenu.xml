@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:paddingLeft="@dimen/com_margin" >
+    android:paddingLeft="@dimen/com_margin">
 
     <LinearLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="@dimen/titlebar_height" >
+        android:paddingTop="@dimen/titlebar_height">
 
         <View
             android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/com_margin"
-            android:paddingTop="@dimen/com_margin" >
+            android:paddingTop="@dimen/com_margin">
 
             <ImageView
                 android:id="@+id/user_Progress"
@@ -65,13 +65,24 @@
         </RelativeLayout>
 
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:visibility="gone" />
+            android:layout_weight="1" />
 
+        <Button
+            android:id="@+id/btn_myPackage"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/titlebar_height"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            android:drawableLeft="@drawable/btn_slidingmenu_package"
+            android:drawablePadding="@dimen/com_margin"
+            android:text="我的背包"
+            android:textColor="@color/btn_textcolor_selector"
+            android:textSize="@dimen/font_dimen_big"
+            android:paddingLeft="0dp"
+            android:gravity="center_vertical|left"/>
 
 
         <View

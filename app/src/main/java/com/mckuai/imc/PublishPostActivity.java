@@ -3,16 +3,12 @@ package com.mckuai.imc;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.json.JSONObject;
 
-//import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.adapter.ForumAdapter_Publish;
@@ -29,14 +25,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix.ScaleToFit;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
@@ -55,7 +48,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import slidingmenu.SlidingMenu;
+import com.mckuai.widget.slidingmenu.SlidingMenu;
 
 public class PublishPostActivity extends BaseActivity implements OnClickListener, OnCheckedChangeListener,
 		OnFocusChangeListener
