@@ -6,17 +6,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-
-import com.lurencun.service.autoupdate.AppUpdate;
-import com.lurencun.service.autoupdate.AppUpdateService;
-import com.lurencun.service.autoupdate.ResponseParser;
-import com.lurencun.service.autoupdate.Version;
-import com.lurencun.service.autoupdate.internal.SimpleJSONParser;
 import com.mckuai.bean.MCUser;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.R;
+import com.mckuai.imc.SearchResultActivity;
 import com.mckuai.imc.UserCenter;
 import com.mckuai.utils.CircleBitmapDisplayer;
+import com.mckuai.widget.autoupdate.AppUpdate;
+import com.mckuai.widget.autoupdate.AppUpdateService;
+import com.mckuai.widget.autoupdate.ResponseParser;
+import com.mckuai.widget.autoupdate.Version;
+import com.mckuai.widget.autoupdate.internal.SimpleJSONParser;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.mckuai.imc.LoginActivity;
@@ -56,7 +56,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 	private TextView user_name;
 	private TextView user_level;
 //	private EditText edt_Search;
-//	private Button btn_Package;
+	private Button btn_Package;
 	private Button btn_Share;
 //	private Button btn_Setting;
 	private Button btn_Praise;
@@ -175,7 +175,6 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		if (null == appUpdate)
 		{
 			appUpdate = AppUpdateService.getAppUpdate(getActivity());
-//			Log.e(TAG, "init appupdate," + getActivity().getClass().getName());
 		}
 		appUpdate.callOnResume();
 	}
@@ -191,7 +190,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 	private void initView()
 	{
 //		edt_Search = (EditText) view.findViewById(R.id.edt_search);
-//		btn_Package = (Button) view.findViewById(R.id.btn_myPackage);
+		btn_Package = (Button) view.findViewById(R.id.btn_myPackage);
 		btn_Share = (Button) view.findViewById(R.id.btn_shareMe);
 //		btn_Setting = (Button) view.findViewById(R.id.btn_softSetting);
 		btn_Praise = (Button) view.findViewById(R.id.btn_tappraise);
@@ -203,7 +202,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 
 		user_cover.setOnClickListener(this);
 		btn_CheckUpgread.setOnClickListener(this);
-//		btn_Package.setOnClickListener(this);
+		btn_Package.setOnClickListener(this);
 		btn_Share.setOnClickListener(this);
 //		btn_Setting.setOnClickListener(this);
 		btn_Praise.setOnClickListener(this);
@@ -257,7 +256,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 			btn_Logout.setVisibility(View.VISIBLE);
 		} else
 		{
-			//user_cover.setImageResource(R.drawable.background_user_cover_default);
+			user_cover.setImageResource(R.drawable.background_user_cover_default);
 			user_name.setText("未登录");
 			user_level.setVisibility(View.GONE);
 			btn_Logout.setVisibility(View.GONE);
@@ -271,11 +270,11 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		Intent intent;
 		switch (v.getId())
 		{
-		/*case R.id.btn_myPackage:
+		case R.id.btn_myPackage:
 			MobclickAgent.onEvent(getActivity(), "openBackPackage_Menu");
 			intent = new Intent(getActivity(), SearchResultActivity.class);
 			getActivity().startActivity(intent);
-			break;*/
+			break;
 
 		case R.id.btn_logout:
 			MobclickAgent.onEvent(getActivity(), "logout");
@@ -333,6 +332,7 @@ public class MCSildingMenu extends BaseFragment implements OnClickListener,
 		default:
 			break;
 		}
+
 	}
 
 	public void checkUpdate(boolean isQuiet)
