@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:CircleProgress="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/background_white">
 
     <com.mckuai.widget.CircleImageView
-        android:id="@+id/civ_user"
+        android:id="@+id/civ_usercover"
         android:layout_width="@dimen/element_usercover_height"
         android:layout_height="@dimen/element_usercover_height"
         android:layout_centerHorizontal="true"
@@ -18,8 +19,8 @@
         android:id="@+id/tv_userLevel"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignLeft="@id/civ_user"
-        android:layout_alignTop="@id/civ_user"
+        android:layout_alignLeft="@id/civ_usercover"
+        android:layout_alignTop="@id/civ_usercover"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="1dp"
         android:background="@drawable/background_item_user_level"
@@ -30,20 +31,21 @@
         android:textSize="8sp" />
 
     <TextView
-        android:id="@+id/civ_name"
+        android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/civ_user"
+        android:layout_below="@id/civ_usercover"
         android:layout_centerHorizontal="true"
         android:lines="1"
+        android:text="用户名"
         android:textColor="@color/font_primary"
         android:textSize="@dimen/font_dimen_primary" />
 
     <TextView
-        android:id="@+id/civ_city"
+        android:id="@+id/tv_usercity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/civ_name"
+        android:layout_below="@id/tv_username"
         android:layout_centerHorizontal="true"
         android:drawableLeft="@drawable/icon_location_gray"
         android:drawablePadding="5dp"
