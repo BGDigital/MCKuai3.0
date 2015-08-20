@@ -1,124 +1,102 @@
 package com.mckuai.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.mckuai.bean.MCDynamic;
 import com.mckuai.bean.MCUser;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.R;
+import com.mckuai.imc.UserCenter;
+import com.mckuai.widget.CircleImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.mckuai.imc.R;
+import com.umeng.socialize.net.utils.BaseNCodec;
 
-public class UserAdapter extends BaseAdapter implements View.OnClickListener
-{
+import java.util.ArrayList;
 
-	private LayoutInflater inflater;
-	private ArrayList<MCUser> musers = new ArrayList<MCUser>();
-	private Context mContext;
-	private ImageLoader mLoader;
-	private DisplayImageOptions mOptions;
+/**
+ * Created by kyly on 2015/8/19.
+ */
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+    private ArrayList<MCUser> users;
+    private Context mContext;
+    private ImageLoader mLoader;
+    private DisplayImageOptions mOptions;
 
-	public UserAdapter(Context context, ArrayList<MCUser> users)
-	{
-		musers = users;
-		this.mContext = context;
-		inflater = LayoutInflater.from(context);
-		mLoader = ImageLoader.getInstance();
-		mOptions = MCkuai.getInstance().getCircleOption();
-	}
+    public UserAdapter(Context context){
+        this.mContext = context;
+        init();
+    }
 
-	public void setData(ArrayList<MCUser> user)
-	{
-		if (null != user && 0 != user.size())
-		{
-			this.musers = user;
-			notifyDataSetChanged();
-		} else
-		{
-			notifyDataSetInvalidated();
-		}
-	}
+    public void setData(ArrayList<MCUser> userlist){
+        users = userlist;
+        if (null != userlist){
+            notifyDataSetChanged();
+        }
+    }
 
-	@Override
-	public int getCount()
-	{
-		// TODO Auto-generated method stub
-		if (null != musers)
-		{
-			return musers.size();
-		} else
-		{
-			return 0;
-		}
 
-	}
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_user,parent,false);
+        return new ViewHolder(view);
+    }
 
-	@Override
-	public Object getItem(int position)
-	{
-		// TODO Auto-generated method stub
-		return musers.get(position);
-	}
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final MCUser user = users.get(position);
+        String head = (String) holder.headImg.getTag();
+        if (null == head || !head.equals(user.getHeadImg()) ) {
+            holder.name.setText(null == user.getNike() || user.getNike().isEmpty() ? user.getName() + "" : user.getNike());
+            holder.level.setText("lv"+user.getLevel());
+            holder.addr.setText(user.getAddr());
+            mLoader.displayImage(user.getHeadImg(), holder.headImg, mOptions);
+            holder.headImg.setProgress(user.getProcess());
+            holder.headImg.setTag(user.getHeadImg());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, UserCenter.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(mContext.getString(R.string.user),user);
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
 
-	@Override
-	public long getItemId(int position)
-	{
-		// TODO Auto-generated method stub
-		return position;
-	}
+    @Override
+    public int getItemCount() {
+        return null == users ? 0:users.size();
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
-	{
-		// TODO Auto-generated method stub
-		ViewHolder viewHolder;
-		MCUser user = (MCUser) getItem(position);
-		if (convertView == null)
-		{
-			convertView = inflater.inflate(R.layout.item_user, null);
-			viewHolder = new ViewHolder();
-			viewHolder.name = (TextView) convertView.findViewById(R.id.civ_name);
-			viewHolder.addr = (TextView) convertView.findViewById(R.id.civ_city);
-			viewHolder.level = (TextView) convertView.findViewById(R.id.tv_userLevel);
-			viewHolder.headImg = (com.mckuai.widget.CircleImageView) convertView.findViewById(R.id.civ_user);
-			convertView.setTag(viewHolder);
-		} else
-		{
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
-		viewHolder.name.setText(user.getNike() + "");
-		viewHolder.addr.setText(user.getAddr() + "");
-		viewHolder.level.setText("lv"+user.getLevel());
-		if (null != user.getHeadImg() && 10 < user.getHeadImg().length())
-		{
-			mLoader.displayImage(user.getHeadImg(), viewHolder.headImg, mOptions);
-			viewHolder.headImg.setProgress(user.getProcess());
-		}
-		return convertView;
-	}
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private TextView name;
+        private TextView addr;
+        private TextView level;
+        private com.mckuai.widget.CircleImageView headImg;
 
-	class ViewHolder
-	{
-		public TextView name;
-		public TextView addr;
-		public TextView level;
-		public com.mckuai.widget.CircleImageView headImg;
+        public ViewHolder(View itemView) {
+            super(itemView);
+            name = (TextView) itemView.findViewById(R.id.tv_username);
+            addr = (TextView) itemView.findViewById(R.id.tv_usercity);
+            level = (TextView) itemView.findViewById(R.id.tv_userLevel);
+            headImg = (CircleImageView) itemView.findViewById(R.id.civ_usercover);
+        }
+    }
 
-	}
-
-	@Override
-	public void onClick(View v)
-	{
-
-		// TODO Auto-generated method stub
-		Toast.makeText(mContext, "通往聊天", Toast.LENGTH_SHORT).show();
-	}
-
+    private void init(){
+        if (null == mLoader){
+            mLoader = ImageLoader.getInstance();
+            mOptions = MCkuai.getInstance().getCircleOption();
+        }
+    }
 }
