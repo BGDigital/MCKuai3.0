@@ -152,6 +152,34 @@ import java.util.List;
         return player;
     }
 
+    /**
+     * 从数据库中读取player信息
+     * @param dbFile
+     * @return 如果获取到player信息则返回，否则返回空
+     */
+    public static Player readPlayer(File dbFile){
+
+        if (null == dbFile || !dbFile.exists() || !dbFile.isDirectory()){
+            return null;
+        }
+        com.mckuai.io.db.DB db = openDataBase(dbFile);
+        Player player = null;
+        if (null != db){
+            try{
+                byte[] data =db.get("~local_player".getBytes(Charset.forName("utf-8")));
+                if (null != data) {
+                    player = NBTConverter.readPlayer((CompoundTag) new NBTInputStream(new ByteArrayInputStream(data), false, true).readTag());
+                }
+            }
+            catch (Exception e){
+                Log.e(TAG,"读取角色信息时失败，原因："+e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+        db.close();
+        return player;
+    }
+
     public static boolean writeLevel(Player player,File dbRoot){
         DB db = openDataBase(dbRoot);
         boolean result = false;
