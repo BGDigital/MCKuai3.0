@@ -79,19 +79,21 @@ public class WorldItem implements Serializable{
      */
     public boolean setGameMod(boolean isCreative) {
         if (null != level){
-            level.setGameType(isCreative ? 1:0);
             if (null != level.getPlayer() && null != level.getPlayer().getAbilities()){
-                level.getPlayer().getAbilities().setInvulnerable(isCreative);
-                level.getPlayer().getAbilities().setMayFly(isCreative);
+                    level.setGameType(isCreative ? 1:0);
+                    level.getPlayer().getAbilities().setInvulnerable(isCreative);
+                    level.getPlayer().getAbilities().setMayFly(isCreative);
+                boolean result;
                 switch (level.getStorageVersion()){
                     case 4:
-                        saveLevelData();
-                        saveDBData(); //player中相关部分存储于数据库中
+                        result = (saveLevelData() && saveDBData());
+                        //saveDBData(); //player中相关部分存储于数据库中
                         break;
                     default:
-                        saveLevelData();
+                        result = saveLevelData();
                         break;
                 }
+                return result;
             }
         }
         return false;
