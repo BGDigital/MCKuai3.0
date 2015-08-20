@@ -83,23 +83,23 @@ public class DownloadService extends Service {
             e.printStackTrace();
         }
         downloadUrl = downloadUrl.replaceAll("\\+", "%20");
-        String savePath = MCkuai.getInstance().getMapDownloadDir() + downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1, downloadUrl.length());
+        String savePath = MCkuai.getInstance().getMapDownloadDir();
         DLManager.getInstance(MCkuai.getInstance()).dlStart(downloadUrl, savePath, new DLTaskListener() {
             @Override
             public void onStart(String fileName, String url) {
                 super.onStart(fileName, url);
-                sendProgressBroadCast(RES_MAP, map.getResId(), 1);
+                sendProgressBroadCast(RES_MAP, map.getResId(), 5);
             }
 
             @Override
             public boolean onConnect(int type, String msg) {
-                sendProgressBroadCast(RES_MAP, map.getResId(), 1);
+                sendProgressBroadCast(RES_MAP, map.getResId(), 5);
                 return super.onConnect(type, msg);
             }
 
             @Override
             public void onProgress(int progress) {
-                sendProgressBroadCast(RES_MAP, map.getResId(), progress < 1 ? 1 : progress);
+                sendProgressBroadCast(RES_MAP, map.getResId(), progress < 5 ? 5 : progress);
                 super.onProgress(progress);
             }
 
@@ -128,19 +128,19 @@ public class DownloadService extends Service {
             @Override
             public void onStart(String fileName, String url) {
                 super.onStart(fileName, url);
-                sendProgressBroadCast(RES_SKIN, skin.getId() + "", 1);
+                sendProgressBroadCast(RES_SKIN, skin.getId() + "", 5);
             }
 
             @Override
             public boolean onConnect(int type, String msg) {
-                sendProgressBroadCast(RES_SKIN, skin.getId() + "", 1);
+                sendProgressBroadCast(RES_SKIN, skin.getId() + "", 5);
                 return super.onConnect(type, msg);
             }
 
             @Override
             public void onProgress(int progress) {
                 super.onProgress(progress);
-                sendProgressBroadCast(RES_SKIN, skin.getId() + "", progress);
+                sendProgressBroadCast(RES_SKIN, skin.getId() + "", progress < 5 ? 5:progress);
             }
 
             @Override
