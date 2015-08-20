@@ -139,7 +139,7 @@ public class MCUser implements Serializable {
     }
 
     public String getAddr() {
-        return addr;
+        return null == addr ? "未知":addr;
     }
 
     public void setAddr(String addr) {
