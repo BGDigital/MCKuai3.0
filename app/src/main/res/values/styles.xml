@@ -34,6 +34,6 @@
 
     <style name="checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_icon</item>
-        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingLeft">5dp</item>
     </style>
 </resources>
