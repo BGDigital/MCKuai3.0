@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dialog_background"
-    android:orientation="vertical"
-    android:padding="15dp" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
@@ -12,21 +11,42 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        android:background="@drawable/button_orange"
+        android:textSize="20dp"
+        android:textColor="@color/font_white"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FF525252"
+        android:textSize="18sp"
+        android:paddingLeft="20dp"
+        android:paddingTop="2dp"
+        />
 
     <TextView
         android:id="@+id/feature"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:padding="5dp"
+        android:layout_marginTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingTop="2dp"
+        android:paddingLeft="25dp"
+        android:maxLines="5"
+        android:minLines="3"
         android:textColor="#FF525252"
+        android:lineSpacingMultiplier="1.2"
         android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginBottom="10dp">
 
         <Button
             android:id="@+id/ignore"
@@ -51,7 +71,8 @@
         android:textColor="#FF525252"
         android:textSize="14sp"
         style="@style/checkbox"
-        android:layout_marginTop="8dp"
-        android:text="@string/later_on_wifi" />
+        android:text="@string/later_on_wifi"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>
