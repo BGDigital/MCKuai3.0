@@ -219,11 +219,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private void switchGameMode() {
         mode = Math.abs(mode - 1);
-
         if (!worldItems.get(curWorldIndex).setGameMod(1 == mode)) {
             mode = Math.abs(mode - 1);
         }
-
         updateWorldInfo();
     }
 
