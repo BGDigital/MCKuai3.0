@@ -1,4 +1,4 @@
-package slidingmenu.app;
+package com.mckuai.widget.slidingmenu.app;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-import slidingmenu.SlidingMenu;
+import com.mckuai.widget.slidingmenu.SlidingMenu;
 import com.mckuai.imc.R;
 
 public class SlidingActivityHelper {

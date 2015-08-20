@@ -1,8 +1,8 @@
-package slidingmenu;
+package com.mckuai.widget.slidingmenu;
 
 import android.graphics.Canvas;
 import android.view.animation.Interpolator;
-import slidingmenu.SlidingMenu.CanvasTransformer;
+import com.mckuai.widget.slidingmenu.SlidingMenu.CanvasTransformer;
 
 public class CanvasTransformerBuilder {
 

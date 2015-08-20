@@ -1,4 +1,4 @@
-package slidingmenu;
+package com.mckuai.widget.slidingmenu;
 
 import java.lang.reflect.Method;
 
@@ -173,8 +173,8 @@ public class SlidingMenu extends RelativeLayout {
 	/**
 	 * Instantiates a new SlidingMenu and attach to Activity.
 	 *
-	 * @param activity the activity to attach slidingmenu
-	 * @param slideStyle the slidingmenu style
+	 * @param activity the activity to attach com.mckuai.widget.slidingmenu
+	 * @param slideStyle the com.mckuai.widget.slidingmenu style
 	 */
 	public SlidingMenu(Activity activity, int slideStyle) {
 		this(activity, null);

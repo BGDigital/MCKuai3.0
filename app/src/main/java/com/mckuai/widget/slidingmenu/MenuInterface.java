@@ -1,4 +1,4 @@
-package slidingmenu;
+package com.mckuai.widget.slidingmenu;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;

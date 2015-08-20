@@ -1,9 +1,9 @@
-package slidingmenu.app;
+package com.mckuai.widget.slidingmenu.app;
 
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 
-import slidingmenu.SlidingMenu;
+import com.mckuai.widget.slidingmenu.SlidingMenu;
 
 public interface SlidingActivityBase {
 	

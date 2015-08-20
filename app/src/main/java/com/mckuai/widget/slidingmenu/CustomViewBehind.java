@@ -1,4 +1,4 @@
-package slidingmenu;
+package com.mckuai.widget.slidingmenu;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import slidingmenu.SlidingMenu.CanvasTransformer;
+import com.mckuai.widget.slidingmenu.SlidingMenu.CanvasTransformer;
 import com.mckuai.imc.R;
 
 public class CustomViewBehind extends ViewGroup {
