@@ -29,7 +29,7 @@ import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 
-import slidingmenu.SlidingMenu;
+import com.mckuai.widget.slidingmenu.SlidingMenu;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
@@ -152,6 +152,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             }
         } else {
             btn_titlebar_left.setBackgroundResource(R.drawable.background_user_cover_default);
+            btn_titlebar_left.setImageBitmap(null);
         }
     }
 
@@ -161,7 +162,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         mList.add(new ResourceFragment());
         mList.add(new ServerFragment());
         mList.add(new ForumFragment());
-//        mList.add(new SkinFragment());
         vp.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mList));
         vp.setOnPageChangeListener(this);
     }

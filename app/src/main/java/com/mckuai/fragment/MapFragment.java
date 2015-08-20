@@ -58,24 +58,22 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private RelativeLayout mp_r1;
     private MapBean mapList;
     private PageInfo page;
-    private LinearLayout l1, cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
+    private LinearLayout cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
     private RankAdapters mapadapters;
     private AsyncHttpClient client;
     private Gson mGson = new Gson();
-    private String mapType = null;
-    private String orderFiled = null;
+    private String[] mOrderFields = {"DownNum", "InsertTime"};
+    private int orderFieldIndex = 1;
+    private String[] mMapType = {"生存", "解密", "跑酷", "建筑", "pvp竞技"};
+    private int typeFieldIndex = mMapType.length;
     private TextView tit;
     private static final String TAG = "MapFragment";
-    private View.OnClickListener leftButtonListener_myMaps;
-    private View.OnClickListener rightButtonListener_myMaps;
     private MCkuai application = MCkuai.getInstance();
     private ImageView btn_right_view;
     private MCMapManager mapManager;
     private DownloadProgressRecevier recevier;
     private long lastUpdateTime;
-    private Boolean showleftbutton = false;
     private String maptype;
-    private Boolean listtype;
     private RecyclerView.LayoutManager manager;
 
     @Override
@@ -84,47 +82,24 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_map, container, false);
         }
+        if (mapManager == null) {
+            mapManager = MCkuai.getInstance().getMapManager();
+        }
         tit = MainActivity.gettitle();
-        btn_right_view = application.getBtn_publish();
-//        application = MCkuai.getInstance();
-        setmTitle("地图");
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.w(TAG, "onResume");
-        if (null == urv_mapList) {
-            initView();
-            if (mapManager == null) {
-                mapManager = MCkuai.getInstance().getMapManager();
-            }
-
+        if (getUserVisibleHint()){
+            showData();
         }
-        btn_right_view.setOnClickListener(this);
-        showData();
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-       /* super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            btn_right_view.setOnClickListener(this);
-            showData();
-        } else {
-            cancleLodingToast(false);
-            if ((mp_r1 != null && mp_r1.getVisibility() == view.VISIBLE) || (urv_mapList != null && l1.getVisibility() == View.VISIBLE) || (l1 != null && l1.getVisibility() == view.GONE)) {
-                hideTypeLayout();
-                showleftbutton = false;
-                MainActivity.setLeftButtonView(false);
-                if (null != mapadapters && mapadapters.getIsPaihang()) {
-                    mapadapters.setpaihang(false);
-                }
-                map_ed.setVisibility(View.GONE);
-            }
-        }*/
-        if (isVisibleToUser && null != view){
+        if (isVisibleToUser && null != view) {
             showData();
         }
     }
@@ -143,48 +118,38 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             try {
                 getActivity().unregisterReceiver(recevier);
                 recevier = null;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         super.onDestroy();
     }
 
-    private void setTitleBarButtonListener() {
-        MainActivity.setOnclickListener(leftButtonListener_myMaps, rightButtonListener_myMaps);
-
-    }
-
     private void showData() {
         if (application.fragmentIndex != 1) {
-//            Log.w(TAG, "当前页面不是可显示页面,返回");
             return;
         }
+        if (null == urv_mapList) {
+            initView();
+        }
         MainActivity.setRightButtonView(true);
-        setTitleBarButtonListener();
+        btn_right_view.setOnClickListener(this);
+        setFilterUI();
         initReciver();
 
         if (null == mapList || null == mapList.getData() || null == page || 0 == page.getPage()) {
-            listtype = true;
             loadData();
             return;
         }
-        MainActivity.setLeftButtonView(showleftbutton);
         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-        /*if (0 == mapadapters.getItemCount()) {
-            mapadapters.setData(mapList.getData());
-        } else {
-            mapadapters.notifyDataSetChanged();
-        }*/
 
-        if (null == mapadapters){
+        if (null == mapadapters) {
             mapadapters = new RankAdapters(getActivity());
             mapadapters.setOnItemClickListener(this);
             mapadapters.setData(mapList.getData());
             mapadapters.setOnMapDownloadListener(this);
             urv_mapList.setAdapter(mapadapters);
-        }
-        else {
+        } else {
             mapadapters.setData(mapList.getData());
         }
     }
@@ -195,23 +160,19 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    sousuo();
-
+                    doSearch();
                     return true;
                 }
                 return false;
             }
         });
+        btn_right_view = application.getBtn_publish();
         rb_map = (Button) view.findViewById(R.id.rb_map);
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
         urv_mapList = (UltimateRecyclerView) view.findViewById(R.id.urv_mapList);
         manager = new LinearLayoutManager(getActivity());
         urv_mapList.setLayoutManager(manager);
-        /*mapadapters = new RankAdapters(getActivity());
-        mapadapters.setOnItemClickListener(this);
-        mapadapters.setOnMapDownloadListener(this);
-        urv_mapList.setAdapter(mapadapters);*/
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
         urv_mapList.addItemDecoration(dividerItemDecoration);
         urv_mapList.setHasFixedSize(true);
@@ -235,7 +196,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             }
         });
         client = application.mClient;
-        l1 = (LinearLayout) view.findViewById(R.id.l1);
         mp_r1 = (RelativeLayout) view.findViewById(R.id.mp_r1);
         cf_l1 = (LinearLayout) view.findViewById(R.id.cf_l1);
         cf_l2 = (LinearLayout) view.findViewById(R.id.cf_l2);
@@ -253,16 +213,14 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         cf_l4.setOnClickListener(this);
         cf_l5.setOnClickListener(this);
         cf_l6.setOnClickListener(this);
-        leftButtonListener_myMaps = new onTitleButtonClickListener();
-        rightButtonListener_myMaps = new onTitleButtonClickListener();
     }
 
     private void initReciver() {
         if (null == recevier) {
             recevier = new DownloadProgressRecevier() {
                 @Override
-                public void onProgress(int resType,String resId, int progress) {
-                    if (resType != 1){
+                public void onProgress(int resType, String resId, int progress) {
+                    if (resType != 1) {
                         return;
                     }
                     if (null != mapList && null != mapList.getData() && !mapList.getData().isEmpty()) {
@@ -272,35 +230,23 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                                 map.setDownloadProgress(progress);
                                 long time = System.currentTimeMillis();
                                 if (time - lastUpdateTime > 500 || progress == 100 || progress == 1) {
-
-                                    //mapadapters.notifyDataSetChanged();
-                                   int count = urv_mapList.getChildCount();
-                                    ViewGroup itemView =(ViewGroup)manager.findViewByPosition(i);
-                                    if (null != itemView){
-                                        FabButton progressBtn =(FabButton)((ViewGroup) itemView.getChildAt(0)).getChildAt(1);
-                                        ImageButton downloadedBtn = (ImageButton)((ViewGroup)itemView.getChildAt(0)).getChildAt(2);
-                                        if (100 ==progress){
-                                             progressBtn.setVisibility(View.INVISIBLE);
+                                    ViewGroup itemView = (ViewGroup) manager.findViewByPosition(i);
+                                    if (null != itemView) {
+                                        FabButton progressBtn = (FabButton) ((ViewGroup) itemView.getChildAt(0)).getChildAt(1);
+                                        ImageButton downloadedBtn = (ImageButton) ((ViewGroup) itemView.getChildAt(0)).getChildAt(2);
+                                        if (100 == progress) {
+                                            progressBtn.setVisibility(View.INVISIBLE);
                                             downloadedBtn.setVisibility(View.VISIBLE);
                                             updatadownnum(map.getId());
                                             String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
                                             if (!mapManager.importMap(filename)) {
                                                 showNotification(0, "地图导入失败", R.id.urv_mapList);
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             progressBtn.setProgress(progress);
                                         }
                                     }
-//                                    mapadapters.notifyItemChanged(i);
                                     lastUpdateTime = time;
-                                    /*if (100 == progress) {
-                                        updatadownnum(map.getId());
-                                        String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
-                                        if (!mapManager.importMap(filename)) {
-                                            showNotification(0, "地图导入失败", R.id.urv_mapList);
-                                        }
-                                    }*/
                                 }
                             }
                             i++;
@@ -312,7 +258,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             IntentFilter filter = new IntentFilter("com.mckuai.imc.downloadprogress");
             try {
                 getActivity().registerReceiver(recevier, filter);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -339,65 +285,25 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         });
     }
 
-    class onTitleButtonClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_titlebar_left:
-                    hideTypeLayout();
-                    showleftbutton = false;
-                    MainActivity.setLeftButtonView(false);
-                    map_ed.setVisibility(View.GONE);
-//                    mapadapters = new RankAdapters(getActivity());
-                    mapadapters.setData(mapList.getData());
-                    mapadapters.setpaihang(false);
-//                    urv_mapList.setAdapter(mapadapters);
-//                    mapadapters.setOnItemClickListener(MapFragment.this);
-                    tit.setText("地图");
-                    listtype = true;
-                    page = null;
-                    searchContext = null;
-                    loadData();
-                    break;
-                case R.id.btn_titlebar_right:
-                    if (map_ed.getVisibility() == View.GONE) {
-                        map_ed.setVisibility(View.VISIBLE);
-                    } else {
-                        sousuo();
-                    }
-                    break;
-            }
-        }
-    }
-
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
             case R.id.rb_map:
                 MobclickAgent.onEvent(getActivity(), "mapRank");
-                searchContext = null;
-                l1.setVisibility(View.GONE);
-                tit.setText("地图排行");
-                showleftbutton = true;
-                MainActivity.setLeftButtonView(true);
-                if (null != mapadapters) {
-                    mapadapters.setpaihang(true);
-                }
-                mapType = null;
-                mapList.getData().clear();
-                mapList.getPageBean().setPage(0);
-                page = null;
-                listtype = false;
-                loadData();
+                orderFieldIndex = Math.abs(orderFieldIndex - 1);
+                setFilterUI();
+                typeFieldIndex = mMapType.length;
+                reLoadData();
                 break;
             case R.id.rb_classification:
                 MobclickAgent.onEvent(getActivity(), "mapType");
-                tit.setText("地图分类");
                 if (null == maptype) {
                     if (mp_r1.getVisibility() == View.GONE) {
+                        tit.setText("地图分类");
                         mp_r1.setVisibility(View.VISIBLE);
                     } else {
-                        hideTypeLayout();
+                        mp_r1.setVisibility(View.GONE);
+                        tit.setText("资源");
                     }
                 } else {
                     maptype = null;
@@ -408,41 +314,96 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 intent = new Intent(getActivity(), MymapActivity.class);
                 getActivity().startActivityForResult(intent, 1);
                 break;
-            //����
+            //生存
             case R.id.cf_l1:
-                survival();
+                typeFieldIndex = 0;
+                setFilterUI();
+                reLoadData();
                 break;
-            //����
+            //解密
             case R.id.cf_l2:
-                decipt();
+                typeFieldIndex = 1;
+                reLoadData();
                 break;
-            //�ܿ�
+            //酷跑
             case R.id.cf_l3:
-                parkour();
+                typeFieldIndex = 2;
+                setFilterUI();
+                reLoadData();
                 break;
-            //����
+            //建筑
             case R.id.cf_l4:
-                architecture();
+                typeFieldIndex = 3;
+                setFilterUI();
+                reLoadData();
                 break;
-            //pvp����
+            //pvp
             case R.id.cf_l5:
-                pvp();
+                typeFieldIndex = 4;
+                setFilterUI();
+                reLoadData();
                 break;
             case R.id.cf_l6:
-                totle();
-                tit.setText("地图");
+                typeFieldIndex = mMapType.length;
+                setFilterUI();
+                reLoadData();
                 break;
             case R.id.btn_titlebar_right:
                 MobclickAgent.onEvent(getActivity(), "searchMap");
                 if (map_ed.getVisibility() == View.GONE) {
                     map_ed.setVisibility(View.VISIBLE);
+                    setFilterUI();
                 } else {
-                    sousuo();
+                    doSearch();
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private void setFilterUI(){
+        if (0 == orderFieldIndex){
+            tit.setText("地图排行");
+        }else {
+            mp_r1.setVisibility(View.GONE);
+            switch (typeFieldIndex){
+                case 0:
+                    tit.setText("地图分类-生存");
+                    break;
+                case 1:
+                    tit.setText("地图分类-解密");
+                    break;
+                case 2:
+                    tit.setText("地图分类-酷跑");
+                    break;
+                case 3:
+                    tit.setText("地图分类-建筑");
+                    break;
+                case 4:
+                    tit.setText("地图分类-PVP");
+                    break;
+                default:
+                    if (null != searchContext|| View.VISIBLE == map_ed.getVisibility()){
+                        if (null != searchContext) {
+                            tit.setText("搜索地图-" + (searchContext.length() > 6 ? searchContext.substring(0, 6) : searchContext));
+                        }else {
+                            tit.setText("搜索地图");
+                        }
+                    }else {
+                        tit.setText("资源");
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void reLoadData() {
+        mapList.getData().clear();
+        mapList.getPageBean().setPage(0);
+        page = null;
+        searchContext = null;
+        loadData();
     }
 
     @Override
@@ -455,17 +416,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
             mapadapters.setData(mapList.getData());
         }
-    }
-
-    private void showTypeLayout() {
-        urv_mapList.setVisibility(View.GONE);
-        mp_r1.setVisibility(View.VISIBLE);
-    }
-
-    private void hideTypeLayout() {
-        urv_mapList.setVisibility(View.VISIBLE);
-        l1.setVisibility(View.VISIBLE);
-        mp_r1.setVisibility(View.GONE);
     }
 
     private String getUrl() {
@@ -482,16 +432,17 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private RequestParams getparams() {
         RequestParams params = new RequestParams();
         if (null != searchContext) {
+            //搜索
             params.put("type", "map");
             params.put("key", searchContext);
         } else {
-            params.put("kinds", mapType);
-            if (listtype) {
-                params.put("orderField", orderFiled);
-            } else {
-                params.put("orderField", "DownNum");
-                params.put("orderType", 1 + "");
+            //列表
+            if (typeFieldIndex != mMapType.length){
+                //类型
+                params.put("kinds",mMapType[typeFieldIndex]);
             }
+            params.put("orderField", mOrderFields[orderFieldIndex]);
+            params.put("orderType", 1 + "");
         }
         if (null != page) {
             params.put("page", page.getNextPage());
@@ -511,7 +462,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             mapList = new MapBean();
         }
 
-        Log.e("url:", url + "&" + params.toString());
+        //Log.e("url:", url + "&" + params.toString());
         client.get(url, params, new JsonHttpResponseHandler() {
 
             @Override
@@ -549,11 +500,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         showData();
                         return;
                     } else {
-                        showNotification(0, null == searchContext ? "此类型下暂无地图，显示所有地图！" : "没找到满足条件的地图，显示所有地图！", R.id.urv_mapList);
-                        searchContext = null;
-                        mapadapters.notifyDataSetChanged();
-                        //totle();
-                        whole();
+                        if (typeFieldIndex != mOrderFields.length || null != searchContext) {
+                            showNotification(0, null == searchContext ? "此类型下暂无地图，显示所有地图！" : "没找到满足条件的地图！", R.id.urv_mapList);
+                            searchContext = null;
+                            mapadapters.setData(null);
+                        }
                     }
                 } else {
                     showNotification(0, "加载数据错误！", R.id.urv_mapList);
@@ -609,82 +560,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
     }
 
-    protected void survival() {
-        hideTypeLayout();
-        mapType = "生存";
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        searchContext = null;
-        loadData();
-    }
-
-    protected void decipt() {
-        hideTypeLayout();
-        mapType = "解密";
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        searchContext = null;
-        loadData();
-    }
-
-    protected void parkour() {
-        hideTypeLayout();
-        mapType = "跑酷";
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        searchContext = null;
-        loadData();
-    }
-
-    protected void architecture() {
-        hideTypeLayout();
-        mapType = "建筑";
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        searchContext = null;
-        loadData();
-    }
-
-    protected void pvp() {
-        hideTypeLayout();
-        mapType = "pvp竞技";
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        searchContext = null;
-        loadData();
-    }
-
-    protected void totle() {
-        hideTypeLayout();
-        mapType = null;
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        searchContext = null;
-        loadData();
-    }
-
-    protected void whole() {
-        mapType = null;
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
-        loadData();
-    }
 
     @Override
     public void onItemClick(Map mapinfo) {
         if (null != mapinfo) {
             MCkuai.getInstance().setMap(mapinfo);
             Intent intent = new Intent(getActivity(), Map_detailsActivity.class);
-            /*Bundle bundle = new Bundle();
-            bundle.putSerializable(getString(R.string.Details), mapinfo);
-            intent.putExtras(bundle);*/
             getActivity().startActivity(intent);
         }
     }
@@ -695,13 +576,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
     }
 
-    public void sousuo() {
+    public void doSearch() {
         if (null != map_ed.getText() && 0 < map_ed.getText().toString().trim().length()) {
             searchContext = map_ed.getText().toString();
-           /* if (mapList != null && mapList.getPageBean() != null) {
-                mapList.getPageBean().setPage(0);
-            }*/
+            typeFieldIndex = mMapType.length;
+            map_ed.setText("");
             page = null;
+            setFilterUI();
             loadData();
         } else {
             Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
@@ -710,11 +591,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         InputMethodManager imm = (InputMethodManager) map_ed.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (imm.isActive()) {
-
             imm.hideSoftInputFromWindow(map_ed.getApplicationWindowToken(), 0);
-
         }
-
-
     }
 }

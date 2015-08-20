@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -51,21 +52,24 @@ import cn.aigestudio.downloader.interfaces.DLTaskListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClickListener {
-    private View view;
+public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClickListener,View.OnClickListener {
     private ArrayList<SkinItem> skins;
-    private PageInfo mPage;
-    private String[] fileds = {"InsertTime", "DownNum"};
+    private String[] fileds = {"DownNum", "InsertTime"};
     private String mOrderFiled = fileds[0];
     private int mOrderType = 1;
-    private long lastUpdateTime = 0;
+    private boolean isShowDownloadSkins = false;
 
     private UltimateRecyclerView urv_list;
+    private View view;
+    private PageInfo mPage;
+    private TextView tv_skinRank;
+    private TextView tv_mySkins;
+    private TextView tv_title;
+
     private SkinAdapter mAdapter;
     private RecyclerView.LayoutManager manager;
 
     private MCSkinManager mSkinManager;
-
     private MCkuai app = MCkuai.getInstance();
     private AsyncHttpClient mClient;
     private Gson mGson;
@@ -86,6 +90,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         if (null == mSkinManager) {
             mSkinManager = MCkuai.getInstance().getSkinManager();
         }
+        tv_title = MainActivity.gettitle();
         return view;
     }
 
@@ -128,18 +133,23 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     private void initView() {
         if (null == urv_list) {
             urv_list = (UltimateRecyclerView) view.findViewById(R.id.urv_skinList);
+            tv_skinRank = (TextView) view.findViewById(R.id.tv_skinrank);
+            tv_mySkins = (TextView) view.findViewById(R.id.tv_myskins);
+            view.findViewById(R.id.rl_skinrank).setOnClickListener(this);
+            view.findViewById(R.id.rl_myskin).setOnClickListener(this);
             manager = new LinearLayoutManager(getActivity());
             urv_list.setLayoutManager(manager);
             mAdapter = new SkinAdapter(getActivity());
             mAdapter.setOnItemClickListener(this);
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
             urv_list.addItemDecoration(dividerItemDecoration);
+            urv_list.setEmptyView(getResources().getIdentifier("view_empty", "layout", getActivity().getPackageName()));
             urv_list.enableLoadmore();
             urv_list.setAdapter(mAdapter);
             urv_list.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
                 @Override
                 public void loadMore(int i, int i1) {
-                    if (null != mPage && !mPage.EOF()) {
+                    if (!isShowDownloadSkins && null != mPage && !mPage.EOF()) {
                         loadData();
                         showData();
                     }
@@ -150,7 +160,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         urv_list.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (null != mPage) {
+                if (!isShowDownloadSkins && null != mPage) {
                     mPage.setPage(0);
                     skins.clear();
                     loadData();
@@ -203,14 +213,25 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         if (null == urv_list) {
             initView();
         }
+        setFilterUI();
         MainActivity.setRightButtonView(false);
-        if (null == skins || null == mPage) {
-            loadData();
-            return;
+        if (isShowDownloadSkins){
+            ArrayList<SkinItem> downloadSkins = mSkinManager.getDownloadSkins();
+            if (null != downloadSkins && !downloadSkins.isEmpty()){
+                for (SkinItem item:downloadSkins){
+                    item.setProgress(100);
+                }
+            }
+            mAdapter.setData(downloadSkins);
+        }else {
+            if (null == skins || null == mPage) {
+                loadData();
+                return;
+            }
+            initReciver();
+            mergeData();
+            mAdapter.setData(skins);
         }
-        initReciver();
-        mergeData();
-        mAdapter.setData(skins);
     }
 
     private void mergeData() {
@@ -352,6 +373,42 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                     break;
                 default:
                     break;
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.rl_skinrank:
+                mOrderType = Math.abs(mOrderType - 1);
+                setFilterUI();
+//                setFilterUI(0);
+                loadData();
+                break;
+            case R.id.rl_myskin:
+                setFilterUI();
+                isShowDownloadSkins = !isShowDownloadSkins;
+//                setFilterUI(1);
+                showData();
+                break;
+        }
+    }
+
+    private void setFilterUI(){
+        if (0 == mOrderType){
+            tv_title.setText("皮肤排行");
+        }else {
+            if (isShowDownloadSkins){
+                tv_title.setText("我的皮肤");
+                urv_list.enableDefaultSwipeRefresh(false);
+            }
+            else {
+                tv_title.setText("资源");
+                urv_list.enableDefaultSwipeRefresh(true);
+//                Drawable drawable = getResources().getDrawable(R.drawable.map_classification);
+//                drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+//                tv_mySkins.setCompoundDrawables(drawable,null,null,null);
             }
         }
     }

@@ -29,7 +29,6 @@ import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
 import com.mckuai.imc.MCkuai;
-import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.mctools.WorldUtil.GameUntil;
@@ -102,9 +101,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         }
         else {
             isOrderByDownload=false;
-            if (null != ll_filter) {
-                setFiterLayoutView(!isOrderByDownload);
-            }
         }
     }
 
@@ -169,7 +165,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         typeAdapter.setData(getResources().getStringArray(R.array.server_Type));
         serverTypeListView.setAdapter(typeAdapter);
 
-        spinner = application.getSpinner();
+        /*spinner = application.getSpinner();
         String[] items = getResources().getStringArray(R.array.server_Type);
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.server_Type, R.layout.item_spinner);
@@ -195,39 +191,16 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
         view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
         view.findViewById(R.id.ll_serverType).setOnClickListener(this);
 
-    }
-
-    private void setLeftButtonListener(){
-        MainActivity.setOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isOrderByDownload = false;
-                setFiterLayoutView(true);
-            }
-        },null);
-    }
-
-    private void  setFiterLayoutView(boolean isVisible){
-        MainActivity.setLeftButtonView(isOrderByDownload);
-        if (isVisible){
-            ll_filter.setVisibility(View.VISIBLE);
-        }
-        else {
-            ll_filter.setVisibility(View.GONE);
-        }
     }
 
     private void showData(){
         if (!isShowCatche &&(isLoading || 2 != application.fragmentIndex)){
             return;
         }
-
-        setLeftButtonListener();
-        setFiterLayoutView(!isOrderByDownload);
 
         if (null == serverInfos){
             loadData();
@@ -269,6 +242,9 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         if (isOrderByDownload){
             params.put("orderField","onlineNum");
         }
+        else {
+            params.put("orderField","UpdateTime");
+        }
         //类型
         if (null != serverType){
             params.put("kinds",serverType);
@@ -277,6 +253,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         if (null != page){
             params.put("page",page.getPage()+1);
         }
+        params.put("orderType","1");
 
         final String url = getString(R.string.interface_domainName) + getString(R.string.interface_serverlist);
         Log.w(TAG, url + "&" + params.toString());
@@ -390,7 +367,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             case R.id.ll_serverRank:
                 MobclickAgent.onEvent(getActivity(),"serverRank");
                 isOrderByDownload = !isOrderByDownload;
-                setFiterLayoutView(!isOrderByDownload);
+                //setFiterLayoutView(!isOrderByDownload);
                 if (null != page){
                 page.setPage(0);
                  }
@@ -408,10 +385,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             bundle.putSerializable("SERVER_INFO",gameServerInfo);
             intent.putExtras(bundle);
             getActivity().startActivity(intent);
-        }
-        else
-        {
-
         }
     }
 
