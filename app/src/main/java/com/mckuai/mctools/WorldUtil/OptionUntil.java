@@ -67,8 +67,8 @@ public class OptionUntil {
         if (!hasLoaded) {
             loadFromFile();
         }
-
-        if (hasLoaded && game_thirdperson != (true == isThirdPersonView ? 1 : 0)) {
+        int newVision = true == isThirdPersonView ? 1:0;
+        if (hasLoaded && game_thirdperson != newVision) {
             game_thirdperson = Math.abs(game_thirdperson - 1);
             return saveFile();
         }
@@ -116,13 +116,12 @@ public class OptionUntil {
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                return false;
             }
         }
         return false;
     }
 
-    public static boolean isSaveInLevelDB() {
+  /*  public static boolean isSaveInLevelDB() {
         if (!hasLoaded) {
             loadFromFile();
         }
@@ -134,7 +133,7 @@ public class OptionUntil {
             }
         }
         return false;
-    }
+    }*/
 
 
     private static void loadFromFile() {
@@ -146,7 +145,11 @@ public class OptionUntil {
                 String data = reader.readLine();
                 while (data != null && !data.isEmpty()) {
                     parseItem(data);
-                    data = reader.readLine();
+                    try {
+                        data = reader.readLine();
+                    }catch (Exception e){
+                        Log.e(TAG,"在读取行时失败，原因："+e.getLocalizedMessage());
+                    }
                 }
                 reader.close();
                 streamReader.close();
@@ -287,7 +290,7 @@ public class OptionUntil {
             data += "game_skintypefull:" + game_skintypefull + "\n";
         }
         if (null != game_lastcustomskinnew && 1 < game_lastcustomskinnew.length()) {
-            data += "game_lastcustomskinnew" + "\n";
+            data += "game_lastcustomskinnew" +game_lastcustomskinnew + "\n";
         }
         data = data + "gfx_renderdistance_new:" + gfx_renderdistance_new + "\n";
         if (null != game_flatworldlayers && !game_flatworldlayers.isEmpty()) {
