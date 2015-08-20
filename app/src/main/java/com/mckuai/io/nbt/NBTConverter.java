@@ -1,6 +1,5 @@
 package com.mckuai.io.nbt;
 
-import com.marshalchen.ultimaterecyclerview.UltimateDifferentViewTypeAdapter;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.ItemStack;
 import com.mckuai.mctools.Level;
@@ -152,7 +151,7 @@ public final class NBTConverter {
 			} else if (name.equals("SpawnZ")) {
 				player.setSpawnZ(((IntTag) tag).getValue());
 			} else if (name.equals("abilities")) {
-				readAbilities((CompoundTag) tag, player.getAbilities());
+				readAbilities((CompoundTag) tag, player);
 			} else if (name.equals("Riding")) {
 				player.setRiding(readSingleEntity((CompoundTag) tag));
 			} else {
@@ -596,28 +595,34 @@ public final class NBTConverter {
 
 	}
 
-	public static void readAbilities(CompoundTag tag, PlayerAbilities abilities) {
-        if (null == abilities){
-            abilities = new PlayerAbilities();
+	public static void readAbilities(CompoundTag tag, Player player) {
+        if (null == player.getAbilities()){
+			PlayerAbilities abilities = new PlayerAbilities();
+			player.setAbilities(abilities);
         }
 		List<Tag> tags = tag.getValue();
 		for (Tag t: tags) {
-			String n = t.getName();
 			if (!(t instanceof ByteTag)) {
-				System.out.println("Unsupported tag in readAbilities: " + n);
+				System.out.println("Unsupported tag in readAbilities: " + t.getName());
 				continue;
 			}
 			boolean value = ((ByteTag) t).getValue() != 0;
-			if (n.equals("flying")) {
-				abilities.flying = value;
-			} else if (n.equals("instabuild")) {
-				abilities.instabuild = value;
-			} else if (n.equals("invulnerable")) {
-				abilities.invulnerable = value;
-			} else if (n.equals("mayfly")) {
-				abilities.mayFly = value;
-			} else {
-				System.out.println("Unsupported tag in readAbilities: " + n);
+			switch (t.getName()){
+				case "flying":
+					player.getAbilities().setFlying(value);
+					break;
+				case "instabuild":
+					player.getAbilities().setInstabuild(value);
+					break;
+				case "invulnerable":
+					player.getAbilities().setInvulnerable(value);
+					break;
+				case "mayfly":
+					player.getAbilities().setMayFly(value);
+					break;
+				default:
+					System.out.println("Unsupported tag in readAbilities: " + t.getName());
+					break;
 			}
 		}
 	}
