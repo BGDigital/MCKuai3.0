@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.view.View;
 import android.widget.Toast;
 
 import com.mckuai.mctools.item.GameItem;
@@ -271,6 +270,7 @@ public class GameUntil {
                 ComponentName name = new ComponentName(packageName, "com.mojang.minecraftpe.MainActivity");
                 intent.setComponent(name);
                 intent.setAction(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         }
@@ -279,6 +279,4 @@ public class GameUntil {
     static private void showStartHint(Context context) {
         Toast.makeText(context, "正在启动游戏，请稍候...", Toast.LENGTH_SHORT).show();
     }
-
-
 }
