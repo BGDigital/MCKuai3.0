@@ -65,6 +65,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart("皮肤详情");
         Intent intent = getIntent();
         item = (SkinItem) intent.getSerializableExtra("SKIN_ITEM");
         if (null != item) {
@@ -74,6 +75,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void onPause() {
+        MobclickAgent.onPageEnd("皮肤详情");
         super.onPause();
     }
 
@@ -200,7 +202,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
             case R.id.btn_operation:
                 switch (item.getProgress()) {
                     case -1:
-                        MobclickAgent.onEvent(SkinDetailedActivity.this, "downloadSkin");
+                        MobclickAgent.onEvent(SkinDetailedActivity.this, "downloadSkin_skinDetail");
                         Intent intent = new Intent();
                         intent.setAction("com.mckuai.downloadservice");
                         intent.setPackage(getPackageName());
@@ -213,7 +215,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
                         OptionUntil.setSkin(2);//配置成自定义皮肤
                         MCSkinManager manager = MCkuai.getInstance().getSkinManager();
                         manager.moveToGame(item);
-                        MobclickAgent.onEvent(SkinDetailedActivity.this, "startGame_skin");
+                        MobclickAgent.onEvent(SkinDetailedActivity.this, "startGame_skinDetail");
                         if(!GameUntil.startGame(SkinDetailedActivity.this,11)){
                             downloadGame(11);
                         }
@@ -260,6 +262,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void downloadGame(final int version){
+        MobclickAgent.onEvent(SkinDetailedActivity.this,"showDownloadGame");
         String url = "";
         String msgText = null;
         switch (version){
@@ -281,6 +284,7 @@ public class SkinDetailedActivity extends BaseActivity implements View.OnClickLi
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(SkinDetailedActivity.this,"downloadGame");
                 DLManager.getInstance(SkinDetailedActivity.this).dlStart(downloadUrl, MCkuai.getInstance().getGameDownloadDir(), new DLTaskListener() {
                     @Override
                     public void onStart(String fileName, String url) {

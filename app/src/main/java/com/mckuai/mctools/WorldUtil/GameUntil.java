@@ -14,6 +14,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.mckuai.mctools.item.GameItem;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class GameUntil {
     }
 
     public static boolean installGame(Context context, String gameFile) {
+        MobclickAgent.onEvent(context,"installGame");
         File file = new File(gameFile);
         if (file.exists() && file.isFile()) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
