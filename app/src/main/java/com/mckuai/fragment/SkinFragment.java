@@ -383,13 +383,11 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             case R.id.rl_skinrank:
                 mOrderType = Math.abs(mOrderType - 1);
                 setFilterUI();
-//                setFilterUI(0);
                 loadData();
                 break;
             case R.id.rl_myskin:
                 setFilterUI();
                 isShowDownloadSkins = !isShowDownloadSkins;
-//                setFilterUI(1);
                 showData();
                 break;
         }
@@ -438,6 +436,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     }
 
     private void downloadGame(final int version){
+        MobclickAgent.onEvent(getActivity(), "showDownloadGame");
         String url = "";
         String msgText = null;
         switch (version){
@@ -459,6 +458,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MobclickAgent.onEvent(getActivity(),"downloadGame");
                 DLManager.getInstance(getActivity()).dlStart(downloadUrl, MCkuai.getInstance().getGameDownloadDir(), new DLTaskListener() {
                     @Override
                     public void onStart(String fileName, String url) {

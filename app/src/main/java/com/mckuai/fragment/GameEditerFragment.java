@@ -546,9 +546,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         isDownloadGame = false;
         if (null != file && file.length() > 10) {
             File apkFile = new File(file);
-            boolean result = null != apkFile;
-            result = result && apkFile.exists();
-            result = result && apkFile.isFile();
             if (null != apkFile && apkFile.exists() && apkFile.isFile()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
