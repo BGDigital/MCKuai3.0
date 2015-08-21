@@ -1,12 +1,14 @@
 package com.mckuai.bean;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by kyly on 2015/8/12.
  * 皮肤的bean文件
  */
-public class SkinItem implements Serializable{
+public class SkinItem implements Serializable {
     private int id;
     private int progress = -1;
     private int downNum;
@@ -37,7 +39,7 @@ public class SkinItem implements Serializable{
     }
 
     public String getUploadMan() {
-        return uploadMan;
+        return null == uploadMan? "麦友":uploadMan;
     }
 
     public void setUploadMan(String uploadMan) {
@@ -54,6 +56,25 @@ public class SkinItem implements Serializable{
 
     public String getInsertTime() {
         return insertTime;
+    }
+
+    public String getInsertTimeEx() {
+        if (null != insertTime) {
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat output = new SimpleDateFormat("MM月dd日");
+            try {
+                Date date = input.parse(insertTime);
+                if (null != date) {
+                    String time = output.format(date);
+                    if (null != time && !time.isEmpty()) {
+                        return time;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "未知";
     }
 
     public void setInsertTime(String insertTime) {
