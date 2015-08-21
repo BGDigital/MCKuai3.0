@@ -53,7 +53,7 @@ public class MCSkinManager {
         if (null != downloadSkins){
             return  downloadSkins;
         }
-        if (null != index || !index.isEmpty()){
+        if (null != index && !index.isEmpty()){
             downloadSkins = new ArrayList<>(index.size());
             Gson gson = new Gson();
             if (openDB()){
