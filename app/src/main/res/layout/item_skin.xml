@@ -53,12 +53,12 @@
 
 
     <TextView
-        android:id="@+id/tv_skinOwner"
+        android:id="@+id/tv_skinInsertTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/font_secondary"
         android:textSize="@dimen/font_dimen_small"
-        android:text="上传：用户名"
+        android:text="上传时间："
         android:layout_alignBottom="@id/iv_skinCover"
         android:layout_alignLeft="@id/tv_skinName"
         android:singleLine="true"
@@ -66,12 +66,12 @@
         />
 
     <TextView
-        android:id="@+id/tv_skinType"
+        android:id="@+id/tv_skinOwner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/green"
-        android:text="生存"
-        android:layout_above="@id/tv_skinOwner"
+        android:text="作者："
+        android:layout_above="@id/tv_skinInsertTime"
         android:textSize="@dimen/font_dimen_small"
         android:layout_below="@id/tv_skinName"
         android:layout_alignLeft="@id/tv_skinName"

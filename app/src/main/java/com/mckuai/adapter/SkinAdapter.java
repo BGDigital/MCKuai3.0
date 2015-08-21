@@ -84,8 +84,8 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
                 mLoader.displayImage(item.getIcon(), holder.iv_skinCover, options);
             }
             holder.tv_skinName.setText(item.getViewName() + "");
-            holder.tv_skinType.setText(item.getVersion() + "");
-            holder.tv_skinOwner.setText(item.getUploadMan() + "");
+            holder.tv_skinTime.setText("上传时间："+item.getInsertTimeEx());
+            holder.tv_skinOwner.setText("作者："+item.getUploadMan());
             if (0 < item.getProgress()){
                 holder.btn_operation.setProgress(item.getProgress());
             }
@@ -123,7 +123,7 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView iv_skinCover;
         private TextView tv_skinName;
-        private TextView tv_skinType;
+        private TextView tv_skinTime;
         private TextView tv_skinOwner;
         private FabButton btn_operation;
 
@@ -131,7 +131,7 @@ public class SkinAdapter extends RecyclerView.Adapter<SkinAdapter.ViewHolder> {
             super(itemView);
             iv_skinCover = (ImageView) itemView.findViewById(R.id.iv_skinCover);
             tv_skinName = (TextView) itemView.findViewById(R.id.tv_skinName);
-            tv_skinType = (TextView) itemView.findViewById(R.id.tv_skinType);
+            tv_skinTime = (TextView) itemView.findViewById(R.id.tv_skinInsertTime);
             tv_skinOwner = (TextView) itemView.findViewById(R.id.tv_skinOwner);
             btn_operation = (FabButton) itemView.findViewById(R.id.btn_addSkin);
         }
