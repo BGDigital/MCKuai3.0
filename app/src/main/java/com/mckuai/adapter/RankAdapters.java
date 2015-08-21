@@ -56,13 +56,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         this.addListener = listener;
     }
 
-    public ImageLoader getLoader(){
-        if (null == loader){
-            loader = ImageLoader.getInstance();
-        }
-        return loader;
-    }
-
 
     public void setData(final ArrayList<Map> maplist) {
         this.maps = maplist;
@@ -108,8 +101,8 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                         break;
                     case 100:
                         MobclickAgent.onEvent(mContext, "startGame_map");
-                        String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
-                        MCMapManager mapManager = MCkuai.getInstance().getMapManager();
+//                        String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
+//                        MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         GameUntil.startGame(mContext);
                         break;
                     default:
@@ -132,7 +125,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 }
             }
         });
-//        holder.setIsRecyclable(false);
         return holder;
     }
 
@@ -169,9 +161,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                 holder.btn_download.setProgress(map.getDownloadProgress());
                 return;
             }
-         /*   if (2 == getItemViewType(position)){
-                holder.setIsRecyclable(false);
-            }*/
             if (null == loader) {
                 loader = ImageLoader.getInstance();
             }
@@ -230,31 +219,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
             btn_download = (FabButton) itemView.findViewById(R.id.download_map);
             btn_download_image = (ImageButton) itemView.findViewById(R.id.map_download_image);
         }
-    }
-
-    class DownloadTask implements Serializable {
-        public FabButton button;
-        public Map map;
-
-        public DownloadTask(FabButton btn, Map map) {
-            this.button = btn;
-            this.map = map;
-        }
-    }
-
-    public void setpaihang(boolean isChanged) {
-        isPaihang = isChanged;
-        notifyDataSetEmpty();
-    }
-
-    public void notifyDataSetEmpty(){
-        if (null != maps && !maps.isEmpty()){
-            notifyItemRangeRemoved(0, maps.size());
-        }
-    }
-
-    public boolean getIsPaihang() {
-        return isPaihang;
     }
 
 }
