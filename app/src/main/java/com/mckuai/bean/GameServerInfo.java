@@ -289,7 +289,7 @@ public class GameServerInfo implements Serializable {
     public int getResVersionEx(){
         if (null != resVersion){
             String[] version = resVersion.split("\\.");
-            if (null != version && 3 == version.length){
+            if (null != version && (3 == version.length || 2 == version.length)){
                 return Integer.parseInt(version[1]);
             }
         }
