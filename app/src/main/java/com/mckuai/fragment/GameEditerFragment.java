@@ -392,7 +392,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     return;
                 }
                 //切换第三人称和第一人称
-                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
+                if (null != worldItems && !worldItems.isEmpty() && worldItems.get(curWorldIndex).getLevel() != null) {
                     switchView();
                 } else {
                     showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
