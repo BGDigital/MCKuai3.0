@@ -265,7 +265,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     protected void updatadownnum(int id) {
-        String url = getString(R.string.interface_domainName) + (R.string.interface_map_downnum) + "&" + id;
+        String url = getString(R.string.interface_domainName) + (R.string.interface_map_downnum) + "&id=" + id;
         client.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
