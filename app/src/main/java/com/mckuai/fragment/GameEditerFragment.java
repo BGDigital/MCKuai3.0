@@ -557,7 +557,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public boolean onBackKeyPressed() {
-        if (lv_mapList.getVisibility() == View.VISIBLE) {
+        if (null != lv_mapList &&lv_mapList.getVisibility() == View.VISIBLE) {
             lv_mapList.setVisibility(View.GONE);
             return true;
         }
