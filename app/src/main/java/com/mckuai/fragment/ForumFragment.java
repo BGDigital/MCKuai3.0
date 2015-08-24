@@ -145,10 +145,10 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
 
     private void showForums()
     {
-        btn_publish.setOnClickListener(this);
         if (application.fragmentIndex != 3){
             return;
         }
+        btn_publish.setOnClickListener(this);
         if (null != mForums &&  !mForums.isEmpty())
         {
             if (null == mForumAdapter)
