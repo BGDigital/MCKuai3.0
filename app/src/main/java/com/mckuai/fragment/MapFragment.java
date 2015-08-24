@@ -108,8 +108,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     public void onPause() {
         super.onPause();
         cancleLodingToast(false);
-        map_ed.setVisibility(View.GONE);
-        mp_r1.setVisibility(View.GONE);
+        if (null != map_ed) {
+            map_ed.setVisibility(View.GONE);
+            mp_r1.setVisibility(View.GONE);
+        }
     }
 
     @Override
