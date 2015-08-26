@@ -26,11 +26,11 @@ import net.steamcrafted.loadtoast.LoadToast;
 
 public class BaseActivity extends FragmentActivity {
 
-    protected  boolean isLoading = false;    //正在加载数据
-    protected  boolean isCacheEnabled = true;         //启用缓存
+    protected boolean isLoading = false;    //正在加载数据
+    protected boolean isCacheEnabled = true;         //启用缓存
     protected boolean isSecondCacheEnable = true;//第二个项目的缓存
     protected boolean isShowingMenu = false;
-    protected  String mTitle;
+    protected String mTitle;
     private com.gitonway.lee.niftynotification.lib.Configuration msgCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration warningCfg;
     private com.gitonway.lee.niftynotification.lib.Configuration errorCfg;
@@ -56,8 +56,8 @@ public class BaseActivity extends FragmentActivity {
         MobclickAgent.onPause(this);
     }
 
-    protected void setTitle(String title){
-        if (null != title){
+    protected void setTitle(String title) {
+        if (null != title) {
             mTitle = title;
         }
     }
@@ -72,41 +72,41 @@ public class BaseActivity extends FragmentActivity {
      * @param msg 通知内容
      * @param rootId 用于显示通知的viewgroup
      */
-    protected  void showNotification(int level,String msg,int rootId){
-        NiftyNotificationView.build(this,msg, Effects.flip,rootId,getNotificationConfiguration(level)).show();
+    protected void showNotification(int level, String msg, int rootId) {
+        NiftyNotificationView.build(this, msg, Effects.flip, rootId, getNotificationConfiguration(level)).show();
     }
 
-    private com.gitonway.lee.niftynotification.lib.Configuration getNotificationConfiguration(int level){
-        switch (level){
+    private com.gitonway.lee.niftynotification.lib.Configuration getNotificationConfiguration(int level) {
+        switch (level) {
             case 2:
-                if (null == errorCfg){
-                     errorCfg = new com.gitonway.lee.niftynotification.lib.Configuration.Builder()
-                             .setAnimDuration(700)
-                             .setDispalyDuration(1500)
-                             .setBackgroundColor(getColorString(R.color.notification_background))
-                             .setTextColor(getColorString(R.color.notification_textColor))
-                                     // .setIconBackgroundColor("#FFFFFFFF")
-                             .setTextPadding(5)                      //单位dp
-                             .setViewHeight(48)                      //单位dp
-                             .setTextLines(2)                        //最好同时指定行数和高度
-                             .setTextGravity(Gravity.CENTER)         //仅只有文字内容时，使用 Gravity.CENTER,如果有图标，则需使用Gravity.CENTER_VERTICAL
-                             .build();
+                if (null == errorCfg) {
+                    errorCfg = new com.gitonway.lee.niftynotification.lib.Configuration.Builder()
+                            .setAnimDuration(700)
+                            .setDispalyDuration(1500)
+                            .setBackgroundColor(getColorString(R.color.notification_background))
+                            .setTextColor(getColorString(R.color.notification_textColor))
+                                    // .setIconBackgroundColor("#FFFFFFFF")
+                            .setTextPadding(5)                      //单位dp
+                            .setViewHeight(48)                      //单位dp
+                            .setTextLines(2)                        //最好同时指定行数和高度
+                            .setTextGravity(Gravity.CENTER)         //仅只有文字内容时，使用 Gravity.CENTER,如果有图标，则需使用Gravity.CENTER_VERTICAL
+                            .build();
                 }
-                return  errorCfg;
+                return errorCfg;
 
             case 1:
-                if (null == warningCfg){
-                      warningCfg =  new com.gitonway.lee.niftynotification.lib.Configuration.Builder()
-                              .setAnimDuration(700)
-                              .setDispalyDuration(1500)
-                              .setBackgroundColor(getColorString(R.color.notification_background))
-                              .setTextColor(getColorString(R.color.notification_textColor))
-                                      // .setIconBackgroundColor("#FFFFFFFF")
-                              .setTextPadding(5)                      //单位dp
-                              .setViewHeight(48)                      //单位dp
-                              .setTextLines(2)                        //最好同时指定行数和高度
-                              .setTextGravity(Gravity.CENTER)         //仅只有文字内容时，使用 Gravity.CENTER,如果有图标，则需使用Gravity.CENTER_VERTICAL
-                              .build();
+                if (null == warningCfg) {
+                    warningCfg = new com.gitonway.lee.niftynotification.lib.Configuration.Builder()
+                            .setAnimDuration(700)
+                            .setDispalyDuration(1500)
+                            .setBackgroundColor(getColorString(R.color.notification_background))
+                            .setTextColor(getColorString(R.color.notification_textColor))
+                                    // .setIconBackgroundColor("#FFFFFFFF")
+                            .setTextPadding(5)                      //单位dp
+                            .setViewHeight(48)                      //单位dp
+                            .setTextLines(2)                        //最好同时指定行数和高度
+                            .setTextGravity(Gravity.CENTER)         //仅只有文字内容时，使用 Gravity.CENTER,如果有图标，则需使用Gravity.CENTER_VERTICAL
+                            .build();
                 }
                 return warningCfg;
             default:
@@ -116,38 +116,37 @@ public class BaseActivity extends FragmentActivity {
                             .setDispalyDuration(1500)
                             .setBackgroundColor(getColorString(R.color.notification_background))
                             .setTextColor(getColorString(R.color.notification_textColor))
-                           // .setIconBackgroundColor("#FFFFFFFF")
+                                    // .setIconBackgroundColor("#FFFFFFFF")
                             .setTextPadding(5)                      //单位dp
                             .setViewHeight(48)                      //单位dp
                             .setTextLines(2)                        //最好同时指定行数和高度
                             .setTextGravity(Gravity.CENTER)         //仅只有文字内容时，使用 Gravity.CENTER,如果有图标，则需使用Gravity.CENTER_VERTICAL
                             .build();
                 }
-                return  msgCfg;
+                return msgCfg;
         }
     }
 
-    private String getColorString(int colorResId)
-    {
+    private String getColorString(int colorResId) {
         int color = getResources().getColor(colorResId);
         String c = "#" + Integer.toHexString(color);
         return c.toUpperCase();
     }
 
-    protected  void showMessage(String title,String msg){
-        NiftyDialogBuilder  mMessageDialogBuilder = NiftyDialogBuilder.getInstance(this);
+    protected void showMessage(String title, String msg) {
+        NiftyDialogBuilder mMessageDialogBuilder = NiftyDialogBuilder.getInstance(this);
         mMessageDialogBuilder.withTitle(title + "")
                 .withMessage(msg + "")
                 .show();
     }
 
 
-    protected  void showAlert(String title,String msg, final View.OnClickListener onCancle, final View.OnClickListener onOk){
-           final NiftyDialogBuilder mAlertDialogBuilder = NiftyDialogBuilder.getInstance(this);
-        mAlertDialogBuilder.withTitle(title+"")
-                .withMessage(msg+"")
+    protected void showAlert(String title, String msg, final View.OnClickListener onCancle, final View.OnClickListener onOk) {
+        final NiftyDialogBuilder mAlertDialogBuilder = NiftyDialogBuilder.getInstance(this);
+        mAlertDialogBuilder.withTitle(title + "")
+                .withMessage(msg + "")
                 .withEffect(Effectstype.Newspager);
-        if (null != onCancle){
+        if (null != onCancle) {
             mAlertDialogBuilder.withButton2Text("取消")
                     .setButton2Click(new View.OnClickListener() {
                         @Override
@@ -157,7 +156,7 @@ public class BaseActivity extends FragmentActivity {
                         }
                     });
         }
-        if (null != onOk){
+        if (null != onOk) {
             mAlertDialogBuilder.withButton1Text("确定")
                     .setButton1Click(new View.OnClickListener() {
                         @Override
@@ -172,36 +171,36 @@ public class BaseActivity extends FragmentActivity {
 
     /**
      * 重写此方法时请勿调用super方法
+     *
      * @return
      */
-    protected  boolean onMenuKeyPressed(){
+    protected boolean onMenuKeyPressed() {
         return false;
     }
 
     /**
      * 重写此方法时请勿调用super方法
+     *
      * @return
      */
-    protected  boolean onBackKeyPressed(){
+    protected boolean onBackKeyPressed() {
         return false;
     }
 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_MENU)
-        {
-            if (onMenuKeyPressed()) return  true;
-        } else if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            if (onBackKeyPressed())return  true;
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            if (onMenuKeyPressed()) return true;
+        } else if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (onBackKeyPressed()) return true;
         }
-        return super.onKeyDown(keyCode,event);
+        return super.onKeyDown(keyCode, event);
     }
 
-    protected void popupLoadingToast(String msg){
-        if (null == mToast){
-            if (null == mPoint){
+    protected void popupLoadingToast(String msg) {
+        if (null == mToast) {
+            if (null == mPoint) {
                 mPoint = new Point();
                 getWindowManager().getDefaultDisplay().getSize(mPoint);
             }
@@ -218,33 +217,24 @@ public class BaseActivity extends FragmentActivity {
     /**
      * 将数据缓存到缓存中
      *
-     * @param url
-     *            数据所归属的url
-     * @param data
-     *            要缓存的数据
+     * @param url  数据所归属的url
+     * @param data 要缓存的数据
      */
-    public void cacheData(String url, String data)
-    {
+    public void cacheData(String url, String data) {
         mCache.put(url, data);
     }
 
     /**
      * 将数据缓存到缓存中
      *
-     * @param url
-     *            数据所归属的url
-     * @param params
-     *            对应的请求参数
-     * @param data
-     *            要缓存的数据
+     * @param url    数据所归属的url
+     * @param params 对应的请求参数
+     * @param data   要缓存的数据
      */
-    public void cacheData(String url, RequestParams params, String data)
-    {
-        if (null == params)
-        {
+    public void cacheData(String url, RequestParams params, String data) {
+        if (null == params) {
             mCache.put(url, data);
-        } else
-        {
+        } else {
             mCache.put((url + "&" + params.toString()), data);
         }
     }
@@ -252,61 +242,52 @@ public class BaseActivity extends FragmentActivity {
     /**
      * 从缓存中获取对应url缓存下来的数据
      *
-     * @param url
-     *            要获取的数据对应的url
-     * @return 如果对应的url有缓存数据,则返回缓存数据,否则返回空
+     * @param url 要获取的数据对应的url
+     * @return 如果对应的url有缓存数据, 则返回缓存数据, 否则返回空
      */
-    public String getData(String url)
-    {
+    public String getData(String url) {
         return mCache.get(url);
     }
 
     /**
      * 从缓存中获取对应url缓存下来的数据
      *
-     * @param url
-     *            要获取的数据对应的url
-     * @param params
-     *            对应url的参数
-     * @return 如果对应的url有缓存数据,则返回缓存数据,否则返回空
+     * @param url    要获取的数据对应的url
+     * @param params 对应url的参数
+     * @return 如果对应的url有缓存数据, 则返回缓存数据, 否则返回空
      */
-    public String getData(String url, RequestParams params)
-    {
-        if (null == params)
-        {
+    public String getData(String url, RequestParams params) {
+        if (null == params) {
             return mCache.get(url);
-        } else
-        {
+        } else {
             return mCache.get((url + "&" + params.toString()));
         }
     }
 
-    protected  void cancleLodingToast(boolean isSuccess){
-        if (null != mToast){
-            if (isSuccess){
+    protected void cancleLodingToast(boolean isSuccess) {
+        if (null != mToast) {
+            if (isSuccess) {
                 mToast.success();
-            }
-            else mToast.error();
+            } else mToast.error();
             mToast = null;
         }
     }
 
-    Handler _mHander = new Handler(){
+    Handler _mHander = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (null != mToast){
+            if (null != mToast) {
                 cancleLodingToast(false);
             }
         }
     };
 
-    protected void hideKeyboard(View view)
-    {
+    protected void hideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    protected void showKeyboard(View view){
+    protected void showKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
