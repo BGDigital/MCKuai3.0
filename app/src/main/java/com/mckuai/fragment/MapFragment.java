@@ -319,34 +319,40 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             //生存
             case R.id.cf_l1:
                 typeFieldIndex = 0;
+                orderFieldIndex = 0;
                 setFilterUI();
                 reLoadData();
                 break;
             //解密
             case R.id.cf_l2:
                 typeFieldIndex = 1;
+                orderFieldIndex = 0;
                 reLoadData();
                 break;
             //酷跑
             case R.id.cf_l3:
                 typeFieldIndex = 2;
+                orderFieldIndex = 0;
                 setFilterUI();
                 reLoadData();
                 break;
             //建筑
             case R.id.cf_l4:
                 typeFieldIndex = 3;
+                orderFieldIndex = 0;
                 setFilterUI();
                 reLoadData();
                 break;
             //pvp
             case R.id.cf_l5:
                 typeFieldIndex = 4;
+                orderFieldIndex = 0;
                 setFilterUI();
                 reLoadData();
                 break;
             case R.id.cf_l6:
                 typeFieldIndex = mMapType.length;
+                orderFieldIndex = 0;
                 setFilterUI();
                 reLoadData();
                 break;
