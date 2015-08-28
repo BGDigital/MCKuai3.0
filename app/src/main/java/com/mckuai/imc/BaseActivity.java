@@ -72,8 +72,13 @@ public class BaseActivity extends FragmentActivity {
      * @param msg 通知内容
      * @param rootId 用于显示通知的viewgroup
      */
-    protected void showNotification(int level, String msg, int rootId) {
-        NiftyNotificationView.build(this, msg, Effects.flip, rootId, getNotificationConfiguration(level)).show();
+    protected void showNotification(final int level,final String msg,final int rootId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                NiftyNotificationView.build(BaseActivity.this, msg, Effects.flip, rootId, getNotificationConfiguration(level)).show();
+            }
+        });
     }
 
     private com.gitonway.lee.niftynotification.lib.Configuration getNotificationConfiguration(int level) {
@@ -141,32 +146,38 @@ public class BaseActivity extends FragmentActivity {
     }
 
 
-    protected void showAlert(String title, String msg, final View.OnClickListener onCancle, final View.OnClickListener onOk) {
-        final NiftyDialogBuilder mAlertDialogBuilder = NiftyDialogBuilder.getInstance(this);
-        mAlertDialogBuilder.withTitle(title + "")
-                .withMessage(msg + "")
-                .withEffect(Effectstype.Newspager);
-        if (null != onCancle) {
-            mAlertDialogBuilder.withButton2Text("取消")
-                    .setButton2Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onCancle.onClick(v);
-                            mAlertDialogBuilder.dismiss();
-                        }
-                    });
-        }
-        if (null != onOk) {
-            mAlertDialogBuilder.withButton1Text("确定")
-                    .setButton1Click(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onOk.onClick(v);
-                            mAlertDialogBuilder.dismiss();
-                        }
-                    });
-        }
-        mAlertDialogBuilder.show();
+    protected void showAlert(final String title,final  String msg, final View.OnClickListener onCancle, final View.OnClickListener onOk) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final NiftyDialogBuilder mAlertDialogBuilder = NiftyDialogBuilder.getInstance(BaseActivity.this);
+                mAlertDialogBuilder.withTitle(title + "")
+                        .withMessage(msg + "")
+                        .withEffect(Effectstype.Newspager);
+                if (null != onCancle) {
+                    mAlertDialogBuilder.withButton2Text("取消")
+                            .setButton2Click(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onCancle.onClick(v);
+                                    mAlertDialogBuilder.dismiss();
+                                }
+                            });
+                }
+                if (null != onOk) {
+                    mAlertDialogBuilder.withButton1Text("确定")
+                            .setButton1Click(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onOk.onClick(v);
+                                    mAlertDialogBuilder.dismiss();
+                                }
+                            });
+                }
+                mAlertDialogBuilder.show();
+            }
+        });
+
     }
 
     /**
