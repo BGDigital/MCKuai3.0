@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 /**
  * @author kyly
@@ -33,7 +33,7 @@ public class JsonCache {
     private Context mContext;
     private LruCache<String, String> mCache;
     private String mCacheFile;// 缓存文件
-    private final int CACHE_SIZE = 2 * 1024 * 1024;// 使用2M的内存来做为缓存
+    private final int CACHE_SIZE = 512 * 1024;// 使用512K的内存来做为缓存
 
     private static final String TAG = "JsonCache";
 
@@ -124,14 +124,12 @@ public class JsonCache {
      */
     public void saveCacheFile() {
         if (0 == mCache.size()) {
-            Log.e(TAG, "size = 0");
             return;
         }
         File file = new File(mCacheFile);
         if (!file.exists()) {
             try {
-                makeRootDir(file.getParent());
-                Log.e(TAG, "创建文件:" + file.getPath());
+                file.getParentFile().mkdirs();
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -145,17 +143,14 @@ public class JsonCache {
                     new FileOutputStream(file), "UTF-8");
             BufferedWriter bw = new BufferedWriter(streamWriter);
             bw.write(getAppVersion());
-            LinkedHashMap<String, String> data = (LinkedHashMap<String, String>) mCache
-                    .snapshot();
+            HashMap<String, String> data = (HashMap<String, String>) mCache.snapshot();
             String key;
-            Long start = System.currentTimeMillis();
             for (Iterator<String> it = data.keySet().iterator(); it.hasNext(); ) {
                 key = it.next();
-                bw.write("\n" + key + "\n"+data.get(key));
+                bw.write("\n" + key + "\n" + data.get(key));
             }
             bw.close();
             streamWriter.close();
-            Log.e(TAG, "time =" + (System.currentTimeMillis() - start));
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -165,14 +160,6 @@ public class JsonCache {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-    }
-
-    private void makeRootDir(String path) {
-        File file = new File(path);
-        if (!file.exists()) {
-            Log.e(TAG, "创建根目录：" + path);
-            file.mkdirs();
         }
     }
 
