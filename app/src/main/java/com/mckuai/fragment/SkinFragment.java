@@ -3,11 +3,20 @@ package com.mckuai.fragment;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,8 +144,22 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             urv_list = (UltimateRecyclerView) view.findViewById(R.id.urv_skinList);
             tv_skinRank = (TextView) view.findViewById(R.id.tv_skinrank);
             tv_mySkins = (TextView) view.findViewById(R.id.tv_myskins);
-            view.findViewById(R.id.rl_skinrank).setOnClickListener(this);
-            view.findViewById(R.id.rl_myskin).setOnClickListener(this);
+            tv_skinRank.setOnClickListener(this);
+            tv_mySkins.setOnClickListener(this);
+            int width = app.sp2Px(getActivity(),20);
+            Drawable drawable = getResources().getDrawable(R.drawable.map_ranking);
+
+            drawable.setBounds(0, 0, width, width);
+            SpannableString spannableString = new SpannableString("icon 皮肤排行");
+            spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_skinRank.setText(spannableString);
+
+            drawable = getResources().getDrawable(R.drawable.map_classification);
+            drawable.setBounds(0, 0, width, width);
+            spannableString = new SpannableString("icon 我的皮肤");
+            spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_mySkins.setText(spannableString);
+
             manager = new LinearLayoutManager(getActivity());
             urv_list.setLayoutManager(manager);
             mAdapter = new SkinAdapter(getActivity());
@@ -380,12 +403,12 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.rl_skinrank:
+            case R.id.tv_skinrank:
                 mOrderType = Math.abs(mOrderType - 1);
                 setFilterUI();
                 loadData();
                 break;
-            case R.id.rl_myskin:
+            case R.id.tv_myskins:
                 setFilterUI();
                 isShowDownloadSkins = !isShowDownloadSkins;
                 showData();

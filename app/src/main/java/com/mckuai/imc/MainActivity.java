@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -55,8 +57,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static TextView tv_titlebar_title;
     private static ImageView btn_titlebar_left;
     private static ImageView btn_titlebar_right;
-    private static Spinner sp_titlebar_spinner;
-    private static FrameLayout fl_leftBtn_background;
+    private static View v_circle;
+//    private static Spinner sp_titlebar_spinner;
+//    private static RelativeLayout btn_left;
 
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
@@ -66,8 +69,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static boolean isShowreturn = false;
     private static boolean isShowSearch = false;
 
-    private static View.OnClickListener leftButtonListener_myMaps;
-    private static View.OnClickListener rightButtonListener_myMaps;
+    private static View.OnClickListener listener_titlebar_leftbtn;
+    private static View.OnClickListener listener_titlebar_rightbtn;
 
     @Override
 
@@ -100,10 +103,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     public static void setOnclickListener(View.OnClickListener leftButtonListener, View.OnClickListener rightButtonListener) {
         if (null != leftButtonListener) {
-            leftButtonListener_myMaps = leftButtonListener;
+            listener_titlebar_leftbtn = leftButtonListener;
         }
         if (null != rightButtonListener) {
-            rightButtonListener_myMaps = rightButtonListener;
+            listener_titlebar_rightbtn = rightButtonListener;
         }
     }
 
@@ -121,24 +124,22 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         ll2 = (LinearLayout) findViewById(R.id.rb2);
         ll3 = (LinearLayout) findViewById(R.id.rb3);
         ll4 = (LinearLayout) findViewById(R.id.rb4);
-        fl_leftBtn_background = (FrameLayout)findViewById(R.id.fl_background_left);
 
         tv_titlebar_title = (TextView) findViewById(R.id.tv_titlebar_title);
         btn_titlebar_left = (ImageView) findViewById(R.id.btn_titlebar_left);
         btn_titlebar_right = (ImageView) findViewById(R.id.btn_titlebar_right);
-        sp_titlebar_spinner = (Spinner) findViewById(R.id.sp_titlebar_type);
+        v_circle = findViewById(R.id.v_circle);
         btn_titlebar_right.setImageResource(R.drawable.btn_post_publish);
-        application.setSpinner(sp_titlebar_spinner);
+//        sp_titlebar_spinner = (Spinner) findViewById(R.id.sp_titlebar_type);
+//        application.setSpinner(sp_titlebar_spinner);
 
         ll1.setOnClickListener(this);
         ll2.setOnClickListener(this);
         ll3.setOnClickListener(this);
         ll4.setOnClickListener(this);
-        // btn_titlebar_right.setOnClickListener(this);
-        btn_titlebar_left.setOnClickListener(this);
         application.setBtn_publish(btn_titlebar_right);
-        btn_titlebar_left.setOnClickListener(this);
         btn_titlebar_right.setOnClickListener(this);
+        btn_titlebar_left.setOnClickListener(this);
         changeCheckedButton(0);
     }
 
@@ -151,8 +152,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left, options);
             }
         } else {
-            btn_titlebar_left.setBackgroundResource(R.drawable.background_user_cover_default);
-            btn_titlebar_left.setImageBitmap(null);
+            btn_titlebar_left.setImageResource(R.drawable.background_user_cover_default);
+//            btn_titlebar_left.setBackgroundResource(R.drawable.background_user_cover_default);
         }
     }
 
@@ -294,7 +295,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 tv3.setEnabled(true);
                 img3.setEnabled(true);
                 ll3.setEnabled(true);
-                sp_titlebar_spinner.setVisibility(View.GONE);
+                //sp_titlebar_spinner.setVisibility(View.GONE);
                 break;
             case 3:
                 tv4.setEnabled(true);
@@ -364,8 +365,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 vp.setCurrentItem(3, false);
                 break;
             case R.id.btn_titlebar_left:
-                if (isShowreturn && leftButtonListener_myMaps != null) {
-                    leftButtonListener_myMaps.onClick(v);
+                if (isShowreturn && listener_titlebar_leftbtn != null) {
+                    listener_titlebar_leftbtn.onClick(v);
                 } else {
                     if (!application.isLogin()) {
                         Intent intent = new Intent(this, LoginActivity.class);
@@ -380,8 +381,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 }
                 break;
             case R.id.btn_titlebar_right:
-                if (isShowSearch && rightButtonListener_myMaps != null) {
-                    rightButtonListener_myMaps.onClick(v);
+                if (isShowSearch && listener_titlebar_rightbtn != null) {
+                    listener_titlebar_rightbtn.onClick(v);
                 } else {
                     Intent intent = new Intent(this, PublishPostActivity.class);
                     startActivity(intent);
@@ -422,12 +423,17 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public static void setLeftButtonView(boolean isShowreturns) {
         isShowreturn = isShowreturns;
         if (isShowreturn == true) {
-            btn_titlebar_left.setBackgroundColor(0x00000000);
-            fl_leftBtn_background.setBackgroundColor(0x00000000);
+            //返回
+//            fl_leftBtn_background.setBackgroundColor(0x00000000);
+            v_circle.setVisibility(View.GONE);
             btn_titlebar_left.setImageResource(R.drawable.btn_back);
         } else {
-            btn_titlebar_left.setImageResource(0x00000000);
-            fl_leftBtn_background.setBackgroundResource(R.drawable.background_circle_usericon);
+            //头像
+//            btn_titlebar_left.setImageResource(0x00000000);
+//            btn_titlebar_left.setBackgroundResource(R.drawable.background_circle_usericon);
+//            btn_titlebar_left.setImageResource(R.drawable.background_user_cover_default);
+            v_circle.setVisibility(View.VISIBLE);
+//            fl_leftBtn_background.setBackgroundResource(R.drawable.background_circle_usericon);
             showUser();
         }
     }

@@ -57,7 +57,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private MCWorldUtil gameEditer;
     private int mode;//地图模式
-    private long size;//地图大小
+//    private long size;//地图大小
     private String time;//白天黑夜
     private String viewName; //地图名字
     private boolean thirdPerson = false; //是否启用第三人称

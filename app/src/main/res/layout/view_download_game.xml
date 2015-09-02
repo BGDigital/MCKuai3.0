@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:layout_marginBottom="2dp"
+    android:clickable="true"
+    android:background="@drawable/background_frame_tb"
+    android:visibility="gone">
+    <ImageView
+        android:id="@+id/iv_notificationIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="2.5dp"
+        android:background="@drawable/icon_share_default"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/tv_notificationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_notificationIcon"
+        android:layout_alignTop="@id/iv_notificationIcon"
+        android:textSize="@dimen/font_hint"
+        android:text="正在下载《我的世界》"
+        android:textColor="@color/font_green"/>
+
+    <ProgressBar
+        android:id="@+id/pb_downloadProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_notificationIcon"
+        android:layout_marginRight="5dp"
+        android:layout_below="@id/tv_notificationTitle"
+        android:layout_alignBottom="@id/iv_notificationIcon"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progressTint="@color/background_green"
+        android:progressBackgroundTint="@color/background_white"
+        />
+
+</RelativeLayout>

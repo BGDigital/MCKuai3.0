@@ -3,7 +3,7 @@
     android:id="@+id/frag_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_Grey"
+    android:background="@null"
     android:orientation="vertical">
 
     <LinearLayout
@@ -75,7 +75,9 @@
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/map_ed"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+        android:background="@color/background_Grey"
+        android:layout_below="@+id/map_ed">
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout
         android:id="@+id/mp_r1"

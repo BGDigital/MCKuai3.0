@@ -1,6 +1,7 @@
 package com.mckuai.imc;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
@@ -288,6 +289,11 @@ public class MCkuai extends Application {
 
     public Map getMap() {
         return map;
+    }
+
+    public int sp2Px(Context context,float sp){
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int)(sp * fontScale + 0.5f);
     }
 
     public void setMap(Map map) {

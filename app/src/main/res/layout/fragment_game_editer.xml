@@ -1,19 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:id="@+id/rl_root"
-    android:layout_height="match_parent" tools:context="com.mckuai.fragment.GameEditerFragment">
+    android:layout_height="match_parent" tools:context="com.mckuai.fragment.GameEditerFragment"
+    android:background="@null">
 
     <ImageView
         android:id="@+id/iv_map"
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:background="@color/background_yellow"
+        android:background="@null"
         />
     <FrameLayout
         android:id="@+id/fl_root"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@id/iv_map">
+        android:layout_below="@id/iv_map"
+        android:background="@null">
         <TextView
             android:id="@+id/tv_changeProfile"
             android:layout_width="match_parent"
@@ -32,49 +34,16 @@
         android:layout_height="@dimen/btn_playgame_width"
         android:layout_alignBottom="@+id/fl_root"
         android:layout_alignParentRight="true"
-        android:background="@drawable/btn_startgame_selector"
+        android:scaleType="fitXY"
+        android:src="@drawable/btn_startgame_selector"
+        android:background="@null"
         android:layout_margin="10dp"
         />
 
-    <RelativeLayout
+    <include
         android:id="@+id/rl_notificationDownloadProgress"
-        android:background="@drawable/background_top_bottom_frame"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="2dp"
-        android:clickable="true"
-        android:visibility="invisible">
-        <ImageView
-            android:id="@+id/iv_notificationIcon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="2.5dp"
-            android:background="@drawable/icon_share_default"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:id="@+id/tv_notificationTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/iv_notificationIcon"
-            android:layout_alignTop="@id/iv_notificationIcon"
-            android:textSize="@dimen/font_hint"
-            android:text="正在下载《我的世界》"
-            android:textColor="@color/font_green"/>
-
-        <ProgressBar
-            android:id="@+id/pb_downloadProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/iv_notificationIcon"
-            android:layout_marginRight="5dp"
-            android:layout_below="@id/tv_notificationTitle"
-            android:layout_alignBottom="@id/iv_notificationIcon"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progressTint="@color/background_green"
-            android:progressBackgroundTint="@color/background_white"
-            />
-    </RelativeLayout>
+        layout="@layout/view_download_game"
+        />
 
 
 
@@ -86,7 +55,7 @@
         android:text="选择地图"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_below="@id/rl_notificationDownloadProgress"
+        android:layout_marginTop="32dp"
         android:layout_marginLeft="10dp"
         android:layout_height="36dp" />
 

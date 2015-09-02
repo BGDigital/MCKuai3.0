@@ -66,6 +66,18 @@ public class JsonCache {
                 // 检查缓存的版本是否与当前的版本相同，仅版本一致时才读取，否则将删除已存在的缓存文件
 
                 if (reader.readLine().equals(getAppVersion())) {
+                    /*String data = null;
+                    String[] parData;
+                    do {
+                        data = reader.readLine();
+                        if (null != data && !data.isEmpty()){
+                            parData = data.split(":");
+                            if (2 == parData.length){
+                                mCache.put(parData[0],parData[1]);
+                            }
+                        }
+                    }while (null != data);*/
+                    Long startTime = System.nanoTime();
                     try {
                         key = reader.readLine().toString();
                     } catch (Exception e) {
@@ -86,6 +98,7 @@ public class JsonCache {
                             Log.e(TAG, "\"" + key + "\"的值为空");
                         }
                     }
+                    Log.e(TAG,"解析文件用时"+(System.nanoTime() - startTime));
                     reader.close();
                     inputStreamReader.close();
                 } else {
@@ -139,18 +152,24 @@ public class JsonCache {
             file.delete();
         }
         try {
+            long startTime = System.nanoTime();
             OutputStreamWriter streamWriter = new OutputStreamWriter(
                     new FileOutputStream(file), "UTF-8");
             BufferedWriter bw = new BufferedWriter(streamWriter);
             bw.write(getAppVersion());
             HashMap<String, String> data = (HashMap<String, String>) mCache.snapshot();
             String key;
+            StringBuilder strData = new StringBuilder();
             for (Iterator<String> it = data.keySet().iterator(); it.hasNext(); ) {
                 key = it.next();
-                bw.write("\n" + key + "\n" + data.get(key));
+                strData.append("\n" + key + "\n" + data.get(key));
+                //bw.write("\n" + key + "\n" + data.get(key));
             }
+            bw.write(strData.toString());
             bw.close();
             streamWriter.close();
+            Log.e(TAG, "保存用时：" + (System.nanoTime() - startTime));
+            Log.e(TAG, "文件大小：" + file.length());
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -1,60 +1,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_skinRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/ll_skinfilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <RelativeLayout
-            android:clickable="true"
-            android:id="@+id/rl_skinrank"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/background_servarrand_shape"
-            android:layout_weight="1"
-            >
-            <TextView
-                android:id="@+id/tv_skinrank"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="@color/font_white"
-                android:textSize="@dimen/font_big"
-                android:drawableLeft="@drawable/map_ranking"
-                android:drawablePadding="5dp"
-                android:text="皮肤排行"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:clickable="true"
-            android:id="@+id/rl_myskin"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/background_servartype_shape"
-            android:layout_weight="1"
-            >
-            <TextView
-                android:id="@+id/tv_myskins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="@color/font_white"
-                android:textSize="@dimen/font_big"
-                android:drawableLeft="@drawable/map_classification"
-                android:drawablePadding="5dp"
-                android:text="我的皮肤"/>
-        </RelativeLayout>
-    </LinearLayout>
-<com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
-    android:id="@+id/urv_skinList"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_below="@id/ll_skinfilter"
-    android:layout_alignParentBottom="true">
+    android:layout_height="match_parent"
+    android:background="@null">
 
-</com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+    <View
+        android:id="@+id/v_center_H"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        ></View>
+    <TextView
+        android:id="@+id/tv_skinrank"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/v_center_H"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@drawable/background_servarrand_shape"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_big" />
+
+
+    <TextView
+        android:id="@+id/tv_myskins"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/v_center_H"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@drawable/background_servartype_shape"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_big" />
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/urv_skinList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tv_skinrank"
+        android:background="@null">
+
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
 </RelativeLayout>
