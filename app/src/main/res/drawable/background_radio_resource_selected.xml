@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/background_white"></solid>
-    <stroke
-        android:width="1px"
-        android:color="@color/background_green"></stroke>
-    <padding
-        android:left="0dp"
-        android:top="0dp"
-        android:right="0dp"
-        android:bottom="1px"></padding>
-</shape>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/background_green"></item>
+    <item android:drawable="@color/background_white" android:bottom="1dp"></item>
+ </layer-list>

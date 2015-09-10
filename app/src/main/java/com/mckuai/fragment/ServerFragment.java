@@ -10,10 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
@@ -35,8 +31,8 @@ import com.mckuai.mctools.WorldUtil.GameUntil;
 import com.mckuai.utils.ParseResponse;
 import com.umeng.analytics.MobclickAgent;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
+import org.apache.http.Header;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,8 +46,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private View view;
     private UltimateRecyclerView serverListView;
     private UltimateRecyclerView serverTypeListView;
-    private RelativeLayout rl_serverTypeLayout;
-    private LinearLayout ll_filter;
+    //private RelativeLayout rl_serverTypeLayout;
+    //private LinearLayout ll_filter;
     private Spinner spinner;
     private AsyncHttpClient client;
     private MCkuai application;
@@ -113,8 +109,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private void initView(){
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
         serverTypeListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverTypeList);
-        rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
-        ll_filter = (LinearLayout)view.findViewById(R.id.ll_filter);
+//        rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
+//        ll_filter = (LinearLayout)view.findViewById(R.id.ll_filter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         serverListView.setLayoutManager(manager);
 
@@ -149,7 +145,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         typeAdapter.setOnItemClickListener(new ServerTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String type) {
-                rl_serverTypeLayout.setVisibility(View.GONE);
+                serverTypeListView.setVisibility(View.GONE);
                 if (type.trim().equals("全部")) {
                     serverType = null;
                 } else {
@@ -192,8 +188,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
             }
         });*/
-        view.findViewById(R.id.ll_serverRank).setOnClickListener(this);
-        view.findViewById(R.id.ll_serverType).setOnClickListener(this);
+        view.findViewById(R.id.tv_server_rank).setOnClickListener(this);
+        view.findViewById(R.id.tv_server_type).setOnClickListener(this);
 
     }
 
@@ -216,12 +212,16 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void showServerType(){
-        rl_serverTypeLayout.setVisibility(View.VISIBLE);
+        if (null != serverTypeListView) {
+            serverTypeListView.setVisibility(View.VISIBLE);
+            serverListView.setVisibility(View.GONE);
+        }
     }
 
     private void hideServerType(){
-        if (null != rl_serverTypeLayout) {
-            rl_serverTypeLayout.setVisibility(View.GONE);
+        if (null != serverTypeListView) {
+            serverTypeListView.setVisibility(View.GONE);
+            serverListView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -288,14 +288,14 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                     }
                 } else {
                     cancleLodingToast(false);
-                    showNotification(3, result.msg,R.id.rl_serverList_Root);
+                    //showNotification(3, result.msg,R.id.rl_serverList_Root);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                showNotification(3, "获取数据失败，原因：" + throwable.getLocalizedMessage(), R.id.rl_serverList_Root);
+                //showNotification(3, "获取数据失败，原因：" + throwable.getLocalizedMessage(), R.id.rl_serverList_Root);
                 cancleLodingToast(false);
                 isLoading = false;
             }
@@ -350,21 +350,21 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (isLoading){
-            showNotification(1, "正在获取数据，请稍候！", R.id.rl_serverList_Root);
+            //showNotification(1, "正在获取数据，请稍候！", R.id.rl_serverList_Root);
             return;
         }
         switch (v.getId()){
-            case R.id.ll_serverType:
+            case R.id.tv_server_type:
                 MobclickAgent.onEvent(getActivity(),"serverType");
                 isOrderByDownload = false;
-                if (rl_serverTypeLayout.getVisibility() == View.GONE){
+                if (serverTypeListView.getVisibility() == View.GONE){
                     showServerType();
                 }
                 else {
                     hideServerType();
                 }
                 break;
-            case R.id.ll_serverRank:
+            case R.id.tv_server_rank:
                 MobclickAgent.onEvent(getActivity(),"serverRank");
                 isOrderByDownload = !isOrderByDownload;
                 //setFiterLayoutView(!isOrderByDownload);

@@ -1,45 +1,62 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@null"
-    android:orientation="vertical">
+    android:background="@null">
 
-    <RadioGroup
-        android:id="@+id/rg_resource"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@null">
-        <RadioButton
-            android:id="@+id/rb_resource_map"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:button="@null"
-            android:gravity="center"
-            android:checked="true"
-            android:text="地图"
-            android:textColor="@color/radio_textcolor_selector"
-            android:background="@drawable/background_radio_resource_selector"
-            android:layout_weight="1"/>
-        <RadioButton
-            android:id="@+id/rb_resource_skin"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:button="@null"
-            android:gravity="center"
-            android:text="皮肤"
-            android:textColor="@color/radio_textcolor_selector"
-            android:background="@drawable/background_radio_resource_selector"
-            android:layout_weight="1"/>
-    </RadioGroup>
+    <View
+        android:id="@+id/v_center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true" />
+
+    <RadioButton
+        android:id="@+id/rb_resource_map"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/v_center"
+        android:background="@drawable/background_radio_resource_selector"
+        android:button="@null"
+        android:checked="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="地图"
+        android:textColor="@color/radio_textcolor_selector"
+        android:visibility="visible" />
+
+    <RadioButton
+        android:id="@+id/rb_resource_skin"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/v_center"
+        android:background="@drawable/background_radio_resource_selector"
+        android:button="@null"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="皮肤"
+        android:textColor="@color/radio_textcolor_selector"
+        android:visibility="visible" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_resource"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@null"
-        ></android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/rb_resource_map"
+        android:background="@null">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/tabstrip"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:background="@null">
+
+        </android.support.v4.view.PagerTabStrip>
+    </android.support.v4.view.ViewPager>
 
 
-</LinearLayout>
+</RelativeLayout>

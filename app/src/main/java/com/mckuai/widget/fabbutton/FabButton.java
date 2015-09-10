@@ -305,7 +305,7 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
         private void animateIn(FabButton button) {
             button.setVisibility(View.VISIBLE);
 
-            if (Build.VERSION.SDK_INT >= 14) {
+//            if (Build.VERSION.SDK_INT >= 14) {
                 ViewCompat.animate(button)
                         .scaleX(1f)
                         .scaleY(1f)
@@ -314,17 +314,17 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
                         .withLayer()
                         .setListener(null)
                         .start();
-            } else {
-                Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                        button.getContext(), R.anim.fab_in);
-                anim.setDuration(200);
-                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                button.startAnimation(anim);
-            }
+//            } else {
+//                Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+//                        button.getContext(), R.anim.fab_in);
+//                anim.setDuration(200);
+//                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+//                button.startAnimation(anim);
+//            }
         }
 
         private void animateOut(final FabButton button) {
-            if (Build.VERSION.SDK_INT >= 14) {
+//            if (Build.VERSION.SDK_INT >= 14) {
                 ViewCompat.animate(button)
                         .scaleX(0f)
                         .scaleY(0f)
@@ -348,7 +348,7 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
                                 view.setVisibility(View.GONE);
                             }
                         }).start();
-            } else {
+       /*     } else {
                 Animation anim = android.view.animation.AnimationUtils.loadAnimation(
                         button.getContext(), R.anim.fab_out);
                 anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -366,7 +366,7 @@ public class FabButton extends FrameLayout implements CircleImageView.OnFabViewL
                     }
                 });
                 button.startAnimation(anim);
-            }
+            }*/
         }
     }
 }

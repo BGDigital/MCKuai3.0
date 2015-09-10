@@ -26,11 +26,10 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+import com.mckuai.mctools.WorldUtil.MathUtil;
 import com.mckuai.widget.slidingmenu.SlidingMenu.CanvasTransformer;
 import com.mckuai.widget.slidingmenu.SlidingMenu.OnClosedListener;
 import com.mckuai.widget.slidingmenu.SlidingMenu.OnOpenedListener;
-//import com.jeremyfeinstein.com.mckuai.widget.slidingmenu.lib.SlidingMenu.OnCloseListener;
-//import com.jeremyfeinstein.com.mckuai.widget.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 public class CustomViewAbove extends ViewGroup {
 
@@ -304,7 +303,8 @@ public class CustomViewAbove extends ViewGroup {
 	float distanceInfluenceForSnapDuration(float f) {
 		f -= 0.5f; // center the values about 0.
 		f *= 0.3f * Math.PI / 2.0f;
-		return (float) FloatMath.sin(f);
+        return (float)Math.sin(f);
+		//return (float) FloatMath.sin(f);
 	}
 
 	public int getDestScrollX(int page) {

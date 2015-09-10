@@ -5,14 +5,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.service.carrier.CarrierService;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,7 +38,7 @@ import cn.aigestudio.downloader.bizs.DLManager;
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
 
 
-public class GameEditerFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class GameEditerFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener,CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "GameEditerFragment";
 
     private View view;
@@ -48,10 +52,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private RelativeLayout rl_notification;
     private ProgressBar progressBar;
 
-    private ImageView iv_gameMode;
-    private ImageView iv_gameTime;
-    private ImageView iv_thirdView;
-    private ImageView iv_packageItem;
+    private RadioButton iv_gameMode;
+    private RadioButton iv_gameTime;
+    private RadioButton iv_thirdView;
+    private RadioButton iv_packageItem;
     private ListView lv_mapList;
 
 
@@ -72,6 +76,9 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private boolean isGameInstalled = false;
     private boolean isGameRunning = false;
     private boolean isDownloadGame = false;
+
+    private int width;
+    private int height;
 
     private WorldAdapter adapter;
 
@@ -116,29 +123,33 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
 
     private void initView() {
-        tv_gameMode = (TextView) view.findViewById(R.id.tv_gameMode);
-        tv_gameTime = (TextView) view.findViewById(R.id.tv_gameTime);
-        tv_packageItemCount = (TextView) view.findViewById(R.id.tv_curItemCount);
-        tv_thirdView = (TextView) view.findViewById(R.id.tv_curView);
+        tv_gameMode = (TextView) view.findViewById(R.id.tv_mod_value);
+        tv_gameTime = (TextView) view.findViewById(R.id.tv_time_value);
+        tv_packageItemCount = (TextView) view.findViewById(R.id.tv_backpack_value);
+        tv_thirdView = (TextView) view.findViewById(R.id.tv_thirdperson_value);
         tv_mapName = (TextView) view.findViewById(R.id.tv_mapName);
         tv_notification = (TextView) view.findViewById(R.id.tv_notificationTitle);
         iv_map = (ImageView) view.findViewById(R.id.iv_map);
-        iv_gameMode = (ImageView) view.findViewById(R.id.iv_gameMode);
-        iv_gameTime = (ImageView) view.findViewById(R.id.iv_gameTime);
-        iv_thirdView = (ImageView) view.findViewById(R.id.iv_thirdView);
-        iv_packageItem = (ImageView) view.findViewById(R.id.iv_gamePackage);
+        iv_gameMode = (RadioButton) view.findViewById(R.id.btn_mod);
+        iv_gameTime = (RadioButton) view.findViewById(R.id.btn_time);
+        iv_thirdView = (RadioButton) view.findViewById(R.id.btn_thirdpersonvisual);
+        iv_packageItem = (RadioButton) view.findViewById(R.id.btn_backpack);
         lv_mapList = (ListView) view.findViewById(R.id.lv_mapList);
         rl_notification = (RelativeLayout) view.findViewById(R.id.rl_notificationDownloadProgress);
         progressBar = (ProgressBar) view.findViewById(R.id.pb_downloadProgress);
 
-        view.findViewById(R.id.rl_gameMode).setOnClickListener(this);
-        view.findViewById(R.id.rl_gameTime).setOnClickListener(this);
-        view.findViewById(R.id.rl_thirdView).setOnClickListener(this);
-        view.findViewById(R.id.rl_gamePackage).setOnClickListener(this);
+        iv_gameMode.setOnCheckedChangeListener(this);
+        iv_gameTime.setOnCheckedChangeListener(this);
+        iv_thirdView.setOnCheckedChangeListener(this);
+        iv_packageItem.setOnCheckedChangeListener(this);
         view.findViewById(R.id.btn_startGame).setOnClickListener(this);
         view.findViewById(R.id.btn_selectMap).setOnClickListener(this);
         lv_mapList.setOnItemClickListener(this);
         rl_notification.setOnClickListener(this);
+
+        Display display =getActivity().getWindowManager().getDefaultDisplay();
+        width = display.getWidth();
+        height = display.getHeight();
     }
 
 
@@ -181,10 +192,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         //游戏模式
         if (mode == 0) {
             tv_gameMode.setText("生存");
-            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
+//            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_live);
         } else {
             tv_gameMode.setText("创造");
-            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
+//            iv_gameMode.setBackgroundResource(R.drawable.icon_mode_creat);
         }
         //游戏地图名称
         tv_mapName.setText(null == viewName ? "点击\"选择地图\"以选择游戏地图" : viewName);
@@ -222,7 +233,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         if (!worldItems.get(curWorldIndex).setGameMod(1 == mode)) {
             mode = Math.abs(mode - 1);
         }
-        updateWorldInfo();
     }
 
 
@@ -236,14 +246,12 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 time = "白天";
             }
         }
-        updateWorldInfo();
     }
 
     private void switchView() {
         if (OptionUntil.setThirdPerson(!thirdPerson)) {
             thirdPerson = !thirdPerson;
         }
-        updateWorldInfo();
     }
 
     private void changePackageItem() {
@@ -352,7 +360,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     }
                 }
                 break;
-            case R.id.rl_gameMode:
+            /*case R.id.rl_gameMode:
                 //修改游戏模式
                 MobclickAgent.onEvent(getActivity(), "switchGameMode");
                 if (rl_notification.getVisibility() == View.VISIBLE) {
@@ -414,7 +422,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 } else {
                     showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
                 }
-                break;
+                break;*/
             case R.id.btn_startGame:
                 //运行游戏
                 MobclickAgent.onEvent(getActivity(), "startGame_tool");
@@ -449,11 +457,53 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         }
     }
 
-    private boolean checkGameInstall() {
-        if (!isGameInstalled) {
-            showDownloadGame(true);
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()){
+            case R.id.btn_mod:
+                MobclickAgent.onEvent(getActivity(), "switchGameMode");
+                if (!checkGameInstall()) {
+                    return;
+                }
+                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
+                    switchGameMode();
+                } else {
+                    showNotification(2, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
+                }
+                break;
+            case R.id.btn_time:
+                MobclickAgent.onEvent(getActivity(), "switchTime");
+                if (!checkGameInstall()) {
+                    return;
+                }
+                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
+                    switchGameTime();
+                } else {
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
+                }
+                break;
+            case R.id.btn_thirdpersonvisual:
+                MobclickAgent.onEvent(getActivity(), "switchView");
+                //切换第三人称和第一人称
+                if (null != worldItems && !worldItems.isEmpty() && worldItems.get(curWorldIndex).getLevel() != null) {
+                    switchView();
+                } else {
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
+                }
+                break;
+            case R.id.btn_backpack:
+                MobclickAgent.onEvent(getActivity(), "showPackage");
+                if (!checkGameInstall()) {
+                    return;
+                }
+                if (null != worldItems && null != worldItems.get(curWorldIndex)) {
+                    changePackageItem();
+                } else {
+                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
+                }
+                break;
         }
-        return isGameInstalled;
+        updateWorldInfo();
     }
 
     @Override
@@ -461,6 +511,13 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         lv_mapList.setVisibility(View.GONE);
         curWorldIndex = (int) id;
         getWorldInfo();
+    }
+
+    private boolean checkGameInstall() {
+        if (!isGameInstalled) {
+            showDownloadGame(true);
+        }
+        return isGameInstalled;
     }
 
     private void showDownloadGame(boolean showAlert) {

@@ -39,7 +39,7 @@ public class ServerTypeAdapter extends RecyclerView.Adapter<ServerTypeAdapter.Vi
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_servertype, parent, false);
 
         final ViewHolder holder = new ViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
+      /*  view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String type = (String) v.getTag();
@@ -50,13 +50,13 @@ public class ServerTypeAdapter extends RecyclerView.Adapter<ServerTypeAdapter.Vi
                     Log.e(TAG, "OnItemClickListener not set!");
                 }
             }
-        });
+        });*/
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String type = typeList[position];
+        final String type = typeList[position];
         if (null !=type){
 //            holder.icon.setImageResource();
             holder.name.setText(type);
@@ -78,6 +78,14 @@ public class ServerTypeAdapter extends RecyclerView.Adapter<ServerTypeAdapter.Vi
                     holder.icon.setImageResource(R.drawable.icon_type_mix);
                     break;
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (null != itemClickListener){
+                        itemClickListener.onItemClick(type);
+                    }
+                }
+            });
         }
     }
 

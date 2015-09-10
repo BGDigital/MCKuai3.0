@@ -5,120 +5,59 @@
 
     <include
         android:id="@+id/layout_titlebar"
-        layout="@layout/titlebar_main" />
+        layout="@layout/titlebar_main"/>
 
-    <LinearLayout
-        android:id="@+id/bottom"
-        android:layout_alignParentBottom="true"
+    <RadioGroup
+        android:id="@+id/rg_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_frame_tb"
-        android:paddingTop="1px"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:visibility="visible">
-        <LinearLayout
-            android:id="@+id/rb1"
-            android:clickable="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@null"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/btn_1"
-                android:layout_width="@dimen/btn_navigation_icon_width"
-                android:layout_height="@dimen/btn_navigation_icon_width"
-                android:gravity="center"
-                android:enabled="false"
-                android:background="@drawable/btn_tool_selector"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/tv_1"
-                android:layout_gravity="center_horizontal"
-                android:text="工具"
-                android:enabled="false"
-                android:textColor="@drawable/item_tab_font_selector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            </LinearLayout>
-        <LinearLayout
-            android:id="@+id/rb2"
-            android:clickable="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@null"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/btn_2"
-                android:layout_width="@dimen/btn_navigation_icon_width"
-                android:layout_height="@dimen/btn_navigation_icon_width"
-                android:background="@drawable/btn_resource_selector"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:id="@+id/tv_2"
-                android:text="资源"
-                android:textColor="@drawable/item_tab_font_selector"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/rb3"
-            android:clickable="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="@null"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/btn_3"
-                android:layout_width="@dimen/btn_navigation_icon_width"
-                android:layout_height="@dimen/btn_navigation_icon_width"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/btn_cooper_selector" />
-            <TextView
-                android:id="@+id/tv_3"
-                android:text="联机"
-                android:textColor="@drawable/item_tab_font_selector"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/rb4"
-            android:clickable="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:background="@null"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/btn_4"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="@dimen/btn_navigation_icon_width"
-                android:layout_height="@dimen/btn_navigation_icon_width"
-                android:background="@drawable/btn_forum_selector"/>
-            <TextView
-                android:id="@+id/tv_4"
-                android:text="社区"
-                android:textColor="@drawable/item_tab_font_selector"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </LinearLayout>
+        android:background="@color/background_white">
+    
+    <RadioButton
+        android:checked="true"
+        style="@style/radiobutton_navigation"
+        android:id="@+id/rb_navigation_gameedit"
+        android:drawableTop="@drawable/btn_tool_selector"
+        android:text="工具"/>
+    <RadioButton
+        android:checked="false"
+        android:id="@+id/rb_navigation_resource"
+        style="@style/radiobutton_navigation"
+        android:drawableTop="@drawable/btn_resource_selector"
+        android:text="资源"/>
+    <RadioButton
+        android:checked="false"
+        android:id="@+id/rb_navigation_server"
+        style="@style/radiobutton_navigation"
+        android:textColor="@drawable/item_tab_font_selector"
+        android:drawableTop="@drawable/btn_cooper_selector"
+        android:text="联机"/>
+    <RadioButton
+        android:checked="false"
+        android:id="@+id/rb_navigation_forum"
+        style="@style/radiobutton_navigation"
+        android:drawableTop="@drawable/btn_forum_selector"
+        android:textColor="@drawable/item_tab_font_selector"
+        android:text="社区"/>
+    </RadioGroup>
+    <View
+        android:id="@+id/v_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginBottom="1px"
+        android:layout_above="@id/rg_navigation"
+        android:background="@color/frame_darkgray"
+        />
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/layout_titlebar"
-        android:layout_above="@+id/bottom"
+        android:layout_above="@id/v_bottom"
         android:background="@null"
         />
-
-
-
     </RelativeLayout>

@@ -1,128 +1,68 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_Grey"
+    android:background="@null"
     tools:context="com.mckuai.fragment.ServerFragment">
 
-    <RelativeLayout
+
+    <View
+        android:id="@+id/v_center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        ></View>
+    <TextView
+        android:id="@+id/tv_server_rank"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/v_center"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@drawable/background_servarrand_shape"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_big" />
+
+
+    <TextView
+        android:id="@+id/tv_server_type"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/v_center"
+        android:clickable="true"
+        android:gravity="center"
+        android:background="@drawable/background_servartype_shape"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_big" />
+
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/urv_serverList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_below="@id/tv_server_rank"
+        android:paddingTop="1dp"
+        android:background="@null">
 
-        <LinearLayout
-            android:id="@+id/ll_filter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/ll_serverRank"
-                android:layout_width="wrap_content"
-                android:layout_height="46dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/background_servarrand_shape"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/map_ranking" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="5dp"
-                    android:gravity="center_vertical"
-                    android:text="服务器排行"
-                    android:textColor="@color/font_white"
-                    android:textSize="@dimen/font_big" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_serverType"
-                android:layout_width="wrap_content"
-                android:layout_height="46dp"
-                android:layout_alignParentRight="true"
-                android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:background="@drawable/background_servartype_shape"
-                android:clickable="true"
-                android:orientation="horizontal">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/map_classification" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:gravity="center_vertical"
-                    android:text="服务器分类"
-                    android:textColor="@color/font_white"
-                    android:textSize="@dimen/font_big" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_serverList_Root"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/ll_filter">
-
-            <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
-                android:id="@+id/urv_serverList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
-        </RelativeLayout>
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_serverType"
-            android:layout_width="match_parent"
-            android:layout_height="260dp"
-            android:layout_alignTop="@id/rl_serverList_Root"
-            android:background="@drawable/background_white_with_frame"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp"
-            android:visibility="gone">
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/urv_serverTypeList"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_below="@id/tv_server_rank"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:background="@null"
+        android:visibility="gone">
 
-            <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
-                android:id="@+id/urv_serverTypeList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
-        </RelativeLayout>
-    </RelativeLayout>
+    </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
 
-</FrameLayout>
+</RelativeLayout>

@@ -6,7 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.text.AndroidCharacter;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,7 +28,7 @@ import com.umeng.message.PushAgent;
 import net.steamcrafted.loadtoast.LoadToast;
 
 
-public class BaseActivity extends FragmentActivity {
+public class BaseActivity extends AppCompatActivity {
 
     protected boolean isLoading = false;    //正在加载数据
     protected boolean isCacheEnabled = true;         //启用缓存
@@ -43,6 +47,7 @@ public class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState, persistentState);
         PushAgent.getInstance(this).onAppStart();
     }
+
 
     @Override
     protected void onResume() {

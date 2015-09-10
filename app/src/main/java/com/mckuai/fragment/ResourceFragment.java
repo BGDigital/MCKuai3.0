@@ -1,14 +1,18 @@
 package com.mckuai.fragment;
 
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.mckuai.adapter.FragmentAdapter;
 import com.mckuai.imc.R;
@@ -18,15 +22,15 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ResourceFragment extends BaseFragment implements ViewPager.OnPageChangeListener,RadioGroup.OnCheckedChangeListener{
+public class ResourceFragment extends BaseFragment implements ViewPager.OnPageChangeListener, CompoundButton.OnCheckedChangeListener {
     ViewPager viewPager;
     View view;
-    RadioGroup rg_resource;
-    RadioButton rb_map;
-    RadioButton rb_skin;
+    RadioButton btn_res_map;
+    RadioButton btn_res_skin;
 
-    ArrayList<BaseFragment> fragments;
+    //ArrayList<BaseFragment> fragments;
     FragmentAdapter adapter;
+    android.support.v4.app.FragmentManager manager;
 
     boolean isViewChanged = false;
 
@@ -34,7 +38,7 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (null == view){
+        if (null == view) {
             view = inflater.inflate(R.layout.fragment_resource, container, false);
             initView();
         }
@@ -44,7 +48,7 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     @Override
     public void onResume() {
         super.onResume();
-        if (getUserVisibleHint()){
+        if (getUserVisibleHint()) {
             showData();
         }
     }
@@ -52,31 +56,31 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             showData();
         }
     }
 
-    private void initView(){
-        if (null != view && null == viewPager){
+    private void initView() {
+        if (null != view && null == viewPager) {
             viewPager = (ViewPager) view.findViewById(R.id.vp_resource);
-            rg_resource = (RadioGroup) view.findViewById(R.id.rg_resource);
-            rb_skin = (RadioButton) view.findViewById(R.id.rb_resource_skin);
-            rb_map = (RadioButton) view.findViewById(R.id.rb_resource_map);
+            btn_res_skin = (RadioButton) view.findViewById(R.id.rb_resource_skin);
+            btn_res_map = (RadioButton) view.findViewById(R.id.rb_resource_map);
             viewPager.setOnPageChangeListener(this);
-            rg_resource.setOnCheckedChangeListener(this);
+            btn_res_map.setOnCheckedChangeListener(this);
+            btn_res_skin.setOnCheckedChangeListener(this);
+            PagerTabStrip tabStrip = (PagerTabStrip) view.findViewById(R.id.tabstrip);
+            tabStrip.setTabIndicatorColor(this.getResources().getColor(R.color.background_green));
+            tabStrip.setTextSpacing(200);
+            tabStrip.setDrawFullUnderline(false);
         }
     }
 
 
-    private void showData(){
-        if (null == fragments) {
-            fragments = new ArrayList<>(2);
-            fragments.add(new MapFragment());
-            fragments.add(new SkinFragment());
-            adapter = new FragmentAdapter(getChildFragmentManager(),fragments);
-            viewPager.setAdapter(adapter);
-        }
+    private void showData() {
+        if (null == adapter)
+        adapter = new FragmentAdapter(getChildFragmentManager(), 1);
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -86,18 +90,18 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
 
     @Override
     public void onPageSelected(int i) {
-        switch (i){
+        switch (i) {
             case 0:
                 isViewChanged = true;
 //                onCheckedChanged(rg_resource,rb_map.getId());
-                rb_map.setChecked(true);
+                btn_res_map.setChecked(true);
                 isViewChanged = false;
                 break;
 
             case 1:
                 isViewChanged = true;
 //                onCheckedChanged(rg_resource,rb_skin.getId());
-                rb_skin.setChecked(true);
+                btn_res_skin.setChecked(true);
                 isViewChanged = false;
                 break;
         }
@@ -109,18 +113,20 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-        if (!isViewChanged){
-            switch (checkedId){
-                case R.id.rb_resource_map:
-                    viewPager.setCurrentItem(0);
-                    break;
-
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            switch (buttonView.getId()) {
                 case R.id.rb_resource_skin:
                     viewPager.setCurrentItem(1);
+                    btn_res_map.setChecked(false);
+                    break;
+                case R.id.rb_resource_map:
+                    viewPager.setCurrentItem(0);
+                    btn_res_skin.setChecked(false);
                     break;
             }
+        } else {
+            buttonView.setChecked(false);
         }
     }
 }

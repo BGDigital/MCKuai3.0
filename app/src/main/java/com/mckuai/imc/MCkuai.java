@@ -45,10 +45,12 @@ public class MCkuai extends Application {
     private MCMapManager mapManager;
     private MCSkinManager skinManager;
     private Map map;
+    public int width;
 
     public MCUser mUser;
     public JsonCache mCache;
     public int fragmentIndex = 0;
+
 
     public AsyncHttpClient mClient;
     public Tencent tencent;

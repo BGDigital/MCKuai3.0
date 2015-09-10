@@ -75,8 +75,8 @@
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_Grey"
-        android:layout_below="@+id/map_ed">
+        android:layout_below="@+id/map_ed"
+        android:background="@null">
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout

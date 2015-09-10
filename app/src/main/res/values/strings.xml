@@ -7,11 +7,7 @@
     <string name="app_name">麦块我的世界盒子</string>
     <!--麦块我的世界盒子 -->
     <!--麦块 -->
-
-    <string name="hello_world">Hello world!</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_map">MapActivity</string>
+    
     <!-- 地图 -->
     <string name="ranking">地图排行</string>
     <string name="classification">地图分类</string>
@@ -34,6 +30,18 @@
     <string name="pvp">pvp竞技</string>
     <string name="total">全部</string>
     <string name="export_map_export">选择要导出的地图</string>
+
+    <!-- 修改器 -->
+    <string name="game_mode">当前模式</string>
+    <string name="mode_create">创造</string>
+    <string name="mode_survival">生存</string>
+    <string name="game_time">当前时间</string>
+    <string name="time_day">白天</string>
+    <string name="time_night">夜晚</string>
+    <string name="game_visual">第三人称视角</string>
+    <string name="thirdperson_disable">未开启</string>
+    <string name="thirdperson_enable">已开启</string>
+    <string name="game_backpack">背包物品</string>
 
 
     <!--缓存-->
