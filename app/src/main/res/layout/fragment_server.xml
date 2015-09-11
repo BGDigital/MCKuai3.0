@@ -47,7 +47,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/tv_server_rank"
         android:paddingTop="1dp"
-        android:background="@null">
+        android:background="@color/background_white">
 
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 

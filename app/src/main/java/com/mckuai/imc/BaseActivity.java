@@ -207,9 +207,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (onMenuKeyPressed()) return true;
+            if (onMenuKeyPressed()) {
+                return true;
+            }
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (onBackKeyPressed()) return true;
+            if (onBackKeyPressed()){
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }

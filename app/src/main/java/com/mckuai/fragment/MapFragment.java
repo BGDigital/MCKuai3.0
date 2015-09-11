@@ -1,23 +1,18 @@
 package com.mckuai.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,9 +46,7 @@ import java.util.ArrayList;
 
 public class MapFragment extends BaseFragment implements View.OnClickListener, RankAdapters.OnItemClickListener, RankAdapters.OnMapDownloadListener {
     private View view;
-    private String searchContext;//输入内容
     private Button rb_map, rb_classification, rb_mymap;
-    private EditText map_ed;
     private UltimateRecyclerView urv_mapList;
     private RelativeLayout mp_r1;
     private MapBean mapList;
@@ -69,12 +62,13 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private TextView tit;
     private static final String TAG = "MapFragment";
     private MCkuai application = MCkuai.getInstance();
-    private ImageView btn_right_view;
     private MCMapManager mapManager;
     private DownloadProgressRecevier recevier;
     private long lastUpdateTime;
     private String maptype;
+    private String searchContext;
     private RecyclerView.LayoutManager manager;
+    private boolean isSearch = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,8 +102,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     public void onPause() {
         super.onPause();
         cancleLodingToast(false);
-        if (null != map_ed) {
-            map_ed.setVisibility(View.GONE);
+        if (null != mp_r1) {
             mp_r1.setVisibility(View.GONE);
         }
     }
@@ -128,14 +121,10 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     private void showData() {
-        if (application.fragmentIndex != 1) {
-            return;
-        }
         if (null == urv_mapList) {
             initView();
         }
-        MainActivity.setRightButtonView(true);
-        btn_right_view.setOnClickListener(this);
+        MainActivity.setRightButtonView(0,R.drawable.btn_search_selector);
         setFilterUI();
         initReciver();
 
@@ -157,18 +146,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     protected void initView() {
-        map_ed = (EditText) view.findViewById(R.id.map_ed);
-        map_ed.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                    doSearch();
-                    return true;
-                }
-                return false;
-            }
-        });
-        btn_right_view = application.getBtn_publish();
         rb_map = (Button) view.findViewById(R.id.rb_map);
         rb_classification = (Button) view.findViewById(R.id.rb_classification);
         rb_mymap = (Button) view.findViewById(R.id.rb_mymap);
@@ -206,7 +183,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         cf_l5 = (LinearLayout) view.findViewById(R.id.cf_l5);
         cf_l6 = (LinearLayout) view.findViewById(R.id.cf_l6);
         rb_map.setOnClickListener(this);
-        btn_right_view.setOnClickListener(this);
         rb_classification.setOnClickListener(this);
         rb_mymap.setOnClickListener(this);
         cf_l1.setOnClickListener(this);
@@ -356,15 +332,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                 setFilterUI();
                 reLoadData();
                 break;
-            case R.id.btn_titlebar_right:
-                MobclickAgent.onEvent(getActivity(), "searchMap");
-                if (map_ed.getVisibility() == View.GONE) {
-                    map_ed.setVisibility(View.VISIBLE);
-                    setFilterUI();
-                } else {
-                    doSearch();
-                }
-                break;
             default:
                 break;
         }
@@ -392,12 +359,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     tit.setText("地图分类-PVP");
                     break;
                 default:
-                    if (null != searchContext|| View.VISIBLE == map_ed.getVisibility()){
-                        if (null != searchContext) {
-                            tit.setText("搜索地图-" + (searchContext.length() > 6 ? searchContext.substring(0, 6) : searchContext));
-                        }else {
+                    if (null != searchContext){
                             tit.setText("搜索地图");
-                        }
                     }else {
                         tit.setText("资源");
                     }
@@ -503,7 +466,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     }
                     if (!mapList.getData().isEmpty()) {
                         cancleLodingToast(true);
-                        map_ed.setVisibility(View.GONE);
                         panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
                         showData();
                         return;
@@ -540,13 +502,21 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
             mapList = new MapBean();
         }
         if (bean.getPageBean().getPage() == 1) {
-            mapList.getData().clear();
+            if (null != mapList.getData()) {
+                mapList.getData().clear();
+            }
             if (null != url && null != params) {
                 cacheData(url, params, data);
             }
         }
         mapList.getData().addAll(bean.getData());
         page = bean.getPageBean();
+    }
+
+    @Override
+    public void onRightButtonClicked(String searchContent) {
+        this.searchContext = searchContent;
+        doSearch();
     }
 
     protected void panduanxiazai(ArrayList<Map> liebiao, ArrayList<Map> yixiazai) {
@@ -585,21 +555,29 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     public void doSearch() {
-        if (null != map_ed.getText() && 0 < map_ed.getText().toString().trim().length()) {
-            searchContext = map_ed.getText().toString();
+        if (null != searchContext && !searchContext.isEmpty()) {
             typeFieldIndex = mMapType.length;
-            map_ed.setText("");
+            isSearch = true;
             page = null;
             setFilterUI();
             loadData();
         } else {
             Toast.makeText(getActivity(), "不能搜索空内容!", Toast.LENGTH_SHORT).show();
         }
-        map_ed.setVisibility(View.GONE);
-        InputMethodManager imm = (InputMethodManager) map_ed.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
 
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(map_ed.getApplicationWindowToken(), 0);
+    @Override
+    public boolean onBackKeyPressed() {
+        if (isSearch){
+            isSearch = false;
+            searchContext = null;
+            if (null != mapList && null != mapList.getData()){
+                mapList.getData().clear();
+                page.setPage(0);
+            }
+            showData();
+            return true;
         }
+        else return super.onBackKeyPressed();
     }
 }

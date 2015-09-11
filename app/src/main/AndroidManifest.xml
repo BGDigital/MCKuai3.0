@@ -75,20 +75,17 @@
         <activity
             android:name=".UserCenter"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".LocationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ChangeInfoActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ServerDetailsActivity"
@@ -135,12 +132,12 @@
         <activity
             android:name=".ModifyNameActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SkinDetailedActivity"
-            android:label="@string/title_activity_skin_detailed" >
+            android:label="@string/title_activity_skin_detailed"
+            android:screenOrientation="portrait">
         </activity>
         <!-- 友盟相关 -->
         <activity

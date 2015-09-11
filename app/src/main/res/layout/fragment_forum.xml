@@ -25,6 +25,7 @@
             android:layout_height="@dimen/menu_height_lv2"
             android:layout_weight="1"
             android:button="@null"
+            android:background="@null"
             android:checked="true"
             android:gravity="center"
             android:text="@string/lastPost"
@@ -36,6 +37,7 @@
             android:layout_height="@dimen/menu_height_lv2"
             android:layout_weight="1"
             android:button="@null"
+            android:background="@null"
             android:gravity="center"
             android:text="@string/essencePost"
             android:textColor="@color/radio_textcolor_selector" />
@@ -46,6 +48,7 @@
             android:layout_height="@dimen/menu_height_lv2"
             android:layout_weight="1"
             android:button="@null"
+            android:background="@null"
             android:gravity="center"
             android:text="@string/topPost"
             android:textColor="@color/radio_textcolor_selector" />
@@ -83,6 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
+            android:background="@color/background_white"
             android:dividerHeight="@dimen/item_divider_height" />
     </FrameLayout>
 </RelativeLayout>

@@ -45,7 +45,7 @@
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/tv_skinrank"
-        android:background="@null">
+        android:background="@color/background_white">
 
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 

@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="49dp"
-    android:background="@color/background_green"
-    android:visibility="visible">
+    android:layout_height="wrap_content"
+    android:background="@null">
+
+    <TextView
+        android:id="@+id/tv_titlebar_title"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:gravity="center"
+        android:background="@color/background_green"
+        android:maxLength="8"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_title" />
 
     <View
         android:id="@+id/v_circle"
         android:background="@drawable/background_circle_usericon"
         android:layout_width="34dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="3dp"
-        android:layout_height="34dp"/>
-
+        android:layout_height="34dp"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginLeft="9.5dp"/>
 
     <ImageView
         android:id="@+id/btn_titlebar_left"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="73dp"
+        android:layout_height="49dp"
         android:clickable="true"
         android:paddingBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="30dp"
         android:paddingTop="8dp"
         android:src="@drawable/background_user_cover_default"
-        android:background="#00000000"
+        android:background="@null"
         android:layout_alignParentLeft="true"
-        android:scaleType="centerInside" />
+        android:scaleType="fitCenter" />
 
 
 
 
     <ImageView
         android:id="@+id/btn_titlebar_right"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="73dp"
+        android:layout_height="49dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:clickable="true"
@@ -44,18 +52,18 @@
         android:paddingTop="8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/btn_titlebar_share"
-        android:visibility="visible" />
+        android:background="@null"
+        android:visibility="gone" />
 
-
-    <TextView
-        android:id="@+id/tv_titlebar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:maxLength="8"
-        android:textColor="@color/font_white"
-        android:textSize="@dimen/font_title" />
+    <EditText
+        android:id="@+id/edt_titlebar_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_titlebar_title"
+        android:layout_marginTop="2dp"
+        android:hint="搜索"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

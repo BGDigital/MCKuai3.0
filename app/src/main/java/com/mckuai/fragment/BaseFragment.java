@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
@@ -273,6 +274,10 @@ public class BaseFragment extends android.support.v4.app.Fragment {
 
     public boolean onBackKeyPressed(){
         return false;
+    }
+
+    public void onRightButtonClicked(String searchContent){
+        Log.e("BF","标题栏右侧按钮");
     }
 
 }

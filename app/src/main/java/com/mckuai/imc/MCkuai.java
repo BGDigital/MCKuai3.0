@@ -38,7 +38,6 @@ public class MCkuai extends Application {
     private static MCkuai instance;
     private String mCacheDir;
     private Spinner spinner;
-    private ImageView btn_publish;
     private DisplayImageOptions circleOption;
     private DisplayImageOptions normalOption;
 
@@ -250,14 +249,6 @@ public class MCkuai extends Application {
 
     private boolean verificationTokenLife(Long birthday, long expires) {
         return (System.currentTimeMillis() - birthday) < expires * 1000;
-    }
-
-    public ImageView getBtn_publish() {
-        return btn_publish;
-    }
-
-    public void setBtn_publish(ImageView btn_publish) {
-        this.btn_publish = btn_publish;
     }
 
 

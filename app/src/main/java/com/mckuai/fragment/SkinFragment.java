@@ -48,12 +48,15 @@ import com.mckuai.widget.fabbutton.FabButton;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.Integer;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
 
 import cn.aigestudio.downloader.bizs.DLManager;
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
@@ -61,11 +64,10 @@ import cn.aigestudio.downloader.interfaces.DLTaskListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClickListener,View.OnClickListener {
+public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClickListener, View.OnClickListener {
     private ArrayList<SkinItem> skins;
-    private String[] fileds = {"DownNum", "InsertTime"};
-    private String mOrderFiled = fileds[0];
-    private int mOrderType = 1;
+    private String[] mOrderFileds = {"InsertTime", "DownNum"};
+    private int mOrderFiledIndex = 0;
     private boolean isShowDownloadSkins = false;
 
     private UltimateRecyclerView urv_list;
@@ -84,6 +86,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
     private Gson mGson;
 
     private DownloadProgressRecevier recevier;
+    private boolean isSearch = false;
 
     public SkinFragment() {
         setmTitle("皮肤");
@@ -146,18 +149,18 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             tv_mySkins = (TextView) view.findViewById(R.id.tv_myskins);
             tv_skinRank.setOnClickListener(this);
             tv_mySkins.setOnClickListener(this);
-            int width = app.sp2Px(getActivity(),20);
+            int width = app.sp2Px(getActivity(), 20);
             Drawable drawable = getResources().getDrawable(R.drawable.map_ranking);
 
             drawable.setBounds(0, 0, width, width);
             SpannableString spannableString = new SpannableString("icon 皮肤排行");
-            spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ImageSpan(drawable), 0, 4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             tv_skinRank.setText(spannableString);
 
             drawable = getResources().getDrawable(R.drawable.map_classification);
             drawable.setBounds(0, 0, width, width);
             spannableString = new SpannableString("icon 我的皮肤");
-            spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ImageSpan(drawable), 0, 4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             tv_mySkins.setText(spannableString);
 
             manager = new LinearLayoutManager(getActivity());
@@ -173,7 +176,6 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                 @Override
                 public void loadMore(int i, int i1) {
                     if (!isShowDownloadSkins && null != mPage && !mPage.EOF()) {
-                        loadData();
                         showData();
                     }
                 }
@@ -186,7 +188,6 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                 if (!isShowDownloadSkins && null != mPage) {
                     mPage.setPage(0);
                     skins.clear();
-                    loadData();
                     showData();
                 }
             }
@@ -237,16 +238,16 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             initView();
         }
         setFilterUI();
-        MainActivity.setRightButtonView(false);
-        if (isShowDownloadSkins){
+        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
+        if (isShowDownloadSkins) {
             ArrayList<SkinItem> downloadSkins = mSkinManager.getDownloadSkins();
-            if (null != downloadSkins && !downloadSkins.isEmpty()){
-                for (SkinItem item:downloadSkins){
+            if (null != downloadSkins && !downloadSkins.isEmpty()) {
+                for (SkinItem item : downloadSkins) {
                     item.setProgress(100);
                 }
             }
             mAdapter.setData(downloadSkins);
-        }else {
+        } else {
             if (null == skins || null == mPage) {
                 loadData();
                 return;
@@ -281,14 +282,15 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         }
 
         final RequestParams params = new RequestParams();
-        params.add("orderField", mOrderFiled);
-        params.add("orderType", mOrderType + "");
+        params.add("orderField", mOrderFileds[mOrderFiledIndex]);
+        params.add("orderType", "1");
 
         if (null != mPage) {
             params.add("page", mPage.getNextPage() + "");
         }
 
         final String url = getString(R.string.interface_domainName) + getString(R.string.interface_skinlist);
+        Log.e("skin", url + "&" + params.toString());
 
         mClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
@@ -311,6 +313,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                 super.onSuccess(statusCode, headers, response);
                 ParseResponse parse = new ParseResponse();
                 ResponseParseResult result = parse.parse(response);
+                isLoading = false;
                 if (result.isSuccess) {
                     cancleLodingToast(true);
                     parseData(result.data);
@@ -323,8 +326,6 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                     cancleLodingToast(false);
                     showNotification(3, result.msg, R.id.rl_skinRoot);
                 }
-                isLoading = false;
-
             }
 
             @Override
@@ -371,8 +372,8 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     @Override
     public void onAddButtonClicked(SkinItem item) {
-        if (null != item){
-            switch (item.getProgress()){
+        if (null != item) {
+            switch (item.getProgress()) {
                 case -1:
                     MobclickAgent.onEvent(getActivity(), "downloadSkin");
                     Intent intent = new Intent();
@@ -385,12 +386,12 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                     break;
                 case 100:
                     OptionUntil.setSkin(2);//配置成自定义皮肤
-                    if (null == mSkinManager){
+                    if (null == mSkinManager) {
                         mSkinManager = MCkuai.getInstance().getSkinManager();
                     }
                     mSkinManager.moveToGame(item);
                     MobclickAgent.onEvent(getActivity(), "startGame_skin");
-                    if(!GameUntil.startGame(getActivity(),11)){
+                    if (!GameUntil.startGame(getActivity(), 11)) {
                         downloadGame(11);
                     }
                     break;
@@ -402,13 +403,25 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tv_skinrank:
-                mOrderType = Math.abs(mOrderType - 1);
+                if (0 == mOrderFiledIndex) {
+                    mOrderFiledIndex = 1;
+                } else {
+                    mOrderFiledIndex = 0;
+                }
+                if (null != skins) {
+                    skins.clear();
+                    mPage.setPage(0);
+                }
                 setFilterUI();
                 loadData();
                 break;
             case R.id.tv_myskins:
+                mOrderFiledIndex = 0;
+                skins.clear();
+                skins = null;
+                mPage.setPage(0);
                 setFilterUI();
                 isShowDownloadSkins = !isShowDownloadSkins;
                 showData();
@@ -416,20 +429,67 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         }
     }
 
-    private void setFilterUI(){
-        if (0 == mOrderType){
+    @Override
+    public void onRightButtonClicked(String searchContent) {
+        if (null != searchContent && !searchContent.isEmpty()) {
+            isSearch = true;
+            String url = getString(R.string.interface_domainName) + getString(R.string.interface_map_search);
+            RequestParams params = new RequestParams();
+            params.put("type", "skin");
+            params.put("key", searchContent);
+            mClient.cancelRequests(getActivity(), true);
+            mClient.post(url, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    //super.onSuccess(statusCode, headers, response);
+                    ParseResponse parse = new ParseResponse();
+                    ResponseParseResult result = parse.parse(response);
+                    isLoading = false;
+                    if (result.isSuccess) {
+                        cancleLodingToast(true);
+                        parseData(result.data);
+                        showData();
+                        if (null != mPage && 1 == mPage.getPage()) {
+                            // cacheData(url, params, result.data);
+                        }
+                    } else {
+                        cancleLodingToast(false);
+                        showNotification(3, result.msg, R.id.rl_skinRoot);
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onCancel() {
+                    super.onCancel();
+                    isLoading = false;
+                }
+            });
+        }
+    }
+
+    private void setFilterUI() {
+        if (isSearch) {
+            tv_title.setText("皮肤-搜索");
+        } else if (0 != mOrderFiledIndex) {
             tv_title.setText("皮肤排行");
-        }else {
-            if (isShowDownloadSkins){
+        } else {
+            if (isShowDownloadSkins) {
                 tv_title.setText("我的皮肤");
                 urv_list.enableDefaultSwipeRefresh(false);
-            }
-            else {
+            } else {
                 tv_title.setText("资源");
                 urv_list.enableDefaultSwipeRefresh(true);
-//                Drawable drawable = getResources().getDrawable(R.drawable.map_classification);
-//                drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
-//                tv_mySkins.setCompoundDrawables(drawable,null,null,null);
             }
         }
     }
@@ -446,7 +506,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.e("","更新成功！");
+                Log.e("", "更新成功！");
             }
 
             @Override
@@ -458,11 +518,11 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
 
     }
 
-    private void downloadGame(final int version){
+    private void downloadGame(final int version) {
         MobclickAgent.onEvent(getActivity(), "showDownloadGame");
         String url = "";
         String msgText = null;
-        switch (version){
+        switch (version) {
             case 10:
                 url = "http://softdown.mckuai.com:8081/mcpe0.10.5.apk";
                 msgText = "此服务器需要安装0.10版我的世界。\n是否下载安装？";
@@ -481,7 +541,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         }, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MobclickAgent.onEvent(getActivity(),"downloadGame");
+                MobclickAgent.onEvent(getActivity(), "downloadGame");
                 DLManager.getInstance(getActivity()).dlStart(downloadUrl, MCkuai.getInstance().getGameDownloadDir(), new DLTaskListener() {
                     @Override
                     public void onStart(String fileName, String url) {
@@ -505,7 +565,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         });
     }
 
-    private void showError(final int version,String msg){
+    private void showError(final int version, String msg) {
         showAlert("下载失败", "下载游戏失败，原因：" + msg + "\n是否重新下载？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -519,7 +579,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
         });
     }
 
-    private void installGame(final File file){
+    private void installGame(final File file) {
         showAlert("安装游戏", "游戏下载完成，是否立即安装？", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -531,5 +591,19 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                 GameUntil.installGame(getActivity(), file.getPath());
             }
         });
+    }
+
+    @Override
+    public boolean onBackKeyPressed() {
+        if (isSearch) {
+            isSearch = false;
+            if (null != skins) {
+                skins.clear();
+                mPage.setPage(0);
+            }
+            showData();
+            return true;
+        }
+        else return super.onBackKeyPressed();
     }
 }

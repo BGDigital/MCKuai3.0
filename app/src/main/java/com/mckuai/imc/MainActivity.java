@@ -1,12 +1,18 @@
 package com.mckuai.imc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,8 +20,6 @@ import android.widget.TextView;
 
 import com.mckuai.adapter.FragmentAdapter;
 import com.mckuai.fragment.MCSildingMenu;
-import com.mckuai.utils.CircleBitmapDisplayer;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
@@ -32,7 +36,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static TextView tv_titlebar_title;
     private static ImageView btn_titlebar_left;
     private static ImageView btn_titlebar_right;
-    private static View v_circle;
+    private EditText edt_titlebar_search;
+    //    private static View v_circle;
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
 
@@ -40,7 +45,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private FragmentAdapter adapter;
     private boolean isFragmentChanged = false;
 
-    private static View.OnClickListener listener_titlebar_rightbtn;
+    private static int btn_right_action_type = 0;
+
+//    private static View.OnClickListener listener_titlebar_rightbtn;
 
     @Override
 
@@ -76,17 +83,31 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         rb_navigation_resource = (RadioButton) findViewById(R.id.rb_navigation_resource);
         rb_navigation_server = (RadioButton) findViewById(R.id.rb_navigation_server);
         rb_navigation_forum = (RadioButton) findViewById(R.id.rb_navigation_forum);
-
+        edt_titlebar_search = (EditText) findViewById(R.id.edt_titlebar_search);
 
         tv_titlebar_title = (TextView) findViewById(R.id.tv_titlebar_title);
         btn_titlebar_left = (ImageView) findViewById(R.id.btn_titlebar_left);
         btn_titlebar_right = (ImageView) findViewById(R.id.btn_titlebar_right);
-        v_circle = findViewById(R.id.v_circle);
+        btn_titlebar_right.setVisibility(View.GONE);
 
         ((RadioGroup) findViewById(R.id.rg_navigation)).setOnCheckedChangeListener(this);
-        application.setBtn_publish(btn_titlebar_right);
         btn_titlebar_right.setOnClickListener(this);
         btn_titlebar_left.setOnClickListener(this);
+        edt_titlebar_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    if (null != edt_titlebar_search.getText() && 0 < edt_titlebar_search.getText().length()) {
+                        /*adapter.currentFragment.onRightButtonClicked(edt_titlebar_search.getText().toString());
+                        edt_titlebar_search.setText("");
+                        edt_titlebar_search.setVisibility(View.GONE);*/
+                        callSearch();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         changeCheckedButton(0);
     }
 
@@ -94,9 +115,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         if (application.isLogin()) {
             ImageLoader loader = ImageLoader.getInstance();
             String userCover = application.mUser.getHeadImg();
-            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(false).cacheOnDisk(true).displayer(new CircleBitmapDisplayer()).build();
             if (null != userCover && 10 < userCover.length()) {
-                loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left, options);
+                loader.displayImage(application.mUser.getHeadImg(), btn_titlebar_left, application.getCircleOption());
             }
         } else {
             btn_titlebar_left.setImageResource(R.drawable.background_user_cover_default);
@@ -199,7 +219,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             });
             return true;
         } else {
-            return false;
+            return true;
         }
     }
 
@@ -218,7 +238,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
+        if (2 == state) {
+            btn_titlebar_right.setVisibility(View.GONE);
+        }
     }
 
     private void changeCheckedButton(int position) {
@@ -259,10 +281,38 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 }
                 break;
             case R.id.btn_titlebar_right:
-                if (null != listener_titlebar_rightbtn) {
-                    listener_titlebar_rightbtn.onClick(v);
+                switch (btn_right_action_type) {
+                    case 1:
+                        adapter.currentFragment.onRightButtonClicked(null);
+                        break;
+                    default:
+                        callSearch();
+                        break;
                 }
                 break;
+        }
+    }
+
+    private void callSearch() {
+        if (edt_titlebar_search.getVisibility() == View.GONE) {
+            edt_titlebar_search.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) edt_titlebar_search.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm.isActive()) {
+                imm.showSoftInputFromInputMethod(edt_titlebar_search.getApplicationWindowToken(), 0);
+            }
+        } else {
+            if (0 < edt_titlebar_search.getText().length()) {
+                edt_titlebar_search.setVisibility(View.GONE);
+                adapter.currentFragment.onRightButtonClicked(edt_titlebar_search.getText().toString());
+                edt_titlebar_search.setText("");
+                InputMethodManager imm = (InputMethodManager) edt_titlebar_search.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive()) {
+                    imm.hideSoftInputFromWindow(edt_titlebar_search.getApplicationWindowToken(), 0);
+                }
+            } else {
+                edt_titlebar_search.setVisibility(View.GONE);
+                Log.e("Main", "搜索内容为空");
+            }
         }
     }
 
@@ -294,12 +344,19 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         return tv_titlebar_title;
     }
 
-
-    public static void setRightButtonView(int resId, View.OnClickListener listener) {
-        if (null != listener && 0 < resId) {
+    /**
+     * 设置标题栏右侧按钮的图片和行为
+     *
+     * @param action_type 行为类型，0为搜索，其它为点击
+     * @param resId       按钮显示的图片的资源id
+     */
+    public static void setRightButtonView(int action_type, int resId) {
+        if (0 < resId) {
+            btn_right_action_type = action_type;
             btn_titlebar_right.setImageResource(resId);
-            listener_titlebar_rightbtn = listener;
             btn_titlebar_right.setVisibility(View.VISIBLE);
+        } else {
+            btn_titlebar_right.setVisibility(View.GONE);
         }
     }
 

@@ -70,16 +70,4 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
         super.setPrimaryItem(container, position, object);
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        if (0 != type){
-            switch (position){
-                case 1:
-                    return "地图";
-                default: return "皮肤";
-            }
-        }
-        else
-        return super.getPageTitle(position);
-    }
 }

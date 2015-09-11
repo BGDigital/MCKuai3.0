@@ -10,7 +10,7 @@
         android:id="@+id/l1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_Grey"
+        android:background="@null"
         android:orientation="horizontal"
         android:padding="5dp">
 
@@ -61,22 +61,12 @@
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/map_ed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/l1"
-        android:hint="搜索"
-        android:imeOptions="actionSearch"
-        android:singleLine="true"
-        android:visibility="gone" />
-
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/urv_mapList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/map_ed"
-        android:background="@null">
+        android:layout_below="@id/l1"
+        android:background="@color/background_white">
     </com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
 
     <RelativeLayout
@@ -103,6 +93,7 @@
             android:layout_marginTop="20dp"
             android:layout_toLeftOf="@+id/center"
             android:gravity="center"
+            android:background="@null"
             android:orientation="horizontal">
 
             <ImageView
@@ -125,6 +116,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="21dp"
             android:layout_toRightOf="@+id/center"
+            android:background="@null"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -148,6 +140,7 @@
             android:layout_below="@id/cf_l1"
             android:layout_marginTop="@dimen/padding_right_button_left"
             android:layout_toLeftOf="@+id/center"
+            android:background="@null"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -173,6 +166,7 @@
             android:layout_below="@id/cf_l2"
             android:layout_marginTop="@dimen/padding_right_button_left"
             android:layout_toRightOf="@+id/center"
+            android:background="@null"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -197,6 +191,7 @@
             android:layout_below="@id/cf_l3"
             android:layout_marginTop="@dimen/padding_right_button_left"
             android:layout_toLeftOf="@+id/center"
+            android:background="@null"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -221,6 +216,7 @@
             android:layout_below="@id/cf_l4"
             android:layout_marginTop="@dimen/padding_right_button_left"
             android:layout_toRightOf="@+id/center"
+            android:background="@null"
             android:gravity="center"
             android:orientation="horizontal">
 

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.google.gson.Gson;
@@ -24,6 +23,7 @@ import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.Post;
 import com.mckuai.bean.PostBaen;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.PublishPostActivity;
 import com.mckuai.imc.R;
 import com.umeng.analytics.MobclickAgent;
@@ -58,7 +58,6 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
     private boolean isReadyToShow = false;
     private ForumInfo curForum;
     private boolean isAllowedLoadMore = false;
-    private ImageView btn_publish = application.getBtn_publish();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +78,9 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         if (null == mPostListView) {
             initView();
         }
-        showForums();
+        if (getUserVisibleHint()) {
+            showForums();
+        }
     }
 
     @Override
@@ -123,11 +124,17 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         mPostListView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page.setPage(0);
-                if (null != mPosts) {
-                    mPosts.clear();
+                if (null != mForums && !mForums.isEmpty()) {
+                    page.setPage(0);
+                    if (null != mPosts) {
+                        mPosts.clear();
+                    }
+                    loadPostList(curForum);
                 }
-                loadPostList(curForum);
+                else {
+                    showNotification(1, "加载版块列表!", R.id.rl_post_root);
+                    loadForumList();
+                }
             }
         });
         mPostListView.enableLoadmore();
@@ -142,10 +149,7 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
 
     private void showForums()
     {
-        if (application.fragmentIndex != 3){
-            return;
-        }
-        btn_publish.setOnClickListener(this);
+        MainActivity.setRightButtonView(1,R.drawable.btn_post_publish);
         if (null != mForums &&  !mForums.isEmpty())
         {
             if (null == mForumAdapter)
@@ -161,8 +165,6 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
             {
                 curForum = mForums.get(0);
                 loadPostList(curForum);
-//				publishPost.setVisibility(View.GONE);
-//                showForums();
             }
         } else
         {
@@ -419,6 +421,21 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
 
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onRightButtonClicked(String searchContent) {
+        MobclickAgent.onEvent(getActivity(), "showPublishPost");
+        if (null != mForums && !mForums.isEmpty()) {
+            Intent intent = new Intent(getActivity(), PublishPostActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("FORUM_LIST",mForums);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        else {
+            Log.e(TAG,"未获取到版块列表!");
         }
     }
 }

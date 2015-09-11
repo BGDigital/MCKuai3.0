@@ -1,16 +1,21 @@
 package com.mckuai.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -25,6 +30,7 @@ import com.mckuai.bean.PageInfo;
 import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.bean.ServerBean;
 import com.mckuai.imc.MCkuai;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 import com.mckuai.imc.ServerDetailsActivity;
 import com.mckuai.mctools.WorldUtil.GameUntil;
@@ -33,6 +39,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 import org.apache.http.Header;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,12 +53,13 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private View view;
     private UltimateRecyclerView serverListView;
     private UltimateRecyclerView serverTypeListView;
-    //private RelativeLayout rl_serverTypeLayout;
-    //private LinearLayout ll_filter;
-    private Spinner spinner;
+    private TextView tv_serverRank;
+    private TextView tv_serverType;
+
     private AsyncHttpClient client;
     private MCkuai application;
-    private boolean isOrderByDownload = false;
+    private String[] mOrderFileds = {"UpdateTime","onlineNum"};
+    private int mOrderFiledIndex = 0;
     private String[] type;
     private String serverType;
     private static  final  String TAG = "ServerFragment";
@@ -60,7 +68,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private Gson gson;
     private ServerAdapter adapter;
     private ServerTypeAdapter typeAdapter;
-    private boolean isLoadmoreAlowed = false;
+    private boolean isSearch = false;
 
 
     @Override
@@ -95,9 +103,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             }
             showData();
         }
-        else {
-            isOrderByDownload=false;
-        }
     }
 
     @Override
@@ -109,11 +114,25 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private void initView(){
         serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
         serverTypeListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverTypeList);
-//        rl_serverTypeLayout = (RelativeLayout) view.findViewById(R.id.rl_serverType);
-//        ll_filter = (LinearLayout)view.findViewById(R.id.ll_filter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
-        serverListView.setLayoutManager(manager);
+        tv_serverRank = (TextView) view.findViewById(R.id.tv_server_rank);
+        tv_serverType = (TextView) view.findViewById(R.id.tv_server_type);
 
+        int width = application.sp2Px(getActivity(),20);
+        Drawable drawable = getResources().getDrawable(R.drawable.map_ranking);
+
+        drawable.setBounds(0, 0, width, width);
+        SpannableString spannableString = new SpannableString("icon 服务器排行");
+        spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        tv_serverRank.setText(spannableString);
+
+        drawable = getResources().getDrawable(R.drawable.map_classification);
+        drawable.setBounds(0, 0, width, width);
+        spannableString = new SpannableString("icon 服务器类型");
+        spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        tv_serverType.setText(spannableString);
+
+        serverListView.setLayoutManager(manager);
         adapter = new ServerAdapter();
         adapter.setOnItemClickListener(this);
         adapter.SetOnServerAddListener(this);
@@ -160,43 +179,17 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         });
         typeAdapter.setData(getResources().getStringArray(R.array.server_Type));
         serverTypeListView.setAdapter(typeAdapter);
-
-        /*spinner = application.getSpinner();
-        String[] items = getResources().getStringArray(R.array.server_Type);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, items);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.server_Type, R.layout.item_spinner);
-        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (0 == position) {
-                    serverType = null;
-                } else {
-                    serverType = type[position].trim();
-                }
-                if (null != serverInfos) {
-                    serverInfos.clear();
-                }
-                page = null;
-                loadData();
-                rl_serverTypeLayout.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
         view.findViewById(R.id.tv_server_rank).setOnClickListener(this);
         view.findViewById(R.id.tv_server_type).setOnClickListener(this);
 
     }
 
     private void showData(){
-        if (!isShowCatche &&(isLoading || 2 != application.fragmentIndex)){
+        if (!isShowCatche &&isLoading){
             return;
         }
+
+        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
 
         if (null == serverInfos){
             loadData();
@@ -238,13 +231,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
 
 
         final RequestParams params = new RequestParams();
-        //按在线人数排序
-        if (isOrderByDownload){
-            params.put("orderField","onlineNum");
-        }
-        else {
-            params.put("orderField","UpdateTime");
-        }
+        params.put("orderField",mOrderFileds[mOrderFiledIndex]);
         //类型
         if (null != serverType){
             params.put("kinds",serverType);
@@ -302,6 +289,52 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         });
     }
 
+    @Override
+    public void onRightButtonClicked(String searchContent) {
+        if (null != searchContent && !searchContent.isEmpty()){
+            isSearch = true;
+            String url = getString(R.string.interface_domainName) + getString(R.string.interface_map_search);
+            final RequestParams params = new RequestParams();
+            params.put("type", "server");
+            params.put("key", searchContent);
+            client.cancelRequests(getActivity(), true);
+            client.post(url, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    //super.onSuccess(statusCode, headers, response);
+                    ParseResponse parse = new ParseResponse();
+                    ResponseParseResult result = parse.parse(response);
+                    isLoading = false;
+                    if (result.isSuccess) {
+                        cancleLodingToast(true);
+                        parseData(result.data);
+                        showData();
+                    } else {
+                        cancleLodingToast(false);
+                        showNotification(3, result.msg, R.id.rl_skinRoot);
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    isLoading = false;
+                }
+
+                @Override
+                public void onCancel() {
+                    super.onCancel();
+                    isLoading = false;
+                }
+            });
+        }
+    }
+
     private void parseData(ResponseParseResult result){
         if (null == gson){
             gson =new Gson();
@@ -356,7 +389,7 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
         switch (v.getId()){
             case R.id.tv_server_type:
                 MobclickAgent.onEvent(getActivity(),"serverType");
-                isOrderByDownload = false;
+                mOrderFiledIndex = 0;
                 if (serverTypeListView.getVisibility() == View.GONE){
                     showServerType();
                 }
@@ -366,8 +399,12 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.tv_server_rank:
                 MobclickAgent.onEvent(getActivity(),"serverRank");
-                isOrderByDownload = !isOrderByDownload;
-                //setFiterLayoutView(!isOrderByDownload);
+                if (0 == mOrderFiledIndex){
+                    mOrderFiledIndex = 1;
+                }
+                else {
+                    mOrderFiledIndex = 0;
+                }
                 if (null != page){
                 page.setPage(0);
                  }
@@ -474,5 +511,19 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             }
         });
 
+    }
+
+    @Override
+    public boolean onBackKeyPressed() {
+        if (isSearch){
+            isLoading = false;
+            if (null != serverInfos) {
+                page.setPage(0);
+                serverInfos.clear();
+                serverInfos = null;
+            }
+            showData();
+        }
+        return super.onBackKeyPressed();
     }
 }
