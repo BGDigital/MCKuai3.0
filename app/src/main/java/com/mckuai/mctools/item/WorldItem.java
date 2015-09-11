@@ -13,6 +13,7 @@ import com.mckuai.mctools.item.entity.Player;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -124,6 +125,14 @@ public class WorldItem implements Serializable{
 
         if (null != level){
             level.setTime(time);
+            return saveLevelData();
+        }
+        return false;
+    }
+
+    public boolean resetLastPlayTime(){
+        if (null != level){
+            level.setLastPlayed(System.currentTimeMillis() / 1000);
             return saveLevelData();
         }
         return false;
