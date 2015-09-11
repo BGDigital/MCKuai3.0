@@ -2,7 +2,6 @@ package com.mckuai.mctools.WorldUtil;
 
 import android.util.Log;
 
-import com.mckuai.io.db.LevelDBConverter;
 import com.mckuai.mctools.InventorySlot;
 import com.mckuai.mctools.Level;
 import com.mckuai.mctools.item.WorldItem;
@@ -180,7 +179,24 @@ public class MCWorldUtil {
                         }
                         break;
                 }
-                worlds.add(worldItem);
+                if (worlds.isEmpty()){
+                    worlds.add(worldItem);
+                }
+                else {
+                    boolean inster = false;
+                    for (int i = 0;i < worlds.size();i++) {
+                        if (worldItem.getLevel().getLastPlayed() > worlds.get(i).getLevel().getLastPlayed()){
+                            worlds.add(i,worldItem);
+                            inster = true;
+                            break;
+                        }
+                    }
+                    if (!inster){
+                        worlds.add(worldItem);
+                    }
+                }
+
+
             }
         }
 

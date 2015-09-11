@@ -87,7 +87,6 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>
 	{
 		private RadioButton mbackground;
 		private TextView mtop;
-		private TextView mbottom;
 
 		/**
 		 * @param itemView
@@ -98,7 +97,6 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>
 			// TODO Auto-generated constructor stub
 			mbackground = (RadioButton) itemView.findViewById(R.id.rb_background);
 			mtop = (TextView) itemView.findViewById(R.id.tv_top);
-			mbottom = (TextView) itemView.findViewById(R.id.tv_bottom);
 			mbackground.setOnClickListener(new OnClickListener()
 			{
 				@Override
@@ -154,26 +152,23 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>
 		if (checkedForumId == forum.getId())
 		{
 			arg0.mbackground.setChecked(true);
-			arg0.mbottom.setTextColor(mContext.getResources().getColor(R.color.font_white));
 			arg0.mtop.setTextColor(mContext.getResources().getColor(R.color.font_white));
 		} else
 		{
 			arg0.mbackground.setChecked(false);
-			arg0.mbottom.setTextColor(mContext.getResources().getColor(R.color.forum_unselected));
 			arg0.mtop.setTextColor(mContext.getResources().getColor(R.color.forum_unselected));
 		}
 
-		int length = forum.getName().length();
-		if (3 < length)
+		String name = forum.getName();
+		int length = name.length();
+		if (1 < length)
 		{
 			int top = length / 2 + length % 2;
-			arg0.mbottom.setVisibility(View.VISIBLE);
-			arg0.mtop.setText(forum.getName().subSequence(0, top));
-			arg0.mbottom.setText(forum.getName().subSequence(top, length));
+			name = name.substring(0,top) + "\n"+name.substring(top,length);
+			arg0.mtop.setText(name);
 		} else
 		{
-			arg0.mbottom.setVisibility(View.GONE);
-			arg0.mtop.setText(forum.getName());
+			arg0.mtop.setText(name);
 		}
 	}
 

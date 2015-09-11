@@ -4,6 +4,8 @@
     android:layout_height="@dimen/forumview_height"
     android:layout_marginLeft="@dimen/com_margin"
     android:layout_marginRight="@dimen/com_margin"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
     android:background="@null" >
 
     <RadioButton
@@ -14,32 +16,16 @@
         android:button="@null"
         android:checked="false" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:background="@null"
-        android:gravity="center"
-        android:orientation="vertical" >
-
         <TextView
             android:id="@+id/tv_top"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/forumview_height"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignBottom="@id/v_center"
             android:gravity="center"
-            android:singleLine="true"
-            android:text="111"
+            android:lines="2"
+            android:background="@null"
             android:textSize="@dimen/font_dimen_hint" />
 
-        <TextView
-            android:id="@+id/tv_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_top"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="11111"
-            android:textSize="@dimen/font_dimen_hint" />
-    </LinearLayout>
 
 </RelativeLayout>

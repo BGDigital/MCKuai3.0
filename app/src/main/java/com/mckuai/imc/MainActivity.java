@@ -19,12 +19,19 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.mckuai.adapter.FragmentAdapter;
+import com.mckuai.fragment.BaseFragment;
+import com.mckuai.fragment.ForumFragment;
+import com.mckuai.fragment.GameEditerFragment;
 import com.mckuai.fragment.MCSildingMenu;
+import com.mckuai.fragment.ResourceFragment;
+import com.mckuai.fragment.ServerFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
 import com.mckuai.widget.slidingmenu.SlidingMenu;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
@@ -37,7 +44,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static ImageView btn_titlebar_left;
     private static ImageView btn_titlebar_right;
     private EditText edt_titlebar_search;
-    //    private static View v_circle;
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
 
@@ -47,7 +53,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private static int btn_right_action_type = 0;
 
-//    private static View.OnClickListener listener_titlebar_rightbtn;
+    private ArrayList<BaseFragment> list;
 
     @Override
 
@@ -98,9 +104,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     if (null != edt_titlebar_search.getText() && 0 < edt_titlebar_search.getText().length()) {
-                        /*adapter.currentFragment.onRightButtonClicked(edt_titlebar_search.getText().toString());
-                        edt_titlebar_search.setText("");
-                        edt_titlebar_search.setVisibility(View.GONE);*/
                         callSearch();
                     }
                     return true;
@@ -125,7 +128,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private void initPage() {
         if (null == adapter) {
-            adapter = new FragmentAdapter(getSupportFragmentManager());
+            list = new ArrayList<>(4);
+            list.add(new GameEditerFragment());
+            list.add(new ResourceFragment());
+            list.add(new ServerFragment());
+            list.add(new ForumFragment());
+            adapter = new FragmentAdapter(getSupportFragmentManager(),list);
         }
         vp.setAdapter(adapter);
         vp.setOnPageChangeListener(this);

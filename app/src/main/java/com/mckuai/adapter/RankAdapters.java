@@ -23,7 +23,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -68,7 +67,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_map, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override

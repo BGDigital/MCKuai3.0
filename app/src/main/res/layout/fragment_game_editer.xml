@@ -18,13 +18,10 @@
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:text="修改游戏配置"
+        android:background="@color/background_white"
         android:textColor="@color/secondary" />
 
-    <View
-        android:id="@+id/v_center"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true"/>
+
 
 
     <ImageButton
@@ -64,206 +61,224 @@
         android:background="@drawable/background_mapname_shape"
         android:padding="5dp"
         android:singleLine="true"
-        android:text="点击 地图 获取精彩地图！"
         android:textColor="@color/font_white" />
 
-    <!-- 修改游戏模式 -->
-    <RadioButton
-        android:id="@+id/btn_mod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/v_center"
-        android:layout_below="@id/tv_changeProfile"
-        android:background="@drawable/icon_gamemode_selector"
-        android:button="@null"
-        android:layout_margin="5dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/btn_mod"
-        android:layout_alignLeft="@id/btn_mod"
-        android:layout_margin="10dp"
-        android:background="@null"
-        android:text="点击切换"
-        android:textColor="@color/font_gameedit_hint" />
-    <TextView
-        android:id="@+id/tv_mod"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/btn_mod"
-        android:layout_alignRight="@id/btn_mod"
-        android:layout_alignBottom="@id/btn_mod"
-        android:background="@null"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:lines="1"
-        android:text="@string/game_mode"
-        android:button="@null"
-        android:textColor="@color/font_white"
-        />
-    <TextView
-        android:id="@+id/tv_mod_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/btn_mod"
-        android:layout_alignRight="@id/btn_mod"
-        android:layout_above="@id/tv_mod"
-        android:background="@null"
-        android:gravity="center"
-        android:textSize="@dimen/font_dimen_big"
-        android:textColor="@color/font_white"
-        android:text="@string/mode_create"
-        />
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_below="@id/tv_changeProfile"
+       android:layout_alignParentBottom="true"
+       android:background="@color/background_gray"
+       >
 
-    <!-- 修改游戏日夜 -->
-    <RadioButton
-        android:id="@+id/btn_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_changeProfile"
-        android:layout_toRightOf="@id/v_center"
-        android:background="@drawable/icon_gametime_selector"
-        android:button="@null"
-        android:layout_margin="5dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/btn_time"
-        android:layout_alignLeft="@id/btn_time"
-        android:layout_margin="10dp"
-        android:background="@null"
-        android:text="点击切换"
-        android:textColor="@color/font_gameedit_hint" />
+       <View
+           android:id="@+id/v_center"
+           android:layout_width="0dp"
+           android:layout_height="0dp"
+           android:layout_centerInParent="true"/>
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/btn_time"
-        android:layout_alignRight="@id/btn_time"
-        android:layout_alignBottom="@id/btn_time"
-        android:background="@null"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:text="@string/game_time"
-        android:textColor="@color/font_white"
+       <!-- 修改游戏模式 -->
+       <RadioButton
+           android:id="@+id/btn_mod"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toLeftOf="@id/v_center"
+           android:layout_above="@id/v_center"
+           android:background="@drawable/icon_gamemode_selector"
+           android:button="@null"
+           android:layout_margin="10dp"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@id/btn_mod"
+           android:layout_alignLeft="@id/btn_mod"
+           android:layout_margin="10dp"
+           android:background="@null"
+           android:text="点击切换"
+           android:textColor="@color/font_gameedit_hint" />
+       <TextView
+           android:id="@+id/tv_mod"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/btn_mod"
+           android:layout_alignRight="@id/btn_mod"
+           android:layout_alignBottom="@id/btn_mod"
+           android:background="@null"
+           android:gravity="center"
+           android:layout_marginBottom="10dp"
+           android:lines="1"
+           android:text="@string/game_mode"
+           android:button="@null"
+           android:textColor="@color/font_white"
+           />
+       <TextView
+           android:id="@+id/tv_mod_value"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/btn_mod"
+           android:layout_alignRight="@id/btn_mod"
+           android:layout_above="@id/tv_mod"
+           android:background="@null"
+           android:gravity="center"
+           android:textSize="@dimen/font_dimen_big"
+           android:textColor="@color/font_white"
+           android:text="@string/mode_create"
+           />
 
-        />
-    <TextView
-        android:id="@+id/tv_time_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_time"
-        android:layout_alignRight="@id/tv_time"
-        android:layout_above="@id/tv_time"
-        android:background="@null"
-        android:gravity="center"
-        android:textSize="@dimen/font_dimen_big"
-        android:textColor="@color/font_white"
-        android:text="@string/time_day"
-        />
+       <!-- 修改游戏日夜 -->
+       <RadioButton
+           android:id="@+id/btn_time"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toRightOf="@id/v_center"
+           android:layout_above="@id/v_center"
+           android:background="@drawable/icon_gametime_selector"
+           android:button="@null"
+           android:layout_margin="10dp"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@id/btn_time"
+           android:layout_alignLeft="@id/btn_time"
+           android:layout_margin="10dp"
+           android:background="@null"
+           android:text="点击切换"
+           android:textColor="@color/font_gameedit_hint" />
 
-    <!-- 修改游戏视角 -->
-    <RadioButton
-        android:id="@+id/btn_thirdpersonvisual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_mod"
-        android:layout_toLeftOf="@id/v_center"
-        android:background="@drawable/icon_thirdview_selector"
-        android:button="@null"
-        android:layout_margin="5dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/btn_thirdpersonvisual"
-        android:layout_alignLeft="@id/btn_thirdpersonvisual"
-        android:layout_margin="10dp"
-        android:background="@null"
-        android:text="点击切换"
-        android:textColor="@color/font_gameedit_hint" />
+       <TextView
+           android:id="@+id/tv_time"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/btn_time"
+           android:layout_alignRight="@id/btn_time"
+           android:layout_alignBottom="@id/btn_time"
+           android:background="@null"
+           android:gravity="center"
+           android:layout_marginBottom="10dp"
+           android:text="@string/game_time"
+           android:textColor="@color/font_white"
 
-    <TextView
-        android:id="@+id/tv_thirdperson"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/btn_thirdpersonvisual"
-        android:layout_alignRight="@id/btn_thirdpersonvisual"
-        android:layout_alignBottom="@id/btn_thirdpersonvisual"
-        android:background="@null"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:text="@string/game_visual"
-        android:textColor="@color/font_white"
-        />
-    <TextView
-        android:id="@+id/tv_thirdperson_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_thirdperson"
-        android:layout_alignRight="@id/tv_thirdperson"
-        android:layout_above="@id/tv_thirdperson"
-        android:background="@null"
-        android:gravity="center"
-        android:textSize="@dimen/font_dimen_big"
-        android:textColor="@color/font_white"
-        android:text="@string/thirdperson_disable"
-        />
+           />
+       <TextView
+           android:id="@+id/tv_time_value"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/tv_time"
+           android:layout_alignRight="@id/tv_time"
+           android:layout_above="@id/tv_time"
+           android:background="@null"
+           android:gravity="center"
+           android:textSize="@dimen/font_dimen_big"
+           android:textColor="@color/font_white"
+           android:text="@string/time_day"
+           />
 
-    <!-- 修改游戏日夜 -->
-    <RadioButton
-        android:id="@+id/btn_backpack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_time"
-        android:layout_toRightOf="@id/v_center"
-        android:background="@drawable/icon_package"
-        android:button="@null"
-        android:layout_margin="5dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/btn_backpack"
-        android:layout_alignLeft="@id/btn_backpack"
-        android:layout_margin="10dp"
-        android:background="@null"
-        android:text="点击切换"
-        android:textColor="@color/font_gameedit_hint" />
+       <!-- 修改游戏视角 -->
+       <RadioButton
+           android:id="@+id/btn_thirdpersonvisual"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/v_center"
+           android:layout_toLeftOf="@id/v_center"
+           android:background="@drawable/icon_thirdview_selector"
+           android:button="@null"
+           android:layout_margin="10dp"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@id/btn_thirdpersonvisual"
+           android:layout_alignLeft="@id/btn_thirdpersonvisual"
+           android:layout_margin="10dp"
+           android:background="@null"
+           android:text="点击切换"
+           android:textColor="@color/font_gameedit_hint" />
 
-    <TextView
-        android:id="@+id/tv_backpack"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/btn_backpack"
-        android:layout_alignRight="@id/btn_backpack"
-        android:layout_alignBottom="@id/btn_backpack"
-        android:background="@null"
-        android:gravity="center"
-        android:layout_marginBottom="10dp"
-        android:text="@string/game_backpack"
-        android:textColor="@color/font_white"
-        />
-    <TextView
-        android:id="@+id/tv_backpack_value"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_backpack"
-        android:layout_alignRight="@id/tv_backpack"
-        android:layout_above="@id/tv_backpack"
-        android:background="@null"
-        android:gravity="center"
-        android:textSize="@dimen/font_dimen_big"
-        android:textColor="@color/font_white"
-        android:text="没有物品"
-        />
+       <TextView
+           android:id="@+id/tv_thirdperson"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/btn_thirdpersonvisual"
+           android:layout_alignRight="@id/btn_thirdpersonvisual"
+           android:layout_alignBottom="@id/btn_thirdpersonvisual"
+           android:background="@null"
+           android:gravity="center"
+           android:layout_marginBottom="10dp"
+           android:text="@string/game_visual"
+           android:textColor="@color/font_white"
+           />
+       <TextView
+           android:id="@+id/tv_thirdperson_value"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/tv_thirdperson"
+           android:layout_alignRight="@id/tv_thirdperson"
+           android:layout_above="@id/tv_thirdperson"
+           android:background="@null"
+           android:gravity="center"
+           android:textSize="@dimen/font_dimen_big"
+           android:textColor="@color/font_white"
+           android:text="@string/thirdperson_disable"
+           />
+
+       <!-- 修改游戏日夜 -->
+       <RadioButton
+           android:id="@+id/btn_backpack"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@id/v_center"
+           android:layout_toRightOf="@id/v_center"
+           android:background="@drawable/icon_package"
+           android:button="@null"
+           android:layout_margin="10dp"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@id/btn_backpack"
+           android:layout_alignLeft="@id/btn_backpack"
+           android:layout_margin="10dp"
+           android:background="@null"
+           android:text="点击切换"
+           android:textColor="@color/font_gameedit_hint" />
+
+       <TextView
+           android:id="@+id/tv_backpack"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/btn_backpack"
+           android:layout_alignRight="@id/btn_backpack"
+           android:layout_alignBottom="@id/btn_backpack"
+           android:background="@null"
+           android:gravity="center"
+           android:layout_marginBottom="10dp"
+           android:text="@string/game_backpack"
+           android:textColor="@color/font_white"
+           />
+       <TextView
+           android:id="@+id/tv_backpack_value"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@id/tv_backpack"
+           android:layout_alignRight="@id/tv_backpack"
+           android:layout_above="@id/tv_backpack"
+           android:background="@null"
+           android:gravity="center"
+           android:textSize="@dimen/font_dimen_big"
+           android:textColor="@color/font_white"
+           android:text="没有物品"
+           />
+
+
+   </RelativeLayout>
+
+
 
 
     <ListView
         android:id="@+id/lv_mapList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignTop="@id/fl_root"
+        android:layout_alignTop="@id/tv_changeProfile"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/background_white"

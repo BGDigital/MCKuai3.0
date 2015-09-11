@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -163,9 +162,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/menu_height_lv2"
         android:layout_below="@id/rl_top"
-        android:layout_marginLeft="@dimen/com_margin"
-        android:layout_marginRight="@dimen/com_margin"
-        android:background="@drawable/background_top_bottom_frame"
+        android:paddingLeft="@dimen/com_margin"
+        android:paddingRight="@dimen/com_margin"
+        android:background="@color/background_white"
         android:orientation="horizontal" >
 
         <RadioButton

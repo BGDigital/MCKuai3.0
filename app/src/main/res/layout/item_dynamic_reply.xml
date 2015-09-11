@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_usercenter_height"
-    android:background="@drawable/background_top_bottom_frame"
-    android:paddingLeft="@dimen/com_margin"
-    android:paddingRight="@dimen/com_margin" >
+    android:layout_height="@dimen/item_usercenter_height">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_alignParentTop="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_alignParentBottom="true"/>
 
     <ImageView
         android:id="@+id/iv_reply"
         android:layout_width="21dp"
         android:layout_height="21dp"
-        android:layout_marginBottom="@dimen/com_margin"
-        android:layout_marginRight="@dimen/com_margin"
-        android:layout_marginTop="@dimen/com_margin"
+        android:layout_margin="@dimen/com_margin"
         android:background="@drawable/btn_makechat"
         android:scaleType="fitXY" />
 
@@ -21,10 +28,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/iv_reply"
+        android:layout_marginRight="@dimen/com_margin"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/iv_reply"
         android:gravity="center_vertical"
-        android:text="5分钟前"
         android:textColor="@color/font_secondary"
         android:textSize="@dimen/font_dimen_small" />
 
@@ -47,8 +54,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_reply"
+        android:layout_marginLeft="@dimen/com_margin"
+        android:layout_marginRight="@dimen/com_margin"
         android:singleLine="true"
-        android:text="帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题"
         android:textColor="@color/font_secondary"
         android:textSize="@dimen/font_dimen_small" />
 
@@ -57,8 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/com_margin"
-        android:layout_marginTop="@dimen/com_margin"
+        android:layout_margin="@dimen/com_margin"
         android:singleLine="true"
         android:text="回复内容回复内容回复内容回复内容回复内容回复内容回复内容"
         android:textColor="@color/font_primary"

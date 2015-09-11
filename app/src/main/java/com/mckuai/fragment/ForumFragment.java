@@ -109,6 +109,7 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         forumLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         postLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mForumsListView.setLayoutManager(forumLayoutManager);
+        mForumsListView.setHasFixedSize(true);
         mPostListView.setLayoutManager(postLayoutManager);
         mPostListView.setHasFixedSize(true);
         mPostListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {

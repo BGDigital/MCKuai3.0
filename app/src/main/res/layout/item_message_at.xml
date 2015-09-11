@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/item_usercenter_height"
-    android:background="@drawable/background_top_bottom_frame"
-    android:paddingLeft="@dimen/com_margin"
-    android:paddingRight="@dimen/com_margin" >
+    android:layout_height="@dimen/item_usercenter_height" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_alignParentTop="true"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_alignParentBottom="true"/>
 
     <ImageView
         android:id="@+id/iv_userCover"
         android:layout_width="21dp"
         android:layout_height="21dp"
-        android:layout_marginBottom="@dimen/com_margin"
-        android:layout_marginEnd="@dimen/com_margin"
-        android:layout_marginRight="@dimen/com_margin"
-        android:layout_marginTop="@dimen/com_margin"
+        android:layout_margin="@dimen/com_margin"
         android:contentDescription="@string/addr_hint"
         android:src="@drawable/background_user_cover_default" />
 
@@ -21,12 +26,12 @@
         android:id="@+id/tv_replyTime"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginRight="@dimen/com_margin"
         android:layout_alignBottom="@id/iv_userCover"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@id/iv_userCover"
         android:gravity="center_vertical"
-        android:text="2015-04-20 12:12"
         android:textColor="@color/font_secondary"
         android:textSize="@dimen/font_dimen_small" />
 
@@ -43,7 +48,6 @@
         android:gravity="center_vertical"
         android:maxWidth="100dp"
         android:singleLine="true"
-        android:text="用户名字用户名字"
         android:textColor="@color/font_secondary"
         android:textSize="@dimen/font_dimen_small" />
 
@@ -67,8 +71,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_userCover"
+        android:layout_marginLeft="@dimen/com_margin"
+        android:layout_marginRight="@dimen/com_margin"
         android:singleLine="true"
-        android:text="帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题"
         android:textColor="@color/font_secondary"
         android:textSize="@dimen/font_dimen_small"
         android:visibility="visible" />
@@ -78,10 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/com_margin"
-        android:layout_marginTop="@dimen/com_margin"
+        android:layout_margin="@dimen/com_margin"
         android:maxLines="1"
-        android:text="回复内容回复内容回复内容回复内容回复内容回复内容回复内容"
         android:textColor="@color/font_primary"
         android:textSize="@dimen/font_dimen_primary" />
 

@@ -2,6 +2,7 @@ package com.mckuai.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
@@ -13,55 +14,32 @@ import com.mckuai.fragment.ResourceFragment;
 import com.mckuai.fragment.ServerFragment;
 import com.mckuai.fragment.SkinFragment;
 
-public class FragmentAdapter extends FragmentStatePagerAdapter {
+import java.util.ArrayList;
+
+public class FragmentAdapter extends FragmentPagerAdapter {
 
     public BaseFragment currentFragment;
-    private int type = 0;
+    private ArrayList<BaseFragment> list;
 
-	public FragmentAdapter(FragmentManager fm,int type) {
-		super(fm);
-        this.type = type;
-	}
 
-    public FragmentAdapter(FragmentManager fm){
+    public FragmentAdapter(FragmentManager fm,ArrayList<BaseFragment> fragments){
         super(fm);
+        this.list = fragments;
     }
 
-	@Override
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        return super.instantiateItem(container, position);
+    }
+
+    @Override
 	public Fragment getItem(int arg0) {
-		//return (Fragment)list.get(arg0);
-        BaseFragment fragment;
-        if (0 == type) {
-            switch (arg0) {
-                case 1:
-                    return new ResourceFragment();
-                case 2:
-                    return new ServerFragment();
-                case 3:
-                    return new ForumFragment();
-                default:
-                    return new GameEditerFragment();
-            }
-        }
-        else {
-            switch (arg0){
-                case 1:
-                    return new SkinFragment();
-                default:
-                    return new MapFragment();
-            }
-        }
+		return list.get(arg0);
 	}
 
 	@Override
 	public int getCount() {
-//		return list.size();
-        switch (type){
-            case 1:
-                return 2;
-            default:
-                return 4;
-        }
+		return list.size();
 	}
 
     @Override

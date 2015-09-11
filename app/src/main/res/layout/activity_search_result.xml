@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_white">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/title_layout"
@@ -39,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/menu_height_lv2"
         android:layout_below="@id/btn_search"
-        android:background="@drawable/background_top_bottom_frame"
+        android:background="@color/background_white"
         android:orientation="horizontal">
 
         <RadioButton
@@ -71,6 +70,7 @@
         android:id="@+id/rl_searchroot"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="1px"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/rg_switch"
         android:background="@color/background_white">
@@ -81,7 +81,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/btn_collectPost"
             android:layout_alignParentTop="true"
-            android:background="@color/background_white"
+            android:background="@null"
             android:cacheColorHint="@color/background_white"
             android:divider="@color/background_package_gray"
             android:dividerHeight="@dimen/item_divider_height" />
@@ -94,7 +94,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/btn_collectPost"
             android:layout_alignParentTop="true"
-            android:background="@color/background_white"
+            android:background="@null"
             android:cacheColorHint="@color/background_white"
             android:divider="@color/background_package_gray"
             android:dividerHeight="@dimen/item_divider_height"

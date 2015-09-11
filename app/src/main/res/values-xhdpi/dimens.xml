@@ -65,8 +65,8 @@
 
     <!-- 社区 -->
     <dimen name="forumlist_height">66dp</dimen>
-    <dimen name="forumview_height">48dp</dimen>
-    <dimen name="forumview_cover_radius">24dp</dimen>
+    <dimen name="forumview_height">46dp</dimen>
+    <dimen name="forumview_cover_radius">23dp</dimen>
     <dimen name="item_normalpost_height">74dp</dimen>
 
     <!-- 帖子详情 -->

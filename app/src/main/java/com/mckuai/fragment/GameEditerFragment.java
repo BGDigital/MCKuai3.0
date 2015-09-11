@@ -33,6 +33,9 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import cn.aigestudio.downloader.bizs.DLManager;
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
@@ -61,7 +64,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
 
     private MCWorldUtil gameEditer;
     private int mode;//地图模式
-//    private long size;//地图大小
     private String time;//白天黑夜
     private String viewName; //地图名字
     private boolean thirdPerson = false; //是否启用第三人称
@@ -114,7 +116,16 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                 @Override
                 public void OnComplete(ArrayList<WorldItem> worldItems, boolean isThirdView) {
-                    Log.e(TAG, "地图数目：" + (null == worldItems ? 0 : worldItems.size()));
+                    //Log.e(TAG, "地图数目：" + (null == worldItems ? 0 : worldItems.size()));
+                    /*Collections.sort(worldItems, new Comparator<WorldItem>() {
+                        @Override
+                        public int compare(WorldItem lhs, WorldItem rhs) {
+
+                            int result = (int) (lhs.getLevel().getLastPlayed() - rhs.getLevel().getLastPlayed());
+                            Log.e(TAG, lhs.getLevel().getLevelName() + "-" + rhs.getLevel().getLevelName() + ":" + result);
+                            return result;
+                        }
+                    });*/
                     setData(worldItems, isThirdView);
                 }
             }, false);
@@ -174,6 +185,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             if (null == world.getPlayer()) {
                 world.setPlayer(gameEditer.getPlayer(world.getDir()));
             }
+            world.resetLastPlayTime();
 
             mode = world.getLevel().getGameType();
             viewName = world.getLevel().getLevelName();
@@ -360,69 +372,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                     }
                 }
                 break;
-            /*case R.id.rl_gameMode:
-                //修改游戏模式
-                MobclickAgent.onEvent(getActivity(), "switchGameMode");
-                if (rl_notification.getVisibility() == View.VISIBLE) {
-                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
-                    return;
-                }
-                if (!checkGameInstall()) {
-                    return;
-                }
-                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
-                    switchGameMode();
-                } else {
-                    showNotification(2, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
-                }
-                break;
-            case R.id.rl_gameTime:
-                //切换日夜
-                MobclickAgent.onEvent(getActivity(), "switchTime");
-                if (rl_notification.getVisibility() == View.VISIBLE) {
-                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
-                    return;
-                }
-                if (!checkGameInstall()) {
-                    return;
-                }
-                if (null != worldItems && worldItems.get(curWorldIndex).getLevel() != null) {
-                    switchGameTime();
-                } else {
-                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
-                }
-
-                break;
-            case R.id.rl_thirdView:
-                MobclickAgent.onEvent(getActivity(), "switchView");
-                if (rl_notification.getVisibility() == View.VISIBLE) {
-                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
-                    return;
-                }
-                //切换第三人称和第一人称
-                if (null != worldItems && !worldItems.isEmpty() && worldItems.get(curWorldIndex).getLevel() != null) {
-                    switchView();
-                } else {
-                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
-                }
-
-                break;
-            case R.id.rl_gamePackage:
-                //修改背包
-                MobclickAgent.onEvent(getActivity(), "showPackage");
-                if (rl_notification.getVisibility() == View.VISIBLE) {
-                    showNotification(3, "正在下载游戏，请稍候！", R.id.fl_root);
-                    return;
-                }
-                if (!checkGameInstall()) {
-                    return;
-                }
-                if (null != worldItems && null != worldItems.get(curWorldIndex)) {
-                    changePackageItem();
-                } else {
-                    showNotification(3, "提示：未检测到地图，点击地图获取更多精彩地图！", R.id.fl_root);
-                }
-                break;*/
             case R.id.btn_startGame:
                 //运行游戏
                 MobclickAgent.onEvent(getActivity(), "startGame_tool");

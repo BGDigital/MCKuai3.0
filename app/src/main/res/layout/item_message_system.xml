@@ -2,13 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="92dp"
-    android:background="@drawable/background_top_bottom_frame"
-    android:paddingLeft="@dimen/com_margin"
-    android:paddingRight="@dimen/com_margin" >
+    android:background="@null">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_alignParentBottom="true"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_alignParentTop="true"
+        />
 
     <com.mckuai.widget.CircleImageView
         android:layout_width="21dp"
         android:layout_height="21dp"
+        android:layout_marginLeft="@dimen/com_margin"
         android:layout_marginBottom="@dimen/com_margin"
         android:layout_marginTop="@dimen/com_margin"
         android:background="@drawable/icon_sysmsg" />
@@ -19,6 +32,7 @@
         android:layout_height="21dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/com_margin"
         android:layout_marginBottom="@dimen/com_margin"
         android:layout_marginTop="@dimen/com_margin"
         android:gravity="center_vertical"
@@ -31,6 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/com_margin"
+        android:layout_marginRight="@dimen/com_margin"
         android:layout_marginBottom="@dimen/com_margin"
         android:layout_marginTop="@dimen/com_margin"
         android:maxLines="2"

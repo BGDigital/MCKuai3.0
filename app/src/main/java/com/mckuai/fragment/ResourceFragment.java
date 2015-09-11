@@ -13,6 +13,8 @@ import android.widget.RadioButton;
 import com.mckuai.adapter.FragmentAdapter;
 import com.mckuai.imc.R;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -25,6 +27,8 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     FragmentAdapter adapter;
 
     boolean isViewChanged = false;
+
+    ArrayList<BaseFragment> list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,13 +76,20 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
             initView();
         }
         if (null == adapter) {
-            adapter = new FragmentAdapter(getChildFragmentManager(), 1);
+            list = new ArrayList<>(2);
+            list.add(new MapFragment());
+            list.add(new SkinFragment());
+            adapter = new FragmentAdapter(getChildFragmentManager(), list);
         }
         viewPager.setAdapter(adapter);
         switch (viewPager.getCurrentItem()) {
             case 0:
+                btn_res_map.setChecked(true);
+                btn_res_skin.setChecked(false);
                 break;
             case 1:
+                btn_res_skin.setChecked(true);
+                btn_res_map.setChecked(false);
                 break;
         }
     }

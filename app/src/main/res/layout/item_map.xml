@@ -1,79 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="90dp"
     android:background="@null">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="@dimen/fm_w"
-        android:layout_height="@dimen/fm_h"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:scaleType="fitXY"
-        android:background="@null" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentTop="true"
+        android:background="@color/frame_darkgray"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/frame_darkgray"
+        />
 
-    <com.mckuai.widget.MasterLayout
-        android:id="@+id/MasterLayout01"
-        android:layout_width="@dimen/xz_wh"
-        android:layout_height="@dimen/xz_wh"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true"
-        android:background="@null"
-        android:clickable="true"></com.mckuai.widget.MasterLayout>
+        <ImageView
+            android:id="@+id/image"
+            android:layout_marginLeft="10dp"
+            android:layout_width="@dimen/fm_w"
+            android:layout_height="@dimen/fm_h"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/map_default"/>
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/image"
-        android:layout_marginLeft="10dp"
-        android:layout_toLeftOf="@id/MasterLayout01"
-        android:layout_toRightOf="@id/image"
-        android:background="@null"
-        android:lines="1"
-        android:text="地图名字"
-        android:textSize="@dimen/font_big" />
+        <com.mckuai.widget.fabbutton.FabButton
+            android:id="@+id/download_map"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:color="@color/white"
+            android:indeterminate="false"
+            android:max="100"
+            android:src="@drawable/download"
+            app:fbb_autoStart="true"
+            app:fbb_endBitmap="@drawable/btn_map_start"
+            app:fbb_hideProgressOnComplete="true"
+            app:fbb_progressColor="@color/frame_green"
+            app:fbb_progressWidthRatio="0.1"
+            app:fbb_showEndBitmap="true"
+            app:fbb_showShadow="true" />
+
+        <ImageButton
+            android:id="@+id/map_download_image"
+            android:layout_width="@dimen/xz_wh"
+            android:layout_height="@dimen/xz_wh"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_map_start"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/image"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/download_map"
+            android:layout_toRightOf="@id/image"
+            android:lines="1"
+            android:text="地图名字"
+            android:textColor="@color/font_primary"
+            android:textSize="@dimen/font_big" />
 
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/image"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/image"
-        android:background="@null"
-        android:text="更新时间："
-        android:textColor="@color/secondary"
-        android:textSize="@dimen/font_small"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/image"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/image"
+            android:text="更新时间："
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
 
-    <TextView
-        android:id="@+id/tv_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_time"
-        android:layout_below="@+id/tv_name"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/image"
-        android:gravity="center_vertical"
-        android:background="@null"
-        android:text="类别"
-        android:textColor="@color/font_radio_hint_checked"
-        android:textSize="@dimen/font_small"/>
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_time"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/image"
+            android:gravity="center_vertical"
+            android:text="类别"
+            android:textColor="@color/green"
+            android:textSize="@dimen/font_small" />
 
 
-    <TextView
-        android:id="@+id/tv_size"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/image"
-        android:layout_alignLeft="@id/MasterLayout01"
-        android:layout_alignRight="@id/MasterLayout01"
-        android:layout_alignTop="@id/tv_time"
-        android:background="@null"
-        android:gravity="center"
-        android:textColor="@color/secondary"
-        android:textSize="@dimen/font_small"/>
+        <TextView
+            android:id="@+id/tv_size"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/image"
+            android:layout_alignLeft="@id/download_map"
+            android:layout_alignRight="@id/download_map"
+            android:gravity="center"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/font_small" />
 </RelativeLayout>

@@ -25,9 +25,9 @@
     <dimen name="margin_top">5dp</dimen>
     <dimen name="bottom_button_height">48dp</dimen>
     <!-- 社区 -->
-    <dimen name="forumlist_height">62.7dp</dimen>
-    <dimen name="forumview_height">42.7dp</dimen>
-    <dimen name="forumview_cover_radius">21.4dp</dimen>
+    <dimen name="forumlist_height">64.7dp</dimen>
+    <dimen name="forumview_height">41dp</dimen>
+    <dimen name="forumview_cover_radius">20.5dp</dimen>
     <dimen name="item_normalpost_height">70dp</dimen>
 
     <!-- 帖子详情 -->
