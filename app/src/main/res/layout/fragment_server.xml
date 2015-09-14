@@ -6,46 +6,48 @@
     tools:context="com.mckuai.fragment.ServerFragment">
 
 
-    <View
-        android:id="@+id/v_center"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
-        ></View>
-    <TextView
-        android:id="@+id/tv_server_rank"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_margin="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/v_center"
-        android:clickable="true"
-        android:gravity="center"
-        android:background="@drawable/background_servarrand_shape"
-        android:textColor="@color/font_white"
-        android:textSize="@dimen/font_big" />
+
+    <LinearLayout
+        android:id="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/background_gray"
+
+        >
+        <TextView
+            android:id="@+id/tv_server_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:background="@drawable/background_servarrand_shape"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_big" />
 
 
-    <TextView
-        android:id="@+id/tv_server_type"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_margin="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/v_center"
-        android:clickable="true"
-        android:gravity="center"
-        android:background="@drawable/background_servartype_shape"
-        android:textColor="@color/font_white"
-        android:textSize="@dimen/font_big" />
+        <TextView
+            android:id="@+id/tv_server_type"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:background="@drawable/background_servartype_shape"
+            android:textColor="@color/font_white"
+            android:textSize="@dimen/font_big" />
+
+    </LinearLayout>
+
 
     <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
         android:id="@+id/urv_serverList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tv_server_rank"
+        android:layout_below="@id/filter_layout"
         android:paddingTop="1dp"
         android:background="@color/background_white">
 
@@ -56,7 +58,7 @@
         android:id="@+id/urv_serverTypeList"
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        android:layout_below="@id/tv_server_rank"
+        android:layout_below="@id/filter_layout"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
         android:background="@null"

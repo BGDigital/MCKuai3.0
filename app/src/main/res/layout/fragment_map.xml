@@ -10,7 +10,7 @@
         android:id="@+id/l1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="@color/background_gray"
         android:orientation="horizontal"
         android:padding="5dp">
 

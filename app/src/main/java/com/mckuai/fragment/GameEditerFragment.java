@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -55,10 +56,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
     private RelativeLayout rl_notification;
     private ProgressBar progressBar;
 
-    private RadioButton iv_gameMode;
-    private RadioButton iv_gameTime;
-    private RadioButton iv_thirdView;
-    private RadioButton iv_packageItem;
+    private CheckBox iv_gameMode;
+    private CheckBox iv_gameTime;
+    private CheckBox iv_thirdView;
+    private CheckBox iv_packageItem;
     private ListView lv_mapList;
 
 
@@ -141,10 +142,10 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
         tv_mapName = (TextView) view.findViewById(R.id.tv_mapName);
         tv_notification = (TextView) view.findViewById(R.id.tv_notificationTitle);
         iv_map = (ImageView) view.findViewById(R.id.iv_map);
-        iv_gameMode = (RadioButton) view.findViewById(R.id.btn_mod);
-        iv_gameTime = (RadioButton) view.findViewById(R.id.btn_time);
-        iv_thirdView = (RadioButton) view.findViewById(R.id.btn_thirdpersonvisual);
-        iv_packageItem = (RadioButton) view.findViewById(R.id.btn_backpack);
+        iv_gameMode = (CheckBox) view.findViewById(R.id.btn_mod);
+        iv_gameTime = (CheckBox) view.findViewById(R.id.btn_time);
+        iv_thirdView = (CheckBox) view.findViewById(R.id.btn_thirdpersonvisual);
+        iv_packageItem = (CheckBox) view.findViewById(R.id.btn_backpack);
         lv_mapList = (ListView) view.findViewById(R.id.lv_mapList);
         rl_notification = (RelativeLayout) view.findViewById(R.id.rl_notificationDownloadProgress);
         progressBar = (ProgressBar) view.findViewById(R.id.pb_downloadProgress);
@@ -452,6 +453,7 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
                 }
                 break;
         }
+        buttonView.setChecked(isChecked);
         updateWorldInfo();
     }
 

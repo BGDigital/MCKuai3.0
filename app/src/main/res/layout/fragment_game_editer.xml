@@ -78,7 +78,7 @@
            android:layout_centerInParent="true"/>
 
        <!-- 修改游戏模式 -->
-       <RadioButton
+       <CheckBox
            android:id="@+id/btn_mod"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
            />
 
        <!-- 修改游戏日夜 -->
-       <RadioButton
+       <CheckBox
            android:id="@+id/btn_time"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
            />
 
        <!-- 修改游戏视角 -->
-       <RadioButton
+       <CheckBox
            android:id="@+id/btn_thirdpersonvisual"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -221,7 +221,7 @@
            />
 
        <!-- 修改游戏日夜 -->
-       <RadioButton
+       <CheckBox
            android:id="@+id/btn_backpack"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
