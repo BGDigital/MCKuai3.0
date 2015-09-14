@@ -8,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.mckuai.adapter.FragmentAdapter;
+import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.R;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     View view;
     RadioButton btn_res_map;
     RadioButton btn_res_skin;
+    EditText edt_search = MainActivity.edt_titlebar_search;
 
     FragmentAdapter adapter;
 
@@ -51,7 +54,7 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && null != view) {
+        if (isVisibleToUser) {
             showData();
         }
     }
@@ -82,6 +85,7 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
             adapter = new FragmentAdapter(getChildFragmentManager(), list);
         }
         viewPager.setAdapter(adapter);
+        //viewPager.setCurrentItem(0);
         switch (viewPager.getCurrentItem()) {
             case 0:
                 btn_res_map.setChecked(true);
@@ -113,6 +117,11 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
                 btn_res_skin.setChecked(true);
                 isViewChanged = false;
                 break;
+        }
+        BaseFragment fragment = list.get(i);
+        fragment.onPageShow();
+        if (edt_search.getVisibility() == View.VISIBLE){
+            edt_search.setVisibility(View.GONE);
         }
     }
 
@@ -152,5 +161,13 @@ public class ResourceFragment extends BaseFragment implements ViewPager.OnPageCh
             return adapter.currentFragment.onBackKeyPressed();
         }
         return super.onBackKeyPressed();
+    }
+
+    @Override
+    public void onPageShow() {
+        if (null != viewPager && null != list) {
+            BaseFragment fragment = list.get(viewPager.getCurrentItem());
+            fragment.onPageShow();
+        }
     }
 }

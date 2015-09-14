@@ -63,12 +63,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".MymapActivity"
+            android:name=".MyMapsActivity_v2"
             android:label="@string/mymap"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".Export_mapActivity"
+            android:name=".ExportMapActivity_v2"
             android:label="@string/title_activity_export_map"
             android:screenOrientation="portrait" >
         </activity>
@@ -93,7 +93,7 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".MapdeleteActivity"
+            android:name=".DeleteMapActivity_v2"
             android:label="@string/title_activity_mapdetele"
             android:screenOrientation="portrait" >
         </activity>
@@ -103,12 +103,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".MapimportActivity"
+            android:name=".ImportMapActivity_v2"
             android:label="@string/title_activity_mapimport"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".MapexportActivity"
+            android:name=".SaveExportMapActivity"
             android:label="@string/title_activity_mapexport"
             android:screenOrientation="portrait" >
         </activity>

@@ -3,6 +3,7 @@ package com.mckuai.imc;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
@@ -46,6 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         PushAgent.getInstance(this).onAppStart();
+        Debug.startMethodTracing("mckial");
     }
 
 
@@ -59,6 +61,12 @@ public class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Debug.stopMethodTracing();
     }
 
     protected void setTitle(String title) {

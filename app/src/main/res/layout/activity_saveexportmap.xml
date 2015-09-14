@@ -1,22 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/background_gray">
 
     <include
-        android:id="@+id/position_title"
+        android:id="@+id/title"
         layout="@layout/titlebar_comm"></include>
+
+    <View
+        android:id="@+id/v_divi"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/frame_darkgray"
+        android:layout_below="@id/title"
+        />
 
     <TextView
         android:id="@+id/tv_mpt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/position_title"
+        android:clickable="true"
+        android:layout_below="@+id/v_divi"
         android:padding="@dimen/item_divider_height"
-        android:text="@string/export_map_export"
-        android:textColor="@color/font_secondary"
-        android:textSize="20dp" />
+        android:drawableLeft="@drawable/map_upward"
+        android:gravity="center_vertical"
+        android:text="@string/export_map" />
+    <View
+    android:id="@+id/v_divi_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/frame_darkgray"
+    android:layout_below="@id/tv_mpt"
+    />
 
     <Button
         android:id="@+id/bt_go"
@@ -32,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bt_go"
-        android:layout_below="@+id/tv_mpt"></ListView>
+        android:layout_below="@+id/v_divi_bottom"></ListView>
 
 
 </RelativeLayout>

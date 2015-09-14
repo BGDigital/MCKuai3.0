@@ -1,7 +1,5 @@
 package com.mckuai.mctools.item;
 
-import com.mckuai.imc.Export_mapActivity;
-
 /**
  * Created by kyly on 2015/8/11.
  */

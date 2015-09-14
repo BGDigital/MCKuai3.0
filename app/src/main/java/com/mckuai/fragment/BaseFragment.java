@@ -280,4 +280,8 @@ public class BaseFragment extends android.support.v4.app.Fragment {
         Log.e("BF","标题栏右侧按钮");
     }
 
+    public void onPageShow(){
+
+    }
+
 }

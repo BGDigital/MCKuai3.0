@@ -28,6 +28,7 @@ public class ParseResponse {
 
         if (!response.has("state")){
             result.msg = "返回数据格式不正确！";
+            return result;
         }
 
         try {

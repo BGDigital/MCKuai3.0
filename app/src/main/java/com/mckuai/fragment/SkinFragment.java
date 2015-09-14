@@ -209,7 +209,7 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                                 item.setProgress(progress);
                                 ViewGroup itemView = (ViewGroup) manager.findViewByPosition(i);
                                 if (null != itemView) {
-                                    FabButton progressBtn = (FabButton) (itemView.getChildAt(1));
+                                    FabButton progressBtn = (FabButton) (itemView.getChildAt(3));
                                     progressBtn.setProgress(progress);
                                     if (100 == progress) {
                                         updateDownloadCount(resId);
@@ -238,7 +238,6 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             initView();
         }
         setFilterUI();
-        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
         if (isShowDownloadSkins) {
             ArrayList<SkinItem> downloadSkins = mSkinManager.getDownloadSkins();
             if (null != downloadSkins && !downloadSkins.isEmpty()) {
@@ -419,9 +418,12 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
                 break;
             case R.id.tv_myskins:
                 mOrderFiledIndex = 0;
-                skins.clear();
-                skins = null;
-                mPage.setPage(0);
+                if (!isShowDownloadSkins && null != skins) {
+                    skins.clear();
+                    skins = null;
+                }else {
+                    mPage.setPage(0);
+                }
                 setFilterUI();
                 isShowDownloadSkins = !isShowDownloadSkins;
                 showData();
@@ -605,5 +607,10 @@ public class SkinFragment extends BaseFragment implements SkinAdapter.OnItemClic
             return true;
         }
         else return super.onBackKeyPressed();
+    }
+
+    @Override
+    public void onPageShow() {
+        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
     }
 }

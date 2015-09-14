@@ -47,15 +47,18 @@
             app:fbb_progressColor="@color/frame_green"
             app:fbb_progressWidthRatio="0.1"
             app:fbb_showEndBitmap="true"
-            app:fbb_showShadow="true" />
+            app:fbb_showShadow="true"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/map_download_image"
-            android:layout_width="@dimen/xz_wh"
-            android:layout_height="@dimen/xz_wh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
             android:background="@drawable/btn_map_start"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_name"

@@ -2,7 +2,7 @@
     android:id="@+id/import_tit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/background_gray"
     >
 
     <include
@@ -13,36 +13,25 @@
         android:id="@+id/tv_mpt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:layout_below="@+id/position_title"
         android:padding="@dimen/item_divider_height"
         android:text="@string/import_map"
         android:textSize="20dp"
         android:textColor="@color/font_secondary"/>
 
-    <LinearLayout
-        android:id="@+id/pt_ly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_mpt"
-        android:gravity="center_vertical"
-        android:padding="@dimen/item_divider_height">
 
-        <ImageView
-            android:id="@+id/pt_im"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_mpt"
-            android:background="@drawable/map_upward" />
+
 
         <TextView
             android:id="@+id/tv_t"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_mpt"
-            android:layout_toRightOf="@+id/pt_im"
+            android:drawableLeft="@drawable/map_upward"
             android:padding="@dimen/item_divider_height"
+            android:gravity="center_vertical"
             android:text="@string/revert" />
-    </LinearLayout>
 
     <Button
         android:id="@+id/bt_go"
@@ -58,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/bt_go"
-        android:layout_below="@+id/pt_ly"></ListView>
+        android:layout_below="@+id/tv_t"></ListView>
 
 
 </RelativeLayout>

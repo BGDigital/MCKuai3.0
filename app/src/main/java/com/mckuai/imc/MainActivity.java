@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
-    private ViewPager vp;
+    private static ViewPager vp;
     private RadioButton rb_navigation_tool;
     private RadioButton rb_navigation_resource;
     private RadioButton rb_navigation_server;
@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static TextView tv_titlebar_title;
     private static ImageView btn_titlebar_left;
     private static ImageView btn_titlebar_right;
-    private EditText edt_titlebar_search;
+    public static EditText edt_titlebar_search;
     private SlidingMenu mySlidingMenu;
     private MCSildingMenu menu;
 
@@ -239,9 +239,13 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     public void onPageSelected(int position) {
         isFragmentChanged = true;
-        application.fragmentIndex = position;
+        if (edt_titlebar_search.getVisibility() == View.VISIBLE){
+            edt_titlebar_search.setVisibility(View.GONE);
+        }
         changeCheckedButton(position);
         isFragmentChanged = false;
+        BaseFragment fragment = list.get(position);
+        fragment.onPageShow();
     }
 
     @Override
@@ -386,4 +390,5 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     break;
             }
     }
+
 }

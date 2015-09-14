@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background_Grey">
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/map_tit"
@@ -83,6 +82,7 @@
             android:id="@+id/map_mymap_lv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/background_gray"
             android:divider="@color/background_Grey"
             android:dividerHeight="@dimen/item_height_interval" />
     </RelativeLayout>

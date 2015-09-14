@@ -63,4 +63,5 @@ dependencies {
     compile files('src/libs/com.umeng.message.lib_v2.4.1.jar')
     //apach-http相关的类
     compile files('src/libs/httpcore-4.4.1.jar')
+    compile files('src/libs/android-support-v7-recyclerview.jar')
 }

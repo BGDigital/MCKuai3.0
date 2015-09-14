@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -39,7 +38,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 import org.apache.http.Header;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -97,8 +95,8 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && null != view){
-            if (null == serverListView){
+        if (isVisibleToUser) {
+            if (null == serverListView && null != view) {
                 initView();
             }
             showData();
@@ -112,76 +110,78 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(){
-        serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
-        serverTypeListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverTypeList);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
-        tv_serverRank = (TextView) view.findViewById(R.id.tv_server_rank);
-        tv_serverType = (TextView) view.findViewById(R.id.tv_server_type);
+        if (null != view) {
+            serverListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverList);
+            serverTypeListView = (UltimateRecyclerView) view.findViewById(R.id.urv_serverTypeList);
+            RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+            tv_serverRank = (TextView) view.findViewById(R.id.tv_server_rank);
+            tv_serverType = (TextView) view.findViewById(R.id.tv_server_type);
 
-        int width = application.sp2Px(getActivity(),20);
-        Drawable drawable = getResources().getDrawable(R.drawable.map_ranking);
+            int width = application.sp2Px(getActivity(), 20);
+            Drawable drawable = getResources().getDrawable(R.drawable.map_ranking);
 
-        drawable.setBounds(0, 0, width, width);
-        SpannableString spannableString = new SpannableString("icon 服务器排行");
-        spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        tv_serverRank.setText(spannableString);
+            drawable.setBounds(0, 0, width, width);
+            SpannableString spannableString = new SpannableString("icon 服务器排行");
+            spannableString.setSpan(new ImageSpan(drawable), 0, 4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_serverRank.setText(spannableString);
 
-        drawable = getResources().getDrawable(R.drawable.map_classification);
-        drawable.setBounds(0, 0, width, width);
-        spannableString = new SpannableString("icon 服务器类型");
-        spannableString.setSpan(new ImageSpan(drawable),0,4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        tv_serverType.setText(spannableString);
+            drawable = getResources().getDrawable(R.drawable.map_classification);
+            drawable.setBounds(0, 0, width, width);
+            spannableString = new SpannableString("icon 服务器类型");
+            spannableString.setSpan(new ImageSpan(drawable), 0, 4, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            tv_serverType.setText(spannableString);
 
-        serverListView.setLayoutManager(manager);
-        adapter = new ServerAdapter();
-        adapter.setOnItemClickListener(this);
-        adapter.SetOnServerAddListener(this);
-        serverListView.setAdapter(adapter);
+            serverListView.setLayoutManager(manager);
+            adapter = new ServerAdapter();
+            adapter.setOnItemClickListener(this);
+            adapter.SetOnServerAddListener(this);
+            serverListView.setAdapter(adapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
-        serverListView.addItemDecoration(dividerItemDecoration);
-        serverListView.enableLoadmore();
-        serverListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
-            @Override
-            public void loadMore(int i, int i1) {
-                loadData();
-            }
-        });
-
-        serverListView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (null != page) {
-                    page.setPage(0);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
+            serverListView.addItemDecoration(dividerItemDecoration);
+            serverListView.enableLoadmore();
+            serverListView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+                @Override
+                public void loadMore(int i, int i1) {
+                    loadData();
                 }
-                loadData();
-            }
-        });
+            });
 
-        StaggeredGridLayoutManager typeLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        serverTypeListView.setLayoutManager(typeLayoutManager);
-        typeAdapter = new ServerTypeAdapter();
-        typeAdapter.setOnItemClickListener(new ServerTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(String type) {
-                serverTypeListView.setVisibility(View.GONE);
-                if (type.trim().equals("全部")) {
-                    serverType = null;
-                } else {
-                    serverType = type.trim();
+            serverListView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (null != page) {
+                        page.setPage(0);
+                    }
+                    loadData();
                 }
-                if (null != serverInfos) {
-                    serverInfos.clear();
-                }
-                page = null;
-                loadData();
-            }
-        });
-        typeAdapter.setData(getResources().getStringArray(R.array.server_Type));
-        serverTypeListView.setAdapter(typeAdapter);
-        view.findViewById(R.id.tv_server_rank).setOnClickListener(this);
-        view.findViewById(R.id.tv_server_type).setOnClickListener(this);
+            });
 
+            StaggeredGridLayoutManager typeLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            serverTypeListView.setLayoutManager(typeLayoutManager);
+            typeAdapter = new ServerTypeAdapter();
+            typeAdapter.setOnItemClickListener(new ServerTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(String type) {
+                    serverTypeListView.setVisibility(View.GONE);
+                    mOrderFiledIndex = 0;
+                    if (type.trim().equals("全部")) {
+                        serverType = null;
+                    } else {
+                        serverType = type.trim();
+                    }
+                    if (null != serverInfos) {
+                        serverInfos.clear();
+                    }
+                    page = null;
+                    loadData();
+                }
+            });
+            typeAdapter.setData(getResources().getStringArray(R.array.server_Type));
+            serverTypeListView.setAdapter(typeAdapter);
+            view.findViewById(R.id.tv_server_rank).setOnClickListener(this);
+            view.findViewById(R.id.tv_server_type).setOnClickListener(this);
+        }
     }
 
     private void showData(){
@@ -189,7 +189,6 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             return;
         }
 
-        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
 
         if (null == serverInfos){
             loadData();
@@ -207,14 +206,14 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
     private void showServerType(){
         if (null != serverTypeListView) {
             serverTypeListView.setVisibility(View.VISIBLE);
-            serverListView.setVisibility(View.GONE);
+//            serverListView.setVisibility(View.GONE);
         }
     }
 
     private void hideServerType(){
         if (null != serverTypeListView) {
             serverTypeListView.setVisibility(View.GONE);
-            serverListView.setVisibility(View.VISIBLE);
+//            serverListView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -525,5 +524,10 @@ public class ServerFragment extends BaseFragment implements View.OnClickListener
             showData();
         }
         return super.onBackKeyPressed();
+    }
+
+    @Override
+    public void onPageShow() {
+        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
     }
 }

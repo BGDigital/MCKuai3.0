@@ -55,9 +55,7 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
     private String TAG = "Forums";
     private Gson mGson = new Gson();
     private boolean isLoading = false;
-    private boolean isReadyToShow = false;
     private ForumInfo curForum;
-    private boolean isAllowedLoadMore = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -438,5 +436,10 @@ public class ForumFragment extends BaseFragment implements RadioGroup.OnCheckedC
         else {
             Log.e(TAG,"未获取到版块列表!");
         }
+    }
+
+    @Override
+    public void onPageShow() {
+        showForums();
     }
 }

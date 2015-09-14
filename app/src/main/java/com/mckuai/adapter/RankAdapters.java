@@ -35,7 +35,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
     private OnItemClickListener itemClickListener;
     private OnMapDownloadListener addListener;
     private Context mContext;
-    private boolean isPaihang = false;
     private DisplayImageOptions options = MCkuai.getInstance().getNormalOption();
 
 
@@ -58,7 +57,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
 
     public void setData(final ArrayList<Map> maplist) {
         this.maps = maplist;
-        notifyDataSetChanged();
     }
 
     public RankAdapters(Context context) {
@@ -100,8 +98,6 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                         break;
                     case 100:
                         MobclickAgent.onEvent(mContext, "startGame_map");
-//                        String filename = MCkuai.getInstance().getMapDownloadDir() + map.getFileName();
-//                        MCMapManager mapManager = MCkuai.getInstance().getMapManager();
                         GameUntil.startGame(mContext);
                         break;
                     default:
@@ -127,7 +123,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
         return holder;
     }
 
-    @Override
+/*    @Override
     public int getItemViewType(int position) {
         if (isPaihang) {
             switch (maps.get(position).getDownloadProgress()) {
@@ -148,7 +144,7 @@ public class RankAdapters extends RecyclerView.Adapter<RankAdapters.ViewHolder> 
                     return 4;
             }
         }
-    }
+    }*/
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {

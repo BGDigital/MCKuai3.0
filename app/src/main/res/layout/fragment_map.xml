@@ -71,10 +71,9 @@
 
     <RelativeLayout
         android:id="@+id/mp_r1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/map_ed"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/l1"
         android:background="@drawable/background_white_with_frame"
         android:clickable="true"
         android:paddingBottom="20dp"

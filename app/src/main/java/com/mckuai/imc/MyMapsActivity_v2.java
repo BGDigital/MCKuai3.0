@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by Zzz on 2015/6/24.
  */
-public class MymapActivity extends BaseActivity implements OnClickListener, AdapterView.OnItemClickListener {
+public class MyMapsActivity_v2 extends BaseActivity implements OnClickListener, AdapterView.OnItemClickListener {
     private ListView map_mymap_lv;
     private ImageView btn_left;
     private TextView tv_title;
@@ -32,7 +32,7 @@ public class MymapActivity extends BaseActivity implements OnClickListener, Adap
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_mymap);
+        setContentView(R.layout.activity_mymap);
         initView();
     }
 
@@ -82,15 +82,15 @@ public class MymapActivity extends BaseActivity implements OnClickListener, Adap
                 this.finish();
                 break;
             case R.id.go_map:
-                intent = new Intent(this, MapimportActivity.class);
+                intent = new Intent(this, ImportMapActivity_v2.class);
                 startActivity(intent);
                 break;
             case R.id.leave_map:
-                intent = new Intent(this, Export_mapActivity.class);
+                intent = new Intent(this, ExportMapActivity_v2.class);
                 startActivity(intent);
                 break;
             case R.id.delete_map:
-                intent = new Intent(this, MapdeleteActivity.class);
+                intent = new Intent(this, DeleteMapActivity_v2.class);
                 startActivity(intent);
                 break;
             default:

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.service.carrier.CarrierService;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,9 +32,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 
 import cn.aigestudio.downloader.bizs.DLManager;
 import cn.aigestudio.downloader.interfaces.DLTaskListener;
@@ -114,22 +109,23 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             detectionGameInfo();
         }
         if (isGameInstalled && null == worldItems) {
-            gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
+            Thread thread = new Thread(new Runnable() {
                 @Override
-                public void OnComplete(ArrayList<WorldItem> worldItems, boolean isThirdView) {
-                    //Log.e(TAG, "地图数目：" + (null == worldItems ? 0 : worldItems.size()));
-                    /*Collections.sort(worldItems, new Comparator<WorldItem>() {
+                public void run() {
+                    gameEditer = new MCWorldUtil(new MCWorldUtil.OnWorldLoadListener() {
                         @Override
-                        public int compare(WorldItem lhs, WorldItem rhs) {
-
-                            int result = (int) (lhs.getLevel().getLastPlayed() - rhs.getLevel().getLastPlayed());
-                            Log.e(TAG, lhs.getLevel().getLevelName() + "-" + rhs.getLevel().getLevelName() + ":" + result);
-                            return result;
+                        public void OnComplete(final ArrayList<WorldItem> worldItems,final boolean isThirdView) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setData(worldItems, isThirdView);
+                            }
+                        });
                         }
-                    });*/
-                    setData(worldItems, isThirdView);
+                    },false);
                 }
-            }, false);
+            });
+            thread.start();
         }
     }
 
@@ -186,7 +182,6 @@ public class GameEditerFragment extends BaseFragment implements View.OnClickList
             if (null == world.getPlayer()) {
                 world.setPlayer(gameEditer.getPlayer(world.getDir()));
             }
-            world.resetLastPlayTime();
 
             mode = world.getLevel().getGameType();
             viewName = world.getLevel().getLevelName();

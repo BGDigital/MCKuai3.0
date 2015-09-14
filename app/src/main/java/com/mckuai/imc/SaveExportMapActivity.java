@@ -1,16 +1,17 @@
 package com.mckuai.imc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mckuai.adapter.MapImportAdapter;
+import com.mckuai.adapter.MapExportAdapter;
+import com.mckuai.bean.Map;
 import com.mckuai.mctools.WorldUtil.MCMapManager;
 import com.umeng.analytics.MobclickAgent;
 
@@ -18,41 +19,43 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 
-public class MapimportActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class SaveExportMapActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ImageView btn_left, btn_right;
     private TextView tv_title;
-    private ListView mpt_ls;
-    private Button bt_go, btn_showOwner;
-    private MapImportAdapter adapter;
+    private ListView map_lv_leave;
+    private Button bt_go;
+    private MapExportAdapter adapter;
     private MCMapManager mapManager;
+    private Map map;
     private ArrayList<String> curMaps;
-    ArrayList<String> curmap;
-    private LinearLayout pt_ly;
+    private ArrayList<String> dirList;
+    private ArrayList<String> fileList;
     private String currentDir;
     private String filename;
-    private String namefile;
+    private TextView tv_pd;
+    private ArrayList<String> worldroot;
+    private String temname;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mapimport);
+        setContentView(R.layout.activity_saveexportmap);
+        worldroot = (ArrayList<String>) getIntent().getSerializableExtra("DELETE");
         initview();
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("导出地图");
         if (null == mapManager) {
             mapManager = MCkuai.getInstance().getMapManager();
-
             initview();
         }
-
         showData();
-        curmap = mapManager.getCurrentMapDirList();
     }
 
     @Override
@@ -70,26 +73,23 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         super.onDestroy();
     }
 
-    private void showData() {
-//        downloadMap = mapManager.getDownloadMaps();
+    protected void showData() {
         if (null == dirList && null == fileList) {
             currentDir = MCkuai.getInstance().getSDPath();
             if (!getFileList(currentDir)) {
                 //no data
                 showNotification(1, "请确认SD卡是否存在", R.id.import_tit);
             } else {
-                adapter = new MapImportAdapter(this, fileList, dirList);
-                mpt_ls.setAdapter(adapter);
+                adapter = new MapExportAdapter(this, fileList, dirList);
+                map_lv_leave.setAdapter(adapter);
                 return;
             }
         } else {
             adapter.notifyDataSetChanged();
         }
-
-
     }
 
-    protected ArrayList<String> getDataEx(String dar) {
+    private ArrayList<String> getDataEx(String dar) {
         File[] files = new File(dar).listFiles();
         if (null == files || 0 == files.length) {
             return null;
@@ -110,17 +110,39 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
         btn_right.setVisibility(View.GONE);
         tv_title = (TextView) findViewById(R.id.tv_title);
         bt_go = (Button) findViewById(R.id.bt_go);
-        btn_showOwner = (Button) findViewById(R.id.btn_showOwner);
-        btn_showOwner.setVisibility(View.GONE);
         tv_title.setText("我的地图");
-        mpt_ls = (ListView) findViewById(R.id.mpt_ls);
-        pt_ly = (LinearLayout) findViewById(R.id.pt_ly);
-        pt_ly.setOnClickListener(this);
-        mpt_ls.setOnItemClickListener(this);
+        map_lv_leave = (ListView) findViewById(R.id.mpt_ls);
+        tv_pd = (TextView) findViewById(R.id.tv_mpt);
+        tv_pd.setOnClickListener(this);
+//        map_lv_leave.setOnItemSelectedListener(this);
+        map_lv_leave.setOnItemClickListener(this);
         btn_left.setOnClickListener(this);
+        btn_right.setOnClickListener(this);
         bt_go.setOnClickListener(this);
     }
 
+    public void daochumap() {
+        Toast.makeText(this,"正在导出请稍候",Toast.LENGTH_LONG).show();
+        Iterator iterator = worldroot.iterator();
+        String worldRootDir;
+        Intent intent = new Intent();
+        Integer size = worldroot.size();
+        while (iterator.hasNext()) {
+            worldRootDir = (String) iterator.next();
+            if (!mapManager.exportMap(worldRootDir, currentDir)) {
+                iterator.remove();
+            }
+        }
+        intent.putStringArrayListExtra("mapzimulu", worldroot);
+        if (size == worldroot.size()) {
+            Toast.makeText(this, "地图导出成功", Toast.LENGTH_LONG).show();
+            setResult(RESULT_OK, intent);
+        } else {
+            Toast.makeText(this, "部分地图导出失败", Toast.LENGTH_LONG).show();
+            setResult(RESULT_CANCELED, intent);
+        }
+        finish();
+    }
 
     @Override
     public void onClick(View v) {
@@ -128,8 +150,14 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             case R.id.btn_left:
                 finish();
                 break;
-            case R.id.pt_ly:
+            case R.id.bt_go:
+                MobclickAgent.onEvent(this,"exportMaps");
+                daochumap();
+//                mapManager.exportMap(chuancan.get);
+                break;
+            case R.id.tv_mpt:
                 String zimulu = showParentDir();
+
                 if (zimulu == null) {
                     showNotification(1, "没有SD卡", R.id.import_tit);
                 } else {
@@ -137,59 +165,27 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
                     adapter.setdate(fileList, dirList);
                 }
                 break;
-            case R.id.bt_go:
-                MobclickAgent.onEvent(this,"importMaps");
-                if (namefile == null) {
-                    showNotification(1, "请选择文件", R.id.import_tit);
-                } else {
-                    if (!mapManager.importMap(namefile)) {
-                        showNotification(1, "游戏导入失败", R.id.import_tit);
-                    } else {
-                        Toast.makeText(this, "游戏导入成功", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                break;
             default:
                 break;
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        if (position >= fileList.size()) {
-            currentDir = (String) adapter.getItem(position);
-            if (getFileList(currentDir)) {
-                adapter.notifyDataSetChanged();
-            }
-        } else {
-            filename = (String) adapter.getItem(position);
-            namefile = filename;
-//            mapManager.importMap(filename);
-//            GameUntil.startGame(this);
-        }
-
-    }
 
     private String showParentDir() {
         if (currentDir != null && !currentDir.equalsIgnoreCase(MCkuai.getInstance().getSDPath())) {
             int index = currentDir.lastIndexOf("/");
             if (index >= 0) {
-                String temname = currentDir.substring(0, index);
+                temname = currentDir.substring(0, index + 1);
                 currentDir = temname;
                 return temname;
             }
 
         } else {
+            //
             showNotification(1, "已经在最上层", R.id.import_tit);
         }
         return null;
     }
-
-
-    private ArrayList<String> dirList;
-    private ArrayList<String> fileList;
 
     private boolean getFileList(String path) {
         if (null == path || path.isEmpty()) {
@@ -237,5 +233,19 @@ public class MapimportActivity extends BaseActivity implements View.OnClickListe
             }
         }
         return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position >= fileList.size()) {
+            currentDir = (String) adapter.getItem(position);
+            if (getFileList(currentDir)) {
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            filename = (String) adapter.getItem(position);
+//            mapManager.importMap(filename);
+//            GameUntil.startGame(this);
+        }
     }
 }

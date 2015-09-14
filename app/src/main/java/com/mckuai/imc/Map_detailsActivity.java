@@ -69,7 +69,7 @@ public class Map_detailsActivity extends BaseActivity implements View.OnClickLis
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_details);
+        setContentView(R.layout.activity_mapdetails);
         map = (Map) getIntent().getSerializableExtra("details");
         if (null == map) {
             map = MCkuai.getInstance().getMap();

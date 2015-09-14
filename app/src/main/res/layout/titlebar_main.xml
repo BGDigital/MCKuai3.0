@@ -60,9 +60,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_titlebar_title"
-        android:layout_marginTop="2dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="@dimen/com_padding"
+        android:paddingRight="@dimen/com_padding"
         android:hint="搜索"
         android:imeOptions="actionSearch"
+        android:background="@drawable/background_edt_search_shape"
         android:singleLine="true"
         android:visibility="gone" />
 

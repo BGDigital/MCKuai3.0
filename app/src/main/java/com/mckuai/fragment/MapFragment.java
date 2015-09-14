@@ -2,7 +2,6 @@ package com.mckuai.fragment;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,18 +27,19 @@ import com.mckuai.adapter.RankAdapters;
 import com.mckuai.bean.Map;
 import com.mckuai.bean.MapBean;
 import com.mckuai.bean.PageInfo;
+import com.mckuai.bean.ResponseParseResult;
 import com.mckuai.imc.MCkuai;
 import com.mckuai.imc.MainActivity;
 import com.mckuai.imc.Map_detailsActivity;
-import com.mckuai.imc.MymapActivity;
+import com.mckuai.imc.MyMapsActivity_v2;
 import com.mckuai.imc.R;
 import com.mckuai.service_and_recevier.DownloadProgressRecevier;
 import com.mckuai.mctools.WorldUtil.MCMapManager;
+import com.mckuai.utils.ParseResponse;
 import com.mckuai.widget.fabbutton.FabButton;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,7 +49,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private Button rb_map, rb_classification, rb_mymap;
     private UltimateRecyclerView urv_mapList;
     private RelativeLayout mp_r1;
-    private MapBean mapList;
+//    private MapBean mapList;
+    private ArrayList<Map> maps;
     private PageInfo page;
     private LinearLayout cf_l1, cf_l2, cf_l3, cf_l4, cf_l5, cf_l6;
     private RankAdapters mapadapters;
@@ -65,7 +66,7 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     private MCMapManager mapManager;
     private DownloadProgressRecevier recevier;
     private long lastUpdateTime;
-    private String maptype;
+    //private String maptype;
     private String searchContext;
     private RecyclerView.LayoutManager manager;
     private boolean isSearch = false;
@@ -87,14 +88,18 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()){
-            showData();
+            if (null != view) {
+                showData();
+            }
         }
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser && null != view) {
-            showData();
+        if (isVisibleToUser) {
+            if (null != view) {
+                showData();
+            }
         }
     }
 
@@ -124,25 +129,26 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         if (null == urv_mapList) {
             initView();
         }
-        MainActivity.setRightButtonView(0,R.drawable.btn_search_selector);
         setFilterUI();
         initReciver();
 
-        if (null == mapList || null == mapList.getData() || null == page || 0 == page.getPage()) {
+        if (null == maps || null == page) {
             loadData();
             return;
         }
-        panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
+        panduanxiazai(maps, mapManager.getDownloadMaps());
+
 
         if (null == mapadapters) {
             mapadapters = new RankAdapters(getActivity());
             mapadapters.setOnItemClickListener(this);
-            mapadapters.setData(mapList.getData());
+            mapadapters.setData(maps);
             mapadapters.setOnMapDownloadListener(this);
             urv_mapList.setAdapter(mapadapters);
         } else {
-            mapadapters.setData(mapList.getData());
+            mapadapters.setData(maps);
         }
+        MainActivity.setRightButtonView(0,R.drawable.btn_search_selector);
     }
 
     protected void initView() {
@@ -201,17 +207,17 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     if (resType != 1) {
                         return;
                     }
-                    if (null != mapList && null != mapList.getData() && !mapList.getData().isEmpty()) {
+                    if (null != maps && !maps.isEmpty()) {
                         int i = 0;
-                        for (Map map : mapList.getData()) {
+                        for (Map map : maps) {
                             if (map.getResId().equals(resId)) {
                                 map.setDownloadProgress(progress);
                                 long time = System.currentTimeMillis();
                                 if (time - lastUpdateTime > 500 || progress == 100 || progress == 1) {
                                     ViewGroup itemView = (ViewGroup) manager.findViewByPosition(i);
                                     if (null != itemView) {
-                                        FabButton progressBtn = (FabButton) ((ViewGroup) itemView.getChildAt(0)).getChildAt(1);
-                                        ImageButton downloadedBtn = (ImageButton) ((ViewGroup) itemView.getChildAt(0)).getChildAt(2);
+                                        FabButton progressBtn = (FabButton) itemView.getChildAt(3);
+                                        ImageButton downloadedBtn = (ImageButton) itemView.getChildAt(4);
                                         if (100 == progress) {
                                             progressBtn.setVisibility(View.INVISIBLE);
                                             downloadedBtn.setVisibility(View.VISIBLE);
@@ -268,14 +274,18 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         switch (v.getId()) {
             case R.id.rb_map:
                 MobclickAgent.onEvent(getActivity(), "mapRank");
-                orderFieldIndex = Math.abs(orderFieldIndex - 1);
+                if (1 == orderFieldIndex){
+                    orderFieldIndex = 0;
+                }else {
+                    orderFieldIndex = 1;
+                }
                 setFilterUI();
                 typeFieldIndex = mMapType.length;
                 reLoadData();
                 break;
             case R.id.rb_classification:
                 MobclickAgent.onEvent(getActivity(), "mapType");
-                if (null == maptype) {
+//                if (null == maptype) {
                     if (mp_r1.getVisibility() == View.GONE) {
                         tit.setText("地图分类");
                         mp_r1.setVisibility(View.VISIBLE);
@@ -283,52 +293,52 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                         mp_r1.setVisibility(View.GONE);
                         tit.setText("资源");
                     }
-                } else {
-                    maptype = null;
-                }
+//                } else {
+//                    maptype = null;
+//                }
                 break;
             case R.id.rb_mymap:
                 MobclickAgent.onEvent(getActivity(), "myMap");
-                intent = new Intent(getActivity(), MymapActivity.class);
+                intent = new Intent(getActivity(), MyMapsActivity_v2.class);
                 getActivity().startActivityForResult(intent, 1);
                 break;
             //生存
             case R.id.cf_l1:
                 typeFieldIndex = 0;
-                orderFieldIndex = 0;
+                orderFieldIndex = 1;
                 setFilterUI();
                 reLoadData();
                 break;
             //解密
             case R.id.cf_l2:
                 typeFieldIndex = 1;
-                orderFieldIndex = 0;
+                orderFieldIndex = 1;
                 reLoadData();
                 break;
             //酷跑
             case R.id.cf_l3:
                 typeFieldIndex = 2;
-                orderFieldIndex = 0;
+                orderFieldIndex = 1;
                 setFilterUI();
                 reLoadData();
                 break;
             //建筑
             case R.id.cf_l4:
                 typeFieldIndex = 3;
-                orderFieldIndex = 0;
+                orderFieldIndex = 1;
                 setFilterUI();
                 reLoadData();
                 break;
             //pvp
             case R.id.cf_l5:
                 typeFieldIndex = 4;
-                orderFieldIndex = 0;
+                orderFieldIndex = 1;
                 setFilterUI();
                 reLoadData();
                 break;
             case R.id.cf_l6:
                 typeFieldIndex = mMapType.length;
-                orderFieldIndex = 0;
+                orderFieldIndex = 1;
                 setFilterUI();
                 reLoadData();
                 break;
@@ -370,9 +380,11 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     }
 
     private void reLoadData() {
-        mapList.getData().clear();
-        mapList.getPageBean().setPage(0);
-        page = null;
+        if (null != maps)
+        {
+            maps.clear();
+            page.setPage(0);
+        }
         searchContext = null;
         loadData();
     }
@@ -380,12 +392,12 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && mapList != null) {
+        if (requestCode == 1 && maps != null) {
             if (mapManager == null) {
                 mapManager = MCkuai.getInstance().getMapManager();
             }
-            panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-            mapadapters.setData(mapList.getData());
+            panduanxiazai(maps, mapManager.getDownloadMaps());
+            mapadapters.setData(maps);
         }
     }
 
@@ -429,11 +441,8 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         }
         final RequestParams params = getparams();
         final String url = getUrl();
-        if (mapList == null) {
-            mapList = new MapBean();
-        }
 
-        //Log.e("url:", url + "&" + params.toString());
+        Log.e("url:", url + "&" + params.toString());
         client.get(url, params, new JsonHttpResponseHandler() {
 
             @Override
@@ -444,7 +453,6 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
                     String data = getData(url, params);
                     if (null != data && 10 < data.length()) {
                         parseData(null, null, data);
-                        isCacheEnabled = false;
                         showData();
                         return;
                     }
@@ -454,32 +462,21 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponse parse = new ParseResponse();
+                ResponseParseResult result = parse.parse(response);
                 isLoading = false;
-                if (response != null && response.has("state")) {
-                    try {
-                        if (response.getString("state").equals("ok")) {
-                            JSONObject object = response.getJSONObject("dataObject");
-                            parseData(url, params, object.toString());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    if (!mapList.getData().isEmpty()) {
-                        cancleLodingToast(true);
-                        panduanxiazai(mapList.getData(), mapManager.getDownloadMaps());
-                        showData();
-                        return;
+                if (result.isSuccess){
+                    cancleLodingToast(true);
+                    parseData(url,params,result.data);
+                    if (null == maps || maps.isEmpty()){
+                        showNotification(0, null == searchContext ? "此类型下暂无地图，显示所有地图！" : "没找到满足条件的地图！", R.id.urv_mapList);
                     } else {
-                        if (typeFieldIndex != mOrderFields.length || null != searchContext) {
-                            showNotification(0, null == searchContext ? "此类型下暂无地图，显示所有地图！" : "没找到满足条件的地图！", R.id.urv_mapList);
-                            searchContext = null;
-                            mapadapters.setData(null);
-                        }
+                        showData();
                     }
                 } else {
-                    showNotification(0, "加载数据错误！", R.id.urv_mapList);
+                    cancleLodingToast(false);
+                    showNotification(0, result.msg, R.id.urv_mapList);
                 }
-                cancleLodingToast(false);
             }
 
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -498,19 +495,19 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
 
     private void parseData(String url, RequestParams params, String data) {
         MapBean bean = mGson.fromJson(data, MapBean.class);
-        if (null == mapList) {
-            mapList = new MapBean();
-        }
-        if (bean.getPageBean().getPage() == 1) {
-            if (null != mapList.getData()) {
-                mapList.getData().clear();
-            }
-            if (null != url && null != params) {
-                cacheData(url, params, data);
-            }
-        }
-        mapList.getData().addAll(bean.getData());
         page = bean.getPageBean();
+        if (1 == page.getPage()){
+            if (null != maps){
+                maps.clear();
+            }
+            maps = bean.getData();
+            if (isCacheEnabled && null != url && null != params){
+                cacheData(url,params,data);
+                isCacheEnabled = false;
+            }
+        } else {
+            maps.addAll(bean.getData());
+        }
     }
 
     @Override
@@ -571,13 +568,18 @@ public class MapFragment extends BaseFragment implements View.OnClickListener, R
         if (isSearch){
             isSearch = false;
             searchContext = null;
-            if (null != mapList && null != mapList.getData()){
-                mapList.getData().clear();
+            if (null != maps ){
+                maps.clear();
                 page.setPage(0);
             }
             showData();
             return true;
         }
         else return super.onBackKeyPressed();
+    }
+
+    @Override
+    public void onPageShow() {
+        MainActivity.setRightButtonView(0, R.drawable.btn_search_selector);
     }
 }

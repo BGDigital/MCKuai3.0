@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
-public class MapdeleteActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class DeleteMapActivity_v2 extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView map_mymap_lv;
@@ -105,11 +105,11 @@ public class MapdeleteActivity extends BaseActivity implements View.OnClickListe
                 deleteMap();
                 break;
             case R.id.go_map:
-                intent = new Intent(MapdeleteActivity.this, MapimportActivity.class);
+                intent = new Intent(DeleteMapActivity_v2.this, ImportMapActivity_v2.class);
                 startActivity(intent);
                 break;
             case R.id.leave_map:
-                intent = new Intent(MapdeleteActivity.this, Export_mapActivity.class);
+                intent = new Intent(DeleteMapActivity_v2.this, ExportMapActivity_v2.class);
                 startActivity(intent);
             default:
                 break;

@@ -18,7 +18,7 @@ import com.mckuai.mctools.WorldUtil.MCMapManager;
 import java.util.ArrayList;
 
 
-public class Export_mapActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ExportMapActivity_v2 extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ImageView btn_left, btn_right;
     private TextView tv_title;
     private ListView mpt_ls;
@@ -33,7 +33,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mymap_export);
+        setContentView(R.layout.activity_exportmap);
         initview();
     }
 
@@ -96,7 +96,7 @@ public class Export_mapActivity extends BaseActivity implements View.OnClickList
                     for (Integer xuanzong : selectedList) {
                         worldroot.add(worlds.get(xuanzong).getDir());
                     }
-                    intent = new Intent(this, MapexportActivity.class);
+                    intent = new Intent(this, SaveExportMapActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("DELETE", worldroot);
                     intent.putExtras(bundle);
